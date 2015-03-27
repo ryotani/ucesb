@@ -1,0 +1,25 @@
+# Building:
+
+. rootlogin pro 
+cd e062
+make CXX=g++-3.4 
+
+# Create root file
+
+./e062 {file[.gz]} --ntuple=UNPACK,{ntuple}.root
+
+e.g.
+./e062 /misc/haik/midas/run14_0.gz --ntuple=RAW,run14_0.root
+
+# Setup for online monitor
+
+make CXX=g++-3.4 ext_reader_e062
+
+# Run external reader network server:
+
+./e062 ~/midas/run14_0.gz --ntuple=UNPACK,RAW,STRUCT,dummy
+
+# Read the data:
+
+./ext_reader_e062 localhost
+

@@ -1,0 +1,289 @@
+#################################################################
+#                                                               #
+#          UCESB unpacker for the s327 experiment               #
+#                                                               #
+# the UCESB is an unpacker which provide a raw level ntuple     #
+# of the land data. It is installed under the land account.     #
+#                                                               #
+# If you want to use it under the land account go to the        #
+# directory:                                                    #
+#          /u/land/unpackexps/s327                              #
+# or you can check it out from on your own account              #
+#################################################################
+
+### PRELIMINARIES #######################################################
+
+# For help on installing UCESB, please refer to "unpackexps/INSTALL_UCESB.txt"
+# For a detailed description of the UCESB unpacker please refer to
+
+/u/land/unpacker/Haakan_ucesb_doc.ps
+
+# The rest of this file should give you some idea how to work with UCESB
+# how to get started...
+
+# You first need to compile your unpacker/ directory:
+. cernlogin pro
+make CXX=g++-3.4
+
+# Now, this s327-specific unpacker can be compiled, either:
+# A) For merging:
+make USE_MERGING=1
+
+# B) For unpacking:
+make USE_CERNLIB=1
+
+# (For descriptions see below). An executable called s327 will be created
+
+### OVERVIEW #############################################################
+
+# Show (almost all) known data members (C style)
+
+./s327 --show-members
+
+# Unshown:
+
+.UNPACK.TRIGGER
+.UNPACK.EVENTNO
+
+### A) GENERAL USE - MERGING (& REWRITING) ###################################################
+
+# READ FIRST: As there will only be one event builder being used
+# in the DAQ of the s327 exp, merging is not necessary in the
+# sense of ordering events. Still, the option as such exists
+# and it can be performed as a regular way to cut the data into
+# pieces of different size. Anyhow, rewriting (of drift chamber
+# data is still needed and has to be done via ucesb - until it
+# becomes built-in routine of the land02 input stage...		
+
+# Since the s318 experiment in July/August 2007 the LAND DAQ
+# runs with 3 eventbuilders (x86-10, x86-36, x86-38) instead
+# of only with the first of those as before. Correspondingly,
+# three parallel event-streams (and thus .lmd files) were
+# created in these experiments, with event numbers more or
+# less randomly distributed to any of the three streams/files
+# at a time.
+# Now, land02 needs input .lmd files with one-by-one increasing
+# event numbers. Thus one needs a tool that opens three parallel
+# lmd files at a time, takes out events and sorts them properly,
+# and writes new - sorted - lmd files. 
+# If you compiled like A) above you can do this merging:
+
+./s327 --merge=6 <list_of_files> --output=eventcut=350000,outfile.lmd
+
+# "6" stands for two times the number of eventbuilders.
+# You can give any number of (connected) files (e.g. from one run),
+# but at least three, otherwise you will have some events missing.
+# The output will consist of a number of lmd files, each having
+# the same number of events, with their common tag being follewed
+# by an increasing count-tag "_XXXX".
+
+### B) GENERAL USE - UNPACKING (& REWRITING) #################################################
+
+# For making ntuples, one can choose from the known members
+# (without the level specifiers (like UNPACK, RAW, CAL, USER),
+# but then additionally the LEVELS one wants.  If one requests
+# a member, the corresponding level should also be requested.
+
+# A level specified does not mean it gets completely included,
+# just that it will be searched for the variables.
+
+# Variable names are CASE sensitive!!!
+
+# Ntuple ID is always 101
+
+./s327 <inputfile/mbs-stream/etc> --ntuple=LEVELS,VARIABLES,outfile.ntu
+
+# There are 3 levels : UNPACK, RAW, USER
+#   1 - @ UNPACK level you can find the following variables
+#       trigger number            : TRIGGER
+#       event number              : EVENTNO
+#       tpat                      : camac_tpat
+#       scaler for double trigger : vme_scaler2data
+#	TUM diamond strip det.    : DIAMOND
+#   2 - @ RAW level the variables correspond to the detector name
+#       big TofWall               : TFW
+#       small TofWall             : NTF
+#       Fiber detectors           : GFI
+#       Crystal Ball              : XB
+#       Silicon                   : SST
+#       pos                       : POS
+#       psp                       : PSP
+#       land                      : N
+#       scintillators             : SCI (1 is for S2 and 2 is for S8)
+#   3 - @ USER level you have a unique variable corresponding to the
+#       Drift Chambers            : CCB
+
+# 	Terminology: A common abbreviation for the Proton Drift Chamber detectors
+#	used to be "DCH". However historically, the name of the ucesb-branch for the DCH
+#	data became "CCB", standing for Concentrator Board (the DCH readout board).
+#
+#	-> Detector name = DCH; corresponding UCESB branch name = CCB.
+#
+#	Side remark: The name of the LAND02 branch for the drift chambers is "PDC",
+#	standing for Proton Drift Chambers. 
+
+# ------------ Some examples 
+
+# you need the trigger number, the event number and the tpat with the psp and silicon
+./s327 /d/land/land/s327/lmd/name_of_file.lmd --ntuple=UNPACK,TRIGGER,EVENTNO,RAW,SST,PSP,ntuple.ntu 
+./s327 /d/land/land/s327/lmd/name_of_file.lmd --ntuple=UNPACK,TRIGGER,EVENTNO,camac_tpat,RAW,SST,ntuple.ntu 
+
+#if you need the PSP,SST,DCH and TFW
+./s327  /d/land/land/s327/lmd/name_of_file.lmd --ntuple=RAW,PSP,SST,TFW,USER,CCB,ntuple.ntu
+
+#if you need the POS, PSP, SST
+./s327 /d/land/land/s327/lmd/name_of_file.lmd --ntuple=RAW,POS,PSP,SST,ntuple.ntu
+
+#if you need the DIAMOND prototype detector data
+./s327 /d/land/land/s327/lmd/name_of_file.lmd --ntuple=UNPACK,DIAMOND,ntuple.ntu
+
+# ------------ Some options 
+
+# one option --max-events=10000 will just run over the first 10000 events in the file
+# if you need the PSP,SST,DCH and TFW:
+
+./s327  /d/land/land/s327/lmd/name_of_file.lmd --ntuple=RAW,PSP,SST,TFW,USER,CCB,ntuple.ntu
+
+# if you want to look at the data as text you should use the options --data --print
+
+./s327 /d/land/land/s327/lmd/name_of_file.lmd --data --print 
+
+# ----------- about the indices
+
+# For selected 'subparts' of variables, indices are 1-based 
+# and substructure names are separated by underscores, like
+# SST2-3 or SST_2-3 are equivalent (letters for names, 
+# digits for indices)
+./s327 /d/land/land/s327/lmd/name_of_file.lmd --ntuple=UNPACK,TRIGGER,EVENTNO,RAW,SST2-3,ntuple.ntu --max-events=10000
+
+# ----------- how to look in the data with PAW (example with SST)
+
+# To in paw plot the energies for SST detector 3, strip 200, do:
+n/pl 101.SST3E SST3I=200
+
+# This plots all energies (all strips in same histogram (somewhat useless)) of detector 3
+n/pl 101.SST3E
+
+# This plots the strips of the detector 3 that fires
+n/pl 101.SST3I
+
+# Multiplicity of detector 3
+n/pl 101.SST3
+
+### REWRITING  #############################################################
+
+# The LAND02 unpacker and analysis software cannot read the experimental lmd files (for s223, s318, s327) as they are stored, at least not the Proton Drift Chamber (PDC, for land02) part of the data.
+# Therefore the data needs to be rewritten, i.e. PDC data preprocessed, which can be done using the UCESB unpacker:
+
+./s327 <inputfiles> --output=events=350000,outfiles.lmd
+
+# or
+
+./s327 <inputfiles> --output=eventcut=350000,outfiles.lmd
+
+# The first option creates files of exactly 350000 events each with increasing number tag until the specified inputfiles have been 'used up'. The second option cuts files at eventnumbers which are whole multiples of the specified one. Together with the merging mentioned above, is crucial for the whole process of analysis with land02. In order to have a fixed and well defined set of files one can do analysis on with land02, one needs to (merge and) rewrite the whole set of experimental data which is stored on tape.
+
+# NOTE: At some point 'rewriting' will also include modifications to the SST data.
+
+### TAPE-ROBOT #############################################################
+
+# The experiments' data is (finally) stored on the so-called 'tape-robot', "gstore" in official terms.
+# One can read (=open & unpack) files directly from it; the corresponding addressing works the following way:
+
+./s327 rfio://gstore:/landraw/lmdv/s327/r178_3056.lmd --output,options...
+
+# For this purpose the according files have to be 'staged'; one checks their status:
+
+gstore query "\*.lmd" landraw lmdv/s327
+
+# Then staging (if necessary):
+
+gstore stage ...
+
+### STREAMING ################################################################
+
+# Instead of unpacking data from an already written .lmd file, one can directly unpack from the data streams
+# coming from the event builders (EBs) which are atm "x86-10", "x86-36", and "x86-38", e.g.:
+
+./s327 --stream=x86-10 --output,options...
+
+# or (having the same effect):
+
+./s327 stream://x86-38 --output,options...
+
+# As the consecutive events are distributed (more or less) randomly to the three EBs, the streams coming
+# from each single one (equally, the files being filled by each) will not have event numbers strictly increasing by one.
+# For having a stream (->data) with strictly 1-incremented event numbers, there is a merging procedure running on lxfs12,
+# taking and sorting the streams from the (three) EBs and producing a nicely ordered stream. One can unpack from it:
+
+./s327 stream://lxfs12 --output,options...
+./s327 --stream=lxfs12 --output,options...
+
+# Having this merged-event stream, one cannot connect to the individual EBs' streams anymore, as they are completely
+# redirected to lxfs12.
+
+### WATCHER ##############################################################
+
+# For looking at data online, there is a 'daqscope', the watcher:
+# Varible names are selected in the same way as for ntuple dumping
+
+# The following example will display the channel-wise energy spectra
+# of strips 200 to 240 of SST detector 1:
+
+./s327 /d/land/land/s327/lmd/name_of_file.lmd --watcher=SST1_200-240 2> /dev/null
+
+# One can also look at UNPACK level data; example below will show all SST channels
+
+./s327 /d/land/land/s327/lmd/name_of_file.lmd --watcher=sst 2> /dev/null
+
+# Of course it is possible (and convenient to check detectors quickly) to look at streamed data:
+
+./s327 --stream=lxfs12 --watcher=POS,ROL,PSP,STR,SCI, 2> /dev/null
+
+### ZERO SUPPRESSION ###########################################################
+
+How the data look like in the Ntuple or Root Tree with the ZERO SUPPRESSION option (see s327.spec)
+
+--------------------NTF---------------------------------------
+you will have the following variables/branches
+Ntf    : integer          = multiplicity i.e. how many paddles fired
+Ntfi   : array Ntfi[ntf]  = paddle number
+Ntf1t  : array Ntf1t[ntf] = raw values of the time from PM1
+Ntf2t  : array Ntf2t[ntf] = raw values of the time from PM2 
+Ntf1q  : array Ntf1q[ntf] = raw values of the charge from PM1
+Ntf2q  : array Ntf2q[ntf] = raw values of the charge from PM2
+
+zB: 2 paddles fired, let say 4 and 12
+  ---> Ntf=2
+  ---> Ntf1i[0]=4 
+       Ntf1i[1]=12
+  ---> Ntf1t[0]=raw time of the Paddle4,  PM1
+       Ntf1t[1]=raw time of the Paddle12, PM1
+  ---> Ntf2t[0]=raw time of the Paddle4,  PM2
+       Ntf2t[1]=raw time of the Paddle12, PM2
+  ---> Ntf1q[0] ... usw with the charge
+with root if the tree which contain the data is called
+tree (just to be original)
+you want to look at the multiplicity       : tree->Draw("Ntf");
+you want to look at the time, PM1, pdl4    : tree->Draw("Ntf1t","Ntfi==4")
+you want to look at the energy, PM2, pdl 4 : tree->Draw("Ntf2q","Ntfi==4")
+
+------------------------TFW------------------------------
+Same than NTF but with the following name of variables/branches
+i.e. Tfw : integer = multiplicity i.e. how many paddles fired
+     Tfwi
+     Tfw1t
+     Tfw2t
+     Tfw1e
+     Tfw2e
+
+-------------------------XB---------------------------------
+For the XB :
+Xb   multiplicity
+Xbi  crystal number
+Xb1e raw energy  -> gammas
+XbSum raw energy -> gamma sum (taken from CFDs)
+Xb1t raw time	 -> gammas
+Xb2e raw energy	 -> protons (high energy particles...)
+
+you want the raw gamma energy of the crystal 89 : tree->Draw("Xb1e","Xbi==89")

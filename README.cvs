@@ -1,0 +1,40 @@
+
+Checking out code (non-maintainer):
+
+cvs -R -d /u/landcvs/CVS co unpackexps
+
+Checking out code (maintainer):
+
+cvs -d :ext:landcvs@lxi001.gsi.de:/u/landcvs/CVS co unpackexps
+
+--
+
+From both, one can then do, (with -R flag, for 
+non-maintainer-checkouts, to avoid warnings)
+
+cvs diff -u
+
+cvs update -d
+
+--
+
+Check-in, can be done from the maintainer checked-out code:
+
+cvs commit
+
+(and cvs add, etc, whatever is needed).
+
+From a non-maintainer-checkout, one can use the
+
+cvs -d :ext:landcvs@lxi001.gsi.de:/u/landcvs/CVS commit
+
+to make it happen.
+
+--
+
+Note: it is strongly recommeneded to work with ssh-keys, and not passwords.  
+(Also since one needs to enter fewer passwords).  For the maintainer, it 
+means that (s)he logs in from her/his account to the land-account with
+ssh -A land@machine , such that the ssh-key can also be used to get
+access to the landcvs account.
+

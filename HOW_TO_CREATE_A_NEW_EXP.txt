@@ -1,0 +1,173 @@
+#################################################################
+#                                                               #
+#          HOW TO CREATE A NEW UNPACKING WITH UCESB             #
+#                                                               #
+#################################################################
+
+
+    Hello !
+
+    With the help of this file I hope it will be easy for you 
+    to CREATE a new experiment under the unpackexps directory, 
+    meaning using the UCESB(*1) unpacker created by Haakan.
+
+
+
+    1 ------------------------------------------------------- 1  
+    The DAQ and the unpacker should rely on the same cabling
+    documentation. MAKE SURE IT IS THE CASE. It is very important
+    to communicate and exchange all the information between
+    people working on the DAQ, the CABLING_DOCUMENTATION and 
+    the UNPACKING. 
+
+
+
+
+    2 ------------------------------------------------------- 2 
+    Go into your $HOME directory and checkout (or update) 
+    the following directories (*2):
+    - cabling
+    - cabling_htj
+    - landdaq
+    - landdaq_
+    - unpacker
+    - unpackexps
+
+    To checkout this directory do :
+
+    A - Either you have access to landcvs (*3)
+cvs -d :ext:landcvs@lxgs08.gsi.de:/u/landcvs/CVS co cabling
+cvs -R -d /u/johansso/CVS co cabling_htj
+cvs -R -d /u/johansso/CVS co unpacker
+cvs -d :ext:landcvs@lxgs08.gsi.de:/u/landcvs/CVS co unpackexps
+cvs -R -d /u/johansso/CVS co landdaq_
+cvs -d :ext:landcvs@lxgs08.gsi.de:/u/landcvs/CVS co landdaq
+
+    B - Or you don't have access to landcvs (*4)
+cvs -d :ext:yourname@lxgs08.gsi.de:/u/landcvs/CVS co cabling
+cvs -R -d /u/johansso/CVS co cabling_htj
+cvs -R -d /u/johansso/CVS co unpacker
+cvs -d :ext:yourname@lxgs08.gsi.de:/u/landcvs/CVS co unpackexps
+cvs -R -d /u/johansso/CVS co landdaq_
+cvs -d :ext:yourname@lxgs08.gsi.de:/u/landcvs/CVS co landdaq
+
+    
+    To update (B) any of those directories do :
+
+cvs -R -d /u/johansso/CVS update -d
+     or
+cvs -R -d /u/landcvs/CVS update -d
+
+     (depending on which source is mentioned above).
+
+    3 ------------------------------------------------------- 3
+    Now you have all the directories required. 
+    FIRST THING, compile the unpacker directory.
+    Go to the unpacker directory and do:
+make CXX=g++-3.4
+
+    4 ------------------------------------------------------- 4
+    Go to the unpackexps directory and create a new directory 
+
+mkdir sEXP
+
+    with EXP the number of your experiment
+
+    Then create the camac_c*.hh and fastbus_c*.hh and mapping.hh
+    files in the sEXP directory
+
+cd sEXP
+
+cpp -P $HOME/cabling/gen/cfg_elecloc.hh | ../land_common/elecloc.pl
+    -> this should create camac_c*.hh and fastbus_c*.hh files
+cpp -P $HOME/cabling/gen/cfg_sig_beam.hh | \
+../land_common/sig_beam.pl > mapping.hh
+    -> this will create a mapping.hh file
+
+    5 ------------------------------------------------------- 5
+    Then you should copy from a previous experiment the files
+    required.
+
+    First the main file:
+
+cp ../s223/s223.spec sEXP.spec
+
+    On this file you will find out a lot of include, what are the 
+    different type of subevent you can encountered in one event, 
+    and finally the mapping of each channel readout. This is inside 
+    the #include "mapping" and then there are some lines for the SST 
+    and NTF which are not yet included in the cabling documentation. 
+    Check carefully that the niumber of SST is equal to (or at 
+    least less than) what you have in reality.
+
+    Then copy the file concerning the Silicon Strip Detectors
+
+cp ../s223/siderem01_vme.spec .
+
+    then copy the user functions. the numner of SSt detectors 
+    should be consistent with what declared in the mapping.
+
+cp ../s223/s223_user.cc sEXP_user.cc
+cp ../s223/s223_user_ap.cc sEXP_user_ap.cc
+
+    Edit sEXP_user.cc and change in the type of the last argument 
+    of the user_function s223_user_struct* into sEXP_user_struct*
+
+    These files are mainly used to calculate the pedestals 
+    and sigma for the SST detectors, and to call the outside
+    unpacker program of the DCH. The main loop will loop 
+    over the SST. The number of SST should be consistent with 
+    what is declared in the mapping.
+
+cp ../s223/s223_user_struct.hh sEXP_user_struct.hh
+cp ../s223/s223_external.hh sEXP_external.hh
+cp ../s223/control.hh .
+
+    you open these 3 files and modifiy 223 for EXP
+
+    Then copy the following files :
+cp ../s223/land_fcns.cc .
+
+
+    And now the makefiles:
+cp ../s223/Makefile .
+cp ../s223/makefile_additional.inc .
+
+    Edit the Makefile with your favorite editor (nano, xemacs, vi, ...usw...)
+    Replace the 223 by EXP
+    Same procedure for makefile_additional.inc
+
+
+    Last check : look at camac_c3.hh the order of the line 
+    is VERY IMPORTANT. It should correspond to the order where 
+    the modules will be read out. Call the DAQ people and together 
+    look if the order of the file is the good one. Problem can occurs 
+    if the PHILLIPS module are in between SILENA or CAEN modules.
+
+
+    NOW YOU SHOULD HAVE A WORKING UNPACKER. 
+    copy the last file
+cp ../s223/USAGE.TXT . 
+
+    modify 223 with EXP, in this file you should find the necessary 
+    information to run the unpacker. 
+
+
+    6 ------------------------------------------------------- 6
+    Now you should commit under CVS in order everybody can have 
+    access to the unpacker. If you don't have access to landcvs : (*4)
+
+
+
+
+ ------------------------------------------------------------------------------------------
+|(*1) Unpack and Check Every Single Bit :-)                                                |
+|(*2) cabling_htj : contains all the source code of tha cabling documentation              |
+|     cabling     : contains the cabling documentation                                     |
+|     unpacker    : contains the source code for the UCESB unpacker                        |
+|     unpackexps  : contains the specification files to unpack data                        |
+|     landdaq_    : the user function of the unpacking can use some routine of the landdaq_|
+|(*3) You have the key gen for landcvs, and can commit the change                          |
+|(*4) To change the CVS make a diff and send it to someone who has access to               |
+|     landcvs, zB: Haik, Tudi, Felix or me (Haakan)                                        |
+ ------------------------------------------------------------------------------------------

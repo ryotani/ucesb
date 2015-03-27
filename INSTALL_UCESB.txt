@@ -1,0 +1,79 @@
+#################################################################
+#                                                               #
+#              HOW TO INSTALL THE UCESB UNPACKER                #
+#                                                               #
+#################################################################
+
+
+    Hello !
+
+    With the help of this file I hope it will be easy for you 
+    to install (from CVS) the UCESB(*1) unpacker created by
+    Haakan.
+
+
+    1 ------------------------------------------------------- 1 
+    Go into your $HOME directory and checkout (or update) 
+    the following directories (*2):
+    - cabling
+    - cabling_htj
+    - landdaq
+    - landdaq_
+    - unpacker
+    - unpackexps
+
+    To checkout this directory do :
+
+    A - Either you have access to landcvs (*3)
+cvs -d :ext:landcvs@lxgs08.gsi.de:/u/landcvs/CVS co cabling
+cvs -R -d /u/johansso/CVS co cabling_htj
+cvs -R -d /u/johansso/CVS co unpacker
+cvs -d :ext:landcvs@lxgs08.gsi.de:/u/landcvs/CVS co unpackexps
+cvs -R -d /u/johansso/CVS co landdaq_
+cvs -d :ext:landcvs@lxgs08.gsi.de:/u/landcvs/CVS co landdaq
+
+    B - Or you don't have access to landcvs (*4)
+cvs -d :ext:yourname@lxgs08.gsi.de:/u/landcvs/CVS co cabling
+cvs -R -d /u/johansso/CVS co cabling_htj
+cvs -R -d /u/johansso/CVS co unpacker
+cvs -d :ext:yourname@lxgs08.gsi.de:/u/landcvs/CVS co unpackexps
+cvs -R -d /u/johansso/CVS co landdaq_
+cvs -d :ext:yourname@lxgs08.gsi.de:/u/landcvs/CVS co landdaq
+
+    
+    To update (B) any of those directories do :
+
+cvs -R -d /u/johansso/CVS update -d
+     or
+cvs -R -d /u/landcvs/CVS update -d
+
+     (depending on which source is mentioned above).
+
+    2 ------------------------------------------------------- 2
+    Now you have all the directories required.
+    If you now want to unpack some (RAW) experimental data,
+    you can use corresponding specific "sXXX" unpacker.
+    For instructions how to compile/use them, please read the 
+
+    ~/unpackexps/sXXX/USAGE.txt
+
+    file(s).
+
+    NOTE: the generic unpacker/ (directory) offers certain
+    features of unpacking, merging and data treatment itself,
+    e.g. for SST or PDC data.
+    Information on its usage will follow...
+
+
+
+ ------------------------------------------------------------------------------------------
+|(*1) Unpack and Check Every Single Bit :-)                                                |
+|(*2) cabling_htj : contains all the source code of tha cabling documentation              |
+|     cabling     : contains the cabling documentation                                     |
+|     unpacker    : contains the source code for the UCESB unpacker                        |
+|     unpackexps  : contains the specification files to unpack data                        |
+|     landdaq_    : the user function of the unpacking can use some routine of the landdaq_|
+|(*3) You have the key gen for landcvs, and can commit the change                          |
+|(*4) To change the CVS make a diff and send it to someone who has access to               |
+|     landcvs, zB: Haik, Tudi, Felix or me (Haakan)                                        |
+ ------------------------------------------------------------------------------------------

@@ -1,0 +1,94 @@
+#################################################################
+#                                                               #
+#               HOW TO LOOK AT THE RAW SPECTRA                  #
+#                                                               #
+#################################################################
+
+    If you need to check the raw spectra of the different 
+    detectors you might want to use the DrawRaw.C routine
+
+    This routine take as an input the tree produces by the 
+    UCESB unpacker.
+
+    Up to now only the NTF,TFW, Xb and POS are available.
+    upgrade of this file if there will be some : 
+    /u/land/unpackexps/s223/NearLine/HOW_TO_RAW_SPECTRA
+
+
+    A - *** First step : CREATE THE TREE ***
+
+
+
+
+    Go into the unpackexps/s223 directory.
+
+unpackexps/s223>. cernlogin pro
+unpackexps/s223>./s223 /misc/scratch.land1/s223/lmd/file.lmd --ntuple=UNPACK,camac_tpat,RAW,XXX,ntuple.ntu
+
+    where XXX is the abreviation for the detector(s) you
+    want to look at. Here are the different abreviation:
+       big TofWall    : TFW
+       small TofWall  : NTF
+       Fiber detectors: GFI
+       Crystal Ball   : XB
+       Silicon        : SST
+       pos            : POS
+       psp            : PSP
+       land           : N
+       scintillators  : SCI
+
+unpackexps/s223>. rootlogin pro
+unpackexps/s223>h2root ntuple.ntu
+
+    => This will create a root file called ntuple.root
+    which contains a TTree named h101. Move this file
+    to the NearLine directory
+
+unpackexps/s223>mv ntuple.root NearLine
+
+    I would strongly recommend to remove the ntuple.ntu
+    file after it has been converted into root file, or
+    if you want to look at it in PAW, please move it to
+    the Analyse directory.
+
+unpackexps/s223>rm ntuple.ntu
+
+
+
+    B - *** Second step : PLAY WITH ROOT ***
+
+
+
+
+    Go into the NearLine directory
+
+unpackexps/s223>cd NearLine
+
+    you first need to launch root. Then you can use the
+    macro DrawRaw.C: compile it and execute it. Up to now
+    this macro draw the raw spectra for the TFW, NTF, XB.
+    
+
+unpackexps/s223/NearLine>root -l
+root[0] .L DrawRaw.C
+root [1] run()
+What is the name of the root file you want to read ?
+>>>>GIVE THE FILE NAME
+
+Which detectors you want to check ?
+XB, TFW, NTF (use OK if you want to quit)
+>>>>GIVE THE NAME : ntf usw...
+
+Which Tpat for the NTF ? 
+>>>>GIVE THE TPAT NUMER
+Please wait ... ... 
+
+NTF done. Next detector please ?
+>>>>ok or other detectors
+
+
+
+
+
+
+

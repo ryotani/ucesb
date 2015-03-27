@@ -1,0 +1,218 @@
+#################################################################
+#                                                               #
+#          UCESB unpacker for the s223 experiment               #
+#                                                               #
+# the UCESB is an unpacker which provide a raw level ntuple     #
+# of the land data. It is installed under the land account.     #
+#                                                               #
+# If you want to use it under the land account go to the        #
+# directory:                                                    #
+#          /u/land/unpackexps/s223                              #
+# or you can check it out from on your own account              #
+#################################################################
+
+### PRELIMINARIES #######################################################
+
+# For help on installing UCESB, please refer to "unpackexps/INSTALL_UCESB.txt"
+
+# You first need to compile your unpacker/ directory:
+. cernlogin pro
+make CXX=g++-3.4
+
+# Now, this experiment-specific s223 unpacker can be compiled:
+make
+
+# This will create an executable called s223
+
+### OVERVIEW #############################################################
+
+# Show (almost all) known data members (C style)
+
+./s223 --show-members
+
+# Unshown:
+
+.UNPACK.TRIGGER
+.UNPACK.EVENTNO
+
+### GENERAL USE - UNPACKING #############################################################
+
+# For making ntuples, one can choose from the known members
+# (without the level specifiers (like UNPACK, RAW, CAL, USER),
+# but then additionally the LEVELS one wants.  If one requests
+# a member, the corresponding level should also be requested.
+
+# A level specified does not mean it gets completely included,
+# just that it will be searched for the variables.
+
+# Variable names are CASE sensitive!!!
+
+# Ntuple ID is always 101
+
+./s223 <inputfile/mbs-stream/etc> --ntuple=LEVELS,VARIABLES,outfile.ntu
+
+# There are 3 levels : UNPACK, RAW, USER
+#   1 - @ UNPACK level you can find the following variables
+#       trigger number            : TRIGGER
+#       event number              : EVENTNO
+#       tpat                      : camac_tpat
+#       scaler for double trigger : vme_scaler2data
+#   2 - @ RAW level the variables correspond to the detector name
+#       big TofWall               : TFW
+#       small TofWall             : NTF
+#       Fiber detectors           : GFI
+#       Crystal Ball              : XB
+#       Silicon                   : SST
+#       pos                       : POS
+#       psp                       : PSP
+#       land                      : N
+#       scintillators             : SCI (1 is for S2 and 2 is for S8)
+#   3 - @ USER level you have a unique variable corresponding to the
+#       Drift Chambers            : CCB
+
+# 	Terminology: A common abbreviation for the Proton Drift Chamber detectors
+#	used to be "DCH". However historically, the name of the ucesb-branch for the DCH
+#	data became "CCB", standing for Concentrator Board (the DCH readout board).
+#
+#	-> Detector name = DCH; corresponding UCESB branch name = CCB.
+#
+#	Side remark: The name of the LAND02 branch for the drift chambers is "PDC",
+#	standing for Proton Drift Chambers. 
+
+# ------------ Some examples 
+
+# you need the trigger number, the event number and the tpat with the psp and silicon
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --ntuple=UNPACK,TRIGGER,EVENTNO,RAW,SST,PSP,ntuple.ntu 
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --ntuple=UNPACK,TRIGGER,EVENTNO,camac_tpat,RAW,SST,ntuple.ntu 
+
+#if you need the PSP,SST,DCH and TFW
+./s223  /d/land/land/s223/lmd/name_of_file.lmd --ntuple=RAW,PSP,SST,TFW,USER,CCB,ntuple.ntu
+
+#if you need the POS, PSP, SST
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --ntuple=RAW,POS,PSP,SST,ntuple.ntu
+
+# ------------ Some options 
+
+# one option --max-events=10000 will just run over the first 10000 events in the file
+#if you need the PSP,SST,DCH and TFW
+
+./s223  /d/land/land/s223/lmd/name_of_file.lmd --ntuple=RAW,PSP,SST,TFW,USER,CCB,ntuple.ntu
+
+# if you want to look at the data as text you should use the options --data --print
+
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --data --print 
+
+# ----------- about the indices
+
+# For selected 'subparts' of variables, indices are 1-based 
+# and substructure names are separated by underscores, like
+# SST2-3 or SST_2-3 are equivalent (letters for names, 
+# digits for indices)
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --ntuple=UNPACK,TRIGGER,EVENTNO,RAW,SST2-3,ntuple.ntu --max-events=10000
+
+
+# ----------- how to look in the data with PAW (example with SST)
+
+# To in paw plot the energies for SST detector 3, strip 200, do:
+n/pl 101.SST3E SST3I=200
+
+# This plots all energies (all strips in same histogram (somewhat useless)) of detector 3
+n/pl 101.SST3E
+
+# This plots the strips of the detector 3 that fires
+n/pl 101.SST3I
+
+# Multiplicity of detector 3
+n/pl 101.SST3
+
+### REWRITING  #############################################################
+
+# The LAND02 unpacker and analysis software cannot read the experimental lmd files (for s223, s318, s296) as they are stored, at least not the Proton Drift Chamber (PDC, for land02) part of the data.
+# Therefore the data needs to be rewritten, i.e. PDC data preprocessed, which can be done using the UCESB unpacker:
+
+./s223 <inputfiles> --output=events=350000,outfiles.lmd
+
+# This procedure creates files of 350000 events each with increasing number tag until the specified inputfiles have been 'used up'. In order to have a fixed and well defined set of files one can do analysis on with land02, one needs to (merge and) rewrite the whole set of experimental data which is stored on tape.
+# 350000 might not be a reasonable number here; anyhow, in order not to spoil the already performed indexing of the s223 data, it should be sufficient to just rewrite 'file by file:
+
+./s223 <inputfile> --output=<samename>.lmd
+
+# (with "_0001" being appended each for each file).
+
+# NOTE: At some point 'rewriting' will also include modifications to the SST data.
+
+### TAPE-ROBOT #############################################################
+
+# The experiments' data is (finally) stored on the so-called 'tape-robot', "gstore" in official terms.
+# One can read (=open & unpack, merge&rewrite) files directly from it; the corresponding addressing works the following way:
+
+./s318 rfio://gstore:/landraw/lmdv/s318/run_0175_1245.lmd --output,options...
+
+# For this purpose the according files have to be 'staged'; one checks their status:
+
+gstore query "\*.lmd" landraw lmdv/s318
+
+# Then staging (if necessary):
+
+gstore stage ...
+
+### WATCHER ##############################################################
+
+# For looking at data online, there is a 'daqscope', the watcher.
+# Varible names are selected in the same way as for ntuple dumping.
+
+# The following example will display the channel-wise energy spectra
+# of strips 200 to 240 of SST detector 1:
+
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --watcher=SST1_200-240 2> /dev/null
+
+# One can also look at UNPACK level data; example below will show all SST channels
+
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --watcher=sst 2> /dev/null
+
+#####################################################################
+
+How the data look like in the Ntuple or Root Tree with the ZERO SUPPRESSION option (see s223.spec)
+
+--------------------NTF---------------------------------------
+you will have the following variables/branches
+Ntf    : integer          = multiplicity i.e. how many paddles fired
+Ntfi   : array Ntfi[ntf]  = paddle number
+Ntf1t  : array Ntf1t[ntf] = raw values of the time from PM1
+Ntf2t  : array Ntf2t[ntf] = raw values of the time from PM2 
+Ntf1q  : array Ntf1q[ntf] = raw values of the charge from PM1
+Ntf2q  : array Ntf2q[ntf] = raw values of the charge from PM2
+
+zB: 2 paddles fired, let say 4 and 12
+  ---> Ntf=2
+  ---> Ntf1i[0]=4 
+       Ntf1i[1]=12
+  ---> Ntf1t[0]=raw time of the Paddle4,  PM1
+       Ntf1t[1]=raw time of the Paddle12, PM1
+  ---> Ntf2t[0]=raw time of the Paddle4,  PM2
+       Ntf2t[1]=raw time of the Paddle12, PM2
+  ---> Ntf1q[0] ... usw with the charge
+with root if the tree which contain the data is called
+t (just to be original)
+you want to look at the multiplicity       : t->Draw("Ntf");
+you want to look at the time, PM1, pdl4    : t->Draw("Ntf1t","Ntfi==4")
+you want to look at the energy, PM2, pdl 4 : t->Draw("Ntf2q","Ntfi==4")
+
+------------------------TFW------------------------------
+Same than NTF but with the following name of variables/branches
+i.e. Tfw : integer = multiplicity i.e. how many paddles fired
+     Tfwi
+     Tfw1t
+     Tfw2t
+     Tfw1e
+     Tfw2e
+
+-------------------------XB---------------------------------
+For the XB :
+Xb   multiplicity
+Xbi  cristal number
+Xb1e raw energy
+Xb1t raw time
+you want the raw energy of the cristal 89 : t->Draw("Xb1e","Xbi==89")
+
+

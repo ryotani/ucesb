@@ -1,0 +1,156 @@
+CALIB_PARAM_C(test[0].t0, 0.1 ns);
+CALIB_PARAM_C(tof.tofgain, 1.0 ns/ch);
+CALIB_PARAM_C(tof.tofoff, 0.0 ns);
+CALIB_PARAM_C(tof.pedestal, 0.0 ns);
+
+
+CALIB_PARAM_C(mw[0].csumxmin, 542.5707 ch);
+CALIB_PARAM_C(mw[0].csumxmax, 1577.629 ch);
+CALIB_PARAM_C(mw[1].csumxmin, 1176.961 ch);
+CALIB_PARAM_C(mw[1].csumxmax, 1577.629 ch);
+
+CALIB_PARAM_C(mw[0].csumymin, 375.6259 ch);
+CALIB_PARAM_C(mw[0].csumymax, 1744.574 ch);
+CALIB_PARAM_C(mw[1].csumymin, 1143.572 ch);
+CALIB_PARAM_C(mw[1].csumymax, 1510.851 ch);
+
+CALIB_PARAM_C(tpc[0][0].csumxmin[0], -1700. cm);
+CALIB_PARAM_C(tpc[0][0].csumxmax[0],  1700. cm);
+CALIB_PARAM_C(tpc[0][0].csumxmin[1], -1700. cm);
+CALIB_PARAM_C(tpc[0][0].csumxmax[1],  1700. cm);
+// CALIB_PARAM_C(tpc[0][0].csumxmin[2], 0.0 ch);
+// CALIB_PARAM_C(tpc[0][0].csumxmax[2], 2000.0 ch);
+// CALIB_PARAM_C(tpc[0][0].csumxmin[3], 0.0 ch);
+// CALIB_PARAM_C(tpc[0][0].csumxmax[3], 2000.0 ch);
+
+// CALIB_PARAM_C(tpc[0][1].csumxmin[0], 0.0 ch);
+// CALIB_PARAM_C(tpc[0][1].csumxmax[0], 2000.0 ch);
+// CALIB_PARAM_C(tpc[0][1].csumxmin[1], 0.0 ch);
+// CALIB_PARAM_C(tpc[0][1].csumxmax[1], 2000.0 ch);
+CALIB_PARAM_C(tpc[0][1].csumxmin[2], -1700. cm);
+CALIB_PARAM_C(tpc[0][1].csumxmax[2],  1700. cm);
+CALIB_PARAM_C(tpc[0][1].csumxmin[3], -1700. cm);
+CALIB_PARAM_C(tpc[0][1].csumxmax[3],  1700. cm);
+
+
+
+CALIB_PARAM_C(tpc[1][0].csumxmin[0], -1700. cm);
+CALIB_PARAM_C(tpc[1][0].csumxmax[0],  1700. cm);
+CALIB_PARAM_C(tpc[1][0].csumxmin[1], -1700. cm);
+CALIB_PARAM_C(tpc[1][0].csumxmax[1],  1700. cm);
+// CALIB_PARAM_C(tpc[1][0].csumxmin[2], 0.0 ch);
+// CALIB_PARAM_C(tpc[1][0].csumxmax[2], 2000.0 ch);
+// CALIB_PARAM_C(tpc[1][0].csumxmin[3], 0.0 ch);
+// CALIB_PARAM_C(tpc[1][0].csumxmax[3], 2000.0 ch);
+
+// CALIB_PARAM_C(tpc[1][1].csumxmin[0], 0.0 ch);
+// CALIB_PARAM_C(tpc[1][1].csumxmax[0], 2000.0 ch);
+// CALIB_PARAM_C(tpc[1][1].csumxmin[1], 0.0 ch);
+// CALIB_PARAM_C(tpc[1][1].csumxmax[1], 2000.0 ch);
+CALIB_PARAM_C(tpc[1][1].csumxmin[2], -1700. cm);
+CALIB_PARAM_C(tpc[1][1].csumxmax[2],  1700. cm);
+CALIB_PARAM_C(tpc[1][1].csumxmin[3], -1700. cm);
+CALIB_PARAM_C(tpc[1][1].csumxmax[3],  1700. cm);
+
+CALIB_PARAM_C(tpc[2][0].csumxmin[0], -1700. cm);
+CALIB_PARAM_C(tpc[2][0].csumxmax[0],  1700. cm);
+CALIB_PARAM_C(tpc[2][0].csumxmin[1], -1700. cm);
+CALIB_PARAM_C(tpc[2][0].csumxmax[1],  1700. cm);
+// CALIB_PARAM_C(tpc[2][0].csumxmin[2], 0.0 ch);
+// CALIB_PARAM_C(tpc[2][0].csumxmax[2], 2000.0 ch);
+// CALIB_PARAM_C(tpc[2][0].csumxmin[3], 0.0 ch);
+// CALIB_PARAM_C(tpc[2][0].csumxmax[3], 2000.0 ch);
+
+// CALIB_PARAM_C(tpc[2][1].csumxmin[0], 0.0 ch);
+// CALIB_PARAM_C(tpc[2][1].csumxmax[0], 2000.0 ch);
+// CALIB_PARAM_C(tpc[2][1].csumxmin[1], 0.0 ch);
+// CALIB_PARAM_C(tpc[2][1].csumxmax[1], 2000.0 ch);
+CALIB_PARAM_C(tpc[2][1].csumxmin[2], -1700. cm);
+CALIB_PARAM_C(tpc[2][1].csumxmax[2],  1700. cm);
+CALIB_PARAM_C(tpc[2][1].csumxmin[3], -1700. cm);
+CALIB_PARAM_C(tpc[2][1].csumxmax[3],  1700. cm);
+
+CALIB_PARAM_C(brho.bfield, 1.1804 T);
+CALIB_PARAM_C(brho.length, 19000.0 mm);
+CALIB_PARAM_C(brho.rho0, 11280.0 mm);
+
+
+CALIB_PARAM_C(MW[0].AN, SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(MW[1].AN, SLOPE_OFFSET, 1.0, 0.0); 
+ 
+CALIB_PARAM_C(MW[0].XR, SLOPE_OFFSET, 1.0, 0.0); 
+CALIB_PARAM_C(MW[0].XL, SLOPE_OFFSET, 1.0, 0.0); 
+CALIB_PARAM_C(MW[0].YU, SLOPE_OFFSET, 1.0, 0.0); 
+CALIB_PARAM_C(MW[0].YD, SLOPE_OFFSET, 1.0, 0.0); 
+CALIB_PARAM_C(MW[1].XR, SLOPE_OFFSET, 1.0, 0.0); 
+CALIB_PARAM_C(MW[1].XL, SLOPE_OFFSET, 1.0, 0.0); 
+CALIB_PARAM_C(MW[1].YU, SLOPE_OFFSET, 1.0, 0.0); 
+CALIB_PARAM_C(MW[1].YD, SLOPE_OFFSET, 1.0, 0.0); 
+
+
+CALIB_PARAM_C(SC[0].DT, SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(SC[1].DT, SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(SC[2].DT, SLOPE_OFFSET, 1.0, 0.0);
+
+CALIB_PARAM_C(TOF.L, SLOPE_OFFSET, -0.006422, 55.074739);
+CALIB_PARAM_C(TOF.R, SLOPE_OFFSET, -0.006729, 47.492739);
+
+CALIB_PARAM_C(TPC[2].A[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].A[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].A[2], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].A[3], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].AL[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].AR[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].AL[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].AR[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].A[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].A[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].A[2], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].A[3], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].AL[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].AR[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].AL[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].AR[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].A[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].A[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].A[2], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].A[3], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].AL[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].AR[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].AL[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].AR[1], SLOPE_OFFSET, 1.0, 0.0);
+
+CALIB_PARAM_C(TPC[2].DT[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].DT[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].DT[2], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].DT[3], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].LT[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].RT[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].LT[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[2].RT[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].DT[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].DT[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].DT[2], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].DT[3], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].LT[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].RT[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].LT[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[0].RT[1], SLOPE_OFFSET, 1.0, 0.0);
+
+CALIB_PARAM_C(TPC[1].DT[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].DT[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].DT[2], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].DT[3], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].LT[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].RT[0], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].LT[1], SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(TPC[1].RT[1], SLOPE_OFFSET, 1.0, 0.0);
+
+CALIB_PARAM_C(SC[0].DEL, SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(SC[0].DER, SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(SC[1].DEL, SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(SC[1].DER, SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(SC[2].DEL, SLOPE_OFFSET, 1.0, 0.0);
+CALIB_PARAM_C(SC[2].DER, SLOPE_OFFSET, 1.0, 0.0);
+
+

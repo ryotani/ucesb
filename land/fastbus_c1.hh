@@ -1,0 +1,14 @@
+qdc_L_Q47342 = FASTBUS_LECROY_1885(geom=7,channels=96);
+qdc_L_Q11111 = FASTBUS_LECROY_1885(geom=8,channels=96);
+qdc_L_Q46848 = FASTBUS_LECROY_1885(geom=10,channels=96);
+qdc_L_Q47315 = FASTBUS_LECROY_1885(geom=11,channels=96);
+qdc_L_Q17320 = FASTBUS_LECROY_1885(geom=13,channels=96);
+qdc_L_Q15372 = FASTBUS_LECROY_1885(geom=15,channels=96);
+qdc_F_Q46962 = FASTBUS_LECROY_1885(geom=16,channels=96);
+qdc_L_Q46993 = FASTBUS_LECROY_1885(geom=18,channels=96);
+qdc_L_Q15358 = FASTBUS_LECROY_1885(geom=20,channels=96);
+qdc_L_Q47264 = FASTBUS_LECROY_1885(geom=23,channels=96);
+tdc_L_T81855 = FASTBUS_LECROY_1875(geom=3,channels=64);
+tdc_L_T87044 = FASTBUS_LECROY_1875(geom=4,channels=64);
+tdc_L_T87024 = FASTBUS_LECROY_1875(geom=5,channels=64);
+tdc_L_T81800 = FASTBUS_LECROY_1875(geom=6,channels=64);

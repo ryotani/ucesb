@@ -1,0 +1,214 @@
+#################################################################
+#                                                               #
+#         HOW TO DO THE MERGING OF UCESB AND LAND02             #
+#                                                               #
+#################################################################
+
+   If you need to do correlation between one of these 3 detectors :
+   DCH, NTF and SST and the rest of the calibrated land setup, you 
+   need to merge the trees coming from the unpacker UCESB (which
+   will provide RAW data from DCH, NTF and SST) and from land02
+   analysis code (which will provide calibrated data). The upgrade
+   of this HOW_TO will available under:
+   /u/land/unpackexps/s223/NearLine/HOW_TO_CORRELATION
+
+   There are two options to do the merging.
+
+
+
+
+
+I- OPTION 1 : MergeNoChange.C
+
+   This is simple like "Hello". You need to create the trees from
+   UCESB and from LAND02 as it is describe in the part A of the 
+   OPTION 2.
+
+   Then go in the NearLine directory:
+
+unpackexps/s223/NearLine> root -l
+root[0] .L MergeNoChange.C+
+root [1] addfriend()
+ ADDING THE h509 TREE (land02) AS FRIEND OF h101 TREE (UCESB) 
+ Please, check that Eventno and Evnt coincides at the begginng and end! 
+Name of the Root File from the UCESB: 
+run_166_2692_ucesb.root
+Name of the Root File from the LAND02: 
+run_166_2692_land02.root
+
+   Here we are. You have a TTree h101 which as a TTree friend "h509".
+   If all the variables do not have the same name: keine Problemen !
+   See an example below of usage.
+
+root [2] new TBrowser
+(class TBrowser*)0x8c56b20
+root [3] h101->Draw("Sst1e","Evnt==29123123")   
+
+   
+
+
+
+
+II- OPTION 2
+
+   Very simple as well ! But a bit more long to process. This will
+   change a bit the format of the trees for the NTF and SST. The new
+   format will have a fix length, meaning if you want to look at the 
+   NTF and SST just directly from the prompter and look at X versus Y
+   witjout loop, you can do it. The format of the tree is in the par C.
+
+
+
+   A - *** First step : CREATE THE TREES ***
+
+
+   A1 - Go into the unpackexps/s223 directory.
+
+
+unpackexps/s223>. cernlogin pro
+unpackexps/s223>./s223 /misc/scratch.land1/s223/lmd/file.lmd --ntuple=UNPACK,camac_tpat,camac\\_tcal\\_info_info,EVENTNO,TRIGGER,RAW,NTF,SST,USER,CCB,run_XXX_XXXX_UCESB.ntu
+unpackexps/s223>. rootlogin pro
+unpackexps/s223>h2root ntuple_ucesb.ntu
+
+   =>This will create a root file run_XXX_XXXX_UCESB.root in which 
+   you will have a TTree called h101. To gain some places and mainly 
+   to keep the s223 directory clean, I would strongly recommended to 
+   remove the .NTU FILES after they have been converted in root files. 
+   Or if you want to look at them with PAW please copy them into the 
+   Analyse directory.
+
+
+   A2 - Go into the land02/s223 directory.
+
+land02/s223>./paw_ntuple /misc/scratch.land1/s223/lmd/file.lmd --paw-ntuple=HIT,TRACK,SCI,POS,PSP,GFI,TFW,run_XXX_XXXX_LAND02.ntu
+land02/s223>h2root run_XXX_XXXX_LAND02.ntu
+
+   => This will create a root file run_XXX_XXXX_LAND02.root in which 
+   you will have a TTree called h509. Same remarks, do not leave any 
+   .NTU FILE in the land02/s223 directory please.
+
+
+
+
+
+   B - *** Second step : MERGE THE TREES ***
+
+
+   B1 - Move the Trees in the unpackexps/s223/NearLine directory.
+
+
+unpackexps/s223>mv run_XXX_XXXX_UCESB.root NearLine
+land02/s223>mv run_XXX_XXXX_LAND02 ../../unpackexps/s223/NearLine
+
+   B2 - Go into the NearLine directory
+
+
+unpackexps/s223/NearLine> root -l
+root[0].L Merge.C+
+root[1]run()
+Name of the Root File from the UCESB: 
+run_XXX_XXXX_UCESB.root                         //enter the name of your root file and press enter
+Name of the Root File from the LAND02: 
+run_XXX_XXXX_LAND02.root                        //enter the name of your root file and press enter
+Which name for the output root file would you like (run_XXX_XXXX.root or whatever ...)
+run_XXX_XXXX.root                               //enter the name of the output root file you want
+
+
+
+
+   C - *** YOU HAVE A NEW TREE ***
+
+   The format of this tree is the following:
+
+     Branch   |  type  |   meaning
+-----------------------------------------------------------------------------------------------------------
+     Evnt     |  Int_t |  Event number
+     Tpat     |UShort_t|  Tpat  
+     Trigger  |UChar_t |  Trigger (1=physics, 2=cosmics, 3=clock, 4=tcal)
+     Tcalt    |Float_t |  Tcalt in ns from 0 to 1000 ns
+-----------------------------------------------------------------------------------------------------------
+        RAW LEVEL        RAW LEVEL         RAW LEVEL        RAW LEVEL        RAW LEVEL        RAW LEVEL            
+-----------------------------------------------------------------------------------------------------------
+     Sst1     |  Int_t |  multiplicity in micro strip silicium 1
+     Sst2     |  Int_t |  multiplicity in micro strip silicium 2
+     Sst3     |  Int_t |  multiplicity in micro strip silicium 3
+     Sst4     |  Int_t |  multiplicity in micro strip silicium 4
+     Sst5     |  Int_t |  multiplicity in micro strip silicium 5
+     Sst1i    |UChar_t |  which strip fired in silicium 1 index is going from 0 to Sst1-1
+     Sst2i    |UChar_t |  which strip fired in silicium 2 index is going from 0 to Sst2-1
+     Sst3i    |UChar_t |  which strip fired in silicium 3 index is going from 0 to Sst3-1
+     Sst4i    |UChar_t |  which strip fired in silicium 4 index is going from 0 to Sst4-1
+     Sst5i    |UChar_t |  which strip fired in silicium 5 index is going from 0 to Sst5-1
+Sst1_Energy   |UShort_t|  energy in det 1 - fix length i.e. Sst1_Energy[78] = Energy strip 79
+Sst2_Energy   |UShort_t|  energy in det 2 - fix length i.e. Sst2_Energy[78] = Energy strip 79
+Sst3_Energy   |UShort_t|  energy in det 3 - fix length i.e. Sst3_Energy[78] = Energy strip 79
+Sst4_Energy   |UShort_t|  energy in det 4 - fix length i.e. Sst4_Energy[78] = Energy strip 79
+Sst5_Energy   |UShort_t|  energy in det 5 - fix length i.e. Sst5_Energy[78] = Energy strip 79
+-----------------------------------------------------------------------------------------------------------
+     Ntf      | Int_t  |  multiplicity in the NTF (small TofWall)
+     Ntfi     |UChar_t |  paddle number which fired. It goes from Ntfi[0] -> Ntfi[Ntf-1]
+     Ntf1     |UShort_t|  energy of the PM1 - fix length i.e. Ntf1e[5] = Energy of the Paddle 6 - PM1
+     Ntf2     |UShort_t|  energy of the PM2 - fix length i.e. Ntf2e[5] = Energy of the Paddle 6 - PM2
+     Ntf1     |UShort_t|  time of the PM1 - fix length i.e. Ntf1t[5] = Energy of the Paddle 6 - PM1
+     Ntf2     |UShort_t|  time of the PM2 - fix length i.e. Ntf2t[5] = Energy of the Paddle 6 - PM2
+-----------------------------------------------------------------------------------------------------------
+ccb1hits      |  Int_t |  number of hits in the Drift Chamber 1
+ccb1hits_wire |Float_t |  wire number of each hit
+ccb1hits_start|Float_t |  start channel of each hit
+ccb1hits_stop |Float_t |  stop channel of each hit
+ccb2hits      |  Int_t |  number of hits in the Drift Chamber 2
+ccb2hits_wire |Float_t |  wire number of each hit
+ccb2hits_start|Float_t |  start channel of each hit
+ccb2hits_stop |Float_t |  stop channel of each hit
+-----------------------------------------------------------------------------------------------------------
+        CAL LEVEL        CAL LEVEL         CAL LEVEL        CAL LEVEL        CAL LEVEL        CAL LEVEL            
+-----------------------------------------------------------------------------------------------------------
+   Sc01t      |Float_t |  time at the S2 scintillator
+   Sc01e      |Float_t |  energy at the S2 scintillator
+   Sc01x      |Float_t |  x position at the S2 scintillator
+   Sc02t      |Float_t |  time at the S8 scintillator
+   Sc02e      |Float_t |  energy at the S8 scintillator
+   Sc02x      |Float_t |  x position at the S8 scintillator
+----------------------------------------------------------------------------------------------------------
+   Ps01x      |Float_t |  x position at the first PSP - silicon detector, good for position determination 
+   Ps01y      |Float_t |  y position at the first PSP - silicon detector, good for position determination 
+   Ps01e      |Float_t |  energy loss in the first PSP - silicon detector, good for energy measurment 
+   Ps01t      |Float_t |  time at the first PSP
+   Ps02x      |Float_t |  x position at the second PSP 
+   Ps02y      |Float_t |  y position at the second PSP 
+   Ps02e      |Float_t |  energy loss in the second PSP 
+   Ps02t      |Float_t |  time at the second PSP
+-----------------------------------------------------------------------------------------------------------
+   Po01t      |Float_t |  time at the POS - plastic detector: good for time of flight measurment
+   Po01e      |Float_t |  energy loss in the POS detector
+   Po01x      |Float_t |  x position at POS detector
+   Po01y      |Float_t |  y position at POS detector
+-----------------------------------------------------------------------------------------------------------
+   T0         |Float_t |  time on target
+   X0         |Float_t |  x position on target
+   Y0         |Float_t |  y position on target
+   inbeta     |Float_t |  beta of the incoming ion
+   inz        |Float_t |  Z of the incoming ion
+   inbrho     |Float_t |  Brho calculated from the tracking of the incoming ion
+   inaoverz   |Float_t |  A/Q of the incoming ion
+----------------------------------------------------------------------------------------------------------
+   Gf1_01e    |Float_t |  energy loss in the GFI 1 (not calibrated - IN LOG)
+   Gf1_01x    |Float_t |  position reconstructed in the GFI 1
+   Gf2_01e    |Float_t |  energy loss in the GFI 2 (not calibrated - IN LOG)
+   Gf2_01x    |Float_t |  position reconstructed in the GFI 2
+-----------------------------------------------------------------------------------------------------------
+   Tfmul      |Float_t |  number of hit in the TFW 
+   Tft        |Float_t |  time at the TFW       - Tft[0] = time of the first hit (2 layers used to calculate the time)
+   Tfe        |Float_t |  energy at the TFW     - Tfe[0] = energy loss by the first hit (2 layers used to determine the energy)
+   Tfx        |Float_t |  x position at the TFW - Tfx[0] = x position of the first hit
+   Tfy        |Float_t |  y position at the TFW - Tfy[0] = y position of the first hit
+-----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+   D **** third Step ANALYSE THE MERGED TREE ****
+
+
+   Some routine are under construction... more available soon

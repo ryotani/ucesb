@@ -1,0 +1,67 @@
+# Show (almost all) known data members (C style)
+
+./s223 --show-members
+
+# Unshown:
+
+.UNPACK.TRIGGER
+.UNPACK.EVENTNO
+
+################################################################
+
+# For making ntuples, one can choose from the known members
+# (without the level specifiers (like UNPACK, RAW, CAL, USER),
+# but then additionally the LEVELS one wants.  If one requests
+# a member, the corresponding level should also be requested.
+
+# A level specified does not mean it gets completely included,
+# just that it will be searched for the variables.
+
+# Variable names are CASE sensitive!!!
+
+# Ntuple ID is always 101
+
+./s223 <inputfile/mbs-stream/etc> --ntuple=LEVELS,VARIABLES,outfile.ntu
+
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --ntuple=UNPACK,TRIGGER,EVENTNO,RAW,SST,ntuple.ntu --max-events=10000
+
+#if you need to have the TPAT variable add camac_tpat in the variable name at the UNPACK level
+
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --ntuple=UNPACK,TRIGGER,EVENTNO,camac_tpat,RAW,SST,ntuple.ntu 
+
+# For selected 'subparts' of varibables, indices are 1-based 
+# and substructure names are separated by underscores, like
+
+# SST2-3 or SST_2-3 are equivalent (letters for names, 
+# digits for indices)
+
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --ntuple=UNPACK,TRIGGER,EVENTNO,RAW,SST2-3,ntuple.ntu --max-events=10000
+
+# To in paw plot the energies for SST detector 3, strip 200, do:
+
+n/pl 101.SST3E SST3I=200
+
+# This plots all energies (all strips in same histogram (somewhat useless))
+
+n/pl 101.SST3E
+
+# This plots the strips that fires
+
+n/pl 101.SST3I
+
+# Multiplicity
+
+n/pl 101.SST3
+
+#################################################################
+
+# For looking at data, there is a 'daqscope', the watcher:
+
+# Varible names are selected in the same way as for ntuple dumping
+
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --watcher=SST1_200-240 2> /dev/null
+
+# One can also look at UNPACK level data
+
+./s223 /d/land/land/s223/lmd/name_of_file.lmd --watcher=sst 2> /dev/null
+
