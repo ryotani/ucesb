@@ -9,7 +9,7 @@
 
 all: others land_common 
 
-others: e062 frs_s341 rpc2009 tacquila17 uppsala 
+others: e062 frs_s341 rpc2009 tacquila17 uppsala fzd_jan_2010
 
 land_common: land s223 s232 s287 s295 s296 \
 	s306 s318 s327 s393 \
@@ -97,6 +97,9 @@ tacquila17: empty_unpacker
 uppsala: empty_unpacker
 	$(MAKE) -C $@
 
+fzd_jan_2010: empty_unpacker
+	$(MAKE) -C $@
+
 #########################################################
 
 clean:
@@ -120,5 +123,6 @@ clean:
 	$(MAKE) -C dec2006 clean
 	$(MAKE) -C tacquila17 clean
 	$(MAKE) -C uppsala clean
+	$(MAKE) -C fzd_jan_2010 clean
 
 #########################################################

@@ -43,7 +43,7 @@ export CXX
 
 # Our target, rename as needed
 
-all: FZD_jan_2010
+all: fzd_jan_2010
 
 #########################################################
 # Submakefiles that the programs depend on
@@ -55,14 +55,14 @@ DEPENDENCIES=$(UCESB) $(PSDC)
 
 #########################################################
 
-.PHONY: FZD_jan_2010
-FZD_jan_2010: $(DEPENDENCIES)
+.PHONY: fzd_jan_2010
+fzd_jan_2010: $(DEPENDENCIES)
 	@$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$@ 
 
 #########################################################
 
 clean:
-	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=FZD_jan_2010 clean
+	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=fzd_jan_2010 clean
 
 all-clean: clean
 	rm -rf gen
