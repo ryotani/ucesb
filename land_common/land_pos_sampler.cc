@@ -469,7 +469,7 @@ void sampler_spill_show(sampler &s,uint64_t stamp_this)
   for (int i = 0; i < SPILL_STRUCT_SHOW_ROWS; i++)
     printf ("%s\n",array[SPILL_STRUCT_SHOW_ROWS-1-i]);
 
-  printf ("%s",good_pos_ratio);
+  printf ("%s\n",good_pos_ratio);
 }
 
 #define HIST_DIFF_POS_TRIG_BINS 41
