@@ -265,9 +265,6 @@ void sampler_accumulate(sampler &s,
 	    add_spill_entry(s,SPILL_STRUCT_POS_GOOD,s.pos_prev);
 	}
 
-
-
-
       s.pos_prev2 = s.pos_prev;
       s.pos_prev  = pos_this;
     }
@@ -277,15 +274,54 @@ void sampler_show(sampler &s,uint64_t stamp_this)
 {
   char array[10][SAMPLER_BINS+1];
   double max = 1;
+  int max_i = 0;
+  int cut_i = SAMPLER_BINS;
   int i;
+  double total_t;
+  double rate;
+  double log_quot[SAMPLER_BINS], log_quot_err[SAMPLER_BINS];
+
+  double total_hits = 0;
+  double used_hits;
 
   for (i = 0; i < SAMPLER_BINS; i++)
     {
+      total_hits += s.hist[i];
       if (s.hist[i] > max)
 	{
 	  max = s.hist[i];
+	  max_i = i;
 	}
     }
+
+  /* Find out what is an unnormally long time.  Since that may be
+   * inter-arrival-times between junk hits.  We do the cut after we have
+   * passed 50 % of the data, and then when a bin has twice the number
+   * of counts than the previous.
+   */
+
+  total_t = 0.0;
+  used_hits = 0;
+  for (i = 0; i < SAMPLER_BINS; i++)
+    {
+      if (i &&
+	  used_hits > 0.5 * total_hits &&
+	  s.hist[i] > 2 * s.hist[i-1])
+	{
+	  cut_i = i;
+	  break;
+	} 
+      /*
+      printf ("%2d %6.0f %.3f %.3f  %.0f\n",
+	      i,s.hist[i],s.sum_diff[i] * 1.e-7,total_t * 1.e-7,
+	      used_hits);
+      */
+      total_t += s.sum_diff[i];
+      used_hits += s.hist[i];
+    }
+
+  rate = used_hits / (total_t*1.e-7);
+  (void) cut_i;
   
   uint64_t inspill = 0, offspill = 0;
 
@@ -297,15 +333,20 @@ void sampler_show(sampler &s,uint64_t stamp_this)
   else
     offspill = stamp_this - s.begin;
 
-  printf ("POS hits: %8d (lost: %3d%c) Offspill: %6.2f s  Inspill: %6.2f s\n",
+  printf ("POS hits: %8d (lost: %3d%c) "
+	  "Offspill: %6.2f s  Inspill: %6.2f s\n"
+	  "Total_t: %.3f s  Rate: %.1f Hz\n",
 	  s.hits,s.lost,s.lost ? '+' : ' ',
-	  ((double) offspill) * 1.e-7,((double) inspill) * 1.e-7);
+	  ((double) offspill) * 1.e-7,((double) inspill) * 1.e-7,
+	  total_t * 1.e-7,rate);
   
   for (i = 0; i < 10; i++)
     {
       memset(array[i],' ',sizeof(array[i]));
       array[i][SAMPLER_BINS] = 0;
     }
+
+  array[9][cut_i] = 'c';
   
   for (i = 0; i < SAMPLER_BINS; i++)
     {
@@ -318,15 +359,84 @@ void sampler_show(sampler &s,uint64_t stamp_this)
   
   for (i = 0; i < 10; i++)
     {
-      printf ("       ");
-
-      printf (":%s:\n",array[9-i]);
+      printf ("       " ":%s:\n",array[9-i]);
     }
   
-#define SAMPLER_T_SCALE   "        |        1|us       |         " \
-                        "|        1|ms       |         |        1|s\n"
+#define SAMPLER_T_SCALE   "|        1|us       |         "		\
+    /* */                 "|        1|ms       |         |        1|s\n"
   
-  printf (SAMPLER_T_SCALE);
+  printf ("        " SAMPLER_T_SCALE);
+  printf ("\n");
+
+  for (i = 0; i < SAMPLER_BINS; i++)
+    {
+      double a = pow(10.,i/10.0)    *1.e-7;
+      double b = pow(10.,(i+1)/10.0)*1.e-7;
+
+      double estimate = used_hits * (exp(-rate*a) - exp(-rate*b));
+
+      double quot     = s.hist[i] / estimate;
+      double quot_err = sqrt(s.hist[i]) / estimate;
+
+      log_quot[i]     = log(quot)/log(2.);
+      log_quot_err[i] = 1/quot/log(2.)*quot_err;
+      /*
+      if (estimate > 1)
+	{
+	  printf ("%10.0f %10.1f (%10.1f +/- %10.1f) (%10.1f +/- %10.1f)\n",
+		  s.hist[i],estimate,
+		  quot,quot_err,
+		  log_quot[i],log_quot_err[i]);
+	}
+      */
+    }
+
+  for (i = 0; i < 10; i++)
+    {
+      memset(array[i],' ',sizeof(array[i]));
+      array[i][SAMPLER_BINS] = 0;
+    }
+
+  for (i = 0; i < SAMPLER_BINS; i++)
+    {
+      double yq  = 2.5+(log_quot[i]+2)/4*32;
+      double yqe = (log_quot_err[i])/4*32;
+      double yq1 = yq-yqe;
+      double yq2 = yq+yqe;
+
+      {
+	/* y1 collides with function in math.h */
+	int y1_ = (int) ((yq1+3) / 4); /* shrinking error bars :-) */
+	int y2_ = (int) ( yq2    / 4);
+	int y;
+          
+	if (y1_ < 0) y1_ = 0;
+	if (y2_ > 9) y2_ = 9;
+          
+	for (y = y1_; y <= y2_; y++)
+	  {
+	    array[y][i] = 'X';
+	  }
+      }
+
+      if (yq >= 0 && yq <= 35)
+	{
+	  int y = (int) yq;
+	  char c[] = "_.-^";
+
+	  array[y / 4][i] = c[y%4];
+	}
+    }
+
+  const char *scale[10] = { "1/4 -", "", "1/2 -", "", "1 -",
+			    "", "2 -", "", "4 -", "" };
+
+  for (i = 0; i < 10; i++)
+    {
+      printf ("%6s " ":%s:\n",scale[9-i],array[9-i]);
+    }
+
+  printf ("        " SAMPLER_T_SCALE);
   printf ("\n");
 }
 
@@ -442,15 +552,17 @@ void sampler_spill_show(sampler &s,uint64_t stamp_this)
 
   for (int x = 0; x < 80; x++)
     {
-      int y = (rebin[x][SPILL_STRUCT_POS] == 0 ? 0 : 
-	       1 + (int) ((rebin[x][SPILL_STRUCT_POS]*
-			   (SPILL_STRUCT_SHOW_ROWS*4-2)) / max));
-      char c[] = "_.-^";
+      {
+	int y = (rebin[x][SPILL_STRUCT_POS] == 0 ? 0 : 
+		 1 + (int) ((rebin[x][SPILL_STRUCT_POS]*
+			     (SPILL_STRUCT_SHOW_ROWS*4-2)) / max));
+	char c[] = "_.-^";
 
-      if (y >= SPILL_STRUCT_SHOW_ROWS * 4)
-	array[SPILL_STRUCT_SHOW_ROWS-1][x] = '#';
-      else      
-	array[y / 4][x] = c[y % 4];
+	if (y >= SPILL_STRUCT_SHOW_ROWS * 4)
+	  array[SPILL_STRUCT_SHOW_ROWS-1][x] = '#';
+	else      
+	  array[y / 4][x] = c[y % 4];
+      }
 
       if (rebin[x][SPILL_STRUCT_POS] > 0)
 	{
