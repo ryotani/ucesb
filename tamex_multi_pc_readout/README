@@ -1,0 +1,6 @@
+To generate the mapping, do the following:
+
+./make_mapping.sh > mapping.h
+
+This will use the mappingNeuland.txt as input.
+
