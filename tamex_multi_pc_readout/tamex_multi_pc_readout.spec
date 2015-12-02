@@ -18,14 +18,17 @@ TAMEX_SFP(sfp)
 SUBEVENT(tamex_pcie)
 {
 	header = TAMEX_HEADER();
-	select several {
-		padding = TAMEX_PADDING();
-	}
-	select several {
-		s[1] = TAMEX_SFP(sfp = 0);
-		s[2] = TAMEX_SFP(sfp = 1);
-		s[3] = TAMEX_SFP(sfp = 2);
-		s[4] = TAMEX_SFP(sfp = 3);
+	list (0 <= sfp < 4)
+	{
+		select several {
+			padding = TAMEX_PADDING();
+		}
+		select several {
+			s[1] = TAMEX_SFP(sfp = 0);
+			s[2] = TAMEX_SFP(sfp = 1);
+			s[3] = TAMEX_SFP(sfp = 2);
+			s[4] = TAMEX_SFP(sfp = 3);
+		}
 	}
 }
 
