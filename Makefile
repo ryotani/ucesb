@@ -25,7 +25,8 @@ OTHERS= e062 \
 	rpc2009 \
 	tacquila17 \
 	tamex_multi_pc_readout \
-	uppsala
+	uppsala \
+	dummy
 
 # Some experiments need files from the old landdaq_ and
 # landdaq/ccdaqlib directories.  The needed files are now part of
