@@ -10,8 +10,7 @@
 #include "../land_common/tacquila.spec"
 #include "../land_common/vme_struck_sis3316.spec"
 #include "../land_common/whiterabbit.spec"
-#include "febex_psp.spec"
-//#include "febex.spec"
+#include "febex_notrace.spec"
 #include "tacquila_s438b.spec"
 #include "tamex.spec"
 #include "sis3316_s438b.spec"
@@ -199,23 +198,19 @@ SUBEVENT(fiber_subev)
 
 SUBEVENT(psp_febex_subev)
 {
-	UINT32 header {
-		0_31: 0xfebe0000;
-	}
-
-	UINT32 num_modules_in_crate; // not of interest
-
+	eh=FEBEX_EVENTHEADER();
+		
 	select several {
-		febex1 = FEBEX_PSP(card=0, requested_sign=0); // positive signals
-		febex2 = FEBEX_PSP(card=1, requested_sign=0); // positive signals
-		febex3 = FEBEX_PSP(card=2, requested_sign=1); // negative signals
-		febex4 = FEBEX_PSP(card=3, requested_sign=1); // ...
-		febex5 = FEBEX_PSP(card=4, requested_sign=1);
-		febex6 = FEBEX_PSP(card=5, requested_sign=1);
-		febex7 = FEBEX_PSP(card=6, requested_sign=1);
-		febex8 = FEBEX_PSP(card=7, requested_sign=1);
-		febex9 = FEBEX_PSP(card=8, requested_sign=1);
-		febex10= FEBEX_PSP(card=9, requested_sign=1);
+		febex1 = FEBEX_NOTRACE(sfp=1, card=0); // positive signals
+		febex2 = FEBEX_NOTRACE(sfp=1, card=1); // positive signals
+		febex3 = FEBEX_NOTRACE(sfp=1, card=2); // negative signals
+		febex4 = FEBEX_NOTRACE(sfp=1, card=3); // ...
+		febex5 = FEBEX_NOTRACE(sfp=1, card=4);
+		febex6 = FEBEX_NOTRACE(sfp=1, card=5);
+		febex7 = FEBEX_NOTRACE(sfp=1, card=6);
+		febex8 = FEBEX_NOTRACE(sfp=1, card=7);
+		febex9 = FEBEX_NOTRACE(sfp=1, card=8);
+		febex10= FEBEX_NOTRACE(sfp=1, card=9);
 	}
 }
 
@@ -328,4 +323,4 @@ EVENT
 
 #include "mapping.hh"
 #include "mapping_neuland.hh"
-#include "mapping_psp.hh"
+#include "mapping_psp_zerosuppressed.hh"
