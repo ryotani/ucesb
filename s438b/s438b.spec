@@ -146,8 +146,8 @@ SUBEVENT(los_psp_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		vftx2_1 = VME_GSI_VFTX2_S438(id=0);
-		vftx2_2 = VME_GSI_VFTX2_S438(id=1);
+		vftx2_1 = VME_GSI_VFTX2_S438(id=0); // LOS1 : std vftc - unused?
+		vftx2_2 = VME_GSI_VFTX2_S438(id=1); // LOS2 : 7ps vftx ch 0..3 for LOS2; 15 for master trigger
 		madc32 = VME_MESYTEC_MADC32(geom=2);
 	}
 }
