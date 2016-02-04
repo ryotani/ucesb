@@ -199,7 +199,7 @@ SUBEVENT(fiber_subev)
 SUBEVENT(psp_febex_subev)
 {
 	eh=FEBEX_EVENTHEADER();
-		
+
 	select several {
 		febex1 = FEBEX_NOTRACE(sfp=1, card=0); // positive signals
 		febex2 = FEBEX_NOTRACE(sfp=1, card=1); // positive signals
