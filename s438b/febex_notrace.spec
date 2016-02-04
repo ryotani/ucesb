@@ -80,7 +80,7 @@ FEBEX_NOTRACE(sfp, card)
 		UINT32 energy NOENCODE
 		{
 			0_21: data;
-			// 22: notused1;
+			22: notused1;
 			23: sign;
 			24_27: notused2;
 			28_31: channel_id;
