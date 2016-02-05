@@ -1,26 +1,31 @@
-// LOS fine (tdc) values:
-SIGNAL(LOS01_1TF,  los_psp.vftx2_1.time_fine[0],   DATA32);
-SIGNAL(LOS01_2TF,  los_psp.vftx2_1.time_fine[1],   DATA32);
-SIGNAL(LOS01_3TF,  los_psp.vftx2_1.time_fine[2],   DATA32);
-SIGNAL(LOS01_4TF,  los_psp.vftx2_1.time_fine[3],   DATA32);
+SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS01_TF1);
+SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS02_TF1);
+SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS01_TC1);
+SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS02_TC1);
 
-SIGNAL(LOS02_1TF,  los_psp.vftx2_2.time_fine[0],   DATA32); // the actual LOS channels
-SIGNAL(LOS02_2TF,  los_psp.vftx2_2.time_fine[1],   DATA32); // ...
-SIGNAL(LOS02_3TF,  los_psp.vftx2_2.time_fine[2],   DATA32);
-SIGNAL(LOS02_4TF,  los_psp.vftx2_2.time_fine[3],   DATA32);
-SIGNAL(LOS02_5TF,  los_psp.vftx2_2.time_fine[15],  DATA32); // master trigger
+// LOS fine (tdc) values:
+SIGNAL(LOS01_TF1,  los_psp.vftx2_1.time_fine[0],   DATA32);
+SIGNAL(LOS01_TF2,  los_psp.vftx2_1.time_fine[1],   DATA32);
+SIGNAL(LOS01_TF3,  los_psp.vftx2_1.time_fine[2],   DATA32);
+SIGNAL(LOS01_TF4,  los_psp.vftx2_1.time_fine[3],   DATA32);
+
+SIGNAL(LOS02_TF1,  los_psp.vftx2_2.time_fine[0],   DATA32); // the actual LOS channels
+SIGNAL(LOS02_TF2,  los_psp.vftx2_2.time_fine[1],   DATA32); // ...
+SIGNAL(LOS02_TF3,  los_psp.vftx2_2.time_fine[2],   DATA32);
+SIGNAL(LOS02_TF4,  los_psp.vftx2_2.time_fine[3],   DATA32);
+SIGNAL(LOS02_TF5,  los_psp.vftx2_2.time_fine[15],  DATA32); // master trigger
 
 // LOS coarse (clock) values:
-SIGNAL(LOS01_1TC,  los_psp.vftx2_1.time_coarse[0],   DATA32);
-SIGNAL(LOS01_2TC,  los_psp.vftx2_1.time_coarse[1],   DATA32);
-SIGNAL(LOS01_3TC,  los_psp.vftx2_1.time_coarse[2],   DATA32);
-SIGNAL(LOS01_4TC,  los_psp.vftx2_1.time_coarse[3],   DATA32);
+SIGNAL(LOS01_TC1,  los_psp.vftx2_1.time_coarse[0],   DATA32);
+SIGNAL(LOS01_TC2,  los_psp.vftx2_1.time_coarse[1],   DATA32);
+SIGNAL(LOS01_TC3,  los_psp.vftx2_1.time_coarse[2],   DATA32);
+SIGNAL(LOS01_TC4,  los_psp.vftx2_1.time_coarse[3],   DATA32);
 
-SIGNAL(LOS02_1TC,  los_psp.vftx2_2.time_coarse[0],   DATA32); // the actual LOS channels
-SIGNAL(LOS02_2TC,  los_psp.vftx2_2.time_coarse[1],   DATA32); // ...
-SIGNAL(LOS02_3TC,  los_psp.vftx2_2.time_coarse[2],   DATA32);
-SIGNAL(LOS02_4TC,  los_psp.vftx2_2.time_coarse[3],   DATA32);
-SIGNAL(LOS02_5TC,  los_psp.vftx2_2.time_coarse[15],  DATA32); // master trigger
+SIGNAL(LOS02_TC1,  los_psp.vftx2_2.time_coarse[0],   DATA32); // the actual LOS channels
+SIGNAL(LOS02_TC2,  los_psp.vftx2_2.time_coarse[1],   DATA32); // ...
+SIGNAL(LOS02_TC3,  los_psp.vftx2_2.time_coarse[2],   DATA32);
+SIGNAL(LOS02_TC4,  los_psp.vftx2_2.time_coarse[3],   DATA32);
+SIGNAL(LOS02_TC5,  los_psp.vftx2_2.time_coarse[15],  DATA32); // master trigger
 
 SIGNAL(ROLU01_1T, los_psp.vftx2_1.time_coarse[8],   DATA32);
 SIGNAL(ROLU01_2T, los_psp.vftx2_1.time_coarse[9],   DATA32);

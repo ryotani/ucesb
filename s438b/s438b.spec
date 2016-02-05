@@ -8,6 +8,7 @@
 #include "../land_common/land_camac_scaler.spec"
 #include "../land_common/nxyter.spec"
 #include "../land_common/tacquila.spec"
+#include "../land_common/vme_gsi_vftx2.spec"
 #include "../land_common/vme_struck_sis3316.spec"
 #include "../land_common/whiterabbit.spec"
 #include "febex_notrace.spec"
@@ -15,7 +16,6 @@
 #include "tamex.spec"
 #include "sis3316_s438b.spec"
 #include "../s438/vme_caen_v1290_s438.spec"
-#include "../s438/vme_gsi_vftx2_s438.spec"
 
 DUMMY_WORD()
 {
@@ -146,8 +146,8 @@ SUBEVENT(los_psp_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		vftx2_1 = VME_GSI_VFTX2_S438(id=0); // LOS1 : std vftc - unused?
-		vftx2_2 = VME_GSI_VFTX2_S438(id=1); // LOS2 : 7ps vftx ch 0..3 for LOS2; 15 for master trigger
+		vftx2_1 = VME_GSI_VFTX2(id=0); // LOS1 : std vftc - unused?
+		vftx2_2 = VME_GSI_VFTX2(id=1); // LOS2 : 7ps vftx ch 0..3 for LOS2; 15 for master trigger
 		madc32 = VME_MESYTEC_MADC32(geom=2);
 	}
 }
@@ -161,10 +161,10 @@ SUBEVENT(tof13_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		vftx2_1 = VME_GSI_VFTX2_S438(id=0);
-		vftx2_2 = VME_GSI_VFTX2_S438(id=1);
-		vftx2_3 = VME_GSI_VFTX2_S438(id=2);
-		vftx2_4 = VME_GSI_VFTX2_S438(id=3);
+		vftx2_1 = VME_GSI_VFTX2(id=0);
+		vftx2_2 = VME_GSI_VFTX2(id=1);
+		vftx2_3 = VME_GSI_VFTX2(id=2);
+		vftx2_4 = VME_GSI_VFTX2(id=3);
 		v1290_1 = VME_CAEN_V1290_S438(geom=4);
 	}
 }
