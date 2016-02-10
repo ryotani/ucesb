@@ -12,6 +12,6 @@ UCESB_CPP_FLAGS += -I. -DUSING_MULTI_EVENTS
 DEPENDENCIES+=gen/mapping_neuland.hh
 
 gen/mapping_neuland.hh: cfg_neuland_s438b.hh sigbeam2signal.sh
-	@echo " MAPPING " $@
+	@echo " MAPPING $@"
 	@./sigbeam2signal.sh cfg_neuland_s438b.hh > $@
 
