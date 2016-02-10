@@ -312,3 +312,4 @@ EVENT
 
 #include "mapping.hh"
 #include "gen/mapping_neuland.hh"
+#include "gen/mapping_neuland_tamex.hh"
