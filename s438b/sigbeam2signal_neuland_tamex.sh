@@ -1,8 +1,10 @@
 #!/bin/bash
 # for conversion of neuland tamex SIG_BEAM directives to ucesb SIGNAL
 awk 'NR>1{sfp=substr($16,4,1);
-	tac=substr($16,9,2);
-	ch_l=$18;
+        tac=substr($16,9,2);
+	if (tac == "XX") next;
+	tac=int(tac);
+	ch_l=int($18);
 	ch_t_tot=$18+16;
 	ch_t_qtc=$18+32;
 	if ($2 == "") next;
