@@ -18,6 +18,6 @@ gen/mapping_neuland.hh: cfg_neuland_s438b.hh sigbeam2signal.sh
 DEPENDENCIES+=gen/mapping_neuland_tamex.hh
 
 gen/mapping_neuland_tamex.hh: cfg_neuland_tamex_s438b.hh sigbeam2signal_neuland_tamex.sh
-	@echo " MAPPING " $@
+	@echo " MAPPING $@"
 	@./sigbeam2signal_neuland_tamex.sh cfg_neuland_tamex_s438b.hh > $@
 
