@@ -25,8 +25,8 @@ TAMEX3_SFP(sfp, card)
 	// 30 = leading edge
 	// 31 = trailing edge
 	// 32 = scrap
-	MEMBER(DATA12 time_coarse[32] ZERO_SUPPRESS_MULTI(200));
-	MEMBER(DATA12 time_fine[32] ZERO_SUPPRESS_MULTI(200));
+	MEMBER(DATA12 time_coarse[33] ZERO_SUPPRESS_MULTI(200));
+	MEMBER(DATA12 time_fine[33] ZERO_SUPPRESS_MULTI(200));
 
 	UINT32 indicator NOENCODE
 	{

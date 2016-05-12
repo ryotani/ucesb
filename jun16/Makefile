@@ -14,6 +14,7 @@ export USE_CURSES
 TREE_OR_HOME_SRC_DIR = $(firstword $(wildcard $(addsuffix /$(1),$(shell pwd)/../.. $(HOME))))
 
 UCESB_BASE_DIR=$(call TREE_OR_HOME_SRC_DIR,unpacker)
+UCESB_BASE_DIR=/u/land/bloeher/ucesb/unpacker
 export UCESB_BASE_DIR
 
 #CXX=g++-3.4
