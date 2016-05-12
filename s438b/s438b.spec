@@ -322,5 +322,5 @@ EVENT
 }
 
 #include "mapping.hh"
-#include "mapping_neuland.hh"
-#include "mapping_psp_zerosuppressed.hh"
+#include "gen/mapping_neuland.hh"
+#include "gen/mapping_neuland_tamex.hh"

@@ -60,7 +60,7 @@ LAND_STD_VME()
 }
 
 
-#include "land_vme_subev.spec"
+//#include "land_vme_subev.spec"
 
 // Take out this (s223) experiment specific description in land_common, put it to the /sEXP directories.
 /*   

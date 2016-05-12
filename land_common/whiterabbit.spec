@@ -1,5 +1,3 @@
-// -*- C++ -*-
-
 TIMESTAMP_WHITERABBIT(id)
 {
 	UINT32 header {
@@ -22,4 +20,6 @@ TIMESTAMP_WHITERABBIT(id)
 		0_15:  t4;
 		16_31: 0x06e1;
 	};
+	UINT32 time_lo;
+	UINT32 time_hi;
 }

@@ -13,7 +13,7 @@ others: e062 frs_s341 rpc2009 tacquila17 uppsala fzd_jan_2010
 
 land_common: land s223 s232 s287 s295 s296 \
 	s306 s318 s327 s393 \
-	s406 s408 s412 \
+	s406 s408 s412 s438 s438b\
 	dec2006
 
 # rpc2006 is BROKEN!  It has its own old copy of the unpacker...
@@ -88,6 +88,12 @@ s408: empty_unpacker
 s412: empty_unpacker
 	$(MAKE) -C $@
 
+s438: empty_unpacker
+	$(MAKE) -C $@
+
+s438b: empty_unpacker
+	$(MAKE) -C $@
+
 dec2006: empty_unpacker
 	$(MAKE) -C $@
 
@@ -120,6 +126,8 @@ clean:
 	$(MAKE) -C s406 clean
 	$(MAKE) -C s408 clean
 	$(MAKE) -C s412 clean
+	$(MAKE) -C s438 clean
+	$(MAKE) -C s438b clean
 	$(MAKE) -C dec2006 clean
 	$(MAKE) -C tacquila17 clean
 	$(MAKE) -C uppsala clean
