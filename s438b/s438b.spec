@@ -15,7 +15,8 @@
 #include "tamex.spec"
 #include "sis3316_s438b.spec"
 #include "../s438/vme_caen_v1290_s438.spec"
-#include "../s438/vme_gsi_vftx2_s438.spec"
+#include "vftx_s438b.spec"
+#include "vftx_7ps.spec" // produces zero suppressed multi hit data!!!
 
 DUMMY_WORD()
 {
@@ -146,8 +147,8 @@ SUBEVENT(los_psp_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		vftx2_1 = VME_GSI_VFTX2_S438(id=0); // LOS1 : std vftc - unused?
-		vftx2_2 = VME_GSI_VFTX2_S438(id=1); // LOS2 : 7ps vftx ch 0..3 for LOS2; 15 for master trigger
+		vftx2_1 = VME_GSI_VFTX2_7PS(id=0); // LOS1 : std vftc - unused?
+		vftx2_2 = VME_GSI_VFTX2_7PS(id=1); // LOS2 : 7ps vftx ch 0..3 for LOS2; 15 for master trigger
 		madc32 = VME_MESYTEC_MADC32(geom=2);
 	}
 }
@@ -191,9 +192,23 @@ SUBEVENT(sit_subev)
 
 SUBEVENT(fiber_subev)
 {
+	evhe=FEBEX_EVENTHEADER();
+	select several {
+	  GFI0=FEBEX_NOTRACE(sfp = 0, card = 0);
+	  GFI1=FEBEX_NOTRACE(sfp = 0, card = 1);
+	  GFI2=FEBEX_NOTRACE(sfp = 0, card = 2);
+	  GFI3=FEBEX_NOTRACE(sfp = 0, card = 3);
+	  GFI4=FEBEX_NOTRACE(sfp = 0, card = 4);
+	  fi4[0] = FEBEX_NOTRACE(sfp = 0, card = 5);
+	  fi4[1] = FEBEX_NOTRACE(sfp = 0, card = 6);
+	  fi4[2] = FEBEX_NOTRACE(sfp = 0, card = 7);
+	  fi4[3] = FEBEX_NOTRACE(sfp = 0, card = 8);
+	}
+/*
 	select several {
 		dummy = DUMMY_WORD();
 	}
+	*/
 }
 
 SUBEVENT(psp_febex_subev)
@@ -324,3 +339,4 @@ EVENT
 #include "mapping.hh"
 #include "mapping_neuland.hh"
 #include "mapping_psp_zerosuppressed.hh"
+//#include "mapping_fi4.hh"
