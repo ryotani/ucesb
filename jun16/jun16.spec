@@ -38,13 +38,11 @@ SUBEVENT(tbm_subev)
 SUBEVENT(tofd_tamex_subev)
 {
 	header = TAMEX3_HEADER();
-	list (0 <= sfp < 1) {
-		select several {
-			padding = TAMEX3_PADDING();
-		}
-		select several {
-			tamex_1 = TAMEX3_SFP(sfp=2, card=0);
-		}
+	select several {
+		padding = TAMEX3_PADDING();
+	}
+	select several {
+		tamex_1 = TAMEX3_SFP(sfp=2, card=0);
 	}
 }
 
