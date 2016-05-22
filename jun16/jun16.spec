@@ -6,6 +6,11 @@
 #include "../land_common/whiterabbit.spec"
 #include "gsi_tamex3.spec"
 
+SCALER()
+{
+	UINT32	scaler;
+}
+
 SUBEVENT(wr_100)
 {
 	ts100 = TIMESTAMP_WHITERABBIT(id=0x100);
@@ -28,9 +33,17 @@ SUBEVENT(lmu_scalers_subev)
 SUBEVENT(los_subev)
 {
 	land_vme = LAND_STD_VME();
-	barrier = BARRIER();
+	barrier1 = BARRIER();
+	barrier2 = BARRIER();
 	select several {
-		vftx2 = VME_GSI_VFTX2_7PS(id=1);
+		vftx2 = VME_GSI_VFTX2_7PS(id=2);
+	}
+}
+
+SUBEVENT(los_scalers_subev)
+{
+	select several {
+		scaler = SCALER();
 	}
 }
 
@@ -87,10 +100,10 @@ EVENT
 	master_lmu_scalers = lmu_scalers_subev(type=37, subtype=3700, control=0);
 	master_vme = master_subev(type=88, subtype=8800, control=0);
 	los = los_subev(type=88, subtype=8800, control=1);
+	los_scalers = los_scalers_subev(type=38, subtype=3800, control=1);
 	tofd_vme = tofd_vme_subev(type=88, subtype=8800, control=2);
 	tbm_ts = wr_200(type=10, subtype=1, control=3);
 	tbm_tpat = tpat_subev(type=36, subtype=3600, control=3);
-	tbm_lmu_scalers = lmu_scalers_subev(type=37, subtype=3700, control=3);
 	tbm_vme = tbm_subev(type=88, subtype=8800, control=3);
 	tofd_tamex = tofd_tamex_subev(type=102, subtype=10200, control=4);
 	psp_febex = psp_febex_subev(type=100, subtype=100, control=5);
