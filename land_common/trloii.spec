@@ -48,7 +48,26 @@ TRLOII_LMU_SCALERS(id)
 	list(0 <= i < header.after_lmu) {
 		UINT32 scaler NOENCODE {
 			0_31: value;
-			ENCODE(after_reduction[i], (value=value));
+			ENCODE(after_reduction[i], (value = value));
+		}
+	}
+}
+
+TRLOII_TIMER(mark)
+{
+	MEMBER(DATA32 timer[170] ZERO_SUPPRESS);
+
+	UINT32 header {
+		0_9:   word_num;
+		10:    overflow;
+		21_31: mark = MATCH(mark);
+	}
+
+	list(0 <= index < header.word_num) {
+		UINT32 time_lo NOENCODE {
+			0_29: time;
+			31:   overflow;
+			ENCODE(timer[index], (value = time));
 		}
 	}
 }

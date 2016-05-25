@@ -47,6 +47,13 @@ SUBEVENT(los_scalers_subev)
 	}
 }
 
+SUBEVENT(los_timer_subev)
+{
+	select several {
+		timer = TRLOII_TIMER(mark=0);
+	}
+}
+
 SUBEVENT(master_subev)
 {
 	land_vme = LAND_STD_VME();
@@ -70,11 +77,18 @@ SUBEVENT(tofd_tamex_subev)
 {
 	header = TAMEX3_HEADER();
 	select several {
-		padding = TAMEX3_PADDING();
+		padding1 = TAMEX3_PADDING();
 	}
 	select several {
 		tamex_1 = TAMEX3_SFP(sfp=2, card=0);
 		tamex_2 = TAMEX3_SFP(sfp=2, card=1);
+	}
+	select several {
+		padding2 = TAMEX3_PADDING();
+	}
+	select several {
+		tamex_3 = TAMEX3_SFP(sfp=3, card=0);
+		tamex_4 = TAMEX3_SFP(sfp=3, card=1);
 	}
 }
 
@@ -102,6 +116,7 @@ EVENT
 	master_vme = master_subev(type=88, subtype=8800, control=0);
 	los = los_subev(type=88, subtype=8800, control=1);
 	los_scalers = los_scalers_subev(type=38, subtype=3800, control=1);
+	los_timer = los_timer_subev(type=39, subtype=3900, control=1);
 	tofd_vme = tofd_vme_subev(type=88, subtype=8800, control=2);
 	tbm_ts = wr_200(type=10, subtype=1, control=3);
 	tbm_tpat = tpat_subev(type=36, subtype=3600, control=3);
