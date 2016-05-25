@@ -74,6 +74,7 @@ SUBEVENT(tofd_tamex_subev)
 	}
 	select several {
 		tamex_1 = TAMEX3_SFP(sfp=2, card=0);
+		tamex_2 = TAMEX3_SFP(sfp=2, card=1);
 	}
 }
 
