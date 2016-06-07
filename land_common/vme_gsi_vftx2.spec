@@ -39,6 +39,7 @@ VME_GSI_VFTX2_7PS(id)
 {
 	MEMBER(DATA12 time_fine[32] ZERO_SUPPRESS_MULTI(32));
 	MEMBER(DATA16 time_coarse[32] ZERO_SUPPRESS_MULTI(32));
+	MEMBER(DATA16 time_trigger);
 
 	UINT32 custom_header {
 		0_4:   id = MATCH(id);
@@ -48,11 +49,13 @@ VME_GSI_VFTX2_7PS(id)
 	}
 
 	if (0 < custom_header.count) {
-		UINT32 event_header {
+		UINT32 event_header NOENCODE {
 			0_7:   0xaa;
 			11_23: trigger_timestamp;
 			29_30: 0b01;
 			31:    0b1;
+
+			ENCODE(time_trigger, (value = trigger_timestamp));
 		}
 	}
 

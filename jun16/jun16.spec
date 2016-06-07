@@ -47,10 +47,11 @@ SUBEVENT(los_scalers_subev)
 	}
 }
 
-SUBEVENT(los_timer_subev)
+SUBEVENT(los_sampler_subev)
 {
+	land_vme = LAND_STD_VME();
 	select several {
-		timer = TRLOII_TIMER(mark=0);
+		sampler = TRLOII_SAMPLER(mark=0x1050);
 	}
 }
 
@@ -60,11 +61,35 @@ SUBEVENT(master_subev)
 	barrier = BARRIER();
 }
 
-SUBEVENT(psp_febex_subev)
+SUBEVENT(tracking_febex_subev)
 {
-	header = FEBEX_EVENTHEADER();
+	header0 = FEBEX_EVENTHEADER();
 	select several {
-		fi4[0] = FEBEX_NOTRACE(sfp=0, card=0);
+		febex_0[ 0] = FEBEX_NOTRACE(sfp=0, card=0);
+		febex_0[ 1] = FEBEX_NOTRACE(sfp=0, card=1);
+		febex_0[ 2] = FEBEX_NOTRACE(sfp=0, card=2);
+		febex_0[ 3] = FEBEX_NOTRACE(sfp=0, card=3);
+		febex_0[ 4] = FEBEX_NOTRACE(sfp=0, card=4);
+		febex_0[ 5] = FEBEX_NOTRACE(sfp=0, card=5);
+		febex_0[ 6] = FEBEX_NOTRACE(sfp=0, card=6);
+		febex_0[ 7] = FEBEX_NOTRACE(sfp=0, card=7);
+		febex_0[ 8] = FEBEX_NOTRACE(sfp=0, card=8);
+		febex_0[ 9] = FEBEX_NOTRACE(sfp=0, card=9);
+	}
+	header2 = FEBEX_EVENTHEADER();
+	select several {
+		febex_2[ 0] = FEBEX_NOTRACE(sfp=2, card=0);
+		febex_2[ 1] = FEBEX_NOTRACE(sfp=2, card=1);
+		febex_2[ 2] = FEBEX_NOTRACE(sfp=2, card=2);
+		febex_2[ 3] = FEBEX_NOTRACE(sfp=2, card=3);
+		febex_2[ 4] = FEBEX_NOTRACE(sfp=2, card=4);
+		febex_2[ 5] = FEBEX_NOTRACE(sfp=2, card=5);
+		febex_2[ 6] = FEBEX_NOTRACE(sfp=2, card=6);
+		febex_2[ 7] = FEBEX_NOTRACE(sfp=2, card=7);
+		febex_2[ 8] = FEBEX_NOTRACE(sfp=2, card=8);
+		febex_2[ 9] = FEBEX_NOTRACE(sfp=2, card=9);
+		febex_2[10] = FEBEX_NOTRACE(sfp=2, card=10);
+		febex_2[11] = FEBEX_NOTRACE(sfp=2, card=11);
 	}
 }
 
@@ -116,13 +141,13 @@ EVENT
 	master_vme = master_subev(type=88, subtype=8800, control=0);
 	los = los_subev(type=88, subtype=8800, control=1);
 	los_scalers = los_scalers_subev(type=38, subtype=3800, control=1);
-	los_timer = los_timer_subev(type=39, subtype=3900, control=1);
+	los_sampler = los_sampler_subev(type=39, subtype=3900, control=1);
 	tofd_vme = tofd_vme_subev(type=88, subtype=8800, control=2);
 	tbm_ts = wr_200(type=10, subtype=1, control=3);
 	tbm_tpat = tpat_subev(type=36, subtype=3600, control=3);
 	tbm_vme = tbm_subev(type=88, subtype=8800, control=3);
 	tofd_tamex = tofd_tamex_subev(type=102, subtype=10200, control=4);
-	psp_febex = psp_febex_subev(type=100, subtype=100, control=5);
+	tracking_febex = tracking_febex_subev(type=100, subtype=10000, control=5);
 
 	los_empty = empty_subev(type=10, subtype=1, control=1);
 	tofd_empty = empty_subev(type=10, subtype=1, control=2);

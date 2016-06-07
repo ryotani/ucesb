@@ -73,6 +73,10 @@ SIGNAL(ZERO_SUPPRESS_MULTI(10): TOFD_P6T1_TCT1); // Plane 6, Tube 1, coarse time
 SIGNAL(ZERO_SUPPRESS_MULTI(10): TOFD_P6T2_TCL1); // Plane 6, Tube 2, coarse time leading, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(10): TOFD_P6T2_TCT1); // Plane 6, Tube 2, coarse time trailing, all bars.
 
+SIGNAL(TOFD_VFTX2_T1,  tofd_vme.vftx2_1.time_trigger, DATA16);
+SIGNAL(TOFD_VFTX2_T2,  tofd_vme.vftx2_2.time_trigger, DATA16);
+SIGNAL(TOFD_VFTX2_T3,  tofd_vme.vftx2_3.time_trigger, DATA16);
+
 // Fine times.
 
 // Plane 1 with VFTX2.

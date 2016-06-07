@@ -24,8 +24,8 @@ TAMEX3_SFP(sfp, card)
 	// 31 = leading edge
 	// 32 = trailing edge
 	// 33 = epochs overwritten
-	MEMBER(DATA16 time_coarse[34] ZERO_SUPPRESS_MULTI(32));
-	MEMBER(DATA12 time_fine[34] ZERO_SUPPRESS_MULTI(32));
+	MEMBER(DATA16 time_coarse[34] ZERO_SUPPRESS_MULTI(200));
+	MEMBER(DATA12 time_fine[34] ZERO_SUPPRESS_MULTI(200));
 
 	UINT32 indicator NOENCODE {
 		  0_7: 0x34;

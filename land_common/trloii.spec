@@ -53,21 +53,22 @@ TRLOII_LMU_SCALERS(id)
 	}
 }
 
-TRLOII_TIMER(mark)
+TRLOII_SAMPLER(mark)
 {
-	MEMBER(DATA32 timer[170] ZERO_SUPPRESS);
+	MEMBER(DATA32 sampler[512] ZERO_SUPPRESS);
 
 	UINT32 header {
 		0_9:   word_num;
 		10:    overflow;
-		21_31: mark = MATCH(mark);
+		16_31: mark = MATCH(mark);
 	}
 
 	list(0 <= index < header.word_num) {
 		UINT32 time_lo NOENCODE {
 			0_29: time;
+			30:   dunno;
 			31:   overflow;
-			ENCODE(timer[index], (value = time));
+			ENCODE(sampler[index], (value = time));
 		}
 	}
 }
