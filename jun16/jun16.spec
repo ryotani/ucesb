@@ -75,27 +75,41 @@ SUBEVENT(tracking_febex_subev)
 		febex_0[ 7] = FEBEX_NOTRACE(sfp=0, card=7);
 		febex_0[ 8] = FEBEX_NOTRACE(sfp=0, card=8);
 		febex_0[ 9] = FEBEX_NOTRACE(sfp=0, card=9);
+		febex_0[10] = FEBEX_NOTRACE(sfp=0, card=10);
+		febex_0[11] = FEBEX_NOTRACE(sfp=0, card=11);
+		febex_0[12] = FEBEX_NOTRACE(sfp=0, card=12);
+		febex_0[13] = FEBEX_NOTRACE(sfp=0, card=13);
+		febex_0[14] = FEBEX_NOTRACE(sfp=0, card=14);
+		febex_0[15] = FEBEX_NOTRACE(sfp=0, card=15);
 	}
 	header2 = FEBEX_EVENTHEADER();
 	select several {
-		febex_2[ 0] = FEBEX_NOTRACE(sfp=2, card=0);
-		febex_2[ 1] = FEBEX_NOTRACE(sfp=2, card=1);
-		febex_2[ 2] = FEBEX_NOTRACE(sfp=2, card=2);
-		febex_2[ 3] = FEBEX_NOTRACE(sfp=2, card=3);
-		febex_2[ 4] = FEBEX_NOTRACE(sfp=2, card=4);
-		febex_2[ 5] = FEBEX_NOTRACE(sfp=2, card=5);
-		febex_2[ 6] = FEBEX_NOTRACE(sfp=2, card=6);
-		febex_2[ 7] = FEBEX_NOTRACE(sfp=2, card=7);
-		febex_2[ 8] = FEBEX_NOTRACE(sfp=2, card=8);
-		febex_2[ 9] = FEBEX_NOTRACE(sfp=2, card=9);
-		febex_2[10] = FEBEX_NOTRACE(sfp=2, card=10);
-		febex_2[11] = FEBEX_NOTRACE(sfp=2, card=11);
+		febex_1[ 0] = FEBEX_NOTRACE(sfp=1, card=0);
+		febex_1[ 1] = FEBEX_NOTRACE(sfp=1, card=1);
+		febex_1[ 2] = FEBEX_NOTRACE(sfp=1, card=2);
+		febex_1[ 3] = FEBEX_NOTRACE(sfp=1, card=3);
+		febex_1[ 4] = FEBEX_NOTRACE(sfp=1, card=4);
+		febex_1[ 5] = FEBEX_NOTRACE(sfp=1, card=5);
+		febex_1[ 6] = FEBEX_NOTRACE(sfp=1, card=6);
+		febex_1[ 7] = FEBEX_NOTRACE(sfp=1, card=7);
+		febex_1[ 8] = FEBEX_NOTRACE(sfp=1, card=8);
+		febex_1[ 9] = FEBEX_NOTRACE(sfp=1, card=9);
+		febex_1[10] = FEBEX_NOTRACE(sfp=1, card=10);
+		febex_1[11] = FEBEX_NOTRACE(sfp=1, card=11);
+		febex_1[12] = FEBEX_NOTRACE(sfp=1, card=12);
+		febex_1[13] = FEBEX_NOTRACE(sfp=1, card=13);
+		febex_1[14] = FEBEX_NOTRACE(sfp=1, card=14);
+		febex_1[15] = FEBEX_NOTRACE(sfp=1, card=15);
 	}
 }
 
 SUBEVENT(tbm_subev)
 {
 	land_vme = LAND_STD_VME();
+	barrier = BARRIER();
+	select several {
+		vftx2 = VME_GSI_VFTX2(id=1);
+	}
 }
 
 SUBEVENT(tofd_tamex_subev)
