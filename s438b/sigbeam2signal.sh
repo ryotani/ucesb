@@ -15,8 +15,8 @@ awk 'NR>1{sam=substr($16,4,1);
 	}
 	found[plane][pm]=1;
 	signal=signal bar;
-	print "SIGNAL("signal"TAC, neuland_tacq.data_sam"sam"_gtb"gtb".tac["int(addr)"]["chm1"], DATA12);";
-	print "SIGNAL("signal"CLK, neuland_tacq.data_sam"sam"_gtb"gtb".clk["int(addr)"]["chm1"], DATA12);";
-	print "SIGNAL("signal"ADC, neuland_tacq.data_sam"sam"_gtb"gtb".adc["int(addr)"]["chm1"], DATA12);";
-	print "SIGNAL("signal"T,   neuland_tacq.data_sam"sam"_gtb"gtb".tac["int(addr)"]["chp15"], DATA12);";
+	print "SIGNAL("signal"TAC, neuland_tacq.data_sam"sam"_gtb"gtb".tac["int(addr-1)"]["chm1"], DATA12);";
+	print "SIGNAL("signal"CLK, neuland_tacq.data_sam"sam"_gtb"gtb".clk["int(addr-1)"]["chm1"], DATA12);";
+	print "SIGNAL("signal"ADC, neuland_tacq.data_sam"sam"_gtb"gtb".adc["int(addr-1)"]["chm1"], DATA12);";
+	print "SIGNAL("signal"T,   neuland_tacq.data_sam"sam"_gtb"gtb".tac["int(addr-1)"]["chp15"], DATA12);";
 }' $1
