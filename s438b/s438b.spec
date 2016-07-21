@@ -16,8 +16,6 @@
 #include "tamex.spec"
 #include "sis3316_s438b.spec"
 #include "../s438/vme_caen_v1290_s438.spec"
-#include "vftx_s438b.spec"
-#include "vftx_7ps.spec" // produces zero suppressed multi hit data!!!
 
 DUMMY_WORD()
 {
@@ -338,6 +336,6 @@ EVENT
 }
 
 #include "mapping.hh"
-#include "mapping_neuland.hh"
+#include "gen/mapping_neuland.hh"
 #include "mapping_psp_zerosuppressed.hh"
 //#include "mapping_fi4.hh"

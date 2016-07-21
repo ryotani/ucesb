@@ -5,103 +5,103 @@ SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS02_TF1);
 SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS02_TC1);
 
 // LOS fine (tdc) values:
-SIGNAL(LOS01_TF1,  los_psp.vftx2_1.time_fine[0],   DATA32);
-SIGNAL(LOS01_TF2,  los_psp.vftx2_1.time_fine[1],   DATA32);
-SIGNAL(LOS01_TF3,  los_psp.vftx2_1.time_fine[2],   DATA32);
-SIGNAL(LOS01_TF4,  los_psp.vftx2_1.time_fine[3],   DATA32);
+SIGNAL(LOS01_TF1,  los_psp.vftx2_1.time_fine[0],   DATA12);
+SIGNAL(LOS01_TF2,  los_psp.vftx2_1.time_fine[1],   DATA12);
+SIGNAL(LOS01_TF3,  los_psp.vftx2_1.time_fine[2],   DATA12);
+SIGNAL(LOS01_TF4,  los_psp.vftx2_1.time_fine[3],   DATA12);
 
-SIGNAL(LOS02_TF1,  los_psp.vftx2_2.time_fine[0],   DATA32); // the actual LOS channels
-SIGNAL(LOS02_TF2,  los_psp.vftx2_2.time_fine[1],   DATA32); // ...
-SIGNAL(LOS02_TF3,  los_psp.vftx2_2.time_fine[2],   DATA32);
-SIGNAL(LOS02_TF4,  los_psp.vftx2_2.time_fine[3],   DATA32);
-SIGNAL(LOS02_TF5,  los_psp.vftx2_2.time_fine[7],   DATA32); // master trigger
+SIGNAL(LOS02_TF1,  los_psp.vftx2_2.time_fine[0],   DATA12); // the actual LOS channels
+SIGNAL(LOS02_TF2,  los_psp.vftx2_2.time_fine[1],   DATA12); // ...
+SIGNAL(LOS02_TF3,  los_psp.vftx2_2.time_fine[2],   DATA12);
+SIGNAL(LOS02_TF4,  los_psp.vftx2_2.time_fine[3],   DATA12);
+SIGNAL(LOS02_TF5,  los_psp.vftx2_2.time_fine[7],   DATA12); // master trigger
 
 // LOS coarse (clock) values:
-SIGNAL(LOS01_TC1,  los_psp.vftx2_1.time_coarse[0],   DATA32);
-SIGNAL(LOS01_TC2,  los_psp.vftx2_1.time_coarse[1],   DATA32);
-SIGNAL(LOS01_TC3,  los_psp.vftx2_1.time_coarse[2],   DATA32);
-SIGNAL(LOS01_TC4,  los_psp.vftx2_1.time_coarse[3],   DATA32);
+SIGNAL(LOS01_TC1,  los_psp.vftx2_1.time_coarse[0],   DATA16);
+SIGNAL(LOS01_TC2,  los_psp.vftx2_1.time_coarse[1],   DATA16);
+SIGNAL(LOS01_TC3,  los_psp.vftx2_1.time_coarse[2],   DATA16);
+SIGNAL(LOS01_TC4,  los_psp.vftx2_1.time_coarse[3],   DATA16);
 
-SIGNAL(LOS02_TC1,  los_psp.vftx2_2.time_coarse[0],   DATA32); // the actual LOS channels
-SIGNAL(LOS02_TC2,  los_psp.vftx2_2.time_coarse[1],   DATA32); // ...
-SIGNAL(LOS02_TC3,  los_psp.vftx2_2.time_coarse[2],   DATA32);
-SIGNAL(LOS02_TC4,  los_psp.vftx2_2.time_coarse[3],   DATA32);
-SIGNAL(LOS02_TC5,  los_psp.vftx2_2.time_coarse[7],   DATA32); // master trigger
+SIGNAL(LOS02_TC1,  los_psp.vftx2_2.time_coarse[0],   DATA16); // the actual LOS channels
+SIGNAL(LOS02_TC2,  los_psp.vftx2_2.time_coarse[1],   DATA16); // ...
+SIGNAL(LOS02_TC3,  los_psp.vftx2_2.time_coarse[2],   DATA16);
+SIGNAL(LOS02_TC4,  los_psp.vftx2_2.time_coarse[3],   DATA16);
+SIGNAL(LOS02_TC5,  los_psp.vftx2_2.time_coarse[7],   DATA16); // master trigger
 
 // ROLU
-SIGNAL(ROLU01_1T, los_psp.vftx2_1.time_coarse[8],   DATA32);
-SIGNAL(ROLU01_2T, los_psp.vftx2_1.time_coarse[9],   DATA32);
-SIGNAL(ROLU01_3T, los_psp.vftx2_1.time_coarse[10],  DATA32);
-SIGNAL(ROLU01_4T, los_psp.vftx2_1.time_coarse[11],  DATA32);
-SIGNAL(ROLU02_1T, los_psp.vftx2_1.time_coarse[12],  DATA32);
-SIGNAL(ROLU02_2T, los_psp.vftx2_1.time_coarse[13],  DATA32);
-SIGNAL(ROLU02_3T, los_psp.vftx2_1.time_coarse[14],  DATA32);
-SIGNAL(ROLU02_4T, los_psp.vftx2_1.time_coarse[15],  DATA32);
+SIGNAL(ROLU01_1T, los_psp.vftx2_1.time_coarse[8],   DATA16);
+SIGNAL(ROLU01_2T, los_psp.vftx2_1.time_coarse[9],   DATA16);
+SIGNAL(ROLU01_3T, los_psp.vftx2_1.time_coarse[10],  DATA16);
+SIGNAL(ROLU01_4T, los_psp.vftx2_1.time_coarse[11],  DATA16);
+SIGNAL(ROLU02_1T, los_psp.vftx2_1.time_coarse[12],  DATA16);
+SIGNAL(ROLU02_2T, los_psp.vftx2_1.time_coarse[13],  DATA16);
+SIGNAL(ROLU02_3T, los_psp.vftx2_1.time_coarse[14],  DATA16);
+SIGNAL(ROLU02_4T, los_psp.vftx2_1.time_coarse[15],  DATA16);
 
 // TOFD via VFTX (vftx2_3 and vftx2_4)
 // Note: Paddle 13, 14, 15 or special. 15 probably being the master trigger
-SIGNAL(TOFD_01_1TF,  tof13.vftx2_3.time_fine[0],   DATA32);
-SIGNAL(TOFD_02_1TF,  tof13.vftx2_3.time_fine[1],   DATA32);
-SIGNAL(TOFD_03_1TF,  tof13.vftx2_3.time_fine[2],   DATA32);
-SIGNAL(TOFD_04_1TF,  tof13.vftx2_3.time_fine[3],   DATA32);
-SIGNAL(TOFD_05_1TF,  tof13.vftx2_3.time_fine[4],   DATA32);
-SIGNAL(TOFD_06_1TF,  tof13.vftx2_3.time_fine[5],   DATA32);
-SIGNAL(TOFD_07_1TF,  tof13.vftx2_3.time_fine[6],   DATA32);
-SIGNAL(TOFD_08_1TF,  tof13.vftx2_3.time_fine[7],   DATA32);
-SIGNAL(TOFD_09_1TF,  tof13.vftx2_3.time_fine[8],   DATA32);
-SIGNAL(TOFD_10_1TF,  tof13.vftx2_3.time_fine[9],   DATA32);
-SIGNAL(TOFD_11_1TF,  tof13.vftx2_3.time_fine[10],  DATA32);
-SIGNAL(TOFD_12_1TF,  tof13.vftx2_3.time_fine[12],  DATA32);
-SIGNAL(TOFD_13_1TF,  tof13.vftx2_3.time_fine[13],  DATA32);
-SIGNAL(TOFD_14_1TF,  tof13.vftx2_3.time_fine[14],  DATA32);
+SIGNAL(TOFD_01_1TF,  tof13.vftx2_3.time_fine[0],   DATA12);
+SIGNAL(TOFD_02_1TF,  tof13.vftx2_3.time_fine[1],   DATA12);
+SIGNAL(TOFD_03_1TF,  tof13.vftx2_3.time_fine[2],   DATA12);
+SIGNAL(TOFD_04_1TF,  tof13.vftx2_3.time_fine[3],   DATA12);
+SIGNAL(TOFD_05_1TF,  tof13.vftx2_3.time_fine[4],   DATA12);
+SIGNAL(TOFD_06_1TF,  tof13.vftx2_3.time_fine[5],   DATA12);
+SIGNAL(TOFD_07_1TF,  tof13.vftx2_3.time_fine[6],   DATA12);
+SIGNAL(TOFD_08_1TF,  tof13.vftx2_3.time_fine[7],   DATA12);
+SIGNAL(TOFD_09_1TF,  tof13.vftx2_3.time_fine[8],   DATA12);
+SIGNAL(TOFD_10_1TF,  tof13.vftx2_3.time_fine[9],   DATA12);
+SIGNAL(TOFD_11_1TF,  tof13.vftx2_3.time_fine[10],  DATA12);
+SIGNAL(TOFD_12_1TF,  tof13.vftx2_3.time_fine[12],  DATA12);
+SIGNAL(TOFD_13_1TF,  tof13.vftx2_3.time_fine[13],  DATA12);
+SIGNAL(TOFD_14_1TF,  tof13.vftx2_3.time_fine[14],  DATA12);
 
-SIGNAL(TOFD_01_1TC,  tof13.vftx2_3.time_coarse[0], DATA32);
-SIGNAL(TOFD_02_1TC,  tof13.vftx2_3.time_coarse[1], DATA32);
-SIGNAL(TOFD_03_1TC,  tof13.vftx2_3.time_coarse[2], DATA32);
-SIGNAL(TOFD_04_1TC,  tof13.vftx2_3.time_coarse[3], DATA32);
-SIGNAL(TOFD_05_1TC,  tof13.vftx2_3.time_coarse[4], DATA32);
-SIGNAL(TOFD_06_1TC,  tof13.vftx2_3.time_coarse[5], DATA32);
-SIGNAL(TOFD_07_1TC,  tof13.vftx2_3.time_coarse[6], DATA32);
-SIGNAL(TOFD_08_1TC,  tof13.vftx2_3.time_coarse[7], DATA32);
-SIGNAL(TOFD_09_1TC,  tof13.vftx2_3.time_coarse[8], DATA32);
-SIGNAL(TOFD_10_1TC,  tof13.vftx2_3.time_coarse[9], DATA32);
-SIGNAL(TOFD_11_1TC,  tof13.vftx2_3.time_coarse[10], DATA32);
-SIGNAL(TOFD_12_1TC,  tof13.vftx2_3.time_coarse[12], DATA32);
-SIGNAL(TOFD_13_1TC,  tof13.vftx2_3.time_coarse[13], DATA32);
-SIGNAL(TOFD_14_1TC,  tof13.vftx2_3.time_coarse[14], DATA32);
+SIGNAL(TOFD_01_1TC,  tof13.vftx2_3.time_coarse[0], DATA16);
+SIGNAL(TOFD_02_1TC,  tof13.vftx2_3.time_coarse[1], DATA16);
+SIGNAL(TOFD_03_1TC,  tof13.vftx2_3.time_coarse[2], DATA16);
+SIGNAL(TOFD_04_1TC,  tof13.vftx2_3.time_coarse[3], DATA16);
+SIGNAL(TOFD_05_1TC,  tof13.vftx2_3.time_coarse[4], DATA16);
+SIGNAL(TOFD_06_1TC,  tof13.vftx2_3.time_coarse[5], DATA16);
+SIGNAL(TOFD_07_1TC,  tof13.vftx2_3.time_coarse[6], DATA16);
+SIGNAL(TOFD_08_1TC,  tof13.vftx2_3.time_coarse[7], DATA16);
+SIGNAL(TOFD_09_1TC,  tof13.vftx2_3.time_coarse[8], DATA16);
+SIGNAL(TOFD_10_1TC,  tof13.vftx2_3.time_coarse[9], DATA16);
+SIGNAL(TOFD_11_1TC,  tof13.vftx2_3.time_coarse[10], DATA16);
+SIGNAL(TOFD_12_1TC,  tof13.vftx2_3.time_coarse[12], DATA16);
+SIGNAL(TOFD_13_1TC,  tof13.vftx2_3.time_coarse[13], DATA16);
+SIGNAL(TOFD_14_1TC,  tof13.vftx2_3.time_coarse[14], DATA16);
 
 // and PM2
-SIGNAL(TOFD_01_2TF,  tof13.vftx2_4.time_fine[0],   DATA32);
-SIGNAL(TOFD_02_2TF,  tof13.vftx2_4.time_fine[1],   DATA32);
-SIGNAL(TOFD_03_2TF,  tof13.vftx2_4.time_fine[2],   DATA32);
-SIGNAL(TOFD_04_2TF,  tof13.vftx2_4.time_fine[3],   DATA32);
-SIGNAL(TOFD_05_2TF,  tof13.vftx2_4.time_fine[4],   DATA32);
-SIGNAL(TOFD_06_2TF,  tof13.vftx2_4.time_fine[5],   DATA32);
-SIGNAL(TOFD_07_2TF,  tof13.vftx2_4.time_fine[6],   DATA32);
-SIGNAL(TOFD_08_2TF,  tof13.vftx2_4.time_fine[7],   DATA32);
-SIGNAL(TOFD_09_2TF,  tof13.vftx2_4.time_fine[8],   DATA32);
-SIGNAL(TOFD_10_2TF,  tof13.vftx2_4.time_fine[9],   DATA32);
-SIGNAL(TOFD_11_2TF,  tof13.vftx2_4.time_fine[10],  DATA32);
-SIGNAL(TOFD_12_2TF,  tof13.vftx2_4.time_fine[12],  DATA32);
-SIGNAL(TOFD_13_2TF,  tof13.vftx2_4.time_fine[13],  DATA32);
-SIGNAL(TOFD_14_2TF,  tof13.vftx2_4.time_fine[14],  DATA32);
-SIGNAL(TOFD_15_2TF,  tof13.vftx2_4.time_fine[15],  DATA32);
+SIGNAL(TOFD_01_2TF,  tof13.vftx2_4.time_fine[0],   DATA12);
+SIGNAL(TOFD_02_2TF,  tof13.vftx2_4.time_fine[1],   DATA12);
+SIGNAL(TOFD_03_2TF,  tof13.vftx2_4.time_fine[2],   DATA12);
+SIGNAL(TOFD_04_2TF,  tof13.vftx2_4.time_fine[3],   DATA12);
+SIGNAL(TOFD_05_2TF,  tof13.vftx2_4.time_fine[4],   DATA12);
+SIGNAL(TOFD_06_2TF,  tof13.vftx2_4.time_fine[5],   DATA12);
+SIGNAL(TOFD_07_2TF,  tof13.vftx2_4.time_fine[6],   DATA12);
+SIGNAL(TOFD_08_2TF,  tof13.vftx2_4.time_fine[7],   DATA12);
+SIGNAL(TOFD_09_2TF,  tof13.vftx2_4.time_fine[8],   DATA12);
+SIGNAL(TOFD_10_2TF,  tof13.vftx2_4.time_fine[9],   DATA12);
+SIGNAL(TOFD_11_2TF,  tof13.vftx2_4.time_fine[10],  DATA12);
+SIGNAL(TOFD_12_2TF,  tof13.vftx2_4.time_fine[12],  DATA12);
+SIGNAL(TOFD_13_2TF,  tof13.vftx2_4.time_fine[13],  DATA12);
+SIGNAL(TOFD_14_2TF,  tof13.vftx2_4.time_fine[14],  DATA12);
+SIGNAL(TOFD_15_2TF,  tof13.vftx2_4.time_fine[15],  DATA12);
 
-SIGNAL(TOFD_01_2TC,  tof13.vftx2_4.time_coarse[0],  DATA32);
-SIGNAL(TOFD_02_2TC,  tof13.vftx2_4.time_coarse[1],  DATA32);
-SIGNAL(TOFD_03_2TC,  tof13.vftx2_4.time_coarse[2],  DATA32);
-SIGNAL(TOFD_04_2TC,  tof13.vftx2_4.time_coarse[3],  DATA32);
-SIGNAL(TOFD_05_2TC,  tof13.vftx2_4.time_coarse[4],  DATA32);
-SIGNAL(TOFD_06_2TC,  tof13.vftx2_4.time_coarse[5],  DATA32);
-SIGNAL(TOFD_07_2TC,  tof13.vftx2_4.time_coarse[6],  DATA32);
-SIGNAL(TOFD_08_2TC,  tof13.vftx2_4.time_coarse[7],  DATA32);
-SIGNAL(TOFD_09_2TC,  tof13.vftx2_4.time_coarse[8],  DATA32);
-SIGNAL(TOFD_10_2TC,  tof13.vftx2_4.time_coarse[9],  DATA32);
-SIGNAL(TOFD_11_2TC,  tof13.vftx2_4.time_coarse[10], DATA32);
-SIGNAL(TOFD_12_2TC,  tof13.vftx2_4.time_coarse[12], DATA32);
-SIGNAL(TOFD_13_2TC,  tof13.vftx2_4.time_coarse[13], DATA32);
-SIGNAL(TOFD_14_2TC,  tof13.vftx2_4.time_coarse[14], DATA32);
-SIGNAL(TOFD_15_2TC,  tof13.vftx2_4.time_coarse[15], DATA32);
+SIGNAL(TOFD_01_2TC,  tof13.vftx2_4.time_coarse[0],  DATA16);
+SIGNAL(TOFD_02_2TC,  tof13.vftx2_4.time_coarse[1],  DATA16);
+SIGNAL(TOFD_03_2TC,  tof13.vftx2_4.time_coarse[2],  DATA16);
+SIGNAL(TOFD_04_2TC,  tof13.vftx2_4.time_coarse[3],  DATA16);
+SIGNAL(TOFD_05_2TC,  tof13.vftx2_4.time_coarse[4],  DATA16);
+SIGNAL(TOFD_06_2TC,  tof13.vftx2_4.time_coarse[5],  DATA16);
+SIGNAL(TOFD_07_2TC,  tof13.vftx2_4.time_coarse[6],  DATA16);
+SIGNAL(TOFD_08_2TC,  tof13.vftx2_4.time_coarse[7],  DATA16);
+SIGNAL(TOFD_09_2TC,  tof13.vftx2_4.time_coarse[8],  DATA16);
+SIGNAL(TOFD_10_2TC,  tof13.vftx2_4.time_coarse[9],  DATA16);
+SIGNAL(TOFD_11_2TC,  tof13.vftx2_4.time_coarse[10], DATA16);
+SIGNAL(TOFD_12_2TC,  tof13.vftx2_4.time_coarse[12], DATA16);
+SIGNAL(TOFD_13_2TC,  tof13.vftx2_4.time_coarse[13], DATA16);
+SIGNAL(TOFD_14_2TC,  tof13.vftx2_4.time_coarse[14], DATA16);
+SIGNAL(TOFD_15_2TC,  tof13.vftx2_4.time_coarse[15], DATA16);
 
 /* // from land02:
 SIG_BEAM( TOFD01_01_1, TOFD01_01, NIM, -1, -1, -1, -1, TOF_VFTX02,   0, CRT1_VFTX01, 2, PM_IDENT, 1, CABLE, -1);
