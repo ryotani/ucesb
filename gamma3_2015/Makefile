@@ -29,7 +29,9 @@
 # We still need access to the unpacker/ directory, since the ucesb and
 # psdc programs are there, and since the common source also is there
 
-UCESB_BASE_DIR=../../unpacker
+TREE_OR_HOME_SRC_DIR = $(firstword $(wildcard $(addsuffix /$(1),$(shell pwd)/../.. $(HOME))))
+
+UCESB_BASE_DIR=$(call TREE_OR_HOME_SRC_DIR,ucesb)
 export UCESB_BASE_DIR
 
 #########################################################
@@ -46,7 +48,7 @@ all: gamma3
 #########################################################
 # Submakefiles that the programs depend on
 
-include $(UCESB_BASE_DIR)/makefile_ucesb.inc
+include $(UCESB_BASE_DIR)/makefile_ucesbgen.inc
 include $(UCESB_BASE_DIR)/makefile_psdc.inc
 
 DEPENDENCIES=$(UCESB) $(PSDC) 

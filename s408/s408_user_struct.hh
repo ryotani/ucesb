@@ -8,7 +8,7 @@
 
 struct s408_user_struct
 {
-
+  // int dummy;
   USER_STRUCT_FCNS_DECL;
 };
 

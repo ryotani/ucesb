@@ -1,5 +1,5 @@
 #include "spec/spec.spec"
-#include "vme_mesy_madc32.spec"
+//#include "vme_mesy_madc32.spec"
 #include "trlo.spec"
 #include "trlo_data.spec"
 #include "caen_scaler_data.spec"
@@ -72,7 +72,7 @@ SUBEVENT(VME)
     sis3316[2] = VME_STRUCK_SIS3316(id=5);
     /*multi scaler = VME_CAEN_V830(geom=0x1f);*/
     multi tdc = VME_CAEN_V775(geom=0x1f, crate=0x0);
-    multi adc = VME_MESY_MADC32(geom=0x4);
+    multi adc = VME_MESYTEC_MADC32(geom=0x4);
   }
 }
 

@@ -19,6 +19,10 @@ EVENT
   camac       = LAND_CAMAC_CONVERTER(type    = SUBEVENT_CAMAC, 
 				     subtype = SUBEVENT_CAMAC_CONVERTERS);
 
+  // This experiment was way before this subevent ???
+  //camac_tcal_info  = LAND_CAMAC_TCAL_INFO(type = SUBEVENT_CAMAC_TCAL,
+  //                                        subtype = SUBEVENT_CAMAC_TCAL_INFO);
+
   camac_scalers  = LAND_CAMAC_SCALER(type    = SUBEVENT_CAMAC, 
 				     subtype = SUBEVENT_CAMAC_SCALERS); 
 

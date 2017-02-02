@@ -1,11 +1,13 @@
-
 #include "structures.hh"
 
 #include "user.hh"
+#include "user_params.hh"
 
 #include "land_user.hh"
-
 #include "land_triggers.hh"
+
+#include "s408_user_struct.hh"
+
 
 void raw_user_function(unpack_event *event,
 		       raw_event    *raw_event)

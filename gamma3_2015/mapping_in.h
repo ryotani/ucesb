@@ -280,22 +280,22 @@ SIGNAL(NDET_4S,scalers.caen_scaler.data[31],DATA32);
 /* Mesytec MADC 32 (for neutron detectors) */
 /* Even channels 0,2,4... contain energy */
 /* Odd channels 1,3,5... contain PSD value */
-SIGNAL(NDET_1E,vme.adc.data[ 0],DATA16);
-SIGNAL(NDET_1P,vme.adc.data[ 1],DATA16);
-SIGNAL(NDET_2E,vme.adc.data[ 2],DATA16);
-SIGNAL(NDET_2P,vme.adc.data[ 3],DATA16);
-SIGNAL(NDET_3E,vme.adc.data[ 4],DATA16);
-SIGNAL(NDET_3P,vme.adc.data[ 5],DATA16);
-SIGNAL(NDET_4E,vme.adc.data[ 6],DATA16);
-SIGNAL(NDET_4P,vme.adc.data[ 7],DATA16);
-SIGNAL(NDET_5E,vme.adc.data[ 8],DATA16);
-SIGNAL(NDET_5P,vme.adc.data[ 9],DATA16);
-SIGNAL(NDET_6E,vme.adc.data[10],DATA16);
-SIGNAL(NDET_6P,vme.adc.data[11],DATA16);
-SIGNAL(NDET_7E,vme.adc.data[12],DATA16);
-SIGNAL(NDET_7P,vme.adc.data[13],DATA16);
-SIGNAL(NDET_8E,vme.adc.data[14],DATA16);
-SIGNAL(NDET_8P,vme.adc.data[15],DATA16);
+SIGNAL(NDET_1E,vme.adc.data[ 0],DATA14_OVERFLOW);
+SIGNAL(NDET_1P,vme.adc.data[ 1],DATA14_OVERFLOW);
+SIGNAL(NDET_2E,vme.adc.data[ 2],DATA14_OVERFLOW);
+SIGNAL(NDET_2P,vme.adc.data[ 3],DATA14_OVERFLOW);
+SIGNAL(NDET_3E,vme.adc.data[ 4],DATA14_OVERFLOW);
+SIGNAL(NDET_3P,vme.adc.data[ 5],DATA14_OVERFLOW);
+SIGNAL(NDET_4E,vme.adc.data[ 6],DATA14_OVERFLOW);
+SIGNAL(NDET_4P,vme.adc.data[ 7],DATA14_OVERFLOW);
+SIGNAL(NDET_5E,vme.adc.data[ 8],DATA14_OVERFLOW);
+SIGNAL(NDET_5P,vme.adc.data[ 9],DATA14_OVERFLOW);
+SIGNAL(NDET_6E,vme.adc.data[10],DATA14_OVERFLOW);
+SIGNAL(NDET_6P,vme.adc.data[11],DATA14_OVERFLOW);
+SIGNAL(NDET_7E,vme.adc.data[12],DATA14_OVERFLOW);
+SIGNAL(NDET_7P,vme.adc.data[13],DATA14_OVERFLOW);
+SIGNAL(NDET_8E,vme.adc.data[14],DATA14_OVERFLOW);
+SIGNAL(NDET_8P,vme.adc.data[15],DATA14_OVERFLOW);
 
 #if 0
 

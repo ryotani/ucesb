@@ -13,7 +13,7 @@ export USE_CURSES
 
 TREE_OR_HOME_SRC_DIR = $(firstword $(wildcard $(addsuffix /$(1),$(shell pwd)/../.. $(HOME))))
 
-UCESB_BASE_DIR=$(call TREE_OR_HOME_SRC_DIR,unpacker)
+UCESB_BASE_DIR=$(call TREE_OR_HOME_SRC_DIR,ucesb)
 export UCESB_BASE_DIR
 
 #CXX=g++-3.4
@@ -29,13 +29,14 @@ all: $(TARGET)
 #########################################################
 # Submakefiles that the programs depend on
 
-include $(UCESB_BASE_DIR)/makefile_ucesb.inc
+include $(UCESB_BASE_DIR)/makefile_ucesbgen.inc
 include $(UCESB_BASE_DIR)/makefile_psdc.inc
 
 DEPENDENCIES=$(UCESB) $(PSDC) $(TARGET).spec
 
 #########################################################
 
+.PHONY: $(TARGET)
 $(TARGET): $(DEPENDENCIES)
 	@$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(TARGET)
 

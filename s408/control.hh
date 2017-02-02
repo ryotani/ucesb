@@ -11,14 +11,13 @@
 #define HANDLE_COMMAND_LINE_OPTION  user_handle_command_line_option
 #define USAGE_COMMAND_LINE_OPTIONS  user_usage_command_line_options
 
-#define USER_EXTERNAL_UNPACK_STRUCT_FILE "s408_external.hh"
+// #define USER_EXTERNAL_UNPACK_STRUCT_FILE "s408_external.hh"
 
 #define USER_STRUCT                s408_user_struct
 
 ///////////////////////////////////////////////////////////////
 
 #define WATCHER_EVENT_INFO_USER_FUNCTION land_watcher_event_info
- 
 #define WATCHER_EVENT_INFO_INCLUDE "land_watch_info.hh"
 
 
