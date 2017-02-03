@@ -6,7 +6,7 @@ OBJS += s408_user.o land_fcns.o land_user.o land_pos_sampler.o
 
 
 # For the auto-pedestal-adjustment from ccdaqlib
-CCDAQLIB_DIR:=$(call TREE_UCESB_OR_HOME_SRC_DIR,landdaq/ccdaqlib)
+CCDAQLIB_DIR:=$(call TREE_UCESB_OR_HOME_SRC_DIR_OR_DIE,landdaq/ccdaqlib)
 # For the common land directory
 LAND_COMMON_DIR = ./../land_common
 

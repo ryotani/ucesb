@@ -11,7 +11,7 @@
 #define HANDLE_COMMAND_LINE_OPTION  user_handle_command_line_option
 #define USAGE_COMMAND_LINE_OPTIONS  user_usage_command_line_options
 
-#define USER_EXTERNAL_UNPACK_STRUCT_FILE "s412_user_struct.hh"
+//#define USER_EXTERNAL_UNPACK_STRUCT_FILE "s412_user_struct.hh"
 
 #define USER_STRUCT                s412_user_struct
 

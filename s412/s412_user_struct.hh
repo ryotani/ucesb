@@ -8,7 +8,6 @@
 
 struct s412_user_struct
 {
-
   USER_STRUCT_FCNS_DECL;
 };
 

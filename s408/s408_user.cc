@@ -1,7 +1,6 @@
 #include "structures.hh"
 
 #include "user.hh"
-#include "user_params.hh"
 
 #include "land_user.hh"
 #include "land_triggers.hh"

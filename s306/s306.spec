@@ -12,6 +12,7 @@
 #include "land_camac_pileup.spec"
 #include "land_fastbus.spec"
 #include "land_vme.spec"
+#include "land_vme_subev.spec"
 #include "land_type_subtype.spec"
 
 DUMMY_WORD()

@@ -7,6 +7,7 @@
 #include "land_camac_scaler.spec"
 #include "land_fastbus.spec"
 #include "land_vme.spec"
+#include "../s223/land_vme_subev.spec"
 #include "land_type_subtype.spec"
 
 DUMMY_WORD()

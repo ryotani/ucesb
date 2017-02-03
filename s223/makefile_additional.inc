@@ -7,7 +7,7 @@ OBJS += s223_user.o s223_user_ap.o land_fcns.o land_user.o
 USER_STRUCT_FILE = s223_user_struct.hh
 
 # For the auto-pedestal-adjustment from ccdaqlib
-CCDAQLIB_DIR=$(call TREE_UCESB_OR_HOME_SRC_DIR,landdaq/ccdaqlib)
+CCDAQLIB_DIR=$(call TREE_UCESB_OR_HOME_SRC_DIR_OR_DIE,landdaq/ccdaqlib)
 # For the common land directory
 LAND_COMMON_DIR = ./../land_common
 # For the cros3_ext (common)

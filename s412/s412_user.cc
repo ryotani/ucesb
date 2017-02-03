@@ -1,10 +1,8 @@
-
 #include "structures.hh"
 
 #include "user.hh"
 
 #include "land_user.hh"
-
 #include "land_triggers.hh"
 
 void raw_user_function(unpack_event *event,

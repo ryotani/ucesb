@@ -7,7 +7,15 @@
 
 #########################################################
 
-all: others land_common #need_landdaq_
+TREE_OR_HOME_SRC_DIR = $(firstword $(wildcard $(addsuffix /$(1),$(shell pwd)/.. $(HOME))))
+UCESB_BASE_DIR=$(call TREE_OR_HOME_SRC_DIR,ucesb)
+export UCESB_BASE_DIR
+
+include $(UCESB_BASE_DIR)/makefile_direxist.inc
+
+#########################################################
+
+all: all_exps
 
 others: e062 \
 	frs_s341 \
@@ -22,17 +30,37 @@ land_common: land jun16 \
 	s232 s287 s295 \
 	s438 s438b
 
-need_landdaq_: s223 s223_march s296 \
-	s306 s318 s327 s393 \
-	s406
-
-need_landdaq: s408 s412 dec2006
-
 # Some experiments need the landdaq_ dir to be present
+LANDDAQ_DIR:=$(call TREE_UCESB_OR_HOME_SRC_DIR,landdaq_)
+ifeq (,$(LANDDAQ_DIR))
+$(info No 'landdaq_' directory found)
+else
+$(info LANDDAQ_DIR=$(LANDDAQ_DIR))
+NEED_LANDDAQ=
+endif
+
 # Some experiments need the landdaq/ccdaqlib dir to be present
+CCDAQLIB_DIR:=$(call TREE_UCESB_OR_HOME_SRC_DIR,landdaq/ccdaqlib)
+ifeq (,$(CCDAQLIB_DIR))
+$(info No 'landdaq/ccdaqlib' directory found)
+else
+ifneq (,$(LANDDAQ_DIR))
+NEED_LANDDAQ_AND_CCDAQLIB=s223 s296 s306 s318 s327 s393 s406
+endif
+$(info CCDAQLIB_DIR=$(CCDAQLIB_DIR))
+NEED_CCDAQLIB=dec2006
+endif
+
+BROKEN=s223_march s408 s412
+
+need_landdaq_: $(NEED_LANDDAQ) $(NEED_CCDAQLIB) $(NEED_LANDDAQ_AND_CCDAQLIB)
+
+all_exps: others land_common need_landdaq_
+
 # rpc2006 is BROKEN!  It has its own old copy of the unpacker...
 # x2007 is a land02-experiment directory
 # s223_march does for some reason not hack the dependency stage
+# s408, s412 need int_correlation
 
 #########################################################
 
@@ -42,9 +70,6 @@ need_landdaq: s408 s412 dec2006
 # simultaneously.  Easiest is to just compile e.g. the 'empty'
 # unpacker
 
-TREE_OR_HOME_SRC_DIR = $(firstword $(wildcard $(addsuffix /$(1),$(shell pwd)/.. $(HOME))))
-
-UCESB_BASE_DIR=$(call TREE_OR_HOME_SRC_DIR,ucesb)
 
 empty_unpacker:
 	$(MAKE) -C $(UCESB_BASE_DIR) empty
@@ -137,9 +162,17 @@ clean:
 	$(MAKE) -C gamma3_2015 clean
 	$(MAKE) -C rpc2009 clean
 	$(MAKE) -C land clean
+	$(MAKE) -C s223 clean
+	$(MAKE) -C s223_march clean
 	$(MAKE) -C s232 clean
 	$(MAKE) -C s287 clean
 	$(MAKE) -C s295 clean
+	$(MAKE) -C s296 clean
+	$(MAKE) -C s306 clean
+	$(MAKE) -C s318 clean
+	$(MAKE) -C s327 clean
+	$(MAKE) -C s393 clean
+	$(MAKE) -C s406 clean
 	$(MAKE) -C s408 clean
 	$(MAKE) -C s412 clean
 	$(MAKE) -C s438 clean
@@ -149,15 +182,5 @@ clean:
 	$(MAKE) -C tamex_multi_pc_readout clean
 	$(MAKE) -C uppsala clean
 	$(MAKE) -C fzd_jan_2010 clean
-
-cleanmore: # TO BE ADDED BACK TO clean TARGET!
-	$(MAKE) -C s223 clean
-	$(MAKE) -C s223_march clean
-	$(MAKE) -C s296 clean
-	$(MAKE) -C s306 clean
-	$(MAKE) -C s318 clean
-	$(MAKE) -C s327 clean
-	$(MAKE) -C s393 clean
-	$(MAKE) -C s406 clean
 
 #########################################################
