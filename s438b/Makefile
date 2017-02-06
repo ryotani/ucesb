@@ -44,6 +44,10 @@ $(TARGET): $(DEPENDENCIES)
 
 #########################################################
 
+.PHONY: test
+test: 
+	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(TARGET) test
+
 .PHONY: clean
 clean:
 	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(TARGET) clean
