@@ -274,7 +274,6 @@ void sampler_show(sampler &s,uint64_t stamp_this)
 {
   char array[10][SAMPLER_BINS+1];
   double max = 1;
-  int max_i = 0;
   int cut_i = SAMPLER_BINS;
   int i;
   double total_t;
@@ -290,7 +289,6 @@ void sampler_show(sampler &s,uint64_t stamp_this)
       if (s.hist[i] > max)
 	{
 	  max = s.hist[i];
-	  max_i = i;
 	}
     }
 

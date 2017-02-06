@@ -7,11 +7,9 @@
 
 USE_CERNLIB=1
 USE_CURSES=1
-USE_PTHREAD=1
 
 #export USE_CERNLIB
 export USE_CURSES
-export USE_PTHREAD
 
 TREE_OR_HOME_SRC_DIR = $(firstword $(wildcard $(addsuffix /$(1),$(shell pwd)/../.. $(HOME))))
 

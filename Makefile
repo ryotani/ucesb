@@ -178,6 +178,7 @@ clean:
 	$(MAKE) -C s438 clean
 	$(MAKE) -C s438b clean
 	$(MAKE) -C dec2006 clean
+	$(MAKE) -C jun16 clean
 	$(MAKE) -C tacquila17 clean
 	$(MAKE) -C tamex_multi_pc_readout clean
 	$(MAKE) -C uppsala clean
