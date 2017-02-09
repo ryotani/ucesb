@@ -39,14 +39,11 @@ DEPENDENCIES=$(UCESB) $(PSDC) $(TARGET).spec
 
 #########################################################
 
+.PHONY: $(TARGET)
 $(TARGET): $(DEPENDENCIES)
 	@$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(TARGET)
 
 #########################################################
-
-.PHONY: test
-test: 
-	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(TARGET) test
 
 .PHONY: clean
 clean:
