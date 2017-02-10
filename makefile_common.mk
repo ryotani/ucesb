@@ -10,6 +10,10 @@ USE_CURSES=1
 #export USE_CERNLIB
 export USE_CURSES
 
+# This makefile is expected to be included from a makefile that is in
+# a directory one level below upexps/.  Thus ../../ would reach
+# siblings of upexps/ - i.e. just outside.
+
 TREE_OR_HOME_SRC_DIR = $(firstword $(wildcard $(addsuffix /$(1),$(shell pwd)/../.. $(HOME))))
 
 UCESB_BASE_DIR=$(call TREE_OR_HOME_SRC_DIR,ucesb)
@@ -19,10 +23,7 @@ export UCESB_BASE_DIR
 #export CXX
 
 .PHONY: all
-all: $(TARGET)
-
-debug:
-	@echo "UCSEB_BASE_DIR = $(UCESB_BASE_DIR)"
+all: build
 
 #########################################################
 # Submakefiles that the programs depend on
@@ -30,24 +31,42 @@ debug:
 include $(UCESB_BASE_DIR)/makefile_ucesbgen.inc
 include $(UCESB_BASE_DIR)/makefile_psdc.inc
 
-DEPENDENCIES=$(UCESB) $(PSDC) $(TARGET).spec
-
 #########################################################
 
-.PHONY: $(TARGET)
-$(TARGET): $(DEPENDENCIES)
-	@$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(TARGET)
+define build_rules
 
-#########################################################
+DEPENDENCIES=$(UCESB) $(PSDC) $(1).spec
+
+.PHONY: build_$(1)
+build_$(1): $(DEPENDENCIES)
+	@$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(1)
+
+.PHONY: test_$(1)
+test_$(1): 
+	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(1) test
+
+.PHONY: clean_$(1)
+clean_$(1):
+	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(1) clean
+
+endef
+
+$(foreach target,$(TARGETS),$(eval $(call build_rules,$(target))))
+
+BUILD_TARGETS=$(addprefix build_,$(TARGETS))
+TEST_TARGETS=$(addprefix test_,$(TARGETS))
+CLEAN_TARGETS=$(addprefix clean_,$(TARGETS))
+
+$(info clean=$(CLEAN_TARGETS))
+
+.PHONY: build
+build: $(BUILD_TARGETS)
 
 .PHONY: test
-test: 
-	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(TARGET) test
+test: $(TEST_TARGETS)
 
 .PHONY: clean
-clean:
-	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(TARGET) clean
+clean: $(CLEAN_TARGETS)
 
-.PHONY: all-clean
-all-clean: clean
-	rm -rf gen
+debug:
+	@echo "UCSEB_BASE_DIR = $(UCESB_BASE_DIR)"
