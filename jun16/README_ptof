@@ -1,0 +1,2 @@
+This unpacker is/was used for the R3BROOT workshop in March 2017.
+It is supposed to run on lmd files from the jun16 experiment, specifically on runs with Carbon beam. The fictitious PTOF detector was added and uses data from the Padi+Tamex-connected TOFD detector (planes 1&2).
