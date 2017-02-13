@@ -38,16 +38,16 @@ define build_rules
 DEPENDENCIES=$(UCESB) $(PSDC) $(1).spec
 
 .PHONY: build_$(1)
-build_$(1): $(DEPENDENCIES)
-	@$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(1)
+build_$(1): $$(DEPENDENCIES)
+	@$$(MAKE) -f $$(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(1)
 
 .PHONY: test_$(1)
 test_$(1): 
-	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(1) test
+	$$(MAKE) -f $$(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(1) test
 
 .PHONY: clean_$(1)
 clean_$(1):
-	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(1) clean
+	$$(MAKE) -f $$(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(1) clean
 
 endef
 
