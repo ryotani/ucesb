@@ -80,6 +80,9 @@ empty_unpacker:
 
 define build_unpacker
 
+.PHONY: $(1)
+$(1): build_$(1)
+
 .PHONY: build_$(1)
 build_$(1): empty_unpacker
 	$$(MAKE) -C $(1)
