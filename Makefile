@@ -82,11 +82,11 @@ define build_unpacker
 
 .PHONY: build_$(1)
 build_$(1): empty_unpacker
-	+$$(MAKE) -C $(1)
+	$$(MAKE) -C $(1)
 
 .PHONY: clean_$(1)
 clean_$(1):
-	+$$(MAKE) -C $(1) clean
+	$$(MAKE) -C $(1) clean
 
 endef
 
