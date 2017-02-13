@@ -52,8 +52,6 @@ NEED_LANDDAQ_= $(NEED_LANDDAQ) $(NEED_CCDAQLIB) $(NEED_LANDDAQ_AND_CCDAQLIB)
 
 BROKEN=s223_march s408 s412
 
-# rpc2006 is BROKEN!  It has its own old copy of the unpacker...
-# x2007 is a land02-experiment directory
 # s223_march does for some reason not hack the dependency stage
 # s408, s412 need int_correlation
 
