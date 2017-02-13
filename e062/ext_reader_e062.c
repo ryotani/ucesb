@@ -37,7 +37,7 @@ int main(int argc,char *argv[])
 
   if (ext_data_setup_stderr(client,
 			    &event_layout,sizeof(event_layout),
-			    sizeof(event)) != 0)
+			    NULL,sizeof(event)) != 0)
     {
       /* Handle events. */
       
