@@ -13,7 +13,9 @@ include ../makefile_common.mk
 
 #########################################################
 
-ext_e062.h: ./e062
+all: ext_reader_e062
+
+ext_e062.h: e062
 	@echo "  E062   $@"
 	@./e062 /dev/null --ntuple=UNPACK,RAW,STRUCT_HH,$@ 2> /dev/null
 
