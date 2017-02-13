@@ -3,6 +3,9 @@
 
 TARGETS:=e062
 
+USE_EXT_WRITER=1
+export USE_EXT_WRITER
+
 #########################################################
 # Include common Makefile
 
@@ -19,3 +22,6 @@ ext_reader_e062: ext_reader_e062.c ext_e062.h
 	$(QUIET)$(CC) -o $@ -I . -I $(UCESB_BASE_DIR)/hbook/ \
 	  $< $(UCESB_BASE_DIR)/hbook/ext_data_client.o
 
+clean:
+	rm -rf ext_reader_e062
+	rm -rf ext_e062.h
