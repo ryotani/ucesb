@@ -1,3 +1,10 @@
+FEBEX_BADBAD()
+{
+	UINT32 badbad {
+		0_31: 0xbad00bad;
+	}
+}
+
 FEBEX_EVENTHEADER()
 {
 	UINT32 identifier NOENCODE {
@@ -78,5 +85,69 @@ FEBEX_NOTRACE(sfp, card)
 	UINT32 trailer NOENCODE {
 		0_23:  unused;
 		24_31: 0xbf;
+	}
+}
+
+FEBEX_TRACE(sfp, card)
+{
+	MEMBER(DATA32 trace_length[16] ZERO_SUPPRESS);
+	MEMBER(DATA16 trace[16][1000] ZERO_SUPPRESS);
+        MEMBER(DATA32 filter[16][1000] ZERO_SUPPRESS);
+
+	UINT32 header NOENCODE {
+		  0_7: 0x34;
+		 8_11: trigger_type;
+		12_15: sfp =  MATCH(sfp);
+		16_23: card = MATCH(card);
+		24_31: channel_id = RANGE(0, 0xfe);
+	}
+
+	UINT32 trace_size NOENCODE {
+		0_31: size;
+		ENCODE(trace_length[header.channel_id], (value = size / 2 - 4));
+	}
+
+	UINT32 trace_header NOENCODE {
+		 0_17: notused1;
+		   18: filter_mode;
+		   19: filter_onoff;
+		20_22: notused2;
+		   23: adc_type;
+		24_31: 0xaa;
+	}
+
+	if (trace_header.filter_onoff == 0) {
+		list (0 <= i < (trace_size.size / 4) - 2) {
+			UINT32 channel_trace NOENCODE {
+				 0_13: data1;
+				14_15: nik_knows; // unknown data. !=0
+				16_29: data2;
+				30_31: nik_knows2; // unknown data. !=0
+
+				ENCODE(trace[header.channel_id][2*i+0], (value = data1));
+				ENCODE(trace[header.channel_id][2*i+1], (value = data2));
+			}
+		}
+	} else {
+		list (0 <= i < (trace_size.size / 8) - 1) {
+			UINT32 channel_trace NOENCODE {
+				 0_13: data1;
+				14_31: nik_knows; // unknown data. !=0
+
+				ENCODE(trace[header.channel_id][i], (value = data1));
+			}
+			UINT32 channel_filter NOENCODE {
+				 0_22: data1;
+				   23: sign;
+				24_31: nik_knows2; // unknown data. !=0
+
+				ENCODE(filter[header.channel_id][i], (value = data1*(1-2*sign)));
+			}
+		}
+	}
+
+	UINT32 trace_trailer NOENCODE {
+		 0_23: notused;
+		24_31: 0xbb;
 	}
 }
