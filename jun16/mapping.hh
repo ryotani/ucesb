@@ -20,7 +20,7 @@ SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS01_TC1);
 SIGNAL(LOS01_TC1, los.vftx2.time_coarse[0],
        LOS01_TC4, los.vftx2.time_coarse[3], DATA16);
 #endif
-#if defined(UNPACKER_IS_jun16_C) || defined(UNPACKER_IS_jun16_ptof)
+#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16_ptof)
 // LOS fine (TDC) values.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS02_TF1);
 SIGNAL(LOS02_TF1, los.vftx2.time_fine[4],
@@ -58,6 +58,16 @@ SIGNAL(LOS01_TC4, los.vftx2.time_coarse[3], DATA16);
  * tft = time fine trailing.
  */
 
+#if defined(UNPACKER_IS_jun16_ptof)
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T1_TFL1); // Plane 1, Tube 1, fine time leading, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T1_TFT1); // Plane 1, Tube 1, fine time trailing, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T2_TFL1); // Plane 1, Tube 2, fine time leading, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T2_TFT1); // Plane 1, Tube 2, fine time trailing, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T1_TFL1); // Plane 2, Tube 1, fine time leading, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T1_TFT1); // Plane 2, Tube 1, fine time trailing, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T2_TFL1); // Plane 2, Tube 2, fine time leading, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T2_TFT1); // Plane 2, Tube 2, fine time trailing, all bars.
+#else
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P1T1_TFL1); // Plane 1, Tube 1, fine time leading, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P1T1_TFT1); // Plane 1, Tube 1, fine time trailing, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P1T2_TFL1); // Plane 1, Tube 2, fine time leading, all bars.
@@ -66,6 +76,7 @@ SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P2T1_TFL1); // Plane 2, Tube 1, fine time l
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P2T1_TFT1); // Plane 2, Tube 1, fine time trailing, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P2T2_TFL1); // Plane 2, Tube 2, fine time leading, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P2T2_TFT1); // Plane 2, Tube 2, fine time trailing, all bars.
+#endif
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P3T1_TFL1); // Plane 3, Tube 1, fine time leading, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P3T1_TFT1); // Plane 3, Tube 1, fine time trailing, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P3T2_TFL1); // Plane 3, Tube 2, fine time leading, all bars.
@@ -83,6 +94,16 @@ SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P6T1_TFT1); // Plane 6, Tube 1, fine time t
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P6T2_TFL1); // Plane 6, Tube 2, fine time leading, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P6T2_TFT1); // Plane 6, Tube 2, fine time trailing, all bars.
 
+#if defined(UNPACKER_IS_jun16_ptof)
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T1_TCL1); // Plane 1, Tube 1, coarse time leading, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T1_TCT1); // Plane 1, Tube 1, coarse time trailing, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T2_TCL1); // Plane 1, Tube 2, coarse time leading, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T2_TCT1); // Plane 1, Tube 2, coarse time trailing, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T1_TCL1); // Plane 2, Tube 1, coarse time leading, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T1_TCT1); // Plane 2, Tube 1, coarse time trailing, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T2_TCL1); // Plane 2, Tube 2, coarse time leading, all bars.
+SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T2_TCT1); // Plane 2, Tube 2, coarse time trailing, all bars.
+#else
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P1T1_TCL1); // Plane 1, Tube 1, coarse time leading, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P1T1_TCT1); // Plane 1, Tube 1, coarse time trailing, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P1T2_TCL1); // Plane 1, Tube 2, coarse time leading, all bars.
@@ -91,6 +112,7 @@ SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P2T1_TCL1); // Plane 2, Tube 1, coarse time
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P2T1_TCT1); // Plane 2, Tube 1, coarse time trailing, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P2T2_TCL1); // Plane 2, Tube 2, coarse time leading, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P2T2_TCT1); // Plane 2, Tube 2, coarse time trailing, all bars.
+#endif
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P3T1_TCL1); // Plane 3, Tube 1, coarse time leading, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P3T1_TCT1); // Plane 3, Tube 1, coarse time trailing, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): TOFD_P3T2_TCL1); // Plane 3, Tube 2, coarse time leading, all bars.
@@ -176,8 +198,73 @@ SIGNAL(TOFD_P2T1_TFL6,  tofd_vme.vftx2_3.time_fine[12], DATA12);
 SIGNAL(TOFD_P2T1_TFT6,  tofd_vme.vftx2_3.time_fine[13], DATA12);
 SIGNAL(TOFD_P2T2_TFL6,  tofd_vme.vftx2_3.time_fine[14], DATA12);
 SIGNAL(TOFD_P2T2_TFT6,  tofd_vme.vftx2_3.time_fine[15], DATA12);
-#else
+#endif
 
+#if defined(UNPACKER_IS_jun16_ptof)
+// Plane 1 with TAMEX2 + PADI.
+SIGNAL(PTOF_P1T1_TFL1, tofd_tamex.tamex_3.time_fine[1],  DATA12);
+SIGNAL(PTOF_P1T1_TFT1, tofd_tamex.tamex_3.time_fine[2],  DATA12);
+SIGNAL(PTOF_P1T2_TFL1, tofd_tamex.tamex_3.time_fine[3],  DATA12);
+SIGNAL(PTOF_P1T2_TFT1, tofd_tamex.tamex_3.time_fine[4],  DATA12);
+
+SIGNAL(PTOF_P1T1_TFL2, tofd_tamex.tamex_3.time_fine[5],  DATA12);
+SIGNAL(PTOF_P1T1_TFT2, tofd_tamex.tamex_3.time_fine[6],  DATA12);
+SIGNAL(PTOF_P1T2_TFL2, tofd_tamex.tamex_3.time_fine[7],  DATA12);
+SIGNAL(PTOF_P1T2_TFT2, tofd_tamex.tamex_3.time_fine[8],  DATA12);
+
+SIGNAL(PTOF_P1T1_TFL3, tofd_tamex.tamex_3.time_fine[9],  DATA12);
+SIGNAL(PTOF_P1T1_TFT3, tofd_tamex.tamex_3.time_fine[10], DATA12);
+SIGNAL(PTOF_P1T2_TFL3, tofd_tamex.tamex_3.time_fine[11], DATA12);
+SIGNAL(PTOF_P1T2_TFT3, tofd_tamex.tamex_3.time_fine[12], DATA12);
+
+SIGNAL(PTOF_P1T1_TFL4, tofd_tamex.tamex_3.time_fine[13], DATA12);
+SIGNAL(PTOF_P1T1_TFT4, tofd_tamex.tamex_3.time_fine[14], DATA12);
+SIGNAL(PTOF_P1T2_TFL4, tofd_tamex.tamex_3.time_fine[15], DATA12);
+SIGNAL(PTOF_P1T2_TFT4, tofd_tamex.tamex_3.time_fine[16], DATA12);
+
+SIGNAL(PTOF_P1T1_TFL5, tofd_tamex.tamex_3.time_fine[17], DATA12);
+SIGNAL(PTOF_P1T1_TFT5, tofd_tamex.tamex_3.time_fine[18], DATA12);
+SIGNAL(PTOF_P1T2_TFL5, tofd_tamex.tamex_3.time_fine[19], DATA12);
+SIGNAL(PTOF_P1T2_TFT5, tofd_tamex.tamex_3.time_fine[20], DATA12);
+
+// Plane 2 with TAMEX2 + PADI.
+SIGNAL(PTOF_P1T1_TFL6, tofd_tamex.tamex_3.time_fine[21], DATA12);
+SIGNAL(PTOF_P1T1_TFT6, tofd_tamex.tamex_3.time_fine[22], DATA12);
+SIGNAL(PTOF_P1T2_TFL6, tofd_tamex.tamex_3.time_fine[23], DATA12);
+SIGNAL(PTOF_P1T2_TFT6, tofd_tamex.tamex_3.time_fine[24], DATA12);
+
+SIGNAL(PTOF_P2T1_TFL1, tofd_tamex.tamex_4.time_fine[1],  DATA12);
+SIGNAL(PTOF_P2T1_TFT1, tofd_tamex.tamex_4.time_fine[2],  DATA12);
+SIGNAL(PTOF_P2T2_TFL1, tofd_tamex.tamex_4.time_fine[3],  DATA12);
+SIGNAL(PTOF_P2T2_TFT1, tofd_tamex.tamex_4.time_fine[4],  DATA12);
+
+SIGNAL(PTOF_P2T1_TFL2, tofd_tamex.tamex_4.time_fine[5],  DATA12);
+SIGNAL(PTOF_P2T1_TFT2, tofd_tamex.tamex_4.time_fine[6],  DATA12);
+SIGNAL(PTOF_P2T2_TFL2, tofd_tamex.tamex_4.time_fine[7],  DATA12);
+SIGNAL(PTOF_P2T2_TFT2, tofd_tamex.tamex_4.time_fine[8],  DATA12);
+
+SIGNAL(PTOF_P2T1_TFL3, tofd_tamex.tamex_4.time_fine[9],  DATA12);
+SIGNAL(PTOF_P2T1_TFT3, tofd_tamex.tamex_4.time_fine[10], DATA12);
+SIGNAL(PTOF_P2T2_TFL3, tofd_tamex.tamex_4.time_fine[11], DATA12);
+SIGNAL(PTOF_P2T2_TFT3, tofd_tamex.tamex_4.time_fine[12], DATA12);
+
+SIGNAL(PTOF_P2T1_TFL4, tofd_tamex.tamex_4.time_fine[13], DATA12);
+SIGNAL(PTOF_P2T1_TFT4, tofd_tamex.tamex_4.time_fine[14], DATA12);
+SIGNAL(PTOF_P2T2_TFL4, tofd_tamex.tamex_4.time_fine[15], DATA12);
+SIGNAL(PTOF_P2T2_TFT4, tofd_tamex.tamex_4.time_fine[16], DATA12);
+
+SIGNAL(PTOF_P2T1_TFL5, tofd_tamex.tamex_4.time_fine[17], DATA12);
+SIGNAL(PTOF_P2T1_TFT5, tofd_tamex.tamex_4.time_fine[18], DATA12);
+SIGNAL(PTOF_P2T2_TFL5, tofd_tamex.tamex_4.time_fine[19], DATA12);
+SIGNAL(PTOF_P2T2_TFT5, tofd_tamex.tamex_4.time_fine[20], DATA12);
+
+SIGNAL(PTOF_P2T1_TFL6, tofd_tamex.tamex_4.time_fine[21], DATA12);
+SIGNAL(PTOF_P2T1_TFT6, tofd_tamex.tamex_4.time_fine[22], DATA12);
+SIGNAL(PTOF_P2T2_TFL6, tofd_tamex.tamex_4.time_fine[23], DATA12);
+SIGNAL(PTOF_P2T2_TFT6, tofd_tamex.tamex_4.time_fine[24], DATA12);
+#endif
+
+#if defined(UNPACKER_IS_jun16C)
 // Plane 1 with TAMEX2 + PADI.
 SIGNAL(TOFD_P1T1_TFL1, tofd_tamex.tamex_3.time_fine[1],  DATA12);
 SIGNAL(TOFD_P1T1_TFT1, tofd_tamex.tamex_3.time_fine[2],  DATA12);
@@ -204,12 +291,12 @@ SIGNAL(TOFD_P1T1_TFT5, tofd_tamex.tamex_3.time_fine[18], DATA12);
 SIGNAL(TOFD_P1T2_TFL5, tofd_tamex.tamex_3.time_fine[19], DATA12);
 SIGNAL(TOFD_P1T2_TFT5, tofd_tamex.tamex_3.time_fine[20], DATA12);
 
-// Plane 2 with TAMEX2 + PADI.
 SIGNAL(TOFD_P1T1_TFL6, tofd_tamex.tamex_3.time_fine[21], DATA12);
 SIGNAL(TOFD_P1T1_TFT6, tofd_tamex.tamex_3.time_fine[22], DATA12);
 SIGNAL(TOFD_P1T2_TFL6, tofd_tamex.tamex_3.time_fine[23], DATA12);
 SIGNAL(TOFD_P1T2_TFT6, tofd_tamex.tamex_3.time_fine[24], DATA12);
 
+// Plane 2 with TAMEX2 + PADI.
 SIGNAL(TOFD_P2T1_TFL1, tofd_tamex.tamex_4.time_fine[1],  DATA12);
 SIGNAL(TOFD_P2T1_TFT1, tofd_tamex.tamex_4.time_fine[2],  DATA12);
 SIGNAL(TOFD_P2T2_TFL1, tofd_tamex.tamex_4.time_fine[3],  DATA12);
@@ -239,7 +326,6 @@ SIGNAL(TOFD_P2T1_TFL6, tofd_tamex.tamex_4.time_fine[21], DATA12);
 SIGNAL(TOFD_P2T1_TFT6, tofd_tamex.tamex_4.time_fine[22], DATA12);
 SIGNAL(TOFD_P2T2_TFL6, tofd_tamex.tamex_4.time_fine[23], DATA12);
 SIGNAL(TOFD_P2T2_TFT6, tofd_tamex.tamex_4.time_fine[24], DATA12);
-
 #endif
 
 // Plane 3 with TAMEX.
@@ -432,7 +518,73 @@ SIGNAL(TOFD_P2T1_TCL6,  tofd_vme.vftx2_3.time_coarse[12], DATA16);
 SIGNAL(TOFD_P2T1_TCT6,  tofd_vme.vftx2_3.time_coarse[13], DATA16);
 SIGNAL(TOFD_P2T2_TCL6,  tofd_vme.vftx2_3.time_coarse[14], DATA16);
 SIGNAL(TOFD_P2T2_TCT6,  tofd_vme.vftx2_3.time_coarse[15], DATA16);
-#else
+#endif
+
+#if defined(UNPACKER_IS_jun16_ptof)
+// Plane 1 with PADI and TAMEX.
+SIGNAL(PTOF_P1T1_TCL1, tofd_tamex.tamex_3.time_coarse[1],  DATA16);
+SIGNAL(PTOF_P1T1_TCT1, tofd_tamex.tamex_3.time_coarse[2],  DATA16);
+SIGNAL(PTOF_P1T2_TCL1, tofd_tamex.tamex_3.time_coarse[3],  DATA16);
+SIGNAL(PTOF_P1T2_TCT1, tofd_tamex.tamex_3.time_coarse[4],  DATA16);
+
+SIGNAL(PTOF_P1T1_TCL2, tofd_tamex.tamex_3.time_coarse[5],  DATA16);
+SIGNAL(PTOF_P1T1_TCT2, tofd_tamex.tamex_3.time_coarse[6],  DATA16);
+SIGNAL(PTOF_P1T2_TCL2, tofd_tamex.tamex_3.time_coarse[7],  DATA16);
+SIGNAL(PTOF_P1T2_TCT2, tofd_tamex.tamex_3.time_coarse[8],  DATA16);
+
+SIGNAL(PTOF_P1T1_TCL3, tofd_tamex.tamex_3.time_coarse[9],  DATA16);
+SIGNAL(PTOF_P1T1_TCT3, tofd_tamex.tamex_3.time_coarse[10], DATA16);
+SIGNAL(PTOF_P1T2_TCL3, tofd_tamex.tamex_3.time_coarse[11], DATA16);
+SIGNAL(PTOF_P1T2_TCT3, tofd_tamex.tamex_3.time_coarse[12], DATA16);
+
+SIGNAL(PTOF_P1T1_TCL4, tofd_tamex.tamex_3.time_coarse[13], DATA16);
+SIGNAL(PTOF_P1T1_TCT4, tofd_tamex.tamex_3.time_coarse[14], DATA16);
+SIGNAL(PTOF_P1T2_TCL4, tofd_tamex.tamex_3.time_coarse[15], DATA16);
+SIGNAL(PTOF_P1T2_TCT4, tofd_tamex.tamex_3.time_coarse[16], DATA16);
+
+SIGNAL(PTOF_P1T1_TCL5, tofd_tamex.tamex_3.time_coarse[17], DATA16);
+SIGNAL(PTOF_P1T1_TCT5, tofd_tamex.tamex_3.time_coarse[18], DATA16);
+SIGNAL(PTOF_P1T2_TCL5, tofd_tamex.tamex_3.time_coarse[19], DATA16);
+SIGNAL(PTOF_P1T2_TCT5, tofd_tamex.tamex_3.time_coarse[20], DATA16);
+
+SIGNAL(PTOF_P1T1_TCL6, tofd_tamex.tamex_3.time_coarse[21], DATA16);
+SIGNAL(PTOF_P1T1_TCT6, tofd_tamex.tamex_3.time_coarse[22], DATA16);
+SIGNAL(PTOF_P1T2_TCL6, tofd_tamex.tamex_3.time_coarse[23], DATA16);
+SIGNAL(PTOF_P1T2_TCT6, tofd_tamex.tamex_3.time_coarse[24], DATA16);
+
+// Plane 2 with PADI TAMEX.
+SIGNAL(PTOF_P2T1_TCL1, tofd_tamex.tamex_4.time_coarse[1],  DATA16);
+SIGNAL(PTOF_P2T1_TCT1, tofd_tamex.tamex_4.time_coarse[2],  DATA16);
+SIGNAL(PTOF_P2T2_TCL1, tofd_tamex.tamex_4.time_coarse[3],  DATA16);
+SIGNAL(PTOF_P2T2_TCT1, tofd_tamex.tamex_4.time_coarse[4],  DATA16);
+
+SIGNAL(PTOF_P2T1_TCL2, tofd_tamex.tamex_4.time_coarse[5],  DATA16);
+SIGNAL(PTOF_P2T1_TCT2, tofd_tamex.tamex_4.time_coarse[6],  DATA16);
+SIGNAL(PTOF_P2T2_TCL2, tofd_tamex.tamex_4.time_coarse[7],  DATA16);
+SIGNAL(PTOF_P2T2_TCT2, tofd_tamex.tamex_4.time_coarse[8],  DATA16);
+
+SIGNAL(PTOF_P2T1_TCL3, tofd_tamex.tamex_4.time_coarse[9],  DATA16);
+SIGNAL(PTOF_P2T1_TCT3, tofd_tamex.tamex_4.time_coarse[10], DATA16);
+SIGNAL(PTOF_P2T2_TCL3, tofd_tamex.tamex_4.time_coarse[11], DATA16);
+SIGNAL(PTOF_P2T2_TCT3, tofd_tamex.tamex_4.time_coarse[12], DATA16);
+
+SIGNAL(PTOF_P2T1_TCL4, tofd_tamex.tamex_4.time_coarse[13], DATA16);
+SIGNAL(PTOF_P2T1_TCT4, tofd_tamex.tamex_4.time_coarse[14], DATA16);
+SIGNAL(PTOF_P2T2_TCL4, tofd_tamex.tamex_4.time_coarse[15], DATA16);
+SIGNAL(PTOF_P2T2_TCT4, tofd_tamex.tamex_4.time_coarse[16], DATA16);
+
+SIGNAL(PTOF_P2T1_TCL5, tofd_tamex.tamex_4.time_coarse[17], DATA16);
+SIGNAL(PTOF_P2T1_TCT5, tofd_tamex.tamex_4.time_coarse[18], DATA16);
+SIGNAL(PTOF_P2T2_TCL5, tofd_tamex.tamex_4.time_coarse[19], DATA16);
+SIGNAL(PTOF_P2T2_TCT5, tofd_tamex.tamex_4.time_coarse[20], DATA16);
+
+SIGNAL(PTOF_P2T1_TCL6, tofd_tamex.tamex_4.time_coarse[21], DATA16);
+SIGNAL(PTOF_P2T1_TCT6, tofd_tamex.tamex_4.time_coarse[22], DATA16);
+SIGNAL(PTOF_P2T2_TCL6, tofd_tamex.tamex_4.time_coarse[23], DATA16);
+SIGNAL(PTOF_P2T2_TCT6, tofd_tamex.tamex_4.time_coarse[24], DATA16);
+#endif
+
+#if defined(UNPACKER_IS_jun16C)
 // Plane 1 with PADI and TAMEX.
 SIGNAL(TOFD_P1T1_TCL1, tofd_tamex.tamex_3.time_coarse[1],  DATA16);
 SIGNAL(TOFD_P1T1_TCT1, tofd_tamex.tamex_3.time_coarse[2],  DATA16);
@@ -881,7 +1033,7 @@ SIGNAL(ZERO_SUPPRESS: FIFILTER10_16_E1);
 SIGNAL(FIFILTER10_16_E1, fitest_febex.febextrace[7].filter[15][0], FIFILTER10_16_E200, fitest_febex.febextrace[7].filter[15][199], DATA32);
 #endif
 
-#if defined(UNPACKER_IS_jun16_C) || defined(UNPACKER_IS_jun16_ptof) || defined(UNPACKER_IS_jun16Xe)
+#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16_ptof) || defined(UNPACKER_IS_jun16Xe)
 // FiTest fine (TDC) values.
 SIGNAL(ZERO_SUPPRESS_MULTI(64): FITEST_TF1);
 SIGNAL(FITEST_TF1 , tbm_vme.vftx2.time_fine[0],
@@ -893,7 +1045,7 @@ SIGNAL(FITEST_TC1 , tbm_vme.vftx2.time_coarse[0],
 FITEST_TC64, tbm_vme.vftx2.time_coarse[63], DATA16);
 #endif
 
-#if defined(UNPACKER_IS_jun16_C) || defined(UNPACKER_IS_jun16Xe)
+#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16Xe)
 // PSPX, final mapping, 11.07.2016
 SIGNAL(ZERO_SUPPRESS_MULTI(20): PSPX01_01);
 SIGNAL(ZERO_SUPPRESS_MULTI(20): PSPX02_01);
@@ -1964,7 +2116,7 @@ SIGNAL(ZERO_SUPPRESS: PSPXT06_128_Tr1);
 SIGNAL(PSPXT06_128_Tr1, tracking_febex.febextrace_0[13].trace[15][ 0], PSPXT06_128_Tr400, tracking_febex.febextrace_0[13].trace[15][399], DATA16);
 #endif
 
-#if defined(UNPACKER_IS_jun16_C)
+#if defined(UNPACKER_IS_jun16C)
 //SIPDs
 SIGNAL(PSPX05_2, tracking_febex.febex_0[0].e[1], DATA32);
 SIGNAL(ZERO_SUPPRESS: PSPXT05_2_Tr1);
@@ -2262,7 +2414,7 @@ SIGNAL(PSPX06_61, tracking_febex.febex_0[13].e[13], DATA32);
 SIGNAL(PSPX06_63, tracking_febex.febex_0[13].e[15], DATA32);
 #endif
 
-#if defined(UNPACKER_IS_jun16_C) || defined(UNPACKER_IS_jun16_ptof) || defined(UNPACKER_IS_jun16Xe)
+#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16_ptof) || defined(UNPACKER_IS_jun16Xe)
 /******** tracking fiber called FITRACK *********/
 //card 1/8 third card on the crate
 SIGNAL(ZERO_SUPPRESS_MULTI(32): FITRACK_1t1);
@@ -2323,7 +2475,7 @@ SIGNAL(FITRACK_10E1, fitest_febex.febex[7].e[0],
 /**********end FITRACK  ************/
 #endif
 
-#if defined(UNPACKER_IS_jun16_C)
+#if defined(UNPACKER_IS_jun16C)
 /* FITRACEs. */
 SIGNAL(ZERO_SUPPRESS: FITRACE3_1_E1);
 SIGNAL(FITRACE3_1_E1, fitest_febex.febextrace[0].trace[0][0], FITRACE3_1_E200, fitest_febex.febextrace[0].trace[0][199], DATA16);
