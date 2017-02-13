@@ -336,5 +336,5 @@ EVENT
 }
 
 #include "mapping.hh"
-#include "gen_s438b/mapping_neuland.hh"
+#include "gen/mapping_neuland.hh"
 #include "mapping_psp_zerosuppressed.hh"

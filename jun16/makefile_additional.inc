@@ -1,6 +1,6 @@
 USE_LMD_INPUT=1
 
-LAND_COMMON_DIR = ./../land_common
+LAND_COMMON_DIR = ../land_common
 SRC_DIRS += $(LAND_COMMON_DIR)
 OBJS+=jun16_user.o
 

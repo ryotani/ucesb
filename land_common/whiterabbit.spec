@@ -20,6 +20,20 @@ TIMESTAMP_WHITERABBIT(id)
 		0_15:  t4;
 		16_31: 0x06e1;
 	};
-	UINT32 time_lo;
-	UINT32 time_hi;
 }
+
+WR_MULTI()
+{
+	MEMBER(DATA32 time_hi);
+	MEMBER(DATA32 time_lo);
+
+	UINT32 hi NOENCODE {
+		0_31: time;
+		ENCODE(time_hi, (value = time));
+	}
+	UINT32 lo NOENCODE {
+		0_31: time;
+		ENCODE(time_lo, (value = time));
+	}
+}
+
