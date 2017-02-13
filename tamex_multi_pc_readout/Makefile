@@ -1,27 +1,19 @@
-TARGET:=tamex_multi_pc_readout
+#########################################################
+# Specify the name of the target executable
 
-TREE_OR_HOME_SRC_DIR = $(firstword $(wildcard $(addsuffix /$(1),$(shell pwd)/../.. $(HOME))))
+TARGETS:=tamex_multi_pc_readout
 
-UCESB_BASE_DIR=$(call TREE_OR_HOME_SRC_DIR,ucesb)
-export UCESB_BASE_DIR
+#########################################################
 
-.PHONY: all clean
+CLEAN_TARGETS+=clean_mapping
 
-all: mapping.h $(TARGET)
+#########################################################
+# Include common Makefile
 
-mapping.h: mappingNeuland.txt
-	@echo " MAPPING " $@
-	@./make_mapping.sh > $@
+include ../makefile_common.mk
 
-include $(UCESB_BASE_DIR)/makefile_ucesbgen.inc
-include $(UCESB_BASE_DIR)/makefile_psdc.inc
-
-DEPENDENCIES=$(UCESB) $(PSDC)
-
-.PHONY: $(TARGET)
-$(TARGET): $(DEPENDENCIES)
-	@$(MAKE) -C . -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(TARGET) UCESB_BASE_DIR=$(UCESB_BASE_DIR)
-
-clean:
-	@$(MAKE) -C . -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(TARGET) UCESB_BASE_DIR=$(UCESB_BASE_DIR) clean
+#########################################################
+# Extra rules
+clean_mapping:
 	rm -rf mapping.h
+

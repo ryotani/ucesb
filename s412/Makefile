@@ -20,7 +20,6 @@ all: s412
 #########################################################
 # Submakefiles that the programs depend on
 
-include $(UCESB_BASE_DIR)/makefile_ucesbgen.inc
 include $(UCESB_BASE_DIR)/makefile_psdc.inc
 
 DEPENDENCIES=$(UCESB) $(PSDC)
