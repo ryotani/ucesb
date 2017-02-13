@@ -1,37 +1,9 @@
+#########################################################
+# Specify the name of the target executable
 
-# In case of problems compiling the parsers, ask them to be generated
-# with bison instead of yacc (trouble on redhat / bsds) (uncomment
-# below)
-#YACC=bison
-#export YACC
-
-TREE_OR_HOME_SRC_DIR = $(firstword $(wildcard $(addsuffix /$(1),$(shell pwd)/../.. $(HOME))))
-
-UCESB_BASE_DIR:=$(call TREE_OR_HOME_SRC_DIR,ucesb)
-export UCESB_BASE_DIR
+TARGETS:=s408
 
 #########################################################
+# Include common Makefile
 
-all: s408
-
-#########################################################
-# Submakefiles that the programs depend on
-
-include $(UCESB_BASE_DIR)/makefile_psdc.inc
-
-DEPENDENCIES=$(UCESB) $(PSDC)
-
-#########################################################
-
-.PHONY: s408
-s408: $(DEPENDENCIES)
-	@$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$@ 
-
-#########################################################
-
-clean:
-	$(MAKE) -f $(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=s408 clean
-
-all-clean: clean
-	rm -rf gen
-
+include ../makefile_common.mk
