@@ -381,15 +381,4 @@ EVENT
 	tofd_empty = empty_subev(type=10, subtype=1, control=2);
 }
 
-#if defined(UNPACKER_IS_jun16) || defined(UNPACKER_IS_jun16U)
 #include "mapping.hh"
-#endif
-#ifdef UNPACKER_IS_jun16C
-#include "mapping_jun16C.hh"
-#endif
-#ifdef UNPACKER_IS_jun16Xe
-#include "mapping_jun16Xe.hh"
-#endif
-#ifdef UNPACKER_IS_jun16_ptof
-#include "mapping_jun16_ptof.hh"
-#endif
