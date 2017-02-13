@@ -37,6 +37,8 @@ define build_rules
 
 DEPENDENCIES=$(UCESB) $(PSDC) $(1).spec
 
+$(1): build_$(1)
+
 .PHONY: build_$(1)
 build_$(1): $$(DEPENDENCIES)
 	@$$(MAKE) -f $$(UCESB_BASE_DIR)/makefile_unpacker.inc UNPACKER=$(1)
