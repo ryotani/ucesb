@@ -57,7 +57,7 @@ $(foreach target,$(TARGETS),$(eval $(call build_rules,$(target))))
 
 BUILD_TARGETS=$(addprefix build_,$(TARGETS))
 TEST_TARGETS=$(addprefix test_,$(TARGETS))
-CLEAN_TARGETS=$(addprefix clean_,$(TARGETS))
+CLEAN_TARGETS+=$(addprefix clean_,$(TARGETS))
 
 $(info clean=$(CLEAN_TARGETS))
 
