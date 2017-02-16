@@ -1,6 +1,6 @@
 #include "spec/vme_mesytec_madc32.spec"
 #include "../land_common/barrier.spec"
-#include "../land_common/gsi_febex.spec"
+#include "gsi_febex.spec"
 #include "../land_common/land_vme.spec"
 #include "../land_common/trloii.spec"
 #include "../land_common/vme_gsi_vftx2.spec"
@@ -121,7 +121,7 @@ SUBEVENT(tracking_febex_subev)
 		febex_1[15] = FEBEX_NOTRACE(sfp=1, card=15);
 	}
 #endif
-#ifdef UNPACKER_IS_jun16C
+#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16_ptof)
 	header = FEBEX_EVENTHEADER();
 	select several {
 		padding = FEBEX_PADDING();
@@ -165,7 +165,7 @@ SUBEVENT(tracking_febex_subev)
 		febextrace_0[17] = FEBEX_TRACE(sfp=0, card=17);
 	}
 #endif
-#if defined(UNPACKER_IS_jun16Xe) || defined(UNPACKER_IS_jun16_ptof)
+#if defined(UNPACKER_IS_jun16Xe)
 	select several {
 		badbad0 = FEBEX_BADBAD();
 		header0 = FEBEX_EVENTHEADER();
