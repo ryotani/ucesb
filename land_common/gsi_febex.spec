@@ -12,10 +12,10 @@ FEBEX_EVENTHEADER()
 	}
 
 	UINT32 febexcards {
-		0_7:   n_febex_sfp0;
-		8_15:  n_febex_sfp1;
-		16_23: n_febex_sfp2;
-		24_31: n_febex_sfp3;
+		0_7:   n_febex_sfp0 = RANGE(0, 64);
+		8_15:  n_febex_sfp1 = RANGE(0, 64);
+		16_23: n_febex_sfp2 = RANGE(0, 64);
+		24_31: n_febex_sfp3 = RANGE(0, 64);
 	}
 }
 
