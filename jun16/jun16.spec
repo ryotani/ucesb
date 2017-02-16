@@ -272,7 +272,7 @@ SUBEVENT(tracking_febex_subev)
 		febex_2[10] = FEBEX_NOTRACE(sfp=2, card=10);
 		febex_2[11] = FEBEX_NOTRACE(sfp=2, card=11);
 	}
-#endif	
+#endif
 }
 
 SUBEVENT(fitest_febex_subev)

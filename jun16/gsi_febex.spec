@@ -1,17 +1,25 @@
-FEBEX_BADBAD()
+FEBEX_EVENTHEADER()
+{
+	select {
+		good = FEBEX_GOOD_EVENTHEADER();
+		bad = FEBEX_BAD_EVENTHEADER();
+	}
+}
+
+FEBEX_BAD_EVENTHEADER()
 {
 	UINT32 badbad {
 		0_31: 0xbad00bad;
 	}
 }
 
-FEBEX_EVENTHEADER()
+FEBEX_GOOD_EVENTHEADER()
 {
 	UINT32 febexcards {
-		0_7:   n_febex_sfp0;
-		8_15:  n_febex_sfp1;
-		16_23: n_febex_sfp2;
-		24_31: n_febex_sfp3;
+		0_7:   n_febex_sfp0 = RANGE(0, 64);
+		8_15:  n_febex_sfp1 = RANGE(0, 64);
+		16_23: n_febex_sfp2 = RANGE(0, 64);
+		24_31: n_febex_sfp3 = RANGE(0, 64);
 	}
 	UINT32 trig_length {
 		0_15:  trace_length;
@@ -140,7 +148,7 @@ FEBEX_TRACE(sfp, card)
 				14_15: nik_knows; // unknown data. !=0
 				16_29: data2;
 				30_31: nik_knows2; // unknown data. !=0
-	       
+
 				ENCODE(trace[header.channel_id][2*i+0], (value = data1));
 				ENCODE(trace[header.channel_id][2*i+1], (value = data2));
 			}
