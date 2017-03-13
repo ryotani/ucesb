@@ -2,21 +2,8 @@
 
 SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T1_TFL1); // Plane 1, Tube 1, fine time leading, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T1_TFT1); // Plane 1, Tube 1, fine time trailing, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T2_TFL1); // Plane 1, Tube 2, fine time leading, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T2_TFT1); // Plane 1, Tube 2, fine time trailing, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T1_TFL1); // Plane 2, Tube 1, fine time leading, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T1_TFT1); // Plane 2, Tube 1, fine time trailing, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T2_TFL1); // Plane 2, Tube 2, fine time leading, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T2_TFT1); // Plane 2, Tube 2, fine time trailing, all bars.
-
 SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T1_TCL1); // Plane 1, Tube 1, coarse time leading, all bars.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T1_TCT1); // Plane 1, Tube 1, coarse time trailing, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T2_TCL1); // Plane 1, Tube 2, coarse time leading, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P1T2_TCT1); // Plane 1, Tube 2, coarse time trailing, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T1_TCL1); // Plane 2, Tube 1, coarse time leading, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T1_TCT1); // Plane 2, Tube 1, coarse time trailing, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T2_TCL1); // Plane 2, Tube 2, coarse time leading, all bars.
-SIGNAL(ZERO_SUPPRESS_MULTI(32): PTOF_P2T2_TCT1); // Plane 2, Tube 2, coarse time trailing, all bars.
 
 // Fine times ---------------------------------------------------
 // Plane 1 with TAMEX2 + PADI.
