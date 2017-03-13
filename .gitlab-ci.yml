@@ -1,0 +1,150 @@
+---
+stages:
+  - fast-build
+  - build
+
+############################################
+#               COMMON                     #
+############################################
+
+.common: &common
+  tags:
+    - docker
+
+.build: &build
+  script:
+    - JOB_NAME=( $CI_BUILD_NAME )
+    - export CC=${JOB_NAME[2]}
+    - export CXX=${JOB_NAME[3]}
+    - $CXX --version
+    - flex --version
+    - make -k ${JOB_NAME[4]} $EXTRA_MAKE_FLAGS
+
+.prepare-ucesb-landdaq-bsd: &ucesb-landdaq-bsd
+  before_script:
+    # External deps
+    - cd ..
+    # Ucesb
+    - rm -rf ucesb
+    - git clone http://fy.chalmers.se/~f96hajo/ucesb/ucesb.git
+    - export UCESB_DIR=`pwd`/ucesb
+    #
+    - cd -
+
+.prepare-ucesb-landdaq-mac: &ucesb-landdaq-mac
+  before_script:
+    # External deps
+    - cd ..
+    # Ucesb
+    - rm -rf ucesb
+    - git clone http://fy.chalmers.se/~f96hajo/ucesb/ucesb.git
+    - export UCESB_DIR=`pwd`/ucesb
+    #
+    - cd -
+
+.build-bsd: &build-bsd
+  variables:
+    EXTRA_MAKE_FLAGS: "NO_YACC_WERROR=1
+    CXXLINKFLAGS=-Wl,-rpath=/usr/local/lib/gcc48"
+  script:
+    - JOB_NAME=( $CI_BUILD_NAME )
+    - export CC=${JOB_NAME[2]}
+    - export CXX=${JOB_NAME[3]}
+    - $CC --version
+    - gmake -k ${JOB_NAME[4]} $EXTRA_MAKE_FLAGS
+  tags:
+    - bsd
+
+.build-mac-sierra: &build-mac-sierra
+  variables:
+    EXTRA_MAKE_FLAGS: "NO_YACC_WERROR=1"
+  <<: *build
+  tags:
+    - mac
+    - sierra
+
+.prepare-debian: &debian
+  <<: *common
+  before_script:
+    - JOB_NAME=( $CI_BUILD_NAME )
+    - export CC=${JOB_NAME[2]}
+    - export CXX=${JOB_NAME[3]}
+    - apt-get update -yq > /dev/null
+    - apt-get install -y --no-install-recommends git flex bison
+      libncurses5-dev build-essential > /dev/null
+    - apt-get install -y ${CC} > /dev/null
+    - if [[ $CXX == g++* ]] ; then
+    - apt-get install -y ${CXX} > /dev/null
+    - fi
+    # External deps
+    - cd ..
+    # Ucesb
+    - rm -rf ucesb
+    - git clone http://fy.chalmers.se/~f96hajo/ucesb/ucesb.git
+    - export UCESB_DIR=`pwd`/ucesb
+    #
+    - cd -
+
+############################################
+#               TARGETS                    #
+############################################
+
+# Fast build (only s232) to quickly see if there is some chance.
+
+Trusty root5 gcc g++ s232:
+  stage: fast-build
+  image: munken/root:trusty-root5
+  <<: *debian
+  <<: *build
+
+Trusty root5 clang clang++ s232:
+  stage: fast-build
+  image: munken/root:trusty-root5
+  <<: *debian
+  <<: *build
+
+Trusty 32bit gcc g++ s232:
+  stage: fast-build
+  image: daald/ubuntu32:trusty
+  <<: *debian
+  <<: *build
+
+freebsd 10 gcc g++ s232:
+  stage: fast-build
+  <<: *ucesb-landdaq-bsd
+  <<: *build-bsd
+
+mac sierra gcc g++ s232:
+  stage: fast-build
+  <<: *ucesb-landdaq-mac
+  <<: *build-mac-sierra
+
+# Full build
+
+Trusty root5 gcc g++ all:
+  stage: build
+  image: munken/root:trusty-root5
+  <<: *debian
+  <<: *build
+
+Trusty root5 clang clang++ all:
+  stage: build
+  image: munken/root:trusty-root5
+  <<: *debian
+  <<: *build
+
+Trusty 32bit gcc g++ all:
+  stage: build
+  image: daald/ubuntu32:trusty
+  <<: *debian
+  <<: *build
+
+freebsd 10 gcc g++ all:
+  stage: build
+  <<: *ucesb-landdaq-bsd
+  <<: *build-bsd
+
+mac sierra gcc g++ all:
+  stage: build
+  <<: *ucesb-landdaq-mac
+  <<: *build-mac-sierra
