@@ -27,24 +27,38 @@ OTHERS= e062 \
 	tamex_multi_pc_readout \
 	uppsala
 
+# Some experiments need files from the old landdaq_ and
+# landdaq/ccdaqlib directories.  The needed files are now part of
+# upexps to simplify building these experiment unpackers.
+
+ifeq (1,USING_EXTERNAL_LANDDAQ_)
 # Some experiments need the landdaq_ dir to be present
 LANDDAQ_DIR:=$(call TREE_UCESB_OR_HOME_SRC_DIR,landdaq_)
+else
+LANDDAQ_DIR:=landdaq_   # Use upexps provided version
+endif
+
 ifeq (,$(LANDDAQ_DIR))
 $(info No 'landdaq_' directory found)
 else
-$(info LANDDAQ_DIR=$(LANDDAQ_DIR))
+#$(info LANDDAQ_DIR=$(LANDDAQ_DIR))
 NEED_LANDDAQ=
 endif
 
+ifeq (1,USING_EXTERNAL_CCDAQLIB)
 # Some experiments need the landdaq/ccdaqlib dir to be present
 CCDAQLIB_DIR:=$(call TREE_UCESB_OR_HOME_SRC_DIR,landdaq/ccdaqlib)
+else
+CCDAQLIB_DIR:=landdaq/ccdaqlib   # Use upexps provided version
+endif
+
 ifeq (,$(CCDAQLIB_DIR))
 $(info No 'landdaq/ccdaqlib' directory found)
 else
 ifneq (,$(LANDDAQ_DIR))
 NEED_LANDDAQ_AND_CCDAQLIB=s223 s296 s306 s318 s327 s393 s406
 endif
-$(info CCDAQLIB_DIR=$(CCDAQLIB_DIR))
+#$(info CCDAQLIB_DIR=$(CCDAQLIB_DIR))
 NEED_CCDAQLIB=dec2006
 endif
 
