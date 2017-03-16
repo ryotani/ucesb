@@ -57,9 +57,19 @@ SUBEVENT(wr_ts_100)
 	ts = TIMESTAMP_WHITERABBIT(id=0x100);
 }
 
+SUBEVENT(empty_subevent) {
+}
+
+SUBEVENT(land_header_only) {
+	header = LAND_STD_VME();
+}
+
 EVENT
 {
 	ts = wr_ts_100(type=10, subtype=1, control=0, subcrate=0);
 	vme = vme_subevent(type=88, subtype=8800, control=0, subcrate=0);
+	vme_drasi = empty_subevent(type=1234, subtype=5678, control=9, subcrate=0);
+	vme_drasi_unknown = empty_subevent(type=0xffff, subtype=0xffff,
+		control=9, subcrate=9);
 }
 
