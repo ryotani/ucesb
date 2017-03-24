@@ -20,7 +20,7 @@ stages:
     - flex --version
     - make -k ${JOB_NAME[4]} $EXTRA_MAKE_FLAGS
 
-.prepare-ucesb-landdaq-bsd: &ucesb-landdaq-bsd
+.prepare-ucesb-bsd: &ucesb-bsd
   before_script:
     # External deps
     - cd ..
@@ -31,7 +31,7 @@ stages:
     #
     - cd -
 
-.prepare-ucesb-landdaq-mac: &ucesb-landdaq-mac
+.prepare-ucesb-mac: &ucesb-mac
   before_script:
     # External deps
     - cd ..
@@ -85,6 +85,103 @@ stages:
     #
     - cd -
 
+.prepare-old-debian: &old-debian
+  <<: *common
+  before_script:
+    - JOB_NAME=( $CI_BUILD_NAME )
+    - export CC=${JOB_NAME[2]}
+    - export CXX=${JOB_NAME[3]}
+    - apt-get update -yq > /dev/null
+    - apt-get install -y curl cogito git-core flex bison libncurses5-dev
+      build-essential > /dev/null
+    - apt-get install -y ${CC} > /dev/null
+    - if [[ $CXX == g++* ]] ; then
+    - apt-get install -y ${CXX} > /dev/null
+    - fi
+    # External deps
+    - cd ..
+    # Ucesb
+    - rm -rf ucesb
+    - git clone http://fy.chalmers.se/~f96hajo/ucesb/ucesb.git
+    - export UCESB_DIR=`pwd`/ucesb
+    #
+    - cd -
+
+.prepare-arch: &arch
+  <<: *common
+  before_script:
+    - pacman -S base-devel git flex bison ncurses --noconfirm --needed
+    # External deps
+    - cd ..
+    # Ucesb
+    - rm -rf ucesb
+    - git clone http://fy.chalmers.se/~f96hajo/ucesb/ucesb.git
+    - export UCESB_DIR=`pwd`/ucesb
+    #
+    - cd -
+
+.prepare-cc7: &cc7
+  <<: *common
+  before_script:
+    - yum install -y git bison flex ncurses-devel make perl-Digest-MD5 gcc-c++
+      > /dev/null
+    - export YACC=bison
+    # External deps
+    - cd ..
+    # Ucesb
+    - rm -rf ucesb
+    - git clone http://fy.chalmers.se/~f96hajo/ucesb/ucesb.git
+    - export UCESB_DIR=`pwd`/ucesb
+    #
+    - cd -
+
+.prepare-slc6: &slc6
+  <<: *common
+  before_script:
+    - source /opt/rh/devtoolset-4/enable
+    - source /opt/rh/python27/enable
+    - yum install -y git bison flex ncurses-devel perl-Digest-MD5 > /dev/null
+    - export YACC=bison
+    # External deps
+    - cd ..
+    # Ucesb
+    - rm -rf ucesb
+    - git clone http://fy.chalmers.se/~f96hajo/ucesb/ucesb.git
+    - export UCESB_DIR=`pwd`/ucesb
+    #
+    - cd -
+
+.prepare-ubuntu-gcc6-with-flex: &ubuntu-gcc6
+  <<: *common
+  before_script:
+    - JOB_NAME=( $CI_BUILD_NAME )
+    - export FLEX=${JOB_NAME[6]}
+    - apt-get update -yq > /dev/null
+    - apt-get install -y --no-install-recommends git flex bison
+      libncurses5-dev software-properties-common wget m4 help2man > /dev/null
+    - add-apt-repository ppa:ubuntu-toolchain-r/test > /dev/null
+    - apt-get update -yq > /dev/null
+    - apt-get install -y gcc-6 g++-6 > /dev/null
+    - export CC=gcc-6
+    - export CXX=g++-6
+    - wget https://github.com/westes/flex/releases/download/v${FLEX}/flex-${FLEX}.tar.gz
+      > /dev/null
+    - tar -xf flex-${FLEX}.tar.gz
+    - cd flex-${FLEX}
+    - ./configure
+    - make
+    - make install
+    - cd ..
+    # External deps
+    - cd ..
+    # Ucesb
+    - rm -rf ucesb
+    - git clone http://fy.chalmers.se/~f96hajo/ucesb/ucesb.git
+    - export UCESB_DIR=`pwd`/ucesb
+    #
+    - cd -
+
+
 ############################################
 #               TARGETS                    #
 ############################################
@@ -109,15 +206,115 @@ Trusty 32bit gcc g++ s232:
   <<: *debian
   <<: *build
 
-freebsd 10 gcc g++ s232:
-  stage: fast-build
-  <<: *ucesb-landdaq-bsd
-  <<: *build-bsd
-
 mac sierra gcc g++ s232:
   stage: fast-build
-  <<: *ucesb-landdaq-mac
+  <<: *ucesb-mac
   <<: *build-mac-sierra
+
+SLC6 root6 gcc g++ s232:
+  stage: fast-build
+  image: munken/root:slc6-root6
+  <<: *slc6
+  <<: *build
+
+SLC6 root5 gcc g++ s232:
+  stage: fast-build
+  image: munken/root:slc6-root5
+  <<: *slc6
+  <<: *build
+
+CC7 root6 gcc g++ s232:
+  stage: fast-build
+  image: munken/root:cc7-root6
+  <<: *cc7
+  <<: *build
+
+CC7 root5 gcc g++ s232:
+  stage: fast-build
+  image: munken/root:cc7-root5
+  <<: *cc7
+  <<: *build
+
+Xenial root5 gcc g++ s232:
+  stage: fast-build
+  image: munken/root:xenial-root5
+  <<: *debian
+  <<: *build
+
+Xenial root5 clang clang++ s232:
+  stage: fast-build
+  image: munken/root:xenial-root5
+  <<: *debian
+  <<: *build
+
+Xenial root6 gcc g++ s232:
+  stage: fast-build
+  image: munken/root:xenial-root6
+  <<: *debian
+  <<: *build
+
+Xenial root6 clang clang++ s232:
+  stage: fast-build
+  image: munken/root:xenial-root6
+  <<: *debian
+  <<: *build
+
+Xenial root6 gcc-6 g++-6 s232 flex 2.6.1:
+  stage: fast-build
+  image: munken/root:xenial-root6
+  <<: *ubuntu-gcc6
+  <<: *build
+
+Xenial root6 gcc-6 g++-6 s232 flex 2.6.2:
+  stage: fast-build
+  image: munken/root:xenial-root6
+  <<: *ubuntu-gcc6
+  <<: *build
+
+Arch minimal gcc g++ s232:
+  stage: fast-build
+  image: pritunl/archlinux
+  <<: *arch
+  <<: *build
+
+gcc-latest minimal gcc g++ s232:
+  stage: fast-build
+  image: gcc:latest
+  <<: *debian
+  <<: *build
+
+debian jessie gcc g++ s232:
+  stage: fast-build
+  image: debian:jessie
+  <<: *debian
+  <<: *build
+
+debian wheezy gcc g++ s232:
+  stage: fast-build
+  image: debian:wheezy
+  <<: *debian
+  <<: *build
+
+debian etch gcc g++ s232:
+  stage: fast-build
+  image: munken/debian:etch
+  variables:
+    EXTRA_MAKE_FLAGS: "NO_YACC_WERROR=1"
+  <<: *old-debian
+  <<: *build
+
+freebsd 10 gcc g++ s232:
+  stage: fast-build
+  <<: *ucesb-bsd
+  <<: *build-bsd
+
+freebsd 10 clang clang++ s232:
+  stage: fast-build
+  variables:
+    EXTRA_MAKE_FLAGS: "NO_YACC_WERROR=1"
+  <<: *ucesb-bsd
+  <<: *build-bsd
+
 
 # Full build
 
@@ -139,12 +336,111 @@ Trusty 32bit gcc g++ all:
   <<: *debian
   <<: *build
 
-freebsd 10 gcc g++ all:
-  stage: build
-  <<: *ucesb-landdaq-bsd
-  <<: *build-bsd
-
 mac sierra gcc g++ all:
   stage: build
-  <<: *ucesb-landdaq-mac
+  <<: *ucesb-mac
   <<: *build-mac-sierra
+
+SLC6 root6 gcc g++ all:
+  stage: build
+  image: munken/root:slc6-root6
+  <<: *slc6
+  <<: *build
+
+SLC6 root5 gcc g++ all:
+  stage: build
+  image: munken/root:slc6-root5
+  <<: *slc6
+  <<: *build
+
+CC7 root6 gcc g++ all:
+  stage: build
+  image: munken/root:cc7-root6
+  <<: *cc7
+  <<: *build
+
+CC7 root5 gcc g++ all:
+  stage: build
+  image: munken/root:cc7-root5
+  <<: *cc7
+  <<: *build
+
+Xenial root5 gcc g++ all:
+  stage: build
+  image: munken/root:xenial-root5
+  <<: *debian
+  <<: *build
+
+Xenial root5 clang clang++ all:
+  stage: build
+  image: munken/root:xenial-root5
+  <<: *debian
+  <<: *build
+
+Xenial root6 gcc g++ all:
+  stage: build
+  image: munken/root:xenial-root6
+  <<: *debian
+  <<: *build
+
+Xenial root6 clang clang++ all:
+  stage: build
+  image: munken/root:xenial-root6
+  <<: *debian
+  <<: *build
+
+Xenial root6 gcc-6 g++-6 all flex 2.6.1:
+  stage: build
+  image: munken/root:xenial-root6
+  <<: *ubuntu-gcc6
+  <<: *build
+
+Xenial root6 gcc-6 g++-6 all flex 2.6.2:
+  stage: build
+  image: munken/root:xenial-root6
+  <<: *ubuntu-gcc6
+  <<: *build
+
+Arch minimal gcc g++ all:
+  stage: build
+  image: pritunl/archlinux
+  <<: *arch
+  <<: *build
+
+gcc-latest minimal gcc g++ all:
+  stage: build
+  image: gcc:latest
+  <<: *debian
+  <<: *build
+
+debian jessie gcc g++ all:
+  stage: build
+  image: debian:jessie
+  <<: *debian
+  <<: *build
+
+debian wheezy gcc g++ all:
+  stage: build
+  image: debian:wheezy
+  <<: *debian
+  <<: *build
+
+debian etch gcc g++ all:
+  stage: build
+  image: munken/debian:etch
+  variables:
+    EXTRA_MAKE_FLAGS: "NO_YACC_WERROR=1"
+  <<: *old-debian
+  <<: *build
+
+freebsd 10 gcc g++ all:
+  stage: build
+  <<: *ucesb-bsd
+  <<: *build-bsd
+
+freebsd 10 clang clang++ all:
+  stage: build
+  variables:
+    EXTRA_MAKE_FLAGS: "NO_YACC_WERROR=1"
+  <<: *ucesb-bsd
+  <<: *build-bsd
