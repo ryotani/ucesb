@@ -5,4 +5,5 @@
 # Format:
 # <unpacker name> <path relative to R3B_DATA_PATH environment>
 jun16/jun16Xe jun2016/lmd/run111_1753.lmd
+jun16/jun16C jun2016/lmd/run160_2388.lmd
 jun16/jun16C jun2016/lmd/run165_2452.lmd
