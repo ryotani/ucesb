@@ -71,8 +71,8 @@ TRLO_TRIG_SCALER(id)
     }
   }
   /* Skip those zeros */
-  /*list(0 <= index < 16) {*/ /* Tridi 8, Vulom 16 */
-  list(0 <= index < 8) { /* Tridi 8, Vulom 16 */
+  list(0 <= index < 16) { /* Tridi 8, Vulom 16 */
+  /* list(0 <= index < 8) { */ /* Tridi 8, Vulom 16 */
     UINT32 val;
   }
 }

@@ -1,9 +1,9 @@
 #include "spec/spec.spec"
-//#include "vme_mesy_madc32.spec"
+#include "vme_mesy_madc32.spec"
 #include "trlo.spec"
 #include "trlo_data.spec"
 #include "caen_scaler_data.spec"
-//#include "vme_struck_sis3302.spec"
+#include "caen_v775.spec"
 #include "vme_struck_sis3316.spec"
 
 LAND_STD_VME()
@@ -70,9 +70,9 @@ SUBEVENT(VME)
     sis3316[0] = VME_STRUCK_SIS3316(id=3);
     sis3316[1] = VME_STRUCK_SIS3316(id=4);
     sis3316[2] = VME_STRUCK_SIS3316(id=5);
-    /*multi scaler = VME_CAEN_V830(geom=0x1f);*/
-    multi tdc = VME_CAEN_V775(geom=0x1f, crate=0x0);
-    multi adc = VME_MESYTEC_MADC32(geom=0x4);
+    multi tdc = CAEN_V775(geom=0x1f, crate=0x0);
+    mesy_padding = MESYTEC_MADC32_PADDING();
+    multi adc = MESYTEC_MADC32(geom=0x6);
   }
 }
 

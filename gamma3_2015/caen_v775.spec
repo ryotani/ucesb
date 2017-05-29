@@ -3,8 +3,7 @@
 #define CAEN_V792 CAEN_V775
 #define CAEN_V785 CAEN_V775
 
-CAEN_V775(geom,
-	      crate)
+CAEN_V775(geom, crate)
 {
   MEMBER(DATA12_OVERFLOW data[32] ZERO_SUPPRESS);
 

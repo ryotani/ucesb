@@ -1,14 +1,16 @@
 // -*- C++ -*-
 
-VME_MESYTEC_MADC32(geom)
+MESYTEC_MADC32_PADDING()
+{
+    UINT32 padding NOENCODE
+    {
+        0_31: value = MATCH(0x32323232);
+    }
+}
+
+MESYTEC_MADC32(geom)
 {
   MEMBER(DATA16 data[32] ZERO_SUPPRESS);
-  /*MEMBER(DATA12_OVERFLOW data[32] ZERO_SUPPRESS);*/
-
-/*  optional UINT32 padding NOENCODE
-  {
-    0_31: value = MATCH(0x32323232);
-  }*/
   
   UINT32 header NOENCODE
   {
@@ -20,8 +22,6 @@ VME_MESYTEC_MADC32(geom)
     30_31: 0b01;
   }
 
-  MATCH_END;
-
   list(0<=index<header.word_number-1)
   {
     UINT32 ch_data NOENCODE
@@ -32,7 +32,6 @@ VME_MESYTEC_MADC32(geom)
       21_29: 0b000100000;
       30_31: 0b00;
 
-      /*ENCODE(data[channel],(value=value,overflow=outofrange));*/
       ENCODE(data[channel],(value=value));
     }
   }

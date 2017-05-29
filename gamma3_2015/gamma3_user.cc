@@ -75,4 +75,27 @@ bool TRIGBUF_ENTRY::good_event_counter_offset(uint32 expect) const
 }
 #endif
 
+#ifdef DECLARED_UNPACK_CAEN_V775
+uint32 CAEN_V775::get_event_counter() const
+{
+  return eob.event_number;
+}
+
+bool CAEN_V775::good_event_counter_offset(uint32 expect) const
+{
+  return 1;
+}
+#endif
+
+#ifdef DECLARED_UNPACK_MESYTEC_MADC32
+uint32 MESYTEC_MADC32::get_event_counter() const
+{
+  return 0;
+}
+
+bool MESYTEC_MADC32::good_event_counter_offset(uint32 expect) const
+{
+  return 1;
+}
+#endif
 
