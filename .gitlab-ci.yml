@@ -404,7 +404,7 @@ Xenial root6 gcc-6 g++-6 all flex 2.6.2:
 
 Arch minimal gcc g++ all:
   stage: build
-  image: pritunl/archlinux
+  image: base/archlinux
   <<: *arch
   <<: *build
 
