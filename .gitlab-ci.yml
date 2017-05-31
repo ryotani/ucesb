@@ -110,6 +110,7 @@ stages:
 .prepare-arch: &arch
   <<: *common
   before_script:
+    - pacman -Syu
     - pacman -S base-devel git flex bison ncurses --noconfirm --needed
     # External deps
     - cd ..
