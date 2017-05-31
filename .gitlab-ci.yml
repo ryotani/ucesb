@@ -273,7 +273,7 @@ Xenial root6 gcc-6 g++-6 s232 flex 2.6.2:
 
 Arch minimal gcc g++ s232:
   stage: fast-build
-  image: pritunl/archlinux
+  image: base/archlinux
   <<: *arch
   <<: *build
 
