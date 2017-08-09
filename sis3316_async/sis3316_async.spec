@@ -49,9 +49,22 @@ EVENT
 	ffff = FFFF(type=0xffff, subtype=0xffff);
 }
 
+/* Whiterabbit timestamp */
+SIGNAL(WR_HIGH, /* from user_function */, DATA32);
+SIGNAL(WR_LOW, /* from user_function */, DATA32);
+
+/* sis timestamps (unchanged) */
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): TS_LOW_1);
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): TS_HIGH_1);
 SIGNAL(TS_LOW_1,  /* from user_function */, DATA32);
 SIGNAL(TS_LOW_32,  /* from user_function */, DATA32);
 SIGNAL(TS_HIGH_1,  /* from user_function */, DATA32);
 SIGNAL(TS_HIGH_32,  /* from user_function */, DATA32);
+
+/* sis timestamps (recalculated) */
+SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): WRTS_LOW_1);
+SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): WRTS_HIGH_1);
+SIGNAL(WRTS_LOW_1,  /* from user_function */, DATA32);
+SIGNAL(WRTS_LOW_32,  /* from user_function */, DATA32);
+SIGNAL(WRTS_HIGH_1,  /* from user_function */, DATA32);
+SIGNAL(WRTS_HIGH_32,  /* from user_function */, DATA32);
