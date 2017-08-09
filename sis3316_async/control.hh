@@ -7,6 +7,7 @@
 //#define EXIT_USER_FUNCTION		exit_function
 
 //#define UNPACK_EVENT_USER_FUNCTION	unpack_user_function
+#define RAW_EVENT_USER_FUNCTION		raw_user_function
 
 //#define USER_EXTERNAL_UNPACK_STRUCT_FILE "sis3316_async_external.hh"
 

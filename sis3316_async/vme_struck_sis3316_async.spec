@@ -1,13 +1,7 @@
 // -*- C++ -*-
 // vim: ft=cpp:
 
-#define MAX_HITS 4000
-#define N_CHANNELS 16
-#define N_TS 2
-#define N_GATES 8
-#define N_MAW 3
-#define N_MAXE 2
-// #define HAS_MODULE_HEADER
+#include "sis3316_params.hh"
 
 VME_STRUCK_SIS3316_ASYNC(id)
 {
@@ -19,7 +13,7 @@ VME_STRUCK_SIS3316_ASYNC(id)
 #ifdef HAS_MODULE_HEADER
 	UINT32 header NOENCODE
 	{
-		16_31: module = MATCH(0x3316);
+		16_31: module = 0x3316;
 		8_15: number_of_channels;
 		0_7: id = MATCH(id);
 	}
@@ -44,23 +38,30 @@ VME_STRUCK_SIS3316_CHANNEL(id, ts, gate, maw, maxe)
 
 	UINT32 channel_header NOENCODE
 	{
-		16_31: module = MATCH(0x3316);
+		16_31: module = 0x3316;
 		12_15: padding_words;
 		8_11: ch;
 		0_7: id = MATCH(id);
+	}
+
+	UINT32 header1 NOENCODE
+	{
+		13_31: 0x0;
+		0_12: hit_count = RANGE(0, 4096);
 	}
 
 	list (0 <= n < channel_header.padding_words)
 	{
 		UINT32 padding NOENCODE
 		{
-			16_31: module = MATCH(0x3316);
+			16_31: module = 0x3316;
 			8_15: ch = MATCH(channel_header.ch);
 			0_7: id = MATCH(id);
 		}
 	}
 
-	select several {
+	list (0 <= n < header1.hit_count)
+	{
 		data = VME_STRUCK_SIS3316_CHANNEL_DATA(id=id,
 		    ch=channel_header.ch,
 		    ts=ts,
