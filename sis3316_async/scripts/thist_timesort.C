@@ -67,7 +67,7 @@
 		b_##name##_v->GetEntry(i);
 
 /* Set your file name here */
-TFile f("/tmp/test6.root");
+TFile f("/tmp/test7.root");
 
 void dump_chunk(vector<vector<unsigned int> > & _chunk)
 {
@@ -149,7 +149,7 @@ void thist_timesort()
 	SET_BRANCH_ZZP_MA(t, "WRTS_LOW", ts_low);
 
 	/* Set the total number of channels here */
-	const unsigned int n_channels = 32;
+	const unsigned int n_channels = 64;
 
 	/*
 	 * double-ended queues to keep track of hits for all channels.
@@ -171,15 +171,15 @@ void thist_timesort()
 	 */
 	vector<bool> required(n_channels, false);
 	required[0] = true;
-	required[6] = true;
-	required[7] = true;
+	required[4] = true;
+	required[8] = true;
 	required[16] = true;
-	required[17] = true;
-	required[18] = true;
-	required[19] = true;
 	required[20] = true;
-	required[27] = true;
-	required[28] = true;
+	required[24] = true;
+	required[32] = true;
+	required[36] = true;
+	required[40] = true;
+	required[48] = true;
 
 	unsigned int n_histograms = 0;
 
