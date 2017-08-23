@@ -174,11 +174,11 @@ void thist_timesort()
 	required[4] = true;
 	required[8] = true;
 	required[16] = true;
-	required[20] = true;
 	required[24] = true;
+	required[28] = true;
 	required[32] = true;
-	required[36] = true;
 	required[40] = true;
+	required[44] = true;
 	required[48] = true;
 
 	unsigned int n_histograms = 0;

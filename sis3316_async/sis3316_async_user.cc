@@ -23,7 +23,7 @@ exit_function(void)
 }
 
 #define TS_SAMPLES 2
-#define AVG_ENTRIES 32
+#define AVG_ENTRIES 1
 #define N_SKIP 1e9
 vector<uint64> wr_ts(TS_SAMPLES, 0);
 vector<uint64> sis_ts;
@@ -198,22 +198,35 @@ raw_sis3316_async(uint64 _n, TRLOII_TPAT & _tpat, WR_MULTI &_wr,
 
 	//}
 
-	/* Transform sis timstamps into WR timestamps */
+	/*
+	 * Mapping calculation:
+	 * - Transform sis timstamps into WR timestamps.
+	 * - Subtract baseline from energy value.
+	 */
 	for (size_t m = 0; m < n_modules; ++m) {
 		int i;
 		bitsone_iterator it;
 
+		/* timestamp */
 		raw_array_multi_zero_suppress<DATA32, DATA32, N_CHANNELS * N_TS,
 		    MAX_HITS> & ts = _fadc[m].ts;
 		uint32 *ts_n = ts._num_entries;
 		DATA32 (*t)[MAX_HITS] = ts._items;
 
+		/* energy */
+		raw_array_multi_zero_suppress<DATA32, DATA32, N_CHANNELS
+		    * N_MAXE, MAX_HITS> & energy = _fadc[m].maxe;
+		DATA32 (*e)[MAX_HITS] = energy._items;
+
+
+		/* Loop over all channels */
 		while ((i = (int)ts._valid.next(it)) >= 0) {
 			/* Mapping */
 			if (i % N_TS != 0) continue;
 
 			int ch = (int)m * N_CHANNELS + (i / N_TS);
 
+			/* Loop over all hits */
 			for (size_t j = 0; j < ts_n[i]; ++j) {
 				uint64 timestamp_wr = 0;
 
@@ -228,9 +241,8 @@ raw_sis3316_async(uint64 _n, TRLOII_TPAT & _tpat, WR_MULTI &_wr,
 				if (timestamp_wr < last_max_wr_timestamp[m]) {
 					printf("%lu/%d/%lu: "
 					    "0x%016llx < 0x%016llx,"
-					    " scaled timestamp earlier than"
-					    " latest timestamp from last"
-					    " event\n", m, ch, j, timestamp_wr,
+					    " scaled ts before latest ts\n",
+					    m, ch, j, timestamp_wr,
 					    last_max_wr_timestamp[m]);
 				}
 
@@ -252,6 +264,14 @@ raw_sis3316_async(uint64 _n, TRLOII_TPAT & _tpat, WR_MULTI &_wr,
 				wrlo.value =
 				    (uint32)(timestamp_wr & 0xffffffff);
 
+				/* map energy */
+				DATA32 &em = raw_event->E.insert_index(-1, ch);
+				em.value = e[i+1][j].value - e[i][j].value;
+				DATA32 &eem = raw_event->EE.insert_index(-1, ch);
+				eem.value = e[i+1][j].value;
+				DATA32 &bem = raw_event->BE.insert_index(-1, ch);
+				bem.value = e[i][j].value;
+
 				/*printf("%lu/%d/%lu: Inserted 0x%08x:%08x, "
 				    "wr = 0x%08x:%08x\n",
 				    m, ch, j, wrhi.value, wrlo.value,
@@ -270,7 +290,8 @@ raw_sis3316_async(uint64 _n, TRLOII_TPAT & _tpat, WR_MULTI &_wr,
 void
 raw_user_function(unpack_event *event, raw_event *raw_event)
 {
-	raw_sis3316_async(event->event_no, event->vme_tpat.tpat,
-	    event->vme_ts.ts_multi, event->vme.fadc,
-	    sizeof(event->vme.fadc) / sizeof(event->vme.fadc[0]), raw_event);
+	raw_sis3316_async(event->event_no, event->vme_tpat_left.tpat,
+	    event->vme_ts_left.ts_multi, event->vme_left.fadc,
+	    sizeof(event->vme_left.fadc) / sizeof(event->vme_left.fadc[0]),
+	    raw_event);
 }

@@ -28,7 +28,13 @@ SUBEVENT(sis3316_async_subev)
 	}
 }
 
-SUBEVENT(trloii_subev)
+SUBEVENT(trloii_subev_200)
+{
+	ts = TIMESTAMP_WHITERABBIT(id=0x200);
+	ts_multi = WR_MULTI();
+}
+
+SUBEVENT(trloii_subev_100)
 {
 	ts = TIMESTAMP_WHITERABBIT(id=0x100);
 	ts_multi = WR_MULTI();
@@ -45,9 +51,18 @@ SUBEVENT(FFFF)
 
 EVENT
 {
-	vme_ts = trloii_subev(type=10, subtype=1, subcrate=0);
-	vme_tpat = trloii_tpat_subev(type=36, subtype=3600, subcrate=0);
-	vme = sis3316_async_subev(type=88, subtype=8800, subcrate=0);
+	vme_ts_left = trloii_subev_100(type=10, subtype=1, subcrate=0,
+	    control=0);
+	vme_ts_right = trloii_subev_200(type=10, subtype=1, subcrate=0,
+	    control=1);
+	vme_tpat_left = trloii_tpat_subev(type=36, subtype=3600, subcrate=0,
+	    control=0);
+	vme_tpat_right = trloii_tpat_subev(type=36, subtype=3600, subcrate=0,
+	    control=1);
+	vme_left = sis3316_async_subev(type=88, subtype=8800, subcrate=0,
+	    control=0);
+	vme_right = sis3316_async_subev(type=88, subtype=8800, subcrate=0,
+	    control=1);
 	ffff = FFFF(type=0xffff, subtype=0xffff);
 }
 
@@ -70,3 +85,14 @@ SIGNAL(WRTS_LOW_1,  /* from user_function */, DATA32);
 SIGNAL(WRTS_LOW_64,  /* from user_function */, DATA32);
 SIGNAL(WRTS_HIGH_1,  /* from user_function */, DATA32);
 SIGNAL(WRTS_HIGH_64,  /* from user_function */, DATA32);
+
+/* sis energy value */
+SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): E_1);
+SIGNAL(E_1, /* from user function */, DATA32);
+SIGNAL(E_64, /* from user function */, DATA32);
+SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): BE_1);
+SIGNAL(BE_1, /* from user function */, DATA32);
+SIGNAL(BE_64, /* from user function */, DATA32);
+SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): EE_1);
+SIGNAL(EE_1, /* from user function */, DATA32);
+SIGNAL(EE_64, /* from user function */, DATA32);
