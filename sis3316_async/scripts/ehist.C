@@ -67,7 +67,7 @@
 vector<TH1D *> eh;
 
 /* Set your file name here */
-TFile f("/tmp/test8.root");
+TFile f("/tmp/test9.root");
 
 void ehist()
 {
@@ -89,7 +89,7 @@ void ehist()
 
 	eh.resize(n_channels);
 	for (size_t i = 0; i < n_channels; ++i) {
-		eh[i] = new TH1D(Form("h%lu", i), "", 1000, -1e2, 1e5);
+		eh[i] = new TH1D(Form("h%lu", i), "", 1000, -1e2, 3e5);
 		c->cd(i + 1);
 		eh[i]->Draw();
 	}

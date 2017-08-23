@@ -67,7 +67,7 @@
 vector<TH1D *> tdiff;
 
 /* Set your file name here */
-TFile f("/tmp/test8.root");
+TFile f("/tmp/test9.root");
 
 void thist()
 {
@@ -92,7 +92,7 @@ void thist()
 
 	tdiff.resize(n_channels);
 	for (size_t i = 0; i < n_channels; ++i) {
-		tdiff[i] = new TH1D(Form("h%lu", i), "", 1000, -300, 300);
+		tdiff[i] = new TH1D(Form("h%lu", i), "", 100, -100, 100);
 		c->cd(i + 1);
 		tdiff[i]->Draw();
 	}
