@@ -89,7 +89,7 @@ void ehist()
 
 	eh.resize(n_channels);
 	for (size_t i = 0; i < n_channels; ++i) {
-		eh[i] = new TH1D(Form("h%lu", i), "", 1000, 0, 1e5);
+		eh[i] = new TH1D(Form("h%lu", i), "", 1000, -1e2, 1e5);
 		c->cd(i + 1);
 		eh[i]->Draw();
 	}
