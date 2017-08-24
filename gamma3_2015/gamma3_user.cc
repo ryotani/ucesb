@@ -1,11 +1,10 @@
+#include "stdint.h"
 
 #include "structures.hh"
 
 #include "user.hh"
 
 #include "multi_chunk_fcn.hh"
-
-#include <stdint.h>
 
 int
 gamma3_user_function_multi(unpack_event *event)
@@ -51,6 +50,7 @@ gamma3_user_function_multi(unpack_event *event)
   return multi_events;
 }
 
+
 #ifdef DECLARED_UNPACK_SERIAL_TS_EVENT
 uint32 SERIAL_TS_EVENT::get_event_counter() const
 {
@@ -87,13 +87,13 @@ bool CAEN_V775::good_event_counter_offset(uint32 expect) const
 }
 #endif
 
-#ifdef DECLARED_UNPACK_MESYTEC_MADC32
-uint32 MESYTEC_MADC32::get_event_counter() const
+#ifdef DECLARED_UNPACK_VME_MESY_MADC32
+uint32 VME_MESY_MADC32::get_event_counter() const
 {
   return 0;
 }
 
-bool MESYTEC_MADC32::good_event_counter_offset(uint32 expect) const
+bool VME_MESY_MADC32::good_event_counter_offset(uint32 expect) const
 {
   return 1;
 }

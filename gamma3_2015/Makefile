@@ -1,7 +1,7 @@
 #########################################################
 # Specify the name of the target executable
 
-TARGETS:=gamma3
+TARGETS:=gamma3_1 gamma3_2
 
 #########################################################
 # Include common Makefile

@@ -71,8 +71,13 @@ SUBEVENT(VME)
     sis3316[1] = VME_STRUCK_SIS3316(id=4);
     sis3316[2] = VME_STRUCK_SIS3316(id=5);
     multi tdc = CAEN_V775(geom=0x1f, crate=0x0);
-    mesy_padding = MESYTEC_MADC32_PADDING();
-    multi adc = MESYTEC_MADC32(geom=0x6);
+    mesy_padding = VME_MESY_MADC32_PADDING();
+#ifdef UNPACKER_IS_gamma3_1
+    multi adc = VME_MESY_MADC32(geom=0x6);
+#endif
+#ifdef UNPACKER_IS_gamma3_2
+    multi adc = VME_MESY_MADC32(geom=0x5);
+#endif
   }
 }
 
@@ -84,6 +89,9 @@ EVENT
   ignore_unknown_subevent;
 }
 
-#include "mapping_in.h"
-
-
+#ifdef UNPACKER_IS_gamma3_1
+#include "mapping_1.h"
+#endif
+#ifdef UNPACKER_IS_gamma3_2
+#include "mapping_2.h"
+#endif
