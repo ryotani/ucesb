@@ -89,9 +89,4 @@ EVENT
   ignore_unknown_subevent;
 }
 
-#ifdef UNPACKER_IS_gamma3_1
-#include "mapping_1.h"
-#endif
-#ifdef UNPACKER_IS_gamma3_2
-#include "mapping_2.h"
-#endif
+#include "mapping.h"
