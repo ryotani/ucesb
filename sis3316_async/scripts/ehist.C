@@ -67,7 +67,7 @@
 vector<TH1D *> eh;
 
 /* Set your file name here */
-TFile f("/tmp/test9.root");
+TFile f("/tmp/test10.root");
 
 void ehist()
 {
@@ -79,7 +79,7 @@ void ehist()
 	SET_BRANCH_ZZP_MA(t, "E", e);
 
 	/* Set the number of channels here */
-	const unsigned int n_channels = 32;
+	const unsigned int n_channels = 64;
 
 	size_t n = t->GetEntries();
 	TCanvas *c = new TCanvas("c1", "ehist");

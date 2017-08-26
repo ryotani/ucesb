@@ -82,13 +82,13 @@ void thist()
 	unsigned int ch_ref = 5;
 
 	/* Set the number of channels here */
-	const unsigned int n_channels = 32;
+	const unsigned int n_channels = 64;
 
 	size_t n = t->GetEntries();
 	TCanvas *c = new TCanvas("c1", Form("ch_ref = %d", ch_ref));
 
 	/* Adjust the rows and columns of the canvas here */
-	c->Divide(6,6);
+	c->Divide(sqrt(n_channels)+1, sqrt(n_channels)+1);
 
 	tdiff.resize(n_channels);
 	for (size_t i = 0; i < n_channels; ++i) {
