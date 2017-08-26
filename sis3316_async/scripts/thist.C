@@ -67,7 +67,7 @@
 vector<TH1D *> tdiff;
 
 /* Set your file name here */
-TFile f("/tmp/test9.root");
+TFile f("/tmp/test10.root");
 
 void thist()
 {
@@ -76,7 +76,7 @@ void thist()
 
 	/* Here the macros get used */
 	DECLARE_ZZP_MA(unsigned int, ts_low);
-	SET_BRANCH_ZZP_MA(t, "TS_LOW", ts_low);
+	SET_BRANCH_ZZP_MA(t, "TS_FINE", ts_low);
 
 	/* Set a reference channel here */
 	unsigned int ch_ref = 5;
@@ -92,7 +92,7 @@ void thist()
 
 	tdiff.resize(n_channels);
 	for (size_t i = 0; i < n_channels; ++i) {
-		tdiff[i] = new TH1D(Form("h%lu", i), "", 100, -100, 100);
+		tdiff[i] = new TH1D(Form("h%lu", i), "", 30, -100e3, 100e3);
 		c->cd(i + 1);
 		tdiff[i]->Draw();
 	}
