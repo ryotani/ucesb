@@ -22,6 +22,10 @@ SUBEVENT(sis3316_async_subev_left)
 		barrier = BARRIER();
 		fadc[0] = VME_STRUCK_SIS3316_ASYNC(id = 3);
 		fadc[1] = VME_STRUCK_SIS3316_ASYNC(id = 4);
+		fadc[2] = VME_STRUCK_SIS3316_ASYNC(id = 5);
+		fadc[3] = VME_STRUCK_SIS3316_ASYNC(id = 6);
+		fadc[4] = VME_STRUCK_SIS3316_ASYNC(id = 7);
+		fadc[5] = VME_STRUCK_SIS3316_ASYNC(id = 8);
 	}
 }
 
@@ -34,6 +38,10 @@ SUBEVENT(sis3316_async_subev_right)
 		barrier = BARRIER();
 		fadc[0] = VME_STRUCK_SIS3316_ASYNC(id = 3);
 		fadc[1] = VME_STRUCK_SIS3316_ASYNC(id = 4);
+		fadc[2] = VME_STRUCK_SIS3316_ASYNC(id = 5);
+		fadc[3] = VME_STRUCK_SIS3316_ASYNC(id = 6);
+		fadc[4] = VME_STRUCK_SIS3316_ASYNC(id = 7);
+		fadc[5] = VME_STRUCK_SIS3316_ASYNC(id = 8);
 	}
 }
 
@@ -85,47 +93,47 @@ SIGNAL(WR_LOW_2, /* from user_function */, DATA32);
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): TS_LOW_1);
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): TS_HIGH_1);
 SIGNAL(TS_LOW_1,  /* from user_function */, DATA32);
-SIGNAL(TS_LOW_64,  /* from user_function */, DATA32);
+SIGNAL(TS_LOW_192,  /* from user_function */, DATA32);
 SIGNAL(TS_HIGH_1,  /* from user_function */, DATA32);
-SIGNAL(TS_HIGH_64,  /* from user_function */, DATA32);
+SIGNAL(TS_HIGH_192,  /* from user_function */, DATA32);
 
 /* sis timestamps (recalculated) */
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): WRTS_LOW_1);
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): WRTS_HIGH_1);
 SIGNAL(WRTS_LOW_1,  /* from user_function */, DATA32);
-SIGNAL(WRTS_LOW_64,  /* from user_function */, DATA32);
+SIGNAL(WRTS_LOW_192,  /* from user_function */, DATA32);
 SIGNAL(WRTS_HIGH_1,  /* from user_function */, DATA32);
-SIGNAL(WRTS_HIGH_64,  /* from user_function */, DATA32);
+SIGNAL(WRTS_HIGH_192,  /* from user_function */, DATA32);
 
 /* sis energy value */
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): E_1);
 SIGNAL(E_1, /* from user function */, DATA32);
-SIGNAL(E_64, /* from user function */, DATA32);
+SIGNAL(E_192, /* from user function */, DATA32);
 #if 0
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): BE_1);
 SIGNAL(BE_1, /* from user function */, DATA32);
-SIGNAL(BE_64, /* from user function */, DATA32);
+SIGNAL(BE_192, /* from user function */, DATA32);
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): EE_1);
 SIGNAL(EE_1, /* from user function */, DATA32);
-SIGNAL(EE_64, /* from user function */, DATA32);
+SIGNAL(EE_192, /* from user function */, DATA32);
 #endif
 
 /* sis maw values (for high resolution time) */
 #if 1
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): MAW_MAX_1);
 SIGNAL(MAW_MAX_1, /* from user function */, DATA32);
-SIGNAL(MAW_MAX_64, /* from user function */, DATA32);
+SIGNAL(MAW_MAX_192, /* from user function */, DATA32);
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): MAW_BEFORE_1);
 SIGNAL(MAW_BEFORE_1, /* from user function */, DATA32);
-SIGNAL(MAW_BEFORE_64, /* from user function */, DATA32);
+SIGNAL(MAW_BEFORE_192, /* from user function */, DATA32);
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): MAW_AFTER_1);
 SIGNAL(MAW_AFTER_1, /* from user function */, DATA32);
-SIGNAL(MAW_AFTER_64, /* from user function */, DATA32);
+SIGNAL(MAW_AFTER_192, /* from user function */, DATA32);
 #endif
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): TS_CORRECTION_1);
 SIGNAL(TS_CORRECTION_1, /* from user function */, DATA32);
-SIGNAL(TS_CORRECTION_64, /* from user function */, DATA32);
+SIGNAL(TS_CORRECTION_192, /* from user function */, DATA32);
 SIGNAL(ZERO_SUPPRESS_MULTI(MAX_HITS): TS_FINE_1);
 SIGNAL(TS_FINE_1, /* from user function */, DATA32);
-SIGNAL(TS_FINE_64, /* from user function */, DATA32);
+SIGNAL(TS_FINE_192, /* from user function */, DATA32);
 
