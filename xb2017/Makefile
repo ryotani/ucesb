@@ -1,7 +1,7 @@
 #########################################################
 # Specify the name of the target executable
 
-TARGETS:=sis3316_async
+TARGETS:=xb2017
 
 #########################################################
 # Include common Makefile
