@@ -131,7 +131,7 @@ raw_user_function(unpack_event *event, raw_event *raw)
 	last_max_wr_timestamp.resize(N_CRATES);
 	last_hit_ts.resize(N_CRATES);
 	last_hit_ch.resize(N_CRATES);
-	assert(n_modules <= 4);
+	assert(n_modules <= 12);
 	for (unsigned int i = 0; i < N_CRATES; ++i) {
 		last_max_wr_timestamp[i].resize(n_modules, 0);
 		last_hit_ts[i].resize(n_modules, 0);
