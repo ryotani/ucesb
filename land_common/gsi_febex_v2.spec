@@ -15,6 +15,9 @@ FEBEX_BAD_EVENTHEADER()
 
 FEBEX_GOOD_EVENTHEADER()
 {
+	UINT32 failure NOENCODE {
+		0_31: status;
+	}
 	UINT32 febexcards {
 		0_7:   n_febex_sfp0 = RANGE(0, 64);
 		8_15:  n_febex_sfp1 = RANGE(0, 64);

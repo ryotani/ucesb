@@ -32,13 +32,17 @@ SUBEVENT(lmu_scalers_subev)
 	scalers = TRLOII_LMU_SCALERS(id=0xc7);
 }
 
+SUBEVENT(tpat_subev)
+{
+	tpat = TRLOII_TPAT(id=0xcf);
+}
+
 SUBEVENT(los_subev)
 {
 	land_vme = LAND_STD_VME();
-	barrier1 = BARRIER();
-	barrier2 = BARRIER();
+	barrier = BARRIER();
 	select several {
-		vftx2 = VME_GSI_VFTX2_7PS(id=2);
+		vftx2 = VME_GSI_VFTX2_7PS(id=1);
 	}
 }
 
@@ -57,15 +61,11 @@ SUBEVENT(los_sampler_subev)
 	}
 }
 
-SUBEVENT(master_subev)
+SUBEVENT(febex_subev)
 {
-	land_vme = LAND_STD_VME();
-	barrier = BARRIER();
-}
-
-SUBEVENT(tracking_febex_subev)
-{
-	header0 = FEBEX_EVENTHEADER();
+	select optional {
+		header0 = FEBEX_EVENTHEADER();
+	}
 	select several {
 		febex_0[ 0] = FEBEX_NOTRACE(sfp=0, card=0);
 		febex_0[ 1] = FEBEX_NOTRACE(sfp=0, card=1);
@@ -102,64 +102,42 @@ SUBEVENT(tracking_febex_subev)
 	}
 }
 
-SUBEVENT(tbm_subev)
-{
-	land_vme = LAND_STD_VME();
-	barrier = BARRIER();
-	select several {
-		vftx2 = VME_GSI_VFTX2_LT(id=1);
-	}
-}
-
-SUBEVENT(tofd_tamex_subev)
+SUBEVENT(tamex_subev)
 {
 	header = TAMEX3_HEADER();
+	// LOS TAMEX
 	select several {
 		padding1 = TAMEX3_PADDING();
 	}
 	select several {
 		tamex_1 = TAMEX3_SFP(sfp=2, card=0);
-		tamex_2 = TAMEX3_SFP(sfp=2, card=1);
 	}
-	select several {
+	// PADI TAMEX
+/*	select several {
 		padding2 = TAMEX3_PADDING();
 	}
 	select several {
 		tamex_3 = TAMEX3_SFP(sfp=3, card=0);
 		tamex_4 = TAMEX3_SFP(sfp=3, card=1);
-	}
-}
-
-SUBEVENT(tofd_vme_subev)
-{
-	land_vme = LAND_STD_VME();
-	barrier = BARRIER();
-	select several {
-		vftx2_1 = VME_GSI_VFTX2_7PS(id=1);
-		vftx2_2 = VME_GSI_VFTX2_7PS(id=2);
-		vftx2_3 = VME_GSI_VFTX2_7PS(id=3);
-	}
-}
-
-SUBEVENT(tpat_subev)
-{
-	tpat = TRLOII_TPAT(id=0xcf);
+	}*/
 }
 
 EVENT
 {
 	master_ts = wr_100(type=10, subtype=1, control=0);
 	master_tpat = tpat_subev(type=36, subtype=3600, control=0);
-	master_lmu_scalers = lmu_scalers_subev(type=37, subtype=3700, control=0);
-	master_vme = master_subev(type=88, subtype=8800, control=0);
-	los = los_subev(type=88, subtype=8800, control=1);
+	los_lmu_scalers = lmu_scalers_subev(type=37, subtype=3700, control=0);
+	los = los_subev(type=88, subtype=8800, control=0);
 	los_scalers = los_scalers_subev(type=38, subtype=3800, control=1);
 	los_sampler = los_sampler_subev(type=39, subtype=3900, control=1);
-	tofd_vme = tofd_vme_subev(type=88, subtype=8800, control=2);
-	tofd_tamex = tofd_tamex_subev(type=102, subtype=10200, control=4);
-	tracking_febex = tracking_febex_subev(type=100, subtype=10000, control=9);
+
+	tamex = tamex_subev(type=102, subtype=10200, control=9);
+	febex = febex_subev(type=101, subtype=10100, control=10);
+
 	los_empty = empty_subev(type=10, subtype=1, control=1);
 	tofd_empty = empty_subev(type=10, subtype=1, control=2);
+	tamex_empty = empty_subev(type=10, subtype=1, control=9);
+	febex_empty = empty_subev(type=10, subtype=1, control=10);
 }
 
 #include "mapping.hh"
