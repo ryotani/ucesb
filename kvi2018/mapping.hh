@@ -1,6 +1,6 @@
 #include "mapping_los.hh"
 #include "mapping_timestamp.hh"
-#include "mapping_pspx.hh"
+#include "mapping_pspx_r3broot.hh"
 //#include "mapping_tofd.hh"
 //#include "mapping_ptof.hh"
 //#include "mapping_fifilter.hh"
