@@ -5,6 +5,7 @@
 #include "../land_common/vme_gsi_vftx2.spec"
 #include "../land_common/whiterabbit.spec"
 #include "../land_common/gsi_tamex3.spec"
+#include "../land_common/gsi_clocktdc.spec"
 //#include "gsi_vftx2_straw.spec"
 
 SCALER()
@@ -105,21 +106,64 @@ SUBEVENT(febex_subev)
 SUBEVENT(tamex_subev)
 {
 	header = TAMEX3_HEADER();
-	// LOS TAMEX
+	// PTOF TAMEX
 	select several {
 		padding1 = TAMEX3_PADDING();
 	}
 	select several {
-		tamex_1 = TAMEX3_SFP(sfp=2, card=0);
+		ptof_0 = TAMEX3_SFP(sfp=0, card=0);
+		ptof_1 = TAMEX3_SFP(sfp=0, card=1);
+		ptof_2 = TAMEX3_SFP(sfp=0, card=2);
+		ptof_3 = TAMEX3_SFP(sfp=0, card=3);
 	}
-	// PADI TAMEX
-/*	select several {
+	// LOS TAMEX
+	select several {
 		padding2 = TAMEX3_PADDING();
 	}
 	select several {
-		tamex_3 = TAMEX3_SFP(sfp=3, card=0);
-		tamex_4 = TAMEX3_SFP(sfp=3, card=1);
-	}*/
+		los_0 = TAMEX3_SFP(sfp=2, card=0);
+		los_1 = TAMEX3_SFP(sfp=2, card=1);
+	}
+}
+
+SUBEVENT(clocktdc_subev)
+{
+	select {
+		header = GSI_CLOCKTDC_FUSER(a_sfp0_num=4, a_sfp1_num=2, a_sfp2_num=0, a_sfp3_num=0, ch_per_ctdc=128);
+		bad00bad = GSI_CLOCKTDC_BAD00BAD();
+	}
+	select several {
+		padding1 = GSI_CLOCKTDC_PADDING();
+	}
+	select several {
+		fibone_0 = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
+		fibone_1 = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
+		fibone_2 = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
+		fibone_3 = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
+	}
+	select several {
+		padding2 = GSI_CLOCKTDC_PADDING();
+	}
+	select several {
+		fibfour_0 = GSI_CLOCKTDC_ITEM(sfp=1, tdc=0);
+		fibfour_1 = GSI_CLOCKTDC_ITEM(sfp=1, tdc=1);
+		fibfour_2 = GSI_CLOCKTDC_ITEM(sfp=1, tdc=2);
+		fibfour_3 = GSI_CLOCKTDC_ITEM(sfp=1, tdc=3);
+	}
+	select several {
+		padding3 = GSI_CLOCKTDC_PADDING();
+	}
+	select several {
+		fibfive_0 = GSI_CLOCKTDC_ITEM(sfp=2, tdc=0);
+		fibfive_1 = GSI_CLOCKTDC_ITEM(sfp=2, tdc=1);
+	}
+	select several {
+		padding4 = GSI_CLOCKTDC_PADDING();
+	}
+	select several {
+		fibsix_0 = GSI_CLOCKTDC_ITEM(sfp=3, tdc=0);
+		fibsix_1 = GSI_CLOCKTDC_ITEM(sfp=3, tdc=1);
+	}
 }
 
 EVENT
@@ -131,8 +175,9 @@ EVENT
 	los_scalers = los_scalers_subev(type=38, subtype=3800, control=1);
 	los_sampler = los_sampler_subev(type=39, subtype=3900, control=1);
 
-	tamex = tamex_subev(type=102, subtype=10200, control=9);
 	febex = febex_subev(type=101, subtype=10100, control=10);
+	tamex = tamex_subev(type=102, subtype=10200, control=9);
+	clocktdc = clocktdc_subev(type=103, subtype=10300, control=7);
 
 	los_empty = empty_subev(type=10, subtype=1, control=1);
 	tofd_empty = empty_subev(type=10, subtype=1, control=2);
