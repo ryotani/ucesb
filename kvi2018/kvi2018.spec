@@ -112,9 +112,9 @@ SUBEVENT(tamex_subev)
 	}
 	select several {
 		ptof_0 = TAMEX3_SFP(sfp=0, card=0);
-		ptof_1 = TAMEX3_SFP(sfp=0, card=1);
-		ptof_2 = TAMEX3_SFP(sfp=0, card=2);
-		ptof_3 = TAMEX3_SFP(sfp=0, card=3);
+		fiber_1 = TAMEX3_SFP(sfp=0, card=1);
+		fiber_2 = TAMEX3_SFP(sfp=0, card=2);
+		fiber_3 = TAMEX3_SFP(sfp=0, card=3);
 	}
 	// LOS TAMEX
 	select several {
