@@ -39,8 +39,8 @@ GSI_CLOCKTDC_ITEM(sfp, tdc)
 	// ...
 	// Entry 256 = trigger leading.
 	// Entry 257 = dummy.
-	MEMBER(DATA12 time_coarse[258] ZERO_SUPPRESS_MULTI(20));
-	MEMBER(DATA12 time_fine[258] ZERO_SUPPRESS_MULTI(20));
+	MEMBER(DATA12 time_coarse[258] ZERO_SUPPRESS_MULTI(80));
+	MEMBER(DATA12 time_fine[258] ZERO_SUPPRESS_MULTI(80));
 
 	UINT32 header {
 		  0_7: _0x34 = MATCH(0x34);

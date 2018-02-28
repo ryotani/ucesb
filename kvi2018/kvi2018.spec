@@ -169,14 +169,14 @@ SUBEVENT(clocktdc_subev)
 SUBEVENT(mppc_subev)
 {
 	select several {
-		header = GSI_CLOCKTDC_FUSER(a_sfp0_num=0, a_sfp1_num=0, a_sfp2_num=0, a_sfp3_num=0, ch_per_ctdc=128);
+		header = GSI_CLOCKTDC_FUSER(a_sfp0_num=0, a_sfp1_num=0, a_sfp2_num=0, a_sfp3_num=1, ch_per_ctdc=128);
 		bad00bad = GSI_CLOCKTDC_BAD00BAD();
 	}
 	select several {
 		padding1 = GSI_CLOCKTDC_PADDING();
 	}
 	select several {
-		fibone_0 = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
+		mppc_0 = GSI_CLOCKTDC_ITEM(sfp=3, tdc=0);
 	}
 }
 
