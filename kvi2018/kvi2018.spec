@@ -192,7 +192,7 @@ EVENT
 	febex = febex_subev(type=101, subtype=10100, control=5);
 	tamex = tamex_subev(type=102, subtype=10200, control=9);
 	clocktdc = clocktdc_subev(type=103, subtype=10300, control=7);
-	mmpc = mppc_subev(type=104, subtype=10400, control=7);
+	mppc = mppc_subev(type=104, subtype=10400, control=7);
 
 	los_empty = empty_subev(type=10, subtype=1, control=1);
 	tofd_empty = empty_subev(type=10, subtype=1, control=2);

@@ -4,6 +4,7 @@
 #include "mapping_fiber.hh"
 //#include "mapping_tofd.hh"
 #include "mapping_ptof.hh"
+#include "mapping_fibsipm.hh"
 //#include "mapping_fifilter.hh"
 //#include "mapping_fitrace.hh"
 //#include "mapping_fitest.hh"
