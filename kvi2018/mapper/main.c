@@ -350,7 +350,7 @@ main()
 
 /*	map("FIBZERO", "fibzero", 256, 1);*/
 	map("FIBONE", "fibone", 2, 256, 1, 1, 0);
-	map("FIBFOUR", "fibfour", 2, 256, 4, 1, 2);
+	map("FIBFOUR", "fibfour", 2, 256, 4, 1, 8);
 	map("FIBFIVE", "fibfive", 1, 256, 4, 2, 0);
 	map("FIBSIX", "fibsix", 1, 256, 2, 2, 8);
 	fclose(g_file);
