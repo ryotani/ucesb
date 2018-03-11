@@ -18,8 +18,8 @@ echo "SIGNAL(ZERO_SUPPRESS_MULTI(32): FIBSIPM_TTF1);" >> $dst
 
 for ch in `seq 1 32`
 do
-	chan=$(echo 2 \* $ch - 1 | bc)
-	for edge in L T
+	chan=$(echo 2 \* $ch - 2 | bc)
+	for edge in T L
 	do
 		sfp=3
 		card=0
