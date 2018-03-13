@@ -129,7 +129,7 @@ SUBEVENT(tamex_subev)
 SUBEVENT(clocktdc_subev)
 {
 	select several {
-		header = GSI_CLOCKTDC_FUSER(a_sfp0_num=4, a_sfp1_num=2, a_sfp2_num=2, a_sfp3_num=0, ch_per_ctdc=128);
+		header = GSI_CLOCKTDC_FUSER(a_sfp0_num=4, a_sfp1_num=2, a_sfp2_num=0, a_sfp3_num=2, ch_per_ctdc=128);
 		bad00bad = GSI_CLOCKTDC_BAD00BAD();
 	}
 	select several {
