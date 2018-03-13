@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DST_PATH "mapping.hh"
+#define DST_PATH "mapping_fiber.hh"
 
 static FILE *g_file;
 
@@ -100,10 +100,11 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 	}
 
 	// fiber mapping in the PMT mask	
-	unsigned fib0[256],fib1[256],fib2[256],fib3[256],fib4[256],fib5[256],fib6[256]; // fiber number of mask
+	unsigned fib0[256],fib1[256],fib1b[256],fib2[256],fib3[256],fib4[256],fib5[256],fib6[256]; // fiber number of mask
 	for(j=0;j<256;j++){
 		fib0[j]=0;
 		fib1[j]=0;
+		fib1b[j]=0;
 		fib2[j]=0;
 		fib3[j]=0;
 		fib4[j]=0;
@@ -133,42 +134,44 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		fib0[i+14]=j*16+2;
 		fib0[i+15]=j*16+1;	
 		// fibers in colums from top to bottom
-		/*
-		   fib1[i]=j*16+1;
-		   fib1[i+1]=j*16+5;
-		   fib1[i+2]=j*16+9;
-		   fib1[i+3]=j*16+13;
-		   fib1[i+4]=j*16+2;
-		   fib1[i+5]=j*16+6;
-		   fib1[i+6]=j*16+10;
-		   fib1[i+7]=j*16+14;
-		   fib1[i+8]=j*16+3;
-		   fib1[i+9]=j*16+7;
-		   fib1[i+10]=j*16+11;
-		   fib1[i+11]=j*16+15;
-		   fib1[i+12]=j*16+4;
-		   fib1[i+13]=j*16+8;
-		   fib1[i+14]=j*16+12;
-		   fib1[i+15]=j*16+16;	
-		 */	   
+		fib1[i]=j*16+1;
+		fib1[i+1]=j*16+5;
+		fib1[i+2]=j*16+9;
+		fib1[i+3]=j*16+13;
+		fib1[i+4]=j*16+2;
+		fib1[i+5]=j*16+6;
+		fib1[i+6]=j*16+10;
+		fib1[i+7]=j*16+14;
+		fib1[i+8]=j*16+3;
+		fib1[i+9]=j*16+7;
+		fib1[i+10]=j*16+11;
+		fib1[i+11]=j*16+15;
+		fib1[i+12]=j*16+4;
+		fib1[i+13]=j*16+8;
+		fib1[i+14]=j*16+12;
+		fib1[i+15]=j*16+16;	
+		
 		// fibers in colums from bottom to top
-		//sorting of fiber detector 1	   
-		fib1[i+15]=j*16+1;
-		fib1[i+14]=j*16+5;
-		fib1[i+13]=j*16+9;
-		fib1[i+12]=j*16+13;
-		fib1[i+11]=j*16+2;
-		fib1[i+10]=j*16+6;
-		fib1[i+9]=j*16+10;
-		fib1[i+8]=j*16+14;
-		fib1[i+7]=j*16+3;
-		fib1[i+6]=j*16+7;
-		fib1[i+5]=j*16+11;
-		fib1[i+4]=j*16+15;
-		fib1[i+3]=j*16+4;
-		fib1[i+2]=j*16+8;
-		fib1[i+1]=j*16+12;
-		fib1[i]=j*16+16;	
+		//sorting of fiber detector 1
+		//different order for second MPMT
+		
+		fib1b[i+15]=j*16+1;
+		fib1b[i+14]=j*16+5;
+		fib1b[i+13]=j*16+9;
+		fib1b[i+12]=j*16+13;
+		fib1b[i+11]=j*16+2;
+		fib1b[i+10]=j*16+6;
+		fib1b[i+9]=j*16+10;
+		fib1b[i+8]=j*16+14;
+		fib1b[i+7]=j*16+3;
+		fib1b[i+6]=j*16+7;
+		fib1b[i+5]=j*16+11;
+		fib1b[i+4]=j*16+15;
+		fib1b[i+3]=j*16+4;
+		fib1b[i+2]=j*16+8;
+		fib1b[i+1]=j*16+12;
+		fib1b[i]=j*16+16;	
+		 	   
 
 		// fibers in row from top to bottom	   
 		/*
@@ -189,8 +192,44 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		   fib3[224+j]=j*16+12;
 		   fib3[240+j]=j*16+16;	
 		 */
-		// fibers in row from top to bottom	   
+		// fibers in row from top to bottom
+			   
+		fib4[i+15]=j*16+1;
+		fib4[i+14]=j*16+5;
+		fib4[i+13]=j*16+9;
+		fib4[i+12]=j*16+13;
+		fib4[i+11]=j*16+2;
+		fib4[i+10]=j*16+6;
+		fib4[i+9]=j*16+10;
+		fib4[i+8]=j*16+14;
+		fib4[i+7]=j*16+3;
+		fib4[i+6]=j*16+7;
+		fib4[i+5]=j*16+11;
+		fib4[i+4]=j*16+15;
+		fib4[i+3]=j*16+4;
+		fib4[i+2]=j*16+8;
+		fib4[i+1]=j*16+12;
+		fib4[i]=j*16+16;	
 
+/*
+		fib4[i]=j*16+1;
+		fib4[i+1]=j*16+5;
+		fib4[i+2]=j*16+9;
+		fib4[i+3]=j*16+13;
+		fib4[i+4]=j*16+2;
+		fib4[i+5]=j*16+6;
+		fib4[i+6]=j*16+10;
+		fib4[i+7]=j*16+14;
+		fib4[i+8]=j*16+3;
+		fib4[i+9]=j*16+7;
+		fib4[i+10]=j*16+11;
+		fib4[i+11]=j*16+15;
+		fib4[i+12]=j*16+4;
+		fib4[i+13]=j*16+8;
+		fib4[i+14]=j*16+12;
+		fib4[i+15]=j*16+16;	
+*/
+/*
 		fib4[0+j]=j*16+16;
 		fib4[16+j]=j*16+12;
 		fib4[32+j]=j*16+8;
@@ -207,7 +246,7 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		fib4[208+j]=j*16+9;
 		fib4[224+j]=j*16+5;
 		fib4[240+j]=j*16+1;	
-
+*/
 		// fibers in row from bottom to top, fiber sorting starts at bottom	   
 		//sorting of fiber detector 5
 		fib5[240+j]=j*16+16;
@@ -286,7 +325,14 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 				bunch_i=fib0[i];
 			}
 			else if(0 == strcmp("fibone", a_src)){
-				bunch_i=fib1[i];
+			  if (sub_i == 0)
+			    {
+			      bunch_i=fib1[i];
+			    }
+			  else
+			    {
+			      bunch_i=fib1b[i];
+			    }
 			}
 			else if(0 == strcmp("fibfour", a_src)){
 				bunch_i=fib4[i];	   
