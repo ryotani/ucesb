@@ -93,7 +93,7 @@ FEBEX_NOTRACE(sfp, card)
 			20_23: multi_hit;
 			24_27: n_hit;
 			28_31: channel_id;
-			ENCODE(t[channel_id], (value = time | sign << 11 ) ); //tried to use the sign-bit this is not working but negative values are above 4096
+			ENCODE(t[channel_id], (value = (time | sign << 11 ) & 0xfff) ); //tried to use the sign-bit this is not working but negative values are above 4096
 			ENCODE(n_hit[channel_id], (value = n_hit));
 		}
 
