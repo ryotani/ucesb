@@ -1,40 +1,11 @@
 // -*- C++ -*-
 /* vim:set ft=cpp cindent: */
 
-WR_TSTAMP(id)
-{
-  UINT32 header {
-    0_7:   0;
-    8_11:  id = MATCH(id);
-    12_32: 0;
-  };
-
-  UINT32 d1 {
-    0_15:  t1;
-    16_31: 0x03e1;
-  };
-
-  UINT32 d2 {
-    0_15:  t2;
-    16_31: 0x04e1;
-  };
-
-  UINT32 d3 {
-    0_15:  t3;
-    16_31: 0x05e1;
-  };
-
-  UINT32 d4 {
-    0_15:  t4;
-    16_31: 0x06e1;
-  };
-
-  
-}
+#include "../land_common/whiterabbit.spec"
 
 SERIAL_TS()
 {
-  UINT32 header {
+  UINT32 header NOENCODE {
     0_31: multi_events;
   }
 
@@ -46,7 +17,7 @@ SERIAL_TS()
 SERIAL_TS_EVENT() {
   MEMBER(DATA32 ts_hi);
   MEMBER(DATA32 ts_lo);
-  
+
   UINT32 ts_lsb NOENCODE {
     0_31: t_lsb;
     ENCODE(ts_lo, (value = t_lsb));
@@ -100,7 +71,7 @@ TRIGBUF_ENTRY()
 
 TRLO(id, multi_events)
 {
-  wr_ts = WR_TSTAMP(id = id);
+  wr_ts = TIMESTAMP_WHITERABBIT(id = id);
   serial_ts = SERIAL_TS();
   trigbuf = TRIGBUF(multi_events = multi_events);
 }
