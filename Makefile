@@ -22,6 +22,7 @@ OTHERS= e062 \
 	frs_s341 \
 	fzd_jan_2010 \
 	gamma3_2015 \
+	kvi2018 \
 	rpc2009 \
 	tacquila17 \
 	tamex_multi_pc_readout \
