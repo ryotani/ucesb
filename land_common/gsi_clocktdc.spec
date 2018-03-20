@@ -82,7 +82,8 @@ GSI_CLOCKTDC_ITEM(sfp, tdc)
 	list (0 <= i < data_byte_num / 4) {
 		UINT32 data {
 			  0_3: time_fine;
-			 4_16: time_coarse;
+			 4_15: time_coarse;
+			   16: time_coarse_ext;
 			   17: edge;
 			// No doc and not used in Go4.
 			   18: ws;
