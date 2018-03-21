@@ -1,10 +1,3 @@
-#if defined(UNPACKER_IS_kvi2018_013_020)
-#  include "mapping_pspx_r3broot_run13-20.hh"
-#elif defined(UNPACKER_IS_kvi2018_pspx_073)
-#  include "mapping_pspx_r3broot_pspxrun73.hh"
-#elif defined(UNPACKER_IS_kvi2018_pspx_075_082)
-#  include "mapping_pspx_r3broot_pspxrun75-82.hh"
-#else
 
 /* FEBEX SFP0 traces */
 SIGNAL(ZERO_SUPPRESS: PSPXT01_1_Tr1);
@@ -302,102 +295,102 @@ SIGNAL(PSPXT01_127_Tr1  , febex.febextrace_0[0].trace[15][0],
        PSPXT01_127_Tr400, febex.febextrace_0[0].trace[15][399], DATA16);
 
 SIGNAL(ZERO_SUPPRESS: PSPXT01_66_Tr1);
-SIGNAL(PSPXT01_66_Tr1  , febex.febextrace_0[2].trace[0][0],
-       PSPXT01_66_Tr400, febex.febextrace_0[2].trace[0][399], DATA16);
+SIGNAL(PSPXT01_66_Tr1  , febex.febextrace_0[3].trace[0][0],
+       PSPXT01_66_Tr400, febex.febextrace_0[3].trace[0][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_68_Tr1);
-SIGNAL(PSPXT01_68_Tr1  , febex.febextrace_0[2].trace[1][0],
-       PSPXT01_68_Tr400, febex.febextrace_0[2].trace[1][399], DATA16);
+SIGNAL(PSPXT01_68_Tr1  , febex.febextrace_0[3].trace[1][0],
+       PSPXT01_68_Tr400, febex.febextrace_0[3].trace[1][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_70_Tr1);
-SIGNAL(PSPXT01_70_Tr1  , febex.febextrace_0[2].trace[2][0],
-       PSPXT01_70_Tr400, febex.febextrace_0[2].trace[2][399], DATA16);
+SIGNAL(PSPXT01_70_Tr1  , febex.febextrace_0[3].trace[2][0],
+       PSPXT01_70_Tr400, febex.febextrace_0[3].trace[2][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_72_Tr1);
-SIGNAL(PSPXT01_72_Tr1  , febex.febextrace_0[2].trace[3][0],
-       PSPXT01_72_Tr400, febex.febextrace_0[2].trace[3][399], DATA16);
+SIGNAL(PSPXT01_72_Tr1  , febex.febextrace_0[3].trace[3][0],
+       PSPXT01_72_Tr400, febex.febextrace_0[3].trace[3][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_74_Tr1);
-SIGNAL(PSPXT01_74_Tr1  , febex.febextrace_0[2].trace[4][0],
-       PSPXT01_74_Tr400, febex.febextrace_0[2].trace[4][399], DATA16);
+SIGNAL(PSPXT01_74_Tr1  , febex.febextrace_0[3].trace[4][0],
+       PSPXT01_74_Tr400, febex.febextrace_0[3].trace[4][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_76_Tr1);
-SIGNAL(PSPXT01_76_Tr1  , febex.febextrace_0[2].trace[5][0],
-       PSPXT01_76_Tr400, febex.febextrace_0[2].trace[5][399], DATA16);
+SIGNAL(PSPXT01_76_Tr1  , febex.febextrace_0[3].trace[5][0],
+       PSPXT01_76_Tr400, febex.febextrace_0[3].trace[5][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_78_Tr1);
-SIGNAL(PSPXT01_78_Tr1  , febex.febextrace_0[2].trace[6][0],
-       PSPXT01_78_Tr400, febex.febextrace_0[2].trace[6][399], DATA16);
+SIGNAL(PSPXT01_78_Tr1  , febex.febextrace_0[3].trace[6][0],
+       PSPXT01_78_Tr400, febex.febextrace_0[3].trace[6][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_80_Tr1);
-SIGNAL(PSPXT01_80_Tr1  , febex.febextrace_0[2].trace[7][0],
-       PSPXT01_80_Tr400, febex.febextrace_0[2].trace[7][399], DATA16);
+SIGNAL(PSPXT01_80_Tr1  , febex.febextrace_0[3].trace[7][0],
+       PSPXT01_80_Tr400, febex.febextrace_0[3].trace[7][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_82_Tr1);
-SIGNAL(PSPXT01_82_Tr1  , febex.febextrace_0[2].trace[8][0],
-       PSPXT01_82_Tr400, febex.febextrace_0[2].trace[8][399], DATA16);
+SIGNAL(PSPXT01_82_Tr1  , febex.febextrace_0[3].trace[8][0],
+       PSPXT01_82_Tr400, febex.febextrace_0[3].trace[8][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_84_Tr1);
-SIGNAL(PSPXT01_84_Tr1  , febex.febextrace_0[2].trace[9][0],
-       PSPXT01_84_Tr400, febex.febextrace_0[2].trace[9][399], DATA16);
+SIGNAL(PSPXT01_84_Tr1  , febex.febextrace_0[3].trace[9][0],
+       PSPXT01_84_Tr400, febex.febextrace_0[3].trace[9][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_86_Tr1);
-SIGNAL(PSPXT01_86_Tr1  , febex.febextrace_0[2].trace[10][0],
-       PSPXT01_86_Tr400, febex.febextrace_0[2].trace[10][399], DATA16);
+SIGNAL(PSPXT01_86_Tr1  , febex.febextrace_0[3].trace[10][0],
+       PSPXT01_86_Tr400, febex.febextrace_0[3].trace[10][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_88_Tr1);
-SIGNAL(PSPXT01_88_Tr1  , febex.febextrace_0[2].trace[11][0],
-       PSPXT01_88_Tr400, febex.febextrace_0[2].trace[11][399], DATA16);
+SIGNAL(PSPXT01_88_Tr1  , febex.febextrace_0[3].trace[11][0],
+       PSPXT01_88_Tr400, febex.febextrace_0[3].trace[11][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_90_Tr1);
-SIGNAL(PSPXT01_90_Tr1  , febex.febextrace_0[2].trace[12][0],
-       PSPXT01_90_Tr400, febex.febextrace_0[2].trace[12][399], DATA16);
+SIGNAL(PSPXT01_90_Tr1  , febex.febextrace_0[3].trace[12][0],
+       PSPXT01_90_Tr400, febex.febextrace_0[3].trace[12][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_92_Tr1);
-SIGNAL(PSPXT01_92_Tr1  , febex.febextrace_0[2].trace[13][0],
-       PSPXT01_92_Tr400, febex.febextrace_0[2].trace[13][399], DATA16);
+SIGNAL(PSPXT01_92_Tr1  , febex.febextrace_0[3].trace[13][0],
+       PSPXT01_92_Tr400, febex.febextrace_0[3].trace[13][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_94_Tr1);
-SIGNAL(PSPXT01_94_Tr1  , febex.febextrace_0[2].trace[14][0],
-       PSPXT01_94_Tr400, febex.febextrace_0[2].trace[14][399], DATA16);
+SIGNAL(PSPXT01_94_Tr1  , febex.febextrace_0[3].trace[14][0],
+       PSPXT01_94_Tr400, febex.febextrace_0[3].trace[14][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_96_Tr1);
-SIGNAL(PSPXT01_96_Tr1  , febex.febextrace_0[2].trace[15][0],
-       PSPXT01_96_Tr400, febex.febextrace_0[2].trace[15][399], DATA16);
+SIGNAL(PSPXT01_96_Tr1  , febex.febextrace_0[3].trace[15][0],
+       PSPXT01_96_Tr400, febex.febextrace_0[3].trace[15][399], DATA16);
 
 SIGNAL(ZERO_SUPPRESS: PSPXT01_98_Tr1);
-SIGNAL(PSPXT01_98_Tr1  , febex.febextrace_0[3].trace[0][0],
-       PSPXT01_98_Tr400, febex.febextrace_0[3].trace[0][399], DATA16);
+SIGNAL(PSPXT01_98_Tr1  , febex.febextrace_0[2].trace[0][0],
+       PSPXT01_98_Tr400, febex.febextrace_0[2].trace[0][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_100_Tr1);
-SIGNAL(PSPXT01_100_Tr1  , febex.febextrace_0[3].trace[1][0],
-       PSPXT01_100_Tr400, febex.febextrace_0[3].trace[1][399], DATA16);
+SIGNAL(PSPXT01_100_Tr1  , febex.febextrace_0[2].trace[1][0],
+       PSPXT01_100_Tr400, febex.febextrace_0[2].trace[1][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_102_Tr1);
-SIGNAL(PSPXT01_102_Tr1  , febex.febextrace_0[3].trace[2][0],
-       PSPXT01_102_Tr400, febex.febextrace_0[3].trace[2][399], DATA16);
+SIGNAL(PSPXT01_102_Tr1  , febex.febextrace_0[2].trace[2][0],
+       PSPXT01_102_Tr400, febex.febextrace_0[2].trace[2][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_104_Tr1);
-SIGNAL(PSPXT01_104_Tr1  , febex.febextrace_0[3].trace[3][0],
-       PSPXT01_104_Tr400, febex.febextrace_0[3].trace[3][399], DATA16);
+SIGNAL(PSPXT01_104_Tr1  , febex.febextrace_0[2].trace[3][0],
+       PSPXT01_104_Tr400, febex.febextrace_0[2].trace[3][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_106_Tr1);
-SIGNAL(PSPXT01_106_Tr1  , febex.febextrace_0[3].trace[4][0],
-       PSPXT01_106_Tr400, febex.febextrace_0[3].trace[4][399], DATA16);
+SIGNAL(PSPXT01_106_Tr1  , febex.febextrace_0[2].trace[4][0],
+       PSPXT01_106_Tr400, febex.febextrace_0[2].trace[4][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_108_Tr1);
-SIGNAL(PSPXT01_108_Tr1  , febex.febextrace_0[3].trace[5][0],
-       PSPXT01_108_Tr400, febex.febextrace_0[3].trace[5][399], DATA16);
+SIGNAL(PSPXT01_108_Tr1  , febex.febextrace_0[2].trace[5][0],
+       PSPXT01_108_Tr400, febex.febextrace_0[2].trace[5][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_110_Tr1);
-SIGNAL(PSPXT01_110_Tr1  , febex.febextrace_0[3].trace[6][0],
-       PSPXT01_110_Tr400, febex.febextrace_0[3].trace[6][399], DATA16);
+SIGNAL(PSPXT01_110_Tr1  , febex.febextrace_0[2].trace[6][0],
+       PSPXT01_110_Tr400, febex.febextrace_0[2].trace[6][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_112_Tr1);
-SIGNAL(PSPXT01_112_Tr1  , febex.febextrace_0[3].trace[7][0],
-       PSPXT01_112_Tr400, febex.febextrace_0[3].trace[7][399], DATA16);
+SIGNAL(PSPXT01_112_Tr1  , febex.febextrace_0[2].trace[7][0],
+       PSPXT01_112_Tr400, febex.febextrace_0[2].trace[7][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_114_Tr1);
-SIGNAL(PSPXT01_114_Tr1  , febex.febextrace_0[3].trace[8][0],
-       PSPXT01_114_Tr400, febex.febextrace_0[3].trace[8][399], DATA16);
+SIGNAL(PSPXT01_114_Tr1  , febex.febextrace_0[2].trace[8][0],
+       PSPXT01_114_Tr400, febex.febextrace_0[2].trace[8][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_116_Tr1);
-SIGNAL(PSPXT01_116_Tr1  , febex.febextrace_0[3].trace[9][0],
-       PSPXT01_116_Tr400, febex.febextrace_0[3].trace[9][399], DATA16);
+SIGNAL(PSPXT01_116_Tr1  , febex.febextrace_0[2].trace[9][0],
+       PSPXT01_116_Tr400, febex.febextrace_0[2].trace[9][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_118_Tr1);
-SIGNAL(PSPXT01_118_Tr1  , febex.febextrace_0[3].trace[10][0],
-       PSPXT01_118_Tr400, febex.febextrace_0[3].trace[10][399], DATA16);
+SIGNAL(PSPXT01_118_Tr1  , febex.febextrace_0[2].trace[10][0],
+       PSPXT01_118_Tr400, febex.febextrace_0[2].trace[10][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_120_Tr1);
-SIGNAL(PSPXT01_120_Tr1  , febex.febextrace_0[3].trace[11][0],
-       PSPXT01_120_Tr400, febex.febextrace_0[3].trace[11][399], DATA16);
+SIGNAL(PSPXT01_120_Tr1  , febex.febextrace_0[2].trace[11][0],
+       PSPXT01_120_Tr400, febex.febextrace_0[2].trace[11][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_122_Tr1);
-SIGNAL(PSPXT01_122_Tr1  , febex.febextrace_0[3].trace[12][0],
-       PSPXT01_122_Tr400, febex.febextrace_0[3].trace[12][399], DATA16);
+SIGNAL(PSPXT01_122_Tr1  , febex.febextrace_0[2].trace[12][0],
+       PSPXT01_122_Tr400, febex.febextrace_0[2].trace[12][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_124_Tr1);
-SIGNAL(PSPXT01_124_Tr1  , febex.febextrace_0[3].trace[13][0],
-       PSPXT01_124_Tr400, febex.febextrace_0[3].trace[13][399], DATA16);
+SIGNAL(PSPXT01_124_Tr1  , febex.febextrace_0[2].trace[13][0],
+       PSPXT01_124_Tr400, febex.febextrace_0[2].trace[13][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_126_Tr1);
-SIGNAL(PSPXT01_126_Tr1  , febex.febextrace_0[3].trace[14][0],
-       PSPXT01_126_Tr400, febex.febextrace_0[3].trace[14][399], DATA16);
+SIGNAL(PSPXT01_126_Tr1  , febex.febextrace_0[2].trace[14][0],
+       PSPXT01_126_Tr400, febex.febextrace_0[2].trace[14][399], DATA16);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_128_Tr1);
-SIGNAL(PSPXT01_128_Tr1  , febex.febextrace_0[3].trace[15][0],
-       PSPXT01_128_Tr400, febex.febextrace_0[3].trace[15][399], DATA16);
+SIGNAL(PSPXT01_128_Tr1  , febex.febextrace_0[2].trace[15][0],
+       PSPXT01_128_Tr400, febex.febextrace_0[2].trace[15][399], DATA16);
 
 /* FEBEX SFP0 without traces */
 SIGNAL(ZERO_SUPPRESS_MULTI(20): PSPX01_01);
@@ -504,38 +497,36 @@ SIGNAL(PSPX01_123, febex.febex_0[0].e[13], DATA32);
 SIGNAL(PSPX01_125, febex.febex_0[0].e[14], DATA32);
 SIGNAL(PSPX01_127, febex.febex_0[0].e[15], DATA32);
 
-SIGNAL(PSPX01_66, febex.febex_0[2].e[0], DATA32);
-SIGNAL(PSPX01_68, febex.febex_0[2].e[1], DATA32);
-SIGNAL(PSPX01_70, febex.febex_0[2].e[2], DATA32);
-SIGNAL(PSPX01_72, febex.febex_0[2].e[3], DATA32);
-SIGNAL(PSPX01_74, febex.febex_0[2].e[4], DATA32);
-SIGNAL(PSPX01_76, febex.febex_0[2].e[5], DATA32);
-SIGNAL(PSPX01_78, febex.febex_0[2].e[6], DATA32);
-SIGNAL(PSPX01_80, febex.febex_0[2].e[7], DATA32);
-SIGNAL(PSPX01_82, febex.febex_0[2].e[8], DATA32);
-SIGNAL(PSPX01_84, febex.febex_0[2].e[9], DATA32);
-SIGNAL(PSPX01_86, febex.febex_0[2].e[10], DATA32);
-SIGNAL(PSPX01_88, febex.febex_0[2].e[11], DATA32);
-SIGNAL(PSPX01_90, febex.febex_0[2].e[12], DATA32);
-SIGNAL(PSPX01_92, febex.febex_0[2].e[13], DATA32);
-SIGNAL(PSPX01_94, febex.febex_0[2].e[14], DATA32);
-SIGNAL(PSPX01_96, febex.febex_0[2].e[15], DATA32);
+SIGNAL(PSPX01_66, febex.febex_0[3].e[0], DATA32);
+SIGNAL(PSPX01_68, febex.febex_0[3].e[1], DATA32);
+SIGNAL(PSPX01_70, febex.febex_0[3].e[2], DATA32);
+SIGNAL(PSPX01_72, febex.febex_0[3].e[3], DATA32);
+SIGNAL(PSPX01_74, febex.febex_0[3].e[4], DATA32);
+SIGNAL(PSPX01_76, febex.febex_0[3].e[5], DATA32);
+SIGNAL(PSPX01_78, febex.febex_0[3].e[6], DATA32);
+SIGNAL(PSPX01_80, febex.febex_0[3].e[7], DATA32);
+SIGNAL(PSPX01_82, febex.febex_0[3].e[8], DATA32);
+SIGNAL(PSPX01_84, febex.febex_0[3].e[9], DATA32);
+SIGNAL(PSPX01_86, febex.febex_0[3].e[10], DATA32);
+SIGNAL(PSPX01_88, febex.febex_0[3].e[11], DATA32);
+SIGNAL(PSPX01_90, febex.febex_0[3].e[12], DATA32);
+SIGNAL(PSPX01_92, febex.febex_0[3].e[13], DATA32);
+SIGNAL(PSPX01_94, febex.febex_0[3].e[14], DATA32);
+SIGNAL(PSPX01_96, febex.febex_0[3].e[15], DATA32);
 
-SIGNAL(PSPX01_98, febex.febex_0[3].e[0], DATA32);
-SIGNAL(PSPX01_100, febex.febex_0[3].e[1], DATA32);
-SIGNAL(PSPX01_102, febex.febex_0[3].e[2], DATA32);
-SIGNAL(PSPX01_104, febex.febex_0[3].e[3], DATA32);
-SIGNAL(PSPX01_106, febex.febex_0[3].e[4], DATA32);
-SIGNAL(PSPX01_108, febex.febex_0[3].e[5], DATA32);
-SIGNAL(PSPX01_110, febex.febex_0[3].e[6], DATA32);
-SIGNAL(PSPX01_112, febex.febex_0[3].e[7], DATA32);
-SIGNAL(PSPX01_114, febex.febex_0[3].e[8], DATA32);
-SIGNAL(PSPX01_116, febex.febex_0[3].e[9], DATA32);
-SIGNAL(PSPX01_118, febex.febex_0[3].e[10], DATA32);
-SIGNAL(PSPX01_120, febex.febex_0[3].e[11], DATA32);
-SIGNAL(PSPX01_122, febex.febex_0[3].e[12], DATA32);
-SIGNAL(PSPX01_124, febex.febex_0[3].e[13], DATA32);
-SIGNAL(PSPX01_126, febex.febex_0[3].e[14], DATA32);
-SIGNAL(PSPX01_128, febex.febex_0[3].e[15], DATA32);
-
-#endif
+SIGNAL(PSPX01_98, febex.febex_0[2].e[0], DATA32);
+SIGNAL(PSPX01_100, febex.febex_0[2].e[1], DATA32);
+SIGNAL(PSPX01_102, febex.febex_0[2].e[2], DATA32);
+SIGNAL(PSPX01_104, febex.febex_0[2].e[3], DATA32);
+SIGNAL(PSPX01_106, febex.febex_0[2].e[4], DATA32);
+SIGNAL(PSPX01_108, febex.febex_0[2].e[5], DATA32);
+SIGNAL(PSPX01_110, febex.febex_0[2].e[6], DATA32);
+SIGNAL(PSPX01_112, febex.febex_0[2].e[7], DATA32);
+SIGNAL(PSPX01_114, febex.febex_0[2].e[8], DATA32);
+SIGNAL(PSPX01_116, febex.febex_0[2].e[9], DATA32);
+SIGNAL(PSPX01_118, febex.febex_0[2].e[10], DATA32);
+SIGNAL(PSPX01_120, febex.febex_0[2].e[11], DATA32);
+SIGNAL(PSPX01_122, febex.febex_0[2].e[12], DATA32);
+SIGNAL(PSPX01_124, febex.febex_0[2].e[13], DATA32);
+SIGNAL(PSPX01_126, febex.febex_0[2].e[14], DATA32);
+SIGNAL(PSPX01_128, febex.febex_0[2].e[15], DATA32);
