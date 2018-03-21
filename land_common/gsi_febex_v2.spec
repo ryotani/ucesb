@@ -15,6 +15,9 @@ FEBEX_BAD_EVENTHEADER()
 
 FEBEX_GOOD_EVENTHEADER()
 {
+	UINT32 failure NOENCODE {
+		0_31: status;
+	}
 	UINT32 febexcards {
 		0_7:   n_febex_sfp0 = RANGE(0, 64);
 		8_15:  n_febex_sfp1 = RANGE(0, 64);
@@ -86,14 +89,14 @@ FEBEX_NOTRACE(sfp, card)
 
 	list (0 <= i < ((data_size.size - 16) >> 3)) {
 		UINT32 time NOENCODE {
-		         0_10: time; //edited by Joachim after comparing with go4  and checking the result.  before: 0_11:  time; 12_14: unused1;
-			11_14: unused1; //go4 this is 15 but including this into the timevalue gives sometimes an offset of 4096 (2**12) time changes drastically including 14th bit
+		         0_10: time;    // from go4.  before: 0_11:  time;
+			11_14: unused1;
 			15: sign;
 			16_19: unused2;
 			20_23: multi_hit;
 			24_27: n_hit;
 			28_31: channel_id;
-			ENCODE(t[channel_id], (value = (time | sign << 11 ) & 0xfff) ); //tried to use the sign-bit this is not working but negative values are above 4096
+			ENCODE(t[channel_id], (value = (sign * -time + (sign - 1) * -time) & 0xfff) );
 			ENCODE(n_hit[channel_id], (value = n_hit));
 		}
 
@@ -103,7 +106,7 @@ FEBEX_NOTRACE(sfp, card)
 			23:    sign;
 			24_27: unused2;
 			28_31: channel_id;
-			ENCODE(e[channel_id], (value = energy | sign << 23));
+			ENCODE(e[channel_id], (value = sign * -energy + (sign - 1) * -energy ));
 		}
 	}
 

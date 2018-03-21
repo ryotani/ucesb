@@ -92,7 +92,7 @@ void jun16_raw_event_user_function(unpack_event *event, raw_event *raw_event
     }
     for (size_t row = 0; 20 > row; ++row) {
       for (size_t i = 0; LENGTH(g_spill) > i; ++i) {
-        printf("%c", row < 20 * (1 - (double)g_spill[i] / max) ? ' ' : '#');
+        printf("%c", (double)row < 20 * (1 - (double)g_spill[i] / max) ? ' ' : '#');
       }
       puts("");
     }
