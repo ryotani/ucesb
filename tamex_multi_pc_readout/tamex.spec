@@ -1,82 +1,71 @@
-TAMEX_HEADER()
+// -*- C++ -*-
+#include "tamex.spec"
+
+TAMEX_SFP(sfp)
 {
-	UINT32 trigger_window
-	{
-		 0_15: post_trig_ns;
-		16_31: pre_trig_ns;
+	select several {
+		evhead[1] = TAMEX(sfp = sfp, card = 0);
+		evhead[2] = TAMEX(sfp = sfp, card = 1);
+		evhead[3] = TAMEX(sfp = sfp, card = 2);
+		evhead[4] = TAMEX(sfp = sfp, card = 3);
+		evhead[5] = TAMEX(sfp = sfp, card = 4);
+		evhead[6] = TAMEX(sfp = sfp, card = 5);
+		evhead[7] = TAMEX(sfp = sfp, card = 6);
+		evhead[8] = TAMEX(sfp = sfp, card = 7);
 	}
 }
 
-TAMEX_PADDING()
+SUBEVENT(tamex_pcie)
 {
-	UINT32 padding NOENCODE
+	header = TAMEX_HEADER();
+	list (0 <= sfp < 4)
 	{
-		 0_11: counter;
-		12_19: index;
-		20_31: 0xadd;
-	}
-}
-
-TAMEX(sfp, card)
-{
-	//  0..15 = leading edge
-	// 16..31 = trailing edge for ToT.
-	// 32..47 = trailing edge for QTC.
-	//     48 = will eventually be a time reference between DAQs.
-	//     49 = scratch storage for epoch and error words.
-	MEMBER(DATA12 time_coarse[50] ZERO_SUPPRESS_MULTI(200));
-	MEMBER(DATA12 time_fine[50] ZERO_SUPPRESS_MULTI(200));
-
-	UINT32 indicator NOENCODE
-	{
-		  0_7: 0x34;
-		 8_11: trigger_type;
-		12_15: sfp = MATCH(sfp);
-		16_23: card = MATCH(card);
-		24_31: 0;
-	}
-
-	MATCH_END;
-
-	UINT32 data_size NOENCODE
-	{
-		0_31: bytes;
-	}
-
-	UINT32 tdc_header NOENCODE
-	{
-		 0_15: lec;
-		   16: buf_no;
-		//17_19: reserved;
-		20_23: trigger_type;
-		24_31: 0xaa;
-	}
-
-	list (0 <= i < data_size.bytes / 4 - 2)
-	{
-		UINT32 data NOENCODE
-		{
-			 0_10: coarse;
-			   11: is_leading;
-			// fine=0x3ff -> error, do not use.
-			12_21: fine;
-			22_28: channel_index;
-			29_31: type;
-
-			ENCODE(time_coarse[
-			    (0x4 == type) * channel_index +
-			    (0x4 != type) * 49
-			    ], (value = coarse));
-			ENCODE(time_fine[
-			    (0x4 == type) * channel_index +
-			    (0x4 != type) * 49
-			    ], (value = fine));
+		select several {
+			padding = TAMEX_PADDING();
+		}
+		select several {
+			s[1] = TAMEX_SFP(sfp = 0);
+			s[2] = TAMEX_SFP(sfp = 1);
+			s[3] = TAMEX_SFP(sfp = 2);
+			s[4] = TAMEX_SFP(sfp = 3);
 		}
 	}
-
-	UINT32 trailer NOENCODE
-	{
-		 0_23: unused;
-		24_31: 0xbb;
-	}
 }
+
+EVENT
+{
+	pc[1] = tamex_pcie(type = 10, subtype = 1, procid = 100);
+	pc[2] = tamex_pcie(type = 10, subtype = 1, procid = 200);
+}
+
+// Proposed naming scheme: NN_Pn_Bn_Tn (Neuland Plane Bar Tube)
+
+#define TAMEX(pcie,sfp,card) \
+	SIGNAL(ZERO_SUPPRESS_MULTI(200): pc##pcie##s##sfp##c##card##tc1); \
+	SIGNAL(pc##pcie##s##sfp##c##card##tc1, \
+	       pc[pcie].s[sfp].evhead[card].time_coarse[0],\
+	       pc##pcie##s##sfp##c##card##tc50, \
+	       pc[pcie].s[sfp].evhead[card].time_coarse[49], DATA12); \
+	SIGNAL(ZERO_SUPPRESS_MULTI(200): pc##pcie##s##sfp##c##card##tf1); \
+	SIGNAL(pc##pcie##s##sfp##c##card##tf1, \
+	       pc[pcie].s[sfp].evhead[card].time_fine[0],\
+	       pc##pcie##s##sfp##c##card##tf50, \
+	       pc[pcie].s[sfp].evhead[card].time_fine[49], DATA12);
+
+/*TAMEX(1, 1, 1);
+TAMEX(1, 1, 2);
+TAMEX(1, 1, 3);
+TAMEX(1, 1, 4);
+TAMEX(1, 1, 5);
+TAMEX(1, 1, 6);
+TAMEX(1, 1, 7);
+TAMEX(2, 1, 1);
+TAMEX(2, 1, 2);
+TAMEX(2, 1, 3);
+TAMEX(2, 1, 4);
+TAMEX(2, 1, 5);
+TAMEX(2, 1, 6);
+TAMEX(2, 1, 7);*/
+
+#include "mapping.h"
+

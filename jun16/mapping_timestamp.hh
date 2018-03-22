@@ -3,7 +3,7 @@ SIGNAL(TIMESTAMP_MASTER_WR_T1, master_ts.ts100.t1, DATA16);
 SIGNAL(TIMESTAMP_MASTER_WR_T2, master_ts.ts100.t2, DATA16);
 SIGNAL(TIMESTAMP_MASTER_WR_T3, master_ts.ts100.t3, DATA16);
 SIGNAL(TIMESTAMP_MASTER_WR_T4, master_ts.ts100.t4, DATA16);
-#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16Xe) || defined(UNPACKER_IS_jun16U) || defined(UNPACKER_IS_jun16_ptof)
+#if defined(UNPACKER_IS_jun16_C) || defined(UNPACKER_IS_jun16_Xe) || defined(UNPACKER_IS_jun16_U) || defined(UNPACKER_IS_jun16_ptof)
 SIGNAL(TIMESTAMP_MASTER_HI, master_ts.multi_.time_hi, DATA32);
 SIGNAL(TIMESTAMP_MASTER_LO, master_ts.multi_.time_lo, DATA32);
 #endif

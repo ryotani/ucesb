@@ -4,16 +4,20 @@
 #
 # Format:
 # <unpacker name> <path relative to R3B_DATA_PATH environment>
-jun16/jun16Xe jun2016/lmd/run051_0276.lmd
-jun16/jun16Xe jun2016/lmd/run095_0941.lmd
-jun16/jun16Xe jun2016/lmd/run111_1753.lmd
-jun16/jun16C jun2016/lmd/run160_2388.lmd
-jun16/jun16C jun2016/lmd/run165_2452.lmd
-jun16/jun16C jun2016/lmd/run206_2951.lmd
-jun16/jun16C jun2016/lmd/run225_3028.lmd
+jun16/jun16_Xe jun2016/lmd/run051_0276.lmd
+jun16/jun16_Xe jun2016/lmd/run095_0941.lmd
+jun16/jun16_Xe jun2016/lmd/run111_1753.lmd
+jun16/jun16_C jun2016/lmd/run160_2388.lmd
+jun16/jun16_C jun2016/lmd/run165_2452.lmd
+jun16/jun16_C jun2016/lmd/run206_2951.lmd
+jun16/jun16_C jun2016/lmd/run225_3028.lmd
 gamma3_2015/gamma3_1 2015/lmd/run164_2080.lmd
 gamma3_2015/gamma3_2 2015/lmd/run187_2547.lmd
 kvi2018/kvi2018_001_060 kvi2018/lmd/run044_0383.lmd
 kvi2018/kvi2018_061_068 kvi2018/lmd/run066_0597.lmd
 kvi2018/kvi2018_069_101 kvi2018/lmd/run070_0670.lmd
-kvi2018/kvi2018_086_101 kvi2018/lmd/run088_1312.lmd
+kvi2018/kvi2018_los_padi_086_098 kvi2018/lmd/run088_1312.lmd
+kvi2018/kvi2018_los_padi_099_101 kvi2018/lmd/run100_1484.lmd
+kvi2018/kvi2018_013_020 kvi2018/lmd/run044_*.lmd
+kvi2018/kvi2018_pspx_073 kvi2018/lmd/pspx_run073_*.lmd
+kvi2018/kvi2018_pspx_075_082 kvi2018/lmd/pspx_run075_*.lmd

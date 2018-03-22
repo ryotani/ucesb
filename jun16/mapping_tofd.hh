@@ -68,7 +68,7 @@ SIGNAL(TOFD_VFTX2_T3,  tofd_vme.vftx2_3.time_trigger, DATA16);
 
 // Fine times.
 
-#if !defined(UNPACKER_IS_jun16C) && !defined(UNPACKER_IS_jun16_ptof)
+#if !defined(UNPACKER_IS_jun16_C) && !defined(UNPACKER_IS_jun16_ptof)
 // Plane 1 with VFTX2.
 SIGNAL(TOFD_P1T1_TFL1,  tofd_vme.vftx2_1.time_fine[0],  DATA12);
 SIGNAL(TOFD_P1T1_TFT1,  tofd_vme.vftx2_1.time_fine[1],  DATA12);
@@ -132,7 +132,7 @@ SIGNAL(TOFD_P2T2_TFL6,  tofd_vme.vftx2_3.time_fine[14], DATA12);
 SIGNAL(TOFD_P2T2_TFT6,  tofd_vme.vftx2_3.time_fine[15], DATA12);
 #endif
 
-#if defined(UNPACKER_IS_jun16C)
+#if defined(UNPACKER_IS_jun16_C)
 // Plane 1 with TAMEX2 + PADI.
 SIGNAL(TOFD_P1T1_TFL1, tofd_tamex.tamex_3.time_fine[1],  DATA12);
 SIGNAL(TOFD_P1T1_TFT1, tofd_tamex.tamex_3.time_fine[2],  DATA12);
@@ -258,7 +258,7 @@ SIGNAL(TOFD_P4T1_TFT6, tofd_tamex.tamex_2.time_fine[22], DATA12);
 SIGNAL(TOFD_P4T2_TFL6, tofd_tamex.tamex_2.time_fine[23], DATA12);
 SIGNAL(TOFD_P4T2_TFT6, tofd_tamex.tamex_2.time_fine[24], DATA12);
 
-#if !defined(UNPACKER_IS_jun16C) && !defined(UNPACKER_IS_jun16_ptof)
+#if !defined(UNPACKER_IS_jun16_C) && !defined(UNPACKER_IS_jun16_ptof)
 // Plane 5 with TAMEX2 + PADI.
 SIGNAL(TOFD_P5T1_TFL1, tofd_tamex.tamex_3.time_fine[1],  DATA12);
 SIGNAL(TOFD_P5T1_TFT1, tofd_tamex.tamex_3.time_fine[2],  DATA12);
@@ -324,7 +324,7 @@ SIGNAL(TOFD_P6T2_TFT6, tofd_tamex.tamex_4.time_fine[24], DATA12);
 
 // Coarse times.
 
-#if !defined(UNPACKER_IS_jun16C) && !defined(UNPACKER_IS_jun16_ptof)
+#if !defined(UNPACKER_IS_jun16_C) && !defined(UNPACKER_IS_jun16_ptof)
 // Plane 1 with VFTX2.
 SIGNAL(TOFD_P1T1_TCL1,  tofd_vme.vftx2_1.time_coarse[0],  DATA16);
 SIGNAL(TOFD_P1T1_TCT1,  tofd_vme.vftx2_1.time_coarse[1],  DATA16);
@@ -388,7 +388,7 @@ SIGNAL(TOFD_P2T2_TCL6,  tofd_vme.vftx2_3.time_coarse[14], DATA16);
 SIGNAL(TOFD_P2T2_TCT6,  tofd_vme.vftx2_3.time_coarse[15], DATA16);
 #endif
 
-#if defined(UNPACKER_IS_jun16C)
+#if defined(UNPACKER_IS_jun16_C)
 // Plane 1 with PADI and TAMEX.
 SIGNAL(TOFD_P1T1_TCL1, tofd_tamex.tamex_3.time_coarse[1],  DATA16);
 SIGNAL(TOFD_P1T1_TCT1, tofd_tamex.tamex_3.time_coarse[2],  DATA16);
@@ -514,7 +514,7 @@ SIGNAL(TOFD_P4T1_TCT6, tofd_tamex.tamex_2.time_coarse[22], DATA16);
 SIGNAL(TOFD_P4T2_TCL6, tofd_tamex.tamex_2.time_coarse[23], DATA16);
 SIGNAL(TOFD_P4T2_TCT6, tofd_tamex.tamex_2.time_coarse[24], DATA16);
 
-#if !defined(UNPACKER_IS_jun16C) && !defined(UNPACKER_IS_jun16_ptof)
+#if !defined(UNPACKER_IS_jun16_C) && !defined(UNPACKER_IS_jun16_ptof)
 // Plane 5 with TAMEX.
 SIGNAL(TOFD_P5T1_TCL1, tofd_tamex.tamex_3.time_coarse[1],  DATA16);
 SIGNAL(TOFD_P5T1_TCT1, tofd_tamex.tamex_3.time_coarse[2],  DATA16);
