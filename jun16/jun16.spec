@@ -1,6 +1,6 @@
 #include "spec/vme_mesytec_madc32.spec"
 #include "../land_common/barrier.spec"
-#if defined(UNPACKER_IS_jun16Xe)
+#if defined(UNPACKER_IS_jun16_Xe)
 #include "../land_common/gsi_febex.spec"
 #else
 #include "gsi_febex.spec"
@@ -25,7 +25,8 @@ VFTX2_STATUS()
 SUBEVENT(wr_100)
 {
 	ts100 = TIMESTAMP_WHITERABBIT(id=0x100);
-#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16Xe) || defined(UNPACKER_IS_jun16U) || defined(UNPACKER_IS_jun16_ptof)
+#if defined(UNPACKER_IS_jun16_C) || defined(UNPACKER_IS_jun16_Xe) \
+ || defined(UNPACKER_IS_jun16_U) || defined(UNPACKER_IS_jun16_ptof)
 	multi_ = WR_MULTI();
 #endif
 }
@@ -33,7 +34,8 @@ SUBEVENT(wr_100)
 SUBEVENT(wr_200)
 {
 	ts200 = TIMESTAMP_WHITERABBIT(id=0x200);
-#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16Xe) || defined(UNPACKER_IS_jun16U) || defined(UNPACKER_IS_jun16_ptof)
+#if defined(UNPACKER_IS_jun16_C) || defined(UNPACKER_IS_jun16_Xe) \
+ || defined(UNPACKER_IS_jun16_U) || defined(UNPACKER_IS_jun16_ptof)
 	multi_ = WR_MULTI();
 #endif
 }
@@ -125,7 +127,7 @@ SUBEVENT(tracking_febex_subev)
 		febex_1[15] = FEBEX_NOTRACE(sfp=1, card=15);
 	}
 #endif
-#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16_ptof)
+#if defined(UNPACKER_IS_jun16_C) || defined(UNPACKER_IS_jun16_ptof)
 	header = FEBEX_EVENTHEADER();
 	select several {
 		padding = FEBEX_PADDING();
@@ -169,7 +171,7 @@ SUBEVENT(tracking_febex_subev)
 		febextrace_0[17] = FEBEX_TRACE(sfp=0, card=17);
 	}
 #endif
-#if defined(UNPACKER_IS_jun16Xe)
+#if defined(UNPACKER_IS_jun16_Xe)
 	select several {
 		badbad0 = FEBEX_BADBAD();
 		header0 = FEBEX_EVENTHEADER();
@@ -247,7 +249,7 @@ SUBEVENT(tracking_febex_subev)
 		febextrace_1[15] = FEBEX_TRACE(sfp=2, card=15);
 	}
 #endif
-#ifdef UNPACKER_IS_jun16U
+#ifdef UNPACKER_IS_jun16_U
 	header0 = FEBEX_EVENTHEADER();
 	select several {
 		febex_0[ 0] = FEBEX_NOTRACE(sfp=0, card=0);
@@ -315,7 +317,7 @@ SUBEVENT(straw_vme_subev)
 SUBEVENT(tbm_subev)
 {
 	land_vme = LAND_STD_VME();
-#ifndef UNPACKER_IS_jun16U
+#ifndef UNPACKER_IS_jun16_U
 	barrier = BARRIER();
 	select several {
 		vftx2 = VME_GSI_VFTX2_LT(id=1);
@@ -374,10 +376,10 @@ EVENT
 	tbm_vme = tbm_subev(type=88, subtype=8800, control=3);
 	tofd_tamex = tofd_tamex_subev(type=102, subtype=10200, control=4);
 	tracking_febex = tracking_febex_subev(type=100, subtype=10000, control=5);
-#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16Xe) || defined(UNPACKER_IS_jun16_ptof)
+#if defined(UNPACKER_IS_jun16_C) || defined(UNPACKER_IS_jun16_Xe) || defined(UNPACKER_IS_jun16_ptof)
 	fitest_febex = fitest_febex_subev(type=100, subtype=10000, control=6);
 #endif
-#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16_ptof)
+#if defined(UNPACKER_IS_jun16_C) || defined(UNPACKER_IS_jun16_ptof)
 	straw_ts = wr_400(type=10, subtype=1, control=7);
 	straw = straw_vme_subev(type=88, subtype=8800, control=7);
 #endif

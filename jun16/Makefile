@@ -1,7 +1,7 @@
 #########################################################
-# Specify the name of the target executable
+# Specify the name of the target executable(s)
 
-TARGETS:=jun16 jun16C jun16U jun16Xe jun16_ptof
+TARGETS:=jun16 jun16_C jun16_U jun16_Xe jun16_ptof
 
 #########################################################
 # Include common Makefile

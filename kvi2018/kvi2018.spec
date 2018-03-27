@@ -129,14 +129,17 @@ SUBEVENT(tamex_subev)
 SUBEVENT(clocktdc_subev)
 {
 	select several {
-#if defined(UNPACKER_IS_kvi2018_001_060)
+#if defined(UNPACKER_IS_kvi2018_001_060) \
+ || defined(UNPACKER_IS_kvi2018_013_020)
 		header = GSI_CLOCKTDC_FUSER(a_sfp0_num=4, a_sfp1_num=4, a_sfp2_num=0, a_sfp3_num=0, ch_per_ctdc=128);
 #endif
-#if defined(UNPACKER_IS_kvi2018_061_068)
+#if defined(UNPACKER_IS_kvi2018_061_068) \
+ || defined(UNPACKER_IS_kvi2018_los_padi_099_101)
 		header = GSI_CLOCKTDC_FUSER(a_sfp0_num=4, a_sfp1_num=2, a_sfp2_num=2, a_sfp3_num=0, ch_per_ctdc=128);
 #endif
 #if defined(UNPACKER_IS_kvi2018_069_101) \
- || defined(UNPACKER_IS_kvi2018_086_101)
+ || defined(UNPACKER_IS_kvi2018_086_101) \
+ || defined(UNPACKER_IS_kvi2018_los_padi_086_098)
 		header = GSI_CLOCKTDC_FUSER(a_sfp0_num=4, a_sfp1_num=2, a_sfp2_num=0, a_sfp3_num=2, ch_per_ctdc=128);
 #endif
 		bad00bad = GSI_CLOCKTDC_BAD00BAD();

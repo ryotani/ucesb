@@ -21,6 +21,7 @@ SIGNAL(LOS01_VTC7, los.vftx2.time_coarse[6], DATA16);
 SIGNAL(LOS01_VTC8, los.vftx2.time_coarse[7], DATA16);
 
 #if defined(UNPACKER_IS_kvi2018_001_060) \
+ || defined(UNPACKER_IS_kvi2018_013_020) \
  || defined(UNPACKER_IS_kvi2018_061_068) \
  || defined(UNPACKER_IS_kvi2018_069_101)
 // LOS FQT/TAMEX3 fine (TDC) values.
@@ -64,7 +65,8 @@ SIGNAL(LOS01_TTCL8, tamex.los_0.time_coarse[15], DATA12);
 SIGNAL(LOS01_TTCT8, tamex.los_0.time_coarse[16], DATA12);
 #endif
 
-#if defined(UNPACKER_IS_kvi2018_086_101)
+#if defined(UNPACKER_IS_kvi2018_los_padi_086_098) \
+ || defined(UNPACKER_IS_kvi2018_los_padi_099_101)
 // LOS PADI/TAMEX2 fine (TDC) values.
 SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS01_TTFL1);
 SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS01_TTFT1);

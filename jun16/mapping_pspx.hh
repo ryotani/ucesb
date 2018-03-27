@@ -1,4 +1,4 @@
-#if defined(UNPACKER_IS_jun16C) || defined(UNPACKER_IS_jun16Xe)
+#if defined(UNPACKER_IS_jun16_C) || defined(UNPACKER_IS_jun16_Xe)
 // PSPX, final mapping, 11.07.2016
 SIGNAL(ZERO_SUPPRESS_MULTI(20): PSPX01_01);
 SIGNAL(ZERO_SUPPRESS_MULTI(20): PSPX02_01);
@@ -6,11 +6,11 @@ SIGNAL(ZERO_SUPPRESS_MULTI(20): PSPX03_01);
 SIGNAL(ZERO_SUPPRESS_MULTI(20): PSPX04_01);
 SIGNAL(ZERO_SUPPRESS_MULTI(20): PSPX05_01);
 #endif
-#if defined(UNPACKER_IS_jun16Xe)
+#if defined(UNPACKER_IS_jun16_Xe)
 SIGNAL(ZERO_SUPPRESS_MULTI(20): PSPX06_01);
 #endif
 
-#if defined(UNPACKER_IS_jun16C)
+#if defined(UNPACKER_IS_jun16_C)
 // filling the declared variables:
 SIGNAL(PSPX01_33, tracking_febex.febex_0[9].e[0], DATA32);
 SIGNAL(ZERO_SUPPRESS: PSPXT01_33_Tr1);
@@ -545,7 +545,7 @@ SIGNAL(PSPXT04_65_Tr1  , tracking_febex.febextrace_0[8].trace[14][0],
        PSPXT04_65_Tr400, tracking_febex.febextrace_0[8].trace[14][399], DATA16);
 #endif
 
-#if defined(UNPACKER_IS_jun16Xe)
+#if defined(UNPACKER_IS_jun16_Xe)
 /* PSP traces. */
 SIGNAL(ZERO_SUPPRESS:  PSPXT02_33_Tr1);
 SIGNAL( PSPXT02_33_Tr1, tracking_febex.febextrace_0[ 1].trace[ 0][ 0],  PSPXT02_33_Tr400, tracking_febex.febextrace_0[ 1].trace[ 0][399], DATA16);
@@ -1069,7 +1069,7 @@ SIGNAL(ZERO_SUPPRESS: PSPXT06_128_Tr1);
 SIGNAL(PSPXT06_128_Tr1, tracking_febex.febextrace_0[13].trace[15][ 0], PSPXT06_128_Tr400, tracking_febex.febextrace_0[13].trace[15][399], DATA16);
 #endif
 
-#if defined(UNPACKER_IS_jun16C)
+#if defined(UNPACKER_IS_jun16_C)
 //SIPDs
 SIGNAL(PSPX05_2, tracking_febex.febex_0[0].e[1], DATA32);
 SIGNAL(ZERO_SUPPRESS: PSPXT05_2_Tr1);
@@ -1092,7 +1092,7 @@ SIGNAL(PSPXT05_8_Tr1  , tracking_febex.febextrace_0[0].trace[7][0],
        PSPXT05_8_Tr400, tracking_febex.febextrace_0[0].trace[7][399], DATA16);
 #endif
 
-#if defined(UNPACKER_IS_jun16Xe)
+#if defined(UNPACKER_IS_jun16_Xe)
 // filling the declared variables:
 SIGNAL(PSPX01_02, tracking_febex.febex_0[17].e[ 8], DATA32);
 SIGNAL(PSPX01_04, tracking_febex.febex_0[17].e[ 9], DATA32);
