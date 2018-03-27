@@ -36,7 +36,8 @@
 # Unpackers with name *_los_padi_* have the standard names LOS mapped to
 # PADI/TAMEX2 electronics.
 
-TARGETS:= kvi2018_001_060 kvi2018_061_068 kvi2018_069_101 \
+TARGETS:= kvi2018_pre_kvi \
+	  kvi2018_001_060 kvi2018_061_068 kvi2018_069_101 \
 	  kvi2018_los_padi_086_098 kvi2018_los_padi_099_101 \
 	  kvi2018_013_020 kvi2018_pspx_073 kvi2018_pspx_075_082 \
 
