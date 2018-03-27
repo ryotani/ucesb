@@ -452,8 +452,8 @@ void sampler_spill_show(sampler &s,uint64_t stamp_this)
   else
     offspill = stamp_this - s.begin;
 
-  printf ("%12"PRIu64" (%12"PRIu64") %12"PRIu64" %12"PRIu64" -> "
-	  "%10"PRIu64" %10"PRIu64"\n",
+  printf ("%12" PRIu64 " (%12" PRIu64 ") %12" PRIu64 " %12" PRIu64 " -> "
+	  "%10" PRIu64 " %10" PRIu64 "\n",
 	  s.begin,s.spill_t_start,s.spill_on,stamp_this,
 	  offspill,inspill);
 

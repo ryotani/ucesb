@@ -1,27 +1,28 @@
 // -*- C++ -*-
-#include "tamex.spec"
+#include "../land_common/gsi_tamex3.spec"
+
 
 TAMEX_SFP(sfp)
 {
 	select several {
-		evhead[1] = TAMEX(sfp = sfp, card = 0);
-		evhead[2] = TAMEX(sfp = sfp, card = 1);
-		evhead[3] = TAMEX(sfp = sfp, card = 2);
-		evhead[4] = TAMEX(sfp = sfp, card = 3);
-		evhead[5] = TAMEX(sfp = sfp, card = 4);
-		evhead[6] = TAMEX(sfp = sfp, card = 5);
-		evhead[7] = TAMEX(sfp = sfp, card = 6);
-		evhead[8] = TAMEX(sfp = sfp, card = 7);
+		evhead[1] = TAMEX3_SFP(sfp = sfp, card = 0);
+		evhead[2] = TAMEX3_SFP(sfp = sfp, card = 1);
+		evhead[3] = TAMEX3_SFP(sfp = sfp, card = 2);
+		evhead[4] = TAMEX3_SFP(sfp = sfp, card = 3);
+		evhead[5] = TAMEX3_SFP(sfp = sfp, card = 4);
+		evhead[6] = TAMEX3_SFP(sfp = sfp, card = 5);
+		evhead[7] = TAMEX3_SFP(sfp = sfp, card = 6);
+		evhead[8] = TAMEX3_SFP(sfp = sfp, card = 7);
 	}
 }
 
 SUBEVENT(tamex_pcie)
 {
-	header = TAMEX_HEADER();
+	header = TAMEX3_HEADER();
 	list (0 <= sfp < 4)
 	{
 		select several {
-			padding = TAMEX_PADDING();
+			padding = TAMEX3_PADDING();
 		}
 		select several {
 			s[1] = TAMEX_SFP(sfp = 0);
@@ -67,5 +68,5 @@ TAMEX(2, 1, 5);
 TAMEX(2, 1, 6);
 TAMEX(2, 1, 7);*/
 
-#include "mapping.h"
+#include "mapping.hh"
 
