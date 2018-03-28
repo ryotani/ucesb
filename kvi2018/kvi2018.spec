@@ -201,7 +201,11 @@ EVENT
 	los_scalers = los_scalers_subev(type=38, subtype=3800, control=1);
 	los_sampler = los_sampler_subev(type=39, subtype=3900, control=1);
 
+#if defined(UNPACKER_IS_kvi2018_pre)
+	febex = febex_subev(type=101, subtype=10100, control=10);
+#else
 	febex = febex_subev(type=101, subtype=10100, control=5);
+#endif
 	tamex = tamex_subev(type=102, subtype=10200, control=9);
 	clocktdc = clocktdc_subev(type=103, subtype=10300, control=7);
 	mppc = mppc_subev(type=104, subtype=10400, control=7);
