@@ -201,7 +201,7 @@ EVENT
 	los_scalers = los_scalers_subev(type=38, subtype=3800, control=1);
 	los_sampler = los_sampler_subev(type=39, subtype=3900, control=1);
 
-#if defined(UNPACKER_IS_kvi2018_pre)
+#if defined(UNPACKER_IS_kvi2018_pre_kvi)
 	febex = febex_subev(type=101, subtype=10100, control=10);
 #else
 	febex = febex_subev(type=101, subtype=10100, control=5);
