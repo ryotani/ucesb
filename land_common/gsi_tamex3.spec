@@ -1,4 +1,4 @@
-TAMEX3_HEADER()
+TAMEX3_WINDOW()
 {
 	UINT32 trigger_window {
 		 0_15: post_trig_ns;
