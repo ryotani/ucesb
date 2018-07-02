@@ -13,10 +13,12 @@ SUBEVENT(fib_ctdc_subev)
 	select several {
 		ctdc_padding = GSI_CLOCKTDC_PADDING();
 	}
-	fibseven[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
-	fibseven[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
-	fibseven[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
-	fibseven[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
+	select several {
+		fibseven[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
+		fibseven[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
+		fibseven[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
+		fibseven[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
+	}
 }
 
 SUBEVENT(fib_tamex_subev)
@@ -25,10 +27,12 @@ SUBEVENT(fib_tamex_subev)
 	select several {
 		tamex_padding = TAMEX3_PADDING();
 	}
-	tamex[0] = TAMEX3_SFP(sfp=0, card=0);
-	tamex[1] = TAMEX3_SFP(sfp=0, card=1);
-	tamex[2] = TAMEX3_SFP(sfp=0, card=2);
-	tamex[3] = TAMEX3_SFP(sfp=0, card=3);
+	select several {
+		tamex[0] = TAMEX3_SFP(sfp=0, card=0);
+		tamex[1] = TAMEX3_SFP(sfp=0, card=1);
+		tamex[2] = TAMEX3_SFP(sfp=0, card=2);
+		tamex[3] = TAMEX3_SFP(sfp=0, card=3);
+	}
 }
 
 SUBEVENT(lmu_scalers_subev)
@@ -58,10 +62,12 @@ SUBEVENT(tofd_tamex_subev)
 	select several {
 		padding = TAMEX3_PADDING();
 	}
-	tamex[0] = TAMEX3_SFP(sfp=1, card=0);
-	tamex[1] = TAMEX3_SFP(sfp=1, card=1);
-	tamex[2] = TAMEX3_SFP(sfp=1, card=2);
-	tamex[3] = TAMEX3_SFP(sfp=1, card=3);
+	select several {
+		tamex[0] = TAMEX3_SFP(sfp=1, card=0);
+		tamex[1] = TAMEX3_SFP(sfp=1, card=1);
+		tamex[2] = TAMEX3_SFP(sfp=1, card=2);
+		tamex[3] = TAMEX3_SFP(sfp=1, card=3);
+	}
 }
 
 SUBEVENT(tpat_subev)
