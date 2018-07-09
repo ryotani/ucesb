@@ -3,11 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DST_PATH "mapping_fiber.hh"
-
-static FILE *g_file;
-
-
 void
 map(char const *a_dst, char const *a_src, unsigned a_subs, unsigned a_mapmt,
 unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
@@ -96,7 +91,7 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		 */	   
 	}
 	for(i=0;i<256;i++) {
-		printf("cha: %d, PMT: %d \n",i,ch[i]);
+		fprintf(stderr, "cha: %d, PMT: %d \n",i,ch[i]);
 	}
 
 	// fiber mapping in the PMT mask	
@@ -304,10 +299,10 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 	}
 
 	for(i=0;i<256;i++) {
-		//            printf("PMT: %d, fiber: %d \n",i,fib5[i]);
+		fprintf(stderr, "PMT: %d, fiber: %d \n",i,fib5[i]);
 	}
-	printf("PMT: %d, ch: %d \n",0,ch[0]);
-	printf("PMT: %d, fiber: %d \n",0,fib5[0]);
+	fprintf(stderr, "PMT: %d, ch: %d \n",0,ch[0]);
+	fprintf(stderr, "PMT: %d, fiber: %d \n",0,fib5[0]);
 
 	char side_array[2] = {'M', 'S'};
 	char edge_array[2] = {'L', 'T'};
@@ -323,8 +318,8 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 	for (side_i = 0; side_i < 2; ++side_i) {
 		for (edge_i = 0; edge_i < 2; ++edge_i) {
 			for (prec_i = 0; prec_i < 2; ++prec_i) {
-				fprintf(g_file,
-						"SIGNAL(ZERO_SUPPRESS_MULTI(20): "
+				printf(
+						"SIGNAL(ZERO_SUPPRESS_MULTI(64): "
 						"%s_T%c%c%c1);\n", a_dst,
 						side_array[side_i], edge_array[edge_i],
 						prec_array[prec_i]);
@@ -374,7 +369,7 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 			/* Duplicate for leading/trailing and coarse/fine. */
 			for (edge_i = 0; edge_i < 2; ++edge_i) {
 				for (prec_i = 0; prec_i < 2; ++prec_i) {
-					fprintf(g_file,
+					printf(
 							"SIGNAL(%s_TM%c%c%u, "
 							"fib_ctdc.%s[%u].time_%s[%u], DATA12);\n",
 							a_dst, edge_array[edge_i],
@@ -391,7 +386,7 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		for (spmt_i = 0; spmt_i < a_spmt; ++spmt_i) {
 			for (edge_i = 0; edge_i < 2; ++edge_i) {
 				for (prec_i = 0; prec_i < 2; ++prec_i) {
-					fprintf(g_file,
+					printf(
 							"SIGNAL(%s_TS%c%c%u, "
 							"fib_tamex.tamex[%u].time_%s[%u], DATA12);\n",
 							a_dst, edge_array[edge_i],
@@ -408,18 +403,11 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 int
 main()
 {
-	g_file = fopen(DST_PATH, "wb");
-	if (!g_file) {
-		err(EXIT_FAILURE, "fopen(%s)", DST_PATH);
-	}
-
 /*	map("FIBZERO", "fibzero", 256, 1);*/
 /*	map("FIBONE", "fibone", 2, 256, 1, 1, 0);*/
 /*	map("FIBFOUR", "fibfour", 2, 256, 4, 1, 8);*/
 /*	map("FIBFIVE", "fibfive", 1, 256, 4, 2, 0);*/
 /*	map("FIBSIX", "fibsix", 1, 256, 2, 2, 8);*/
 	map("FIBSEVEN", "fibseven", 1, 256, 2, 0, 8);
-	fclose(g_file);
-	puts(DST_PATH" written!");
 	return 0;
 }

@@ -20,10 +20,10 @@ for plane in 1 2
 do
 	for side in 1 2
 	do
-		echo "SIGNAL(ZERO_SUPPRESS_MULTI(10): TOFD_P${plane}T${side}_TFL1);"
-		echo "SIGNAL(ZERO_SUPPRESS_MULTI(10): TOFD_P${plane}T${side}_TFT1);"
-		echo "SIGNAL(ZERO_SUPPRESS_MULTI(10): TOFD_P${plane}T${side}_TCL1);"
-		echo "SIGNAL(ZERO_SUPPRESS_MULTI(10): TOFD_P${plane}T${side}_TCT1);"
+		echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TFL1);"
+		echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TFT1);"
+		echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TCL1);"
+		echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TCT1);"
 	done
 	for paddle in $(seq 1 20)
 	do
