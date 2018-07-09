@@ -1,4 +1,7 @@
+#define EXT_SST_HAS_BRANCH 1
+
 #include "spec/spec.spec"
+#include "sst_ext.spec"
 #include "../land_common/barrier.spec"
 #include "../land_common/gsi_clocktdc.spec"
 #include "../land_common/gsi_tamex3.spec"
@@ -6,6 +9,13 @@
 #include "../land_common/trloii.spec"
 #include "../land_common/vme_gsi_vftx2.spec"
 #include "../land_common/whiterabbit.spec"
+
+SUBEVENT(ams_siderem_subev)
+{
+	select several {
+		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=5, branch=1);
+	}
+}
 
 SUBEVENT(fib_ctdc_subev)
 {
@@ -93,6 +103,7 @@ EVENT
 	tofd_tamex = tofd_tamex_subev(type=102, subtype=10200, control=3);
 	fib_ctdc = fib_ctdc_subev(type=103, subtype=10300, control=4);
 	fib_tamex = fib_tamex_subev(type=102, subtype=10200, control=5);
+	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=6);
 }
 
 #include "mapping.hh"
