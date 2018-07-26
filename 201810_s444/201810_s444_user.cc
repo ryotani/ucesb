@@ -40,4 +40,22 @@ void raw_user_function(unpack_event *event,
     map_unpack_raw_sst(event->ams_siderem.sst[det],raw_event->SST[dest_det++]);
 
   assert (dest_det <= countof(raw_event->SST));
+
+  //
+  // Track coarse counter offsets.
+  //
+
+  // WR timestamp to sync coarse counter windows.
+/*  auto const &master_wr = event->master_ts.ts100;
+  uint64_t wr =
+      (uint64_t)master_wr.t4 << 48 |
+      (uint64_t)master_wr.t3 << 32 |
+      (uint64_t)master_wr.t2 << 16 |
+      (uint64_t)master_wr.t1;
+
+  auto const &los_vftx2 = event->los_vme.vftx2;
+  auto los_vftx2.time_trigger;
+
+  auto const &los_tamex = event->los_tamex.tamex;
+  los_tamex.time_coarse;*/
 }

@@ -3,3 +3,4 @@
 #include "mapping_sst.hh"
 #include "gen/mapping_fiber.hh"
 #include "gen/mapping_tofd.hh"
+#include "mapping_CALIFA.hh"

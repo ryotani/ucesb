@@ -98,7 +98,7 @@ void setup_huffman()
 
   set_huffman_code(0,codelength,code_counter);
 
-  //printf ("%4d %4d %3d %4d\n",0,0,codelength,code_counter);
+  //fprintf (stderr,"%4d %4d %3d %4d\n",0,0,codelength,code_counter);
 
   for (symbol = 1; symbol < 4096; symbol++)
     {
@@ -112,7 +112,7 @@ void setup_huffman()
 	}
 
       if (code_counter == (((uint32) 1) << codelength))
-	fprintf (stdout,"Code overflow at symbol %d (length %d)\n",
+	fprintf (stderr,"Code overflow at symbol %d (length %d)\n",
 		 symbol,codelength);
 
       true_symbol = symbol;
@@ -121,7 +121,7 @@ void setup_huffman()
       if (!(symbol & 1))
 	true_symbol = 4097 - true_symbol;
 
-      //printf ("%4d %4d %3d %4d\n",true_symbol,symbol,codelength,code_counter);
+      //fprintf (stderr,"%4d %4d %3d %4d\n",true_symbol,symbol,codelength,code_counter);
 
       set_huffman_code(true_symbol,codelength,code_counter);
     }
@@ -131,10 +131,10 @@ void setup_huffman()
   waste = (1 << codelength) - 1 - code_counter;
 
   if (waste)
-    fprintf (stdout,"Code waste (at length %d): %d codes\n",
+    fprintf (stderr,"Code waste (at length %d): %d codes\n",
 	     codelength,waste);
   else
-    fprintf (stdout,"No waste at end (length: %d)\n",codelength);
+    fprintf (stderr,"No waste at end (length: %d)\n",codelength);
 }
 
 // The unpacking is done via lookup-tables for several bits at a time
@@ -178,7 +178,7 @@ void setup_unpack_tables()
       uint32 code   = huffman[symbol] >> 5;
 	  uint32 code_chunk;
 
-      // printf ("%4d : %08x(%2d)",symbol,code,length);
+      // fprintf (stderr,"%4d : %08x(%2d)",symbol,code,length);
 
       int table_idx = 0;
       unpack_table *table = tables+table_idx;
@@ -189,13 +189,13 @@ void setup_unpack_tables()
 	    {
 	      int nocare = 1 << length;
 
-	      // printf (" [%d]",table_idx);
+	      // fprintf (stderr," [%d]",table_idx);
 
 	      for ( ; code < TABLE_ENTRIES; code += nocare)
 		{
-		  // printf (":%02x",code);
+		  // fprintf (stderr,":%02x",code);
 		  if (table->info[code])
-		    fprintf(stdout,"Table entry already in use.\n");
+		    fprintf(stderr,"Table entry already in use.\n");
 		  table->info[code] =
 		    (uint16) (length | 
 			      UNPACK_MARK_TERMINAL | 
@@ -212,7 +212,7 @@ void setup_unpack_tables()
 	  code >>= UNPACK_CHUNK;
 	  length -= UNPACK_CHUNK;
 
-	  // printf (" |%02x/%d/",code_chunk,table_idx);
+	  // fprintf (stderr," |%02x/%d/",code_chunk,table_idx);
 
 	  // Do we already have an table allocated?
 
@@ -220,13 +220,13 @@ void setup_unpack_tables()
 	    {
 	      if ((table->info[code_chunk] & 
 		   (UNPACK_MASK_LENGTH | UNPACK_MARK_TERMINAL)) != UNPACK_CHUNK)
-		fprintf(stdout,"Bad table index.\n");
-	      // printf ("{%d}",table->info[code_chunk] >> UNPACK_SHIFT_SYMBOL);
+		fprintf(stderr,"Bad table index.\n");
+	      // fprintf (stderr,"{%d}",table->info[code_chunk] >> UNPACK_SHIFT_SYMBOL);
 	      table_idx = table->info[code_chunk] >> UNPACK_SHIFT_SYMBOL;
 	    }
 	  else
 	    {
-	      // printf ("(%d)",next_table_idx);
+	      // fprintf (stderr,"(%d)",next_table_idx);
 	      table_idx = next_table_idx++;
 	      table->info[code_chunk] =
 		(uint16) (UNPACK_CHUNK | (table_idx << UNPACK_SHIFT_SYMBOL));
@@ -238,10 +238,10 @@ void setup_unpack_tables()
 	    }
 	  table = tables+table_idx;
 	}
-      // printf ("\n");
+      // fprintf (stderr,"\n");
     }
 
-  printf ("%d tables, %d bytes\n",next_table_idx,(int) sizeof(unpack_table) * next_table_idx);
+  fprintf (stderr, "%d tables, %d bytes\n",next_table_idx,(int) sizeof(unpack_table) * next_table_idx);
 }
 
 
@@ -258,21 +258,21 @@ void print_huffman()
       uint32 code, length;
 	  int i;
       
-      printf ("%4d: ",symbol);
+      fprintf (stderr,"%4d: ",symbol);
 
       code   = huffman[symbol] >> 5;
       length = huffman[symbol] & 0x1f;
 
       for (i = length; i < 24; i++)
-	printf (" ");
+	fprintf (stderr," ");
       
       for (i = length; i; )
 	{
 	  --i;
 
-	  printf ("%d",(code >> i) & 1);
+	  fprintf (stderr,"%d",(code >> i) & 1);
 	}
-      printf ("\n");
+      fprintf (stderr,"\n");
     }
 }
 
@@ -316,7 +316,7 @@ encode_stream(uint32 *restrict src,uint32 *restrict ped,uint32 *restrict dest)
       length = length_code & 0x1f;
       code   = length_code >> 5;
 
-      ///printf ("value: %4d diff: %4d  code: %08x(%2d)",
+      ///fprintf (stderr,"value: %4d diff: %4d  code: %08x(%2d)",
       ///	      value,diff,code,length);
 
       // Then pack the code into our bit-stream
@@ -327,7 +327,7 @@ encode_stream(uint32 *restrict src,uint32 *restrict ped,uint32 *restrict dest)
 
       if (usedm32 >= 0) // we got full (or more)
 	{
-	  ///printf (" --> %08x (%2d)\n",bucket,usedm32);
+	  ///fprintf (stderr," --> %08x (%2d)\n",bucket,usedm32);
 
 	  used = usedm32;
 	  *(dest++) = bucket;
@@ -335,7 +335,7 @@ encode_stream(uint32 *restrict src,uint32 *restrict ped,uint32 *restrict dest)
 	  bucket = code >> encoded; // remaining bits of our data
 	}
 
-      ///printf ("\n");
+      ///fprintf (stderr,"\n");
     }
 
   // the dependencies between iterations above are:
@@ -362,11 +362,11 @@ encode_stream(uint32 *restrict src,uint32 *restrict ped,uint32 *restrict dest)
 
   if (used)
     {
-      ///printf ("--> %08x (%2d)",bucket,used);
+      ///fprintf (stderr,"--> %08x (%2d)",bucket,used);
       if (used < 32)
 	bucket |= 1 << used; // may not shift with count == 32
       *(dest++) = bucket;
-      ///printf (" %08x\n",bucket);
+      ///fprintf (stderr," %08x\n",bucket);
     }
   
   return (int) (dest - start_dest);
@@ -417,7 +417,7 @@ void decode_stream(uint32 *restrict src, uint32 *src_end,
 
       if (avail < UNPACK_CHUNK)
 	{
-	  ///printf ("get: %08x\n",src_val);
+	  ///fprintf (stderr,"get: %08x\n",src_val);
 
 	  // We need to fill the bit store from src
 
@@ -444,7 +444,7 @@ void decode_stream(uint32 *restrict src, uint32 *src_end,
 
       symbol_idx = info >> UNPACK_SHIFT_SYMBOL;
 
-      ///printf ("part: %02x(%d)\n",code,length);
+      ///fprintf (stderr,"part: %02x(%d)\n",code,length);
 
       if (info & UNPACK_MARK_TERMINAL)
 	{
@@ -454,7 +454,7 @@ void decode_stream(uint32 *restrict src, uint32 *src_end,
 	  *(dest++) = prev & 0xfff;
 	  table = tables; // restart unpacking
 
-	  ///printf ("--> diff: %4d value: %4d\n",symbol_idx,prev);
+	  ///fprintf (stderr,"--> diff: %4d value: %4d\n",symbol_idx,prev);
 	}
       else
 	{
@@ -468,7 +468,7 @@ void decode_stream(uint32 *restrict src, uint32 *src_end,
 
   // We claim to have bytes available in the unpack buffer.
   
-  ///printf ("left: %08llx(%d)\n",bucket,avail);
+  ///fprintf (stderr,"left: %08llx(%d)\n",bucket,avail);
 
   if (avail >= 32)
     {
@@ -478,15 +478,15 @@ void decode_stream(uint32 *restrict src, uint32 *src_end,
   // If we exactly reached the end, then either there should be 0 bits left,
   // of the bucket should contain a 1
   if (avail > 0 && bucket != 1)
-    fprintf (stdout,"Unpack failure, did not reach end bit exactly...\n");
+    fprintf (stderr,"Unpack failure, did not reach end bit exactly...\n");
 
   // There are zero bytes left in the buffer.  We reached exactly the end
   // of the stream, while having last length UNPACK_CHUNK
   
   if (src < src_end)
-    fprintf (stdout,"Unpack failure, read too little...\n");
+    fprintf (stderr,"Unpack failure, read too little...\n");
   if (src != src_end)
-    fprintf (stdout,"Unpack failure, read too far...\n");
+    fprintf (stderr,"Unpack failure, read too far...\n");
   
   
 }
@@ -564,7 +564,7 @@ void optimize_huff(uint32 *freq,int n)
 
       sym_freq.erase(start,item);
       /*
-      printf ("merge %d %d (%.0f %.0f)\n",
+      fprintf (stderr,"merge %d %d (%.0f %.0f)\n",
       	      sf1->symbol,
       	      sf2->symbol,
       	      sf1->freq_total,
@@ -592,11 +592,11 @@ void optimize_huff(uint32 *freq,int n)
 
   double total_bits = 0;
 
-  printf ("symbol  bits        freq  |      symbol  bits       freq\n");
+  fprintf (stderr,"symbol  bits        freq  |      symbol  bits       freq\n");
 
   for (int i = 0; i < n; i++)
     {
-      printf ("%5d: %5d  %10d",sfs[i].symbol,sfs[i].codelen,freq[i]);
+      fprintf (stderr,"%5d: %5d  %10d",sfs[i].symbol,sfs[i].codelen,freq[i]);
 
       uint32 true_symbol = i;
 
@@ -606,13 +606,13 @@ void optimize_huff(uint32 *freq,int n)
 
       total_bits += sfs[i].codelen * freq[i];
 
-      printf ("  |     %5d: %5d  %10d\n",
+      fprintf (stderr,"  |     %5d: %5d  %10d\n",
 	      sfs[true_symbol].symbol,
 	      sfs[true_symbol].codelen,
 	      freq[true_symbol]);
 
     }
-  printf ("Total bits: %10.0f (%8.0f kB)  Items: %.0f (%.0f kB)\n",
+  fprintf (stderr,"Total bits: %10.0f (%8.0f kB)  Items: %.0f (%.0f kB)\n",
 	  total_bits,total_bits/8192,
 	  (*sym_freq.begin())->freq_total,
 	  (*sym_freq.begin())->freq_total * ceil(log(n) / log(2))/8192);
@@ -687,7 +687,7 @@ void optimize_huff_length(uint32 *freq,int n,int L)
   // Then for each set, we package every two items into a new package
   // and insert the new package into the next set
 
-  printf ("src: %zu\n",sets[0].size());
+  fprintf (stderr,"src: %zu\n",sets[0].size());
 
   for (int l = 1; l < L; l++)
     {
@@ -705,19 +705,19 @@ void optimize_huff_length(uint32 *freq,int n,int L)
 	  {
 	    symbol_freq_coin_package* package = *item;
 
-	    printf ("%6.0f : ",package->freq_total);
+	    fprintf (stderr,"%6.0f : ",package->freq_total);
 
 	    symbol_freq_coin *coin = package->first;
 	    
 	    while (coin)
 	      {
-		printf ("%d ",coin->symbol);
+		fprintf (stderr,"%d ",coin->symbol);
 		coin = coin->next;
 	      }
-	    printf ("\n");
+	    fprintf (stderr,"\n");
 	  }
 
-	printf ("\n");
+	fprintf (stderr,"\n");
       } */
 
       sym_freq_cp_set::iterator item = src->begin();    
@@ -744,7 +744,7 @@ void optimize_huff_length(uint32 *freq,int n,int L)
 
 	  dest->insert(sp1);
 	}
-      printf ("dest: %zu\n",dest->size());
+      fprintf (stderr,"dest: %zu\n",dest->size());
     }
 
   // Now simply select packages until we have selected (n-1)*2
@@ -753,7 +753,7 @@ void optimize_huff_length(uint32 *freq,int n,int L)
   // number of bits L.
 
   if ((int) sets[L-1].size() < (n-1)*2)
-    printf ("Error: cannot create encoding.  Too few bits...\n");
+    fprintf (stderr,"Error: cannot create encoding.  Too few bits...\n");
 
   sym_freq_cp_set::iterator item = sets[L-1].begin();    
 
@@ -787,13 +787,13 @@ void optimize_huff_length(uint32 *freq,int n,int L)
 
   for (int i = 0; i < n; i++)
     {
-      printf ("%5d: %5d  %10d\n",i,codelen[i],freq[i]);
+      fprintf (stderr,"%5d: %5d  %10d\n",i,codelen[i],freq[i]);
 
       total_bits  += codelen[i] * freq[i];
       total_items += freq[i];
     }
 
-  printf ("Total bits: %10.0f (%8.0f kB)  Items: %.0f (%.0f kB)\n",
+  fprintf (stderr,"Total bits: %10.0f (%8.0f kB)  Items: %.0f (%.0f kB)\n",
 	  total_bits,total_bits/8192,
 	  total_items,total_items * ceil(log(n) / log(2))/8192);
 
@@ -860,22 +860,22 @@ int main()
 	  uint32 bits = (1 << (3+(random() & 0x0f)))-1;
 	  buf[j] = (buf[j-1] + (random() & bits) - bits/2) & 0xfff;
 
-	  // printf ("  %d",buf[j]-buf[j-1]);
+	  // fprintf (stderr,"  %d",buf[j]-buf[j-1]);
 	}
 
-      ///printf ("======================================================\n");
+      ///fprintf (stderr,"======================================================\n");
 
       uint32* pack_end = encode_stream(buf,buf+N,pack);
 
-      ///printf ("------------------------------------------------------\n");
+      ///fprintf (stderr,"------------------------------------------------------\n");
       
       decode_stream(pack,pack_end,unpack,unpack+N);
 
       for (int j = 0; j < N; j++)
 	if (buf[j] != unpack[j])
-	  printf ("Mismatch %d: %4d != %4d\n",j,buf[j],unpack[j]);
+	  fprintf (stderr,"Mismatch %d: %4d != %4d\n",j,buf[j],unpack[j]);
 
-      // printf ("%d %d\n",(pack_end-pack)*sizeof(uint32),(N*12)/8);
+      // fprintf (stderr,"%d %d\n",(pack_end-pack)*sizeof(uint32),(N*12)/8);
     }
 
   return 0;
