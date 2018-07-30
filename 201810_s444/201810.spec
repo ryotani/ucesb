@@ -26,140 +26,140 @@ SUBEVENT(ams_siderem_subev)
 
 FEBEX3_CALIFA_BASE(){
 
-  MEMBER(DATA16 energy[NUM_SFP_MODULES*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX]  ZERO_SUPPRESS);
-  MEMBER(DATA32 ts_lsb[NUM_SFP_MODULES*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX]   ZERO_SUPPRESS);
-  MEMBER(DATA32 ts_msb[NUM_SFP_MODULES*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX]   ZERO_SUPPRESS);
-  MEMBER(DATA16 n_f[NUM_SFP_MODULES*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX]   ZERO_SUPPRESS);
-  MEMBER(DATA16 n_s[NUM_SFP_MODULES*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX]   ZERO_SUPPRESS);
+	MEMBER(DATA16 energy[NUM_SFP_MODULES*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX]  ZERO_SUPPRESS);
+	MEMBER(DATA32 ts_lsb[NUM_SFP_MODULES*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX]   ZERO_SUPPRESS);
+	MEMBER(DATA32 ts_msb[NUM_SFP_MODULES*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX]   ZERO_SUPPRESS);
+	MEMBER(DATA16 n_f[NUM_SFP_MODULES*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX]   ZERO_SUPPRESS);
+	MEMBER(DATA16 n_s[NUM_SFP_MODULES*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX]   ZERO_SUPPRESS);
 
-  // ADDING THE NEXT TEN LINES PRODUCES
-  // califa.spec:162: Subevent:   100/10000 (id:2,crate:2,ctrl:9) not completely read.
-  //
-  // Extract White Rabbit Timestamp after CALIFA_SYSTEM_ID identifier
-  // optional UINT32 CALIFA_SYSTEM_ID NOENCODE{
-  //   0_31: system_id = MATCH(0x400);
-  // }
-  // if(CALIFA_SYSTEM_ID.system_id == 0x400){
-  //   //Should be encoded for a multidetector environment
-  //   list (0 <= index < 4){
-  //     UINT32 WRTS NOENCODE;
-  //   }
-  // }
+	// ADDING THE NEXT TEN LINES PRODUCES
+	// califa.spec:162: Subevent:   100/10000 (id:2,crate:2,ctrl:9) not completely read.
+	//
+	// Extract White Rabbit Timestamp after CALIFA_SYSTEM_ID identifier
+	// optional UINT32 CALIFA_SYSTEM_ID NOENCODE{
+	//   0_31: system_id = MATCH(0x400);
+	// }
+	// if(CALIFA_SYSTEM_ID.system_id == 0x400){
+	//   //Should be encoded for a multidetector environment
+	//   list (0 <= index < 4){
+	//     UINT32 WRTS NOENCODE;
+	//   }
+	// }
 
-  several UINT32 PADDING NOENCODE{
-    0_19: irrelevant;
-    20_31: all = MATCH(0xadd);
-  }
-
-  // Decoding GOSIP
-  UINT32 HEADER NOENCODE{
-    0_7: header_size;
-    8_11: trigger;
-    12_15: sfp_id;        //fiberConnector;
-    16_23: module_id;     //card;
-    24_31: submemory_id;  //channel;
-  }
-
-  UINT32 DATASIZE NOENCODE{
-    0_15: sizebytes;
-    16_31: 0x0000;
-  }
-
-  if(DATASIZE.sizebytes>0){
-    if(HEADER.submemory_id==0xff){
-      // NOTE FROM PHILIPP: IIRC, Max uses the 0xff channel for timestamp synchronization.
-      // after timestitching one does not need it anymore, in my view.
-      list (0 <= index < DATASIZE.sizebytes/4){
-        UINT32 SYNCHRO NOENCODE;
-      }
-    }
-    else{
-      UINT32 HEADER_MAGIC NOENCODE{
-        0_15: sizebytes = MATCH(DATASIZE.sizebytes);
-        16_31: magic;
-      }
-      if(HEADER_MAGIC.magic==0x115A){
-	UINT32 eventid NOENCODE;
-	UINT32 timestamp_lsb NOENCODE;
-	UINT32 timestamp_msb NOENCODE;
-
-        UINT16 cfd_sample_val1 NOENCODE;
-        UINT16 cfd_sample_val2 NOENCODE;
-        UINT16 cfd_sample_val3 NOENCODE;
-        UINT16 cfd_sample_val4 NOENCODE;
-
-        UINT32 FLAGS NOENCODE{
-	  0_23:  ov;
-	  24_31: selftrigger;
-        }
-
-        UINT16 pileup NOENCODE;
-        UINT16 discard NOENCODE;
-
-        UINT32 ENERGY_VALUE NOENCODE{
-      0_15:  eneval;
-      16_31: reservedbits;
-        }
-        UINT32 INTEGRAL_VALUE NOENCODE{
-      0_15:  nf;
-      16_31: ns;
-        }
-
-        ENCODE(energy[HEADER.sfp_id*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX+HEADER.module_id*CHANNELS_PER_FEBEX+HEADER.submemory_id], (value=ENERGY_VALUE.eneval));
-        ENCODE(ts_lsb[HEADER.sfp_id*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX+HEADER.module_id*CHANNELS_PER_FEBEX+HEADER.submemory_id], (value=timestamp_lsb));
-        ENCODE(ts_msb[HEADER.sfp_id*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX+HEADER.module_id*CHANNELS_PER_FEBEX+HEADER.submemory_id], (value=timestamp_msb));
-        ENCODE(n_f[HEADER.sfp_id*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX+HEADER.module_id*CHANNELS_PER_FEBEX+HEADER.submemory_id], (value=INTEGRAL_VALUE.nf));
-        ENCODE(n_s[HEADER.sfp_id*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX+HEADER.module_id*CHANNELS_PER_FEBEX+HEADER.submemory_id], (value=INTEGRAL_VALUE.ns));
-
-        if(DATASIZE.sizebytes>40){
-          UINT32 HEADER_TOT NOENCODE{
-	    0_15: tot;
-            16_31: magic_beef = MATCH(0xBEEF);
-          }
-          UINT16 trace_sample_val1 NOENCODE;
-          UINT16 trace_sample_val2 NOENCODE;
-          UINT16 trace_sample_val3 NOENCODE;
-          UINT16 trace_sample_val4 NOENCODE;
-        }
-        if(DATASIZE.sizebytes>52){
-          UINT32 HEADER_TRACE NOENCODE{
-	    0_15: datalength; //2*num samples+8
-	    16_31: magic_2bad = MATCH(0x2BAD);
-          }
-          list (0 <= index < (HEADER_TRACE.datalength/4)-1){
-            // Should be properly encoded if traces are needed
-            UINT32 TRACE_SAMPLES NOENCODE;
-          }
+	several UINT32 PADDING NOENCODE{
+		0_19: irrelevant;
+		20_31: all = MATCH(0xadd);
 	}
-      }
-      else if(HEADER_MAGIC.magic==0xB00B){
-        // The 0xB00B stuff is related to patricks pulser. Again, support for that is not very urgent,
-        // but might come in handy at some point.
-        UINT32 pul_eventid NOENCODE;
-        UINT32 pul_timestamp_lsb NOENCODE;
-        UINT32 pul_timestamp_msb NOENCODE;
 
-        UINT32 N_S_TOT NOENCODE{
-	  0_7: pul_n_s;
-	  8_31: pul_nothingofinterest;
-        }
-        UINT32 N_F_TOT NOENCODE{
-          0_7: pul_firstterm;
-          8_11: pul_secondterm;
-          12_15: pul_nothingofinterest2;
-          16_23: pul_nothingofinterest3;
-          24_31: pul_n_f;
-        }
-        UINT32 pul_throwme NOENCODE;
-      }
-    }
-  }
+	// Decoding GOSIP
+	UINT32 HEADER NOENCODE{
+		0_7: header_size;
+		8_11: trigger;
+		12_15: sfp_id;        //fiberConnector;
+		16_23: module_id;     //card;
+		24_31: submemory_id;  //channel;
+	}
+
+	UINT32 DATASIZE NOENCODE{
+		0_15: sizebytes;
+		16_31: 0x0000;
+	}
+
+	if(DATASIZE.sizebytes>0){
+		if(HEADER.submemory_id==0xff){
+			// NOTE FROM PHILIPP: IIRC, Max uses the 0xff channel for timestamp synchronization.
+			// after timestitching one does not need it anymore, in my view.
+			list (0 <= index < DATASIZE.sizebytes/4){
+				UINT32 SYNCHRO NOENCODE;
+			}
+		}
+		else{
+			UINT32 HEADER_MAGIC NOENCODE{
+				0_15: sizebytes = MATCH(DATASIZE.sizebytes);
+				16_31: magic;
+			}
+			if(HEADER_MAGIC.magic==0x115A){
+				UINT32 eventid NOENCODE;
+				UINT32 timestamp_lsb NOENCODE;
+				UINT32 timestamp_msb NOENCODE;
+
+				UINT16 cfd_sample_val1 NOENCODE;
+				UINT16 cfd_sample_val2 NOENCODE;
+				UINT16 cfd_sample_val3 NOENCODE;
+				UINT16 cfd_sample_val4 NOENCODE;
+
+				UINT32 FLAGS NOENCODE{
+					0_23:  ov;
+					24_31: selftrigger;
+				}
+
+				UINT16 pileup NOENCODE;
+				UINT16 discard NOENCODE;
+
+				UINT32 ENERGY_VALUE NOENCODE{
+					0_15:  eneval;
+					16_31: reservedbits;
+				}
+				UINT32 INTEGRAL_VALUE NOENCODE{
+					0_15:  nf;
+					16_31: ns;
+				}
+
+				ENCODE(energy[HEADER.sfp_id*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX+HEADER.module_id*CHANNELS_PER_FEBEX+HEADER.submemory_id], (value=ENERGY_VALUE.eneval));
+				ENCODE(ts_lsb[HEADER.sfp_id*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX+HEADER.module_id*CHANNELS_PER_FEBEX+HEADER.submemory_id], (value=timestamp_lsb));
+				ENCODE(ts_msb[HEADER.sfp_id*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX+HEADER.module_id*CHANNELS_PER_FEBEX+HEADER.submemory_id], (value=timestamp_msb));
+				ENCODE(n_f[HEADER.sfp_id*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX+HEADER.module_id*CHANNELS_PER_FEBEX+HEADER.submemory_id], (value=INTEGRAL_VALUE.nf));
+				ENCODE(n_s[HEADER.sfp_id*FEBEX_MODULES_PER_SFP*CHANNELS_PER_FEBEX+HEADER.module_id*CHANNELS_PER_FEBEX+HEADER.submemory_id], (value=INTEGRAL_VALUE.ns));
+
+				if(DATASIZE.sizebytes>40){
+					UINT32 HEADER_TOT NOENCODE{
+						0_15: tot;
+						16_31: magic_beef = MATCH(0xBEEF);
+					}
+					UINT16 trace_sample_val1 NOENCODE;
+					UINT16 trace_sample_val2 NOENCODE;
+					UINT16 trace_sample_val3 NOENCODE;
+					UINT16 trace_sample_val4 NOENCODE;
+				}
+				if(DATASIZE.sizebytes>52){
+					UINT32 HEADER_TRACE NOENCODE{
+						0_15: datalength; //2*num samples+8
+						16_31: magic_2bad = MATCH(0x2BAD);
+					}
+					list (0 <= index < (HEADER_TRACE.datalength/4)-1){
+						// Should be properly encoded if traces are needed
+						UINT32 TRACE_SAMPLES NOENCODE;
+					}
+				}
+			}
+			else if(HEADER_MAGIC.magic==0xB00B){
+				// The 0xB00B stuff is related to patricks pulser. Again, support for that is not very urgent,
+				// but might come in handy at some point.
+				UINT32 pul_eventid NOENCODE;
+				UINT32 pul_timestamp_lsb NOENCODE;
+				UINT32 pul_timestamp_msb NOENCODE;
+
+				UINT32 N_S_TOT NOENCODE{
+					0_7: pul_n_s;
+					8_31: pul_nothingofinterest;
+				}
+				UINT32 N_F_TOT NOENCODE{
+					0_7: pul_firstterm;
+					8_11: pul_secondterm;
+					12_15: pul_nothingofinterest2;
+					16_23: pul_nothingofinterest3;
+					24_31: pul_n_f;
+				}
+				UINT32 pul_throwme NOENCODE;
+			}
+		}
+	}
 }
 
 SUBEVENT(CALIFA){
-  select several{
-    febex3 = FEBEX3_CALIFA_BASE();
-  }
+	select several{
+		febex3 = FEBEX3_CALIFA_BASE();
+	}
 }
 
 SUBEVENT(fib_ctdc_subev)
@@ -215,25 +215,33 @@ SUBEVENT(tofd_tamex_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		padding = TAMEX3_PADDING();
+		padding1 = TAMEX3_PADDING();
 	}
 	select several {
-		tamex[ 0] = TAMEX3_SFP(sfp=1, card= 0);
-		tamex[ 1] = TAMEX3_SFP(sfp=1, card= 1);
-		tamex[ 2] = TAMEX3_SFP(sfp=1, card= 2);
-		tamex[ 3] = TAMEX3_SFP(sfp=1, card= 3);
-		tamex[ 4] = TAMEX3_SFP(sfp=1, card= 4);
-		tamex[ 5] = TAMEX3_SFP(sfp=1, card= 5);
-		tamex[ 6] = TAMEX3_SFP(sfp=1, card= 6);
-		tamex[ 7] = TAMEX3_SFP(sfp=1, card= 7);
-		tamex[ 8] = TAMEX3_SFP(sfp=1, card= 8);
-		tamex[ 9] = TAMEX3_SFP(sfp=1, card= 9);
-		tamex[10] = TAMEX3_SFP(sfp=1, card=10);
-		tamex[11] = TAMEX3_SFP(sfp=1, card=11);
-		tamex[12] = TAMEX3_SFP(sfp=1, card=12);
-		tamex[13] = TAMEX3_SFP(sfp=1, card=13);
-		tamex[14] = TAMEX3_SFP(sfp=1, card=14);
-		tamex[15] = TAMEX3_SFP(sfp=1, card=15);
+		tamex1[ 0] = TAMEX3_SFP(sfp=1, card= 0);
+		tamex1[ 1] = TAMEX3_SFP(sfp=1, card= 1);
+		tamex1[ 2] = TAMEX3_SFP(sfp=1, card= 2);
+		tamex1[ 3] = TAMEX3_SFP(sfp=1, card= 3);
+		tamex1[ 4] = TAMEX3_SFP(sfp=1, card= 4);
+		tamex1[ 5] = TAMEX3_SFP(sfp=1, card= 5);
+		tamex1[ 6] = TAMEX3_SFP(sfp=1, card= 6);
+		tamex1[ 7] = TAMEX3_SFP(sfp=1, card= 7);
+		tamex1[ 8] = TAMEX3_SFP(sfp=1, card= 8);
+		tamex1[ 9] = TAMEX3_SFP(sfp=1, card= 9);
+		tamex1[10] = TAMEX3_SFP(sfp=1, card=10);
+		tamex1[11] = TAMEX3_SFP(sfp=1, card=11);
+	}
+	barrier = BARRIER();
+	select several {
+		padding2 = TAMEX3_PADDING();
+	}
+	select several {
+		tamex2[ 0] = TAMEX3_SFP(sfp=2, card= 0);
+		tamex2[ 1] = TAMEX3_SFP(sfp=2, card= 1);
+		tamex2[ 2] = TAMEX3_SFP(sfp=2, card= 2);
+		tamex2[ 3] = TAMEX3_SFP(sfp=2, card= 3);
+		tamex2[ 4] = TAMEX3_SFP(sfp=2, card= 4);
+		tamex2[ 5] = TAMEX3_SFP(sfp=2, card= 5);
 	}
 }
 
@@ -257,9 +265,7 @@ EVENT
 	master_lmu_scalers = lmu_scalers_subev(type=37, subtype=3700, control=0);
 	los_vme = los_vme_subev(type=88, subtype=8800, control=1);
 	los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);
-	tofd1_tamex = tofd_tamex_subev(type=102, subtype=10200, control=3);
-// We'll have 2 TOFD walls eventually...
-//	tofd2_tamex = tofd_tamex_subev(type=102, subtype=10200, control=?);
+	tofd_tamex = tofd_tamex_subev(type=102, subtype=10200, control=3);
 	fib_ctdc = fib_ctdc_subev(type=103, subtype=10300, control=4);
 	fib_tamex = fib_tamex_subev(type=102, subtype=10200, control=5);
 	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=6);

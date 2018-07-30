@@ -45,8 +45,9 @@ void raw_user_function(unpack_event *event,
   // Track coarse counter offsets.
   //
 
+#if 0
   // WR timestamp to sync coarse counter windows.
-/*  auto const &master_wr = event->master_ts.ts100;
+  auto const &master_wr = event->master_ts.ts100;
   uint64_t wr =
       (uint64_t)master_wr.t4 << 48 |
       (uint64_t)master_wr.t3 << 32 |
@@ -57,5 +58,15 @@ void raw_user_function(unpack_event *event,
   auto los_vftx2.time_trigger;
 
   auto const &los_tamex = event->los_tamex.tamex;
-  los_tamex.time_coarse;*/
+  los_tamex.time_coarse;
+
+  auto const &tofd1_tamex = event->tofd1_tamex.tamex;
+  tofd1_tamex.time_coarse;
+
+  auto const &fib_ctdc = event->fib_ctdc.ctdc;
+  fib_ctdc.time_coarse;
+
+  auto const &fib_tamex = event->fib_tamex.tamex;
+  fib_tamex.time_coarse;
+#endif
 }

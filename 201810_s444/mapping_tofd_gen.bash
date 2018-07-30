@@ -3,68 +3,64 @@
 #
 # s444 & s454
 #
-# 2 walls:
-# 1: 2 planes 20 paddles -> 5 tamex cards
-# 2: 2 planes 44 paddles -> 5 tamex cards
+# 4 planes:
+# 1: 44 paddles -> 5.5 tamex cards
+# 2: 44 paddles -> 5.5 tamex cards
+# 3: 20 paddles -> 2.25 tamex cards
+# 4: 20 paddles -> 2.25 tamex cards
 #
 
-function map_group()
+function map_octopus()
 {
 	plane=$1
 	side=$2
 	paddle_ofs=$3
-	prefix=$4
-	tamex=$5
+	sfp=$4
+	card=$5
 	ch_ofs=$6
 
 	paddle=$paddle_ofs
-	ch1=$((2*ch_ofs+1))
-	ch2=$((ch1+1))
+	chl=$((2*ch_ofs+1))
+	cht=$((chl+1))
 	for paddle_sub in $(seq 0 7)
 	do
-		echo "SIGNAL(TOFD_P${plane}T${side}_TFL${paddle},${prefix}_tamex.tamex[$tamex].time_fine[$ch1], DATA12);"
-		echo "SIGNAL(TOFD_P${plane}T${side}_TFT${paddle},${prefix}_tamex.tamex[$tamex].time_fine[$ch2], DATA12);"
-		echo "SIGNAL(TOFD_P${plane}T${side}_TCL${paddle},${prefix}_tamex.tamex[$tamex].time_coarse[$ch1], DATA12);"
-		echo "SIGNAL(TOFD_P${plane}T${side}_TCT${paddle},${prefix}_tamex.tamex[$tamex].time_coarse[$ch2], DATA12);"
+		echo "SIGNAL(TOFD_P${plane}T${side}_TFL${paddle},tofd_tamex.tamex$sfp[$card].time_fine[$chl], DATA12);"
+		echo "SIGNAL(TOFD_P${plane}T${side}_TFT${paddle},tofd_tamex.tamex$sfp[$card].time_fine[$cht], DATA12);"
+		echo "SIGNAL(TOFD_P${plane}T${side}_TCL${paddle},tofd_tamex.tamex$sfp[$card].time_coarse[$chl], DATA12);"
+		echo "SIGNAL(TOFD_P${plane}T${side}_TCT${paddle},tofd_tamex.tamex$sfp[$card].time_coarse[$cht], DATA12);"
 		paddle=$((paddle+1))
-		ch1=$((ch1+2))
-		ch2=$((ch2+2))
+		chl=$((chl+2))
+		cht=$((cht+2))
 	done
 }
 
 function map_wall()
 {
-	wall=$1
+	plane=$1
 	paddle_num=$2
-	prefix=$3
+	sfp=$3
+	card_ofs=$4
 
-	plane1=$((2*wall-1))
-	plane2=$((plane1+1))
-	for plane in $plane1 $plane2
+	for side in 1 2
 	do
-		for side in 1 2
-		do
-			echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TFL1);"
-			echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TFT1);"
-			echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TCL1);"
-			echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TCT1);"
-		done
+		echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TFL1);"
+		echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TFT1);"
+		echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TCL1);"
+		echo "SIGNAL(ZERO_SUPPRESS_MULTI(64): TOFD_P${plane}T${side}_TCT1);"
 	done
 	paddle_ofs=1
-	tamex=0
+	card=$card_ofs
 	while [ $paddle_ofs -lt $paddle_num ]
 	do
-		map_group $plane1 1 $paddle_ofs $prefix $tamex 0
-		map_group $plane1 2 $paddle_ofs $prefix $tamex 8
-		tamex=$((tamex+1))
-		map_group $plane2 1 $paddle_ofs $prefix $tamex 0
-		map_group $plane2 2 $paddle_ofs $prefix $tamex 8
-		tamex=$((tamex+1))
+		map_octopus $plane 1 $paddle_ofs $sfp $card 0
+		map_octopus $plane 2 $paddle_ofs $sfp $card 8
+		card=$((card+1))
 		paddle_ofs=$((paddle_ofs+8))
 	done
 }
 
 echo "// $0 on $(date)"
-tamex=0
-map_wall 1 20 tofd1
-#map_wall 2 44 tofd2
+map_wall 1 44 1 0
+map_wall 2 44 1 6
+map_wall 3 20 2 0
+map_wall 4 20 2 3
