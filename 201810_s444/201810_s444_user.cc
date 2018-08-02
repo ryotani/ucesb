@@ -64,7 +64,8 @@ void raw_user_function(unpack_event *event,
 
   auto const &los_tamex = event->los_tamex.tamex;
   while ((i = los_tamex.time_coarse._valid.next(iter)) >= 0) {
-    std::cout << i << ' ' << los_tamex.time_coarse._num_entries[i] << '\n';
+    std::cout << i << ' ' << los_tamex.time_coarse._num_entries[i] << ' ' <<
+        los_tamex.time_coarse._items[i][0].value << '\n';
   }
 
 /*  auto const &tofd1_tamex = event->tofd1_tamex.tamex;

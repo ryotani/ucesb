@@ -61,12 +61,12 @@ TAMEX3_SFP(sfp, card)
 			29_31: type;
 
 			ENCODE(time_coarse[
-			    (0x4 <= type) * channel_index +
-			    (0x4 > type) * 33
+			    (0x4 == type) * channel_index +
+			    (0x4 != type) * 33
 			    ], (value = coarse));
 			ENCODE(time_fine[
-			    (0x4 <= type) * channel_index +
-			    (0x4 > type) * 33
+			    (0x4 == type) * channel_index +
+			    (0x4 != type) * 33
 			    ], (value = fine));
 		}
 	}
