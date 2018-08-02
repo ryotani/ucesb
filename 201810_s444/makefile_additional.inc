@@ -13,7 +13,7 @@ $(eval $(call CHECK_DIRECTORY_EXIST,$(SST_DIR)))
 include $(SST_DIR)/makefile_sst_ext.inc
 
 INCLUDE_DIRS    += $(SST_DIR)
-CXXFLAGS        += -I$(SST_DIR)
+CXXFLAGS        += -I$(SST_DIR) -std=c++11
 UCESB_CPP_FLAGS += -I$(SST_DIR)
 PSDC_CPP_FLAGS  += -I$(SST_DIR)
 

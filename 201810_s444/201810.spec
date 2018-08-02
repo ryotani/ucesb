@@ -12,12 +12,12 @@
 
 SUBEVENT(ams_siderem_subev)
 {
-//	select several {
+	select several {
 		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=5, branch=1);
 		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=5, branch=1);
 		external sst[2] = EXT_SST(siderem=3, gtb=0, sam=5, branch=1);
 		external sst[3] = EXT_SST(siderem=4, gtb=0, sam=5, branch=1);
-//	}
+	}
 }
 
 #define NUM_SFP_MODULES 2
