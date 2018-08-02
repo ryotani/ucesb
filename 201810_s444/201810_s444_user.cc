@@ -64,14 +64,18 @@ void raw_user_function(unpack_event *event,
 
   auto const &los_tamex = event->los_tamex.tamex;
   while ((i = los_tamex.time_coarse._valid.next(iter)) >= 0) {
-    std::cout << i << ' ' << los_tamex.time_coarse._num_entries[i] << ' ' <<
-        los_tamex.time_coarse._items[i][0].value << '\n';
+    std::cout << "LOS.:" << i << ' ' << los_tamex.time_coarse._num_entries[i]
+        << ' ' << los_tamex.time_coarse._items[i][0].value << '\n';
   }
 
-/*  auto const &tofd1_tamex = event->tofd1_tamex.tamex;
-  auto tofd1_tamex_trigger = tofd1_tamex.time_coarse.value;
+  auto const &tofd_tamex = event->tofd_tamex.tamex1[0];
+  while ((i = tofd_tamex.time_coarse._valid.next(iter)) >= 0) {
+    std::cout << "TOFD: " << i << ' ' <<
+        tofd_tamex.time_coarse._num_entries[i] << ' ' <<
+        tofd_tamex.time_coarse._items[i][0].value << '\n';
+  }
 
-  auto const &fib_ctdc = event->fib_ctdc.ctdc;
+/*  auto const &fib_ctdc = event->fib_ctdc.ctdc;
   auto fib_ctdc_trigger = fib_ctdc.time_coarse.value;
 
   auto const &fib_tamex = event->fib_tamex.tamex;
