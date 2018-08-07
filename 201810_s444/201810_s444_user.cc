@@ -1,11 +1,30 @@
 #include "structures.hh"
 #include <cstdint>
+#include <iomanip>
 #include <iostream>
 //#include "user.hh"
 //#include "land_user.hh"
 //#include "land_triggers.hh"
 
 #define NUM_SST 8 // 4 box detectors taken out
+
+struct Time {
+  Time():
+    coarse(UINT32_MAX),
+    fine(UINT32_MAX)
+  {}
+  uint32_t coarse;
+  uint32_t fine;
+};
+
+namespace {
+
+uint32_t tamex_trigger_diff(Time const &a_ref, Time const &a_trig)
+{
+  return 2047 & (a_trig.coarse - a_ref.coarse);
+}
+
+}
 
 void map_unpack_raw_sst(EXT_SST &unpack,
 			raw_array_zero_suppress<raw_event_SST,raw_event_SST,1024> &raw)
@@ -43,42 +62,78 @@ void raw_user_function(unpack_event *event,
 
   assert (dest_det <= countof(raw_event->SST));
 
+#if 0
   //
   // Track coarse counter offsets.
   //
 
-#if 0
-  bitsone_iterator iter;
-  ssize_t i;
+  // Easy access.
+  Time los_vftx2_trigger;
+  Time los_tamex_trigger;
+  std::vector<Time> tofd_tamex1_trigger(countof(event->tofd_tamex.tamex1));
+  std::vector<Time> tofd_tamex2_trigger(countof(event->tofd_tamex.tamex2));
+  std::vector<Time> fib_tamex_trigger(countof(event->fib_tamex.tamex));
+  std::vector<Time> fibsevent_trigger(countof(event->fib_ctdc.fibseven));
 
-  // WR timestamp to sync coarse counter windows.
-  auto const &master_wr = event->master_ts.ts100;
-  uint64_t wr =
-      (uint64_t)master_wr.t4.value << 48 |
-      (uint64_t)master_wr.t3.value << 32 |
-      (uint64_t)master_wr.t2.value << 16 |
-      (uint64_t)master_wr.t1.value;
+#define TRIGGER_GET(name, suffix, module, trigger_ch, trigger) do {\
+    bitsone_iterator iter;\
+    ssize_t i;\
+    while ((i = module.time_coarse._valid.next(iter)) >= 0) {\
+      if (trigger_ch == i) {\
+        trigger.coarse = module.time_coarse._items[i][0].value;\
+        break;\
+      }\
+    }\
+    if (UINT32_MAX == trigger.coarse) {\
+      fprintf(stderr, "Missing trigger!\n");\
+      return;\
+    }\
+  } while (0)
+#define CTDC_ARRAY_TRIGGER_GET(name, ctdc_array, trigger_array) do {\
+    for (size_t card_i = 0; card_i < countof(ctdc_array); ++card_i) {\
+      auto const &ctdc = ctdc_array[card_i];\
+      auto &trigger = trigger_array.at(card_i);\
+      TRIGGER_GET(name, card_i, ctdc, 256, trigger);\
+    }\
+  } while (0)
+#define TAMEX_ARRAY_TRIGGER_GET(name, tamex_array, trigger_array) do {\
+    for (size_t card_i = 0; card_i < countof(tamex_array); ++card_i) {\
+      auto const &tamex = tamex_array[card_i];\
+      auto &trigger = trigger_array.at(card_i);\
+      TRIGGER_GET(name, card_i, tamex, 0, trigger);\
+    }\
+  } while (0)
 
-  auto const &los_vftx2 = event->los_vme.vftx2;
-  auto los_vftx2_trigger = los_vftx2.time_trigger.value;
+  TRIGGER_GET("LOSV", 15, event->los_vme.vftx2, 0, los_vftx2_trigger);
 
-  auto const &los_tamex = event->los_tamex.tamex;
-  while ((i = los_tamex.time_coarse._valid.next(iter)) >= 0) {
-    std::cout << "LOS.:" << i << ' ' << los_tamex.time_coarse._num_entries[i]
-        << ' ' << los_tamex.time_coarse._items[i][0].value << '\n';
+  TRIGGER_GET("LOST", 0, event->los_tamex.tamex, 0, los_tamex_trigger);
+
+  TAMEX_ARRAY_TRIGGER_GET("TOFD1", event->tofd_tamex.tamex1,
+      tofd_tamex1_trigger);
+  TAMEX_ARRAY_TRIGGER_GET("TOFD2", event->tofd_tamex.tamex2,
+      tofd_tamex2_trigger);
+
+  TAMEX_ARRAY_TRIGGER_GET("FIBS", event->fib_tamex.tamex, fib_tamex_trigger);
+
+  CTDC_ARRAY_TRIGGER_GET("FIBM", event->fib_ctdc.fibseven, fibsevent_trigger);
+
+  // Compare all TAMEX against LOS VFTX2.
+  auto diff = tamex_trigger_diff(los_tamex_trigger, los_vftx2_trigger);
+  std::cout << "LOST=" << diff << '\n';
+
+  for (size_t i = 0; i < tofd_tamex1_trigger.size(); ++i) {
+    diff = tamex_trigger_diff(tofd_tamex1_trigger[i], los_vftx2_trigger);
+    std::cout << "TOFD1_" << i << '=' << diff << '\n';
+  }
+  for (size_t i = 0; i < tofd_tamex2_trigger.size(); ++i) {
+    diff = tamex_trigger_diff(tofd_tamex2_trigger[i], los_vftx2_trigger);
+    std::cout << "TOFD2_" << i << '=' << diff << '\n';
   }
 
-  auto const &tofd_tamex = event->tofd_tamex.tamex1[0];
-  while ((i = tofd_tamex.time_coarse._valid.next(iter)) >= 0) {
-    std::cout << "TOFD: " << i << ' ' <<
-        tofd_tamex.time_coarse._num_entries[i] << ' ' <<
-        tofd_tamex.time_coarse._items[i][0].value << '\n';
+  for (size_t i = 0; i < fib_tamex_trigger.size(); ++i) {
+    diff = tamex_trigger_diff(fib_tamex_trigger[i], los_vftx2_trigger);
+    std::cout << "FIB7_" << i << '=' << diff << '\n';
   }
 
-/*  auto const &fib_ctdc = event->fib_ctdc.ctdc;
-  auto fib_ctdc_trigger = fib_ctdc.time_coarse.value;
-
-  auto const &fib_tamex = event->fib_tamex.tamex;
-  auto fib_tamex_trigger = fib_tamex.time_coarse.value;*/
 #endif
 }
