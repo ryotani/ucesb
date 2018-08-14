@@ -4,10 +4,10 @@
 # s444 & s454
 #
 # 4 planes:
-# 1: 44 paddles -> 5.5 tamex cards
-# 2: 44 paddles -> 5.5 tamex cards
-# 3: 20 paddles -> 2.25 tamex cards
-# 4: 20 paddles -> 2.25 tamex cards
+# 1: 20 paddles -> 2.25 tamex cards
+# 2: 20 paddles -> 2.25 tamex cards
+# 3: 44 paddles -> 5.5 tamex cards
+# 4: 44 paddles -> 5.5 tamex cards
 #
 
 function map_octopus()
@@ -28,9 +28,9 @@ function map_octopus()
 		echo "SIGNAL(TOFD_P${plane}T${side}_TFT${paddle},tofd_tamex.tamex$sfp[$card].time_fine[$cht], DATA12);"
 		echo "SIGNAL(TOFD_P${plane}T${side}_TCL${paddle},tofd_tamex.tamex$sfp[$card].time_coarse[$chl], DATA12);"
 		echo "SIGNAL(TOFD_P${plane}T${side}_TCT${paddle},tofd_tamex.tamex$sfp[$card].time_coarse[$cht], DATA12);"
-		paddle=$((paddle+1))
-		chl=$((chl+2))
-		cht=$((cht+2))
+		((paddle++))
+		((chl+=2))
+		((cht+=2))
 	done
 }
 
@@ -54,13 +54,13 @@ function map_wall()
 	do
 		map_octopus $plane 1 $paddle_ofs $sfp $card 0
 		map_octopus $plane 2 $paddle_ofs $sfp $card 8
-		card=$((card+1))
-		paddle_ofs=$((paddle_ofs+8))
+		((card++))
+		((paddle_ofs+=8))
 	done
 }
 
 echo "// $0 on $(date)"
-map_wall 1 44 1 0
-map_wall 2 44 1 6
-map_wall 3 20 2 0
-map_wall 4 20 2 3
+map_wall 1 20 0 0
+map_wall 2 20 0 3
+map_wall 3 44 2 0
+map_wall 4 44 2 6

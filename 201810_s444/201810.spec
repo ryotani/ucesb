@@ -215,23 +215,18 @@ SUBEVENT(tofd_tamex_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		padding1 = TAMEX3_PADDING();
+		padding0 = TAMEX3_PADDING();
 	}
-	select several {
-		tamex1[ 0] = TAMEX3_SFP(sfp=1, card= 0);
-		tamex1[ 1] = TAMEX3_SFP(sfp=1, card= 1);
-		tamex1[ 2] = TAMEX3_SFP(sfp=1, card= 2);
-		tamex1[ 3] = TAMEX3_SFP(sfp=1, card= 3);
-		tamex1[ 4] = TAMEX3_SFP(sfp=1, card= 4);
-		tamex1[ 5] = TAMEX3_SFP(sfp=1, card= 5);
-		tamex1[ 6] = TAMEX3_SFP(sfp=1, card= 6);
-		tamex1[ 7] = TAMEX3_SFP(sfp=1, card= 7);
-		tamex1[ 8] = TAMEX3_SFP(sfp=1, card= 8);
-		tamex1[ 9] = TAMEX3_SFP(sfp=1, card= 9);
-		tamex1[10] = TAMEX3_SFP(sfp=1, card=10);
-		tamex1[11] = TAMEX3_SFP(sfp=1, card=11);
-	}
-	barrier = BARRIER();
+	tamex0[ 0] = TAMEX3_SFP(sfp=0, card= 0);
+	tamex0[ 1] = TAMEX3_SFP(sfp=0, card= 1);
+	tamex0[ 2] = TAMEX3_SFP(sfp=0, card= 2);
+	tamex0[ 3] = TAMEX3_SFP(sfp=0, card= 3);
+	tamex0[ 4] = TAMEX3_SFP(sfp=0, card= 4);
+	tamex0[ 5] = TAMEX3_SFP(sfp=0, card= 5);
+	tamex0[ 6] = TAMEX3_SFP(sfp=0, card= 6);
+	tamex0[ 7] = TAMEX3_SFP(sfp=0, card= 7);
+	tamex0[ 8] = TAMEX3_SFP(sfp=0, card= 8);
+	barrier2 = BARRIER();
 	select several {
 		padding2 = TAMEX3_PADDING();
 	}
@@ -242,6 +237,15 @@ SUBEVENT(tofd_tamex_subev)
 		tamex2[ 3] = TAMEX3_SFP(sfp=2, card= 3);
 		tamex2[ 4] = TAMEX3_SFP(sfp=2, card= 4);
 		tamex2[ 5] = TAMEX3_SFP(sfp=2, card= 5);
+		tamex2[ 6] = TAMEX3_SFP(sfp=2, card= 6);
+		tamex2[ 7] = TAMEX3_SFP(sfp=2, card= 7);
+		tamex2[ 8] = TAMEX3_SFP(sfp=2, card= 8);
+		tamex2[ 9] = TAMEX3_SFP(sfp=2, card= 9);
+		tamex2[10] = TAMEX3_SFP(sfp=2, card=10);
+		tamex2[11] = TAMEX3_SFP(sfp=2, card=11);
+		tamex2[12] = TAMEX3_SFP(sfp=2, card=12);
+		tamex2[13] = TAMEX3_SFP(sfp=2, card=13);
+		tamex2[14] = TAMEX3_SFP(sfp=2, card=14);
 	}
 }
 

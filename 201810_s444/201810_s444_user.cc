@@ -9,6 +9,16 @@
 #define COARSE_MASK 0x7ff
 #define COARSE_ADD(c, add) (COARSE_MASK & (c + add + COARSE_MASK + 1))
 
+struct Time {
+  Time():
+    coarse(UINT32_MAX),
+    fine(UINT32_MAX)
+  {}
+  char const *module;
+  unsigned ch;
+  uint32_t coarse;
+  uint32_t fine;
+};
 class CoarseTracker {
   public:
     CoarseTracker() {
@@ -21,8 +31,8 @@ class CoarseTracker {
       m_left = UINT32_MAX;
       m_right = UINT32_MAX;
     }
-    void Track(uint32_t a_trig, uint32_t a_ref) {
-      uint32_t const c_diff = COARSE_MASK & (a_trig - a_ref);
+    void Track(Time const &a_trig, Time const &a_ref) {
+      uint32_t const c_diff = COARSE_MASK & (a_trig.coarse - a_ref.coarse);
       if (UINT32_MAX == m_left) {
         m_right = m_left = c_diff;
         return;
@@ -47,8 +57,10 @@ class CoarseTracker {
           return;
         }
       }
-      fprintf(stderr, "\nTracking failed! range=%x..%x %x-%x=%x\n", m_left,
-          m_right, a_trig, a_ref, c_diff);
+      fprintf(stderr, "\nTracking failed! range=%u..%u "
+          "%s:%u=%u(%u) - %s:%u=%u(%u) -> %u\n", m_left, m_right,
+          a_trig.module, a_trig.ch, a_trig.coarse, a_trig.fine,
+          a_ref.module, a_ref.ch, a_ref.coarse, a_ref.fine, c_diff);
     }
 
   public:
@@ -60,7 +72,7 @@ namespace {
 #define VECTOR_CT(dst, src) \
   std::vector<CoarseTracker> dst(countof(unpack_event::src))
 CoarseTracker g_los_tamex_ms_ct;
-VECTOR_CT(g_tofd_tamex1_tr_ct, tofd_tamex.tamex1);
+VECTOR_CT(g_tofd_tamex0_tr_ct, tofd_tamex.tamex0);
 VECTOR_CT(g_tofd_tamex2_tr_ct, tofd_tamex.tamex2);
 CoarseTracker g_fib_tamex_ms_ct;
 VECTOR_CT(g_fib_tamex_tr_ct, fib_tamex.tamex);
@@ -115,7 +127,7 @@ void raw_user_function(unpack_event *event,
     g_los_tamex_ms_ct.Reset();
   }
   if (0 != event->tofd_tamex.land_vme.failure.u32) {
-    for (auto it = g_tofd_tamex1_tr_ct.begin(); g_tofd_tamex1_tr_ct.end() !=
+    for (auto it = g_tofd_tamex0_tr_ct.begin(); g_tofd_tamex0_tr_ct.end() !=
         it; ++it) {
       it->Reset();
     }
@@ -141,76 +153,75 @@ void raw_user_function(unpack_event *event,
   //
   // Easy access.
   //
-  uint32_t los_vftx2_trigger = UINT32_MAX;
-  uint32_t los_vftx2_ms = UINT32_MAX;
-  uint32_t los_tamex_trigger = UINT32_MAX;
-  uint32_t los_tamex_ms = UINT32_MAX;
-  std::vector<uint32_t> tofd_tamex1_trigger(countof(event->tofd_tamex.tamex1));
-  std::vector<uint32_t> tofd_tamex2_trigger(countof(event->tofd_tamex.tamex2));
-  uint32_t fib_tamex_ms = UINT32_MAX;
-  std::vector<uint32_t> fib_tamex_trigger(countof(event->fib_tamex.tamex));
-  std::vector<uint32_t> fib7_trigger(countof(event->fib_ctdc.fibseven));
+  Time los_vftx2_ms;
+  Time los_tamex_trigger;
+  Time los_tamex_ms;
+  std::vector<Time> tofd_tamex0_trigger(countof(event->tofd_tamex.tamex0));
+  std::vector<Time> tofd_tamex2_trigger(countof(event->tofd_tamex.tamex2));
+  Time fib_tamex_ms;
+  std::vector<Time> fib_tamex_trigger(countof(event->fib_tamex.tamex));
+  std::vector<Time> fib7_trigger(countof(event->fib_ctdc.fibseven));
 
-#define TRIGGER_GET(name, module, trigger_ch, trigger) do {\
+#define TIME_GET(a_module, a_trigger_ch, a_trigger) do {\
+    auto &mod = event->a_module;\
+    a_trigger.module = #a_module;\
+    a_trigger.ch = a_trigger_ch;\
     bitsone_iterator iter;\
     ssize_t i;\
-    while ((i = module.time_coarse._valid.next(iter)) >= 0) {\
-      if (trigger_ch == i) {\
-        trigger = module.time_coarse._items[i][0].value & COARSE_MASK;\
+    while ((i = mod.time_coarse._valid.next(iter)) >= 0) {\
+      if (a_trigger_ch == i) {\
+        a_trigger.coarse = mod.time_coarse._items[i][0].value & COARSE_MASK;\
+        a_trigger.fine = mod.time_fine._items[i][0].value & COARSE_MASK;\
         break;\
       }\
     }\
-    if (UINT32_MAX == trigger) {\
-      fprintf(stderr, name": Missing trigger "#trigger"!\n");\
+    if (UINT32_MAX == a_trigger.coarse) {\
+      fprintf(stderr, "Missing time "#a_module"["#a_trigger_ch"]!\n");\
       return;\
     }\
   } while (0)
-#define CTDC_ARRAY_TRIGGER_GET(name, ctdc_array, trigger_array) do {\
-    for (size_t card_i = 0; card_i < countof(ctdc_array); ++card_i) {\
-      auto const &ctdc = ctdc_array[card_i];\
-      auto &trigger = trigger_array.at(card_i);\
-      TRIGGER_GET(name, ctdc, 256, trigger);\
+#define CTDC_ARRAY_TIME_GET(a_ctdc_array, a_trigger_array) do {\
+    for (size_t card_i = 0; card_i < countof(event->a_ctdc_array); ++card_i) {\
+      auto &trigger = a_trigger_array.at(card_i);\
+      TIME_GET(a_ctdc_array[card_i], 256, trigger);\
     }\
   } while (0)
-#define TAMEX_ARRAY_TRIGGER_GET(name, tamex_array, trigger_array) do {\
-    for (size_t card_i = 0; card_i < countof(tamex_array); ++card_i) {\
-      auto const &tamex = tamex_array[card_i];\
-      auto &trigger = trigger_array.at(card_i);\
-      TRIGGER_GET(name, tamex, 0, trigger);\
+#define TAMEX_ARRAY_TIME_GET(a_tamex_array, a_trigger_array) do {\
+    for (size_t card_i = 0; card_i < countof(event->a_tamex_array); ++card_i)\
+    {\
+      auto &trigger = a_trigger_array.at(card_i);\
+      TIME_GET(a_tamex_array[card_i], 0, trigger);\
     }\
   } while (0)
 
-  los_vftx2_trigger = event->los_vme.vftx2.time_trigger.value;
-  TRIGGER_GET("LOSV", event->los_vme.vftx2, 15, los_vftx2_ms);
+  TIME_GET(los_vme.vftx2, 15, los_vftx2_ms);
 
-  TRIGGER_GET("LOST", event->los_tamex.tamex, 0, los_tamex_trigger);
-  TRIGGER_GET("LOST", event->los_tamex.tamex, 31, los_tamex_ms);
+  TIME_GET(los_tamex.tamex, 0, los_tamex_trigger);
+  TIME_GET(los_tamex.tamex, 31, los_tamex_ms);
 
-  TAMEX_ARRAY_TRIGGER_GET("TOFD1", event->tofd_tamex.tamex1,
-      tofd_tamex1_trigger);
-  TAMEX_ARRAY_TRIGGER_GET("TOFD2", event->tofd_tamex.tamex2,
-      tofd_tamex2_trigger);
+  TAMEX_ARRAY_TIME_GET(tofd_tamex.tamex0, tofd_tamex0_trigger);
+  TAMEX_ARRAY_TIME_GET(tofd_tamex.tamex2, tofd_tamex2_trigger);
 
-  TAMEX_ARRAY_TRIGGER_GET("FIBS", event->fib_tamex.tamex, fib_tamex_trigger);
-  TRIGGER_GET("FIBS", event->fib_tamex.tamex[0], 31, fib_tamex_ms);
+  TAMEX_ARRAY_TIME_GET(fib_tamex.tamex, fib_tamex_trigger);
+  TIME_GET(fib_tamex.tamex[0], 31, fib_tamex_ms);
 
-  CTDC_ARRAY_TRIGGER_GET("FIBM", event->fib_ctdc.fibseven, fib7_trigger);
+  CTDC_ARRAY_TIME_GET(fib_ctdc.fibseven, fib7_trigger);
 
   //
   // Compare various targets.
   //
   g_los_tamex_ms_ct.Track(los_tamex_ms, los_vftx2_ms);
 
-  for (size_t i = 0; i < tofd_tamex1_trigger.size(); ++i) {
-    g_tofd_tamex1_tr_ct[i].Track(tofd_tamex1_trigger[i], los_tamex_trigger);
+  for (size_t i = 0; i < tofd_tamex0_trigger.size(); ++i) {
+    g_tofd_tamex0_tr_ct[i].Track(tofd_tamex0_trigger[i], los_tamex_trigger);
   }
   for (size_t i = 0; i < tofd_tamex2_trigger.size(); ++i) {
     g_tofd_tamex2_tr_ct[i].Track(tofd_tamex2_trigger[i], los_tamex_trigger);
   }
 
   g_fib_tamex_ms_ct.Track(fib_tamex_ms, los_vftx2_ms);
-//  for (size_t i = 1; i < fib_tamex_trigger.size(); ++i) {
-//    g_fib_tamex_tr_ct[i].Track(fib_tamex_trigger[i], fib_tamex_trigger[0]);
-//  }
+  for (size_t i = 1; i < fib_tamex_trigger.size(); ++i) {
+    g_fib_tamex_tr_ct[i].Track(fib_tamex_trigger[i], fib_tamex_trigger[0]);
+  }
 #endif
 }
