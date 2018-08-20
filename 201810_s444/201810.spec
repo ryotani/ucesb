@@ -165,14 +165,21 @@ SUBEVENT(CALIFA){
 SUBEVENT(fib_ctdc_subev)
 {
 	land_vme = LAND_STD_VME();
-	select several {
-		ctdc_padding = GSI_CLOCKTDC_PADDING();
-	}
+//	select several {
+//		ctdc_padding = GSI_CLOCKTDC_PADDING();
+//	}
 	select several {
 		fibseven[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
 		fibseven[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
 		fibseven[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
 		fibseven[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
+	}
+	barrier = BARRIER();
+	select several {
+		fibten[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=0);
+		fibten[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=1);
+		fibten[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=2);
+		fibten[3] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=3);
 	}
 }
 

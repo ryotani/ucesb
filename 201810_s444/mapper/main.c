@@ -95,7 +95,7 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 	}
 
 	// fiber mapping in the PMT mask	
-	unsigned fib0[256],fib1[256],fib1b[256],fib2[256],fib3[256],fib4[256],fib5[256],fib6[256],fib7[256]; // fiber number of mask
+	unsigned fib0[256],fib1[256],fib1b[256],fib2[256],fib3[256],fib4[256],fib5[256],fib6[256],fib7[256],fib10[256]; // fiber number of mask
 	for(j=0;j<256;j++){
 		fib0[j]=0;
 		fib1[j]=0;
@@ -295,7 +295,23 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		fib7[i+13]=j*16+8;
 		fib7[i+14]=j*16+12;
 		fib7[i+15]=j*16+16;	
-
+		// Fib10.
+		fib10[i]=j*16+1;
+		fib10[i+1]=j*16+5;
+		fib10[i+2]=j*16+9;
+		fib10[i+3]=j*16+13;
+		fib10[i+4]=j*16+2;
+		fib10[i+5]=j*16+6;
+		fib10[i+6]=j*16+10;
+		fib10[i+7]=j*16+14;
+		fib10[i+8]=j*16+3;
+		fib10[i+9]=j*16+7;
+		fib10[i+10]=j*16+11;
+		fib10[i+11]=j*16+15;
+		fib10[i+12]=j*16+4;
+		fib10[i+13]=j*16+8;
+		fib10[i+14]=j*16+12;
+		fib10[i+15]=j*16+16;	
 	}
 
 	for(i=0;i<256;i++) {
@@ -357,6 +373,9 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 			else if(0 == strcmp("fibseven", a_src)){
 				bunch_i=fib7[i];	   
 			}
+			else if(0 == strcmp("fibten", a_src)){
+				bunch_i=fib10[i];	   
+			}
 			bunch_i += sub_i * a_mapmt;
 	
 			card_i=0;
@@ -370,12 +389,12 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 			for (edge_i = 0; edge_i < 2; ++edge_i) {
 				for (prec_i = 0; prec_i < 2; ++prec_i) {
 					printf(
-							"SIGNAL(%s_TM%c%c%u, "
-							"fib_ctdc.%s[%u].time_%s[%u], DATA12);\n",
-							a_dst, edge_array[edge_i],
-							prec_array[prec_i], bunch_i, a_src,
-							card_i, prec_name_array[prec_i], 
-							2*channel_i + edge_i);
+					    "SIGNAL(%s_TM%c%c%u, "
+					    "fib_ctdc.%s[%u].time_%s[%u], DATA12);\n",
+					    a_dst, edge_array[edge_i],
+					    prec_array[prec_i], bunch_i, a_src,
+					    card_i, prec_name_array[prec_i], 
+					    2*channel_i + edge_i);
 				}
 			}
 		}
@@ -387,13 +406,13 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 			for (edge_i = 0; edge_i < 2; ++edge_i) {
 				for (prec_i = 0; prec_i < 2; ++prec_i) {
 					printf(
-							"SIGNAL(%s_TS%c%c%u, "
-							"fib_tamex.tamex[%u].time_%s[%u], DATA12);\n",
-							a_dst, edge_array[edge_i],
-							prec_array[prec_i], sub_i * a_spmt + spmt_i + 1,
-							a_tamex_i,
-							prec_name_array[prec_i],
-							(a_tamex_ch_i + sub_i * a_spmt + spmt_i) * 2 + edge_i + 1);
+					    "SIGNAL(%s_TS%c%c%u, "
+					    "fib_tamex.tamex[%u].time_%s[%u], DATA12);\n",
+					    a_dst, edge_array[edge_i],
+					    prec_array[prec_i], sub_i * a_spmt + spmt_i + 1,
+					    a_tamex_i,
+					    prec_name_array[prec_i],
+					    (a_tamex_ch_i + sub_i * a_spmt + spmt_i) * 2 + edge_i + 1);
 				}
 			}
 		}
@@ -409,5 +428,6 @@ main()
 /*	map("FIBFIVE", "fibfive", 1, 256, 4, 2, 0);*/
 /*	map("FIBSIX", "fibsix", 1, 256, 2, 2, 8);*/
 	map("FIBSEVEN", "fibseven", 2, 256, 1, 0, 8);
+	map("FIBTEN", "fibten", 2, 256, 2, 0, 10);
 	return 0;
 }
