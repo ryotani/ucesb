@@ -10,86 +10,34 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 	// electronics mapping of the adapter board from multi-anode PMT to clock TDC boards
 
 	unsigned i, j, p, k, max,board;
+	signed msign;
+	unsigned maxnum[16]={8,60,4,64,120,76,116,80,132,192,136,188,244,208,248,204};
 	unsigned ch[256]; // board and electronic channel of PMT anode
 	for(j=0;j<256;j++){
 		ch[j]=0;
 	}
-	for(j=0;j<8;j++){
-		max=128-2*j;
-		i=j*32;
-		ch[max-1]=i;
-		ch[max-2]=i+1;	   
-		ch[max-17]=i+2;
-		ch[max-18]=i+3;
-		ch[max-33]=i+4;
-		ch[max-34]=i+5;
-		ch[max-49]=i+6;
-		ch[max-50]=i+7;
-		ch[max-65]=i+8;
-		ch[max-66]=i+9;
-		ch[max-81]=i+10;
-		ch[max-82]=i+11;
-		ch[max-97]=i+12;
-		ch[max-98]=i+13;
-		ch[max-113]=i+14;
-		ch[max-114]=i+15;
-
-		max=256-2*j;
-		i=j*32+16;
-		ch[max-1]=i;
-		ch[max-2]=i+1;	   
-		ch[max-17]=i+2;
-		ch[max-18]=i+3;
-		ch[max-33]=i+4;
-		ch[max-34]=i+5;
-		ch[max-49]=i+6;
-		ch[max-50]=i+7;
-		ch[max-65]=i+8;
-		ch[max-66]=i+9;
-		ch[max-81]=i+10;
-		ch[max-82]=i+11;
-		ch[max-97]=i+12;
-		ch[max-98]=i+13;
-		ch[max-113]=i+14;
-		ch[max-114]=i+15;
-		/*
-		   ch[i]=max-1;
-		   ch[i+1]=max-2;	   
-		   ch[i+2]=max-17;
-		   ch[i+3]=max-18;
-		   ch[i+4]=max-33;
-		   ch[i+5]=max-34;
-		   ch[i+6]=max-49;
-		   ch[i+7]=max-50;
-		   ch[i+8]=max-65;
-		   ch[i+9]=max-66;
-		   ch[i+10]=max-81;
-		   ch[i+11]=max-82;
-		   ch[i+12]=max-97;
-		   ch[i+13]=max-98;
-		   ch[i+14]=max-113;
-		   ch[i+15]=max-114;
-
-		   max=256-2*j;
-		   i=j*32+16;
-		   ch[i]=max-1;
-		   ch[i+1]=max-2;	   
-		   ch[i+2]=max-17;
-		   ch[i+3]=max-18;
-		   ch[i+4]=max-33;
-		   ch[i+5]=max-34;
-		   ch[i+6]=max-49;
-		   ch[i+7]=max-50;
-		   ch[i+8]=max-65;
-		   ch[i+9]=max-66;
-		   ch[i+10]=max-81;
-		   ch[i+11]=max-82;
-		   ch[i+12]=max-97;
-		   ch[i+13]=max-98;
-		   ch[i+14]=max-113;
-		   ch[i+15]=max-114;
-		 */	   
-	}
+	
+	
+	for(j=0;j<16;j++){  // loop over slots
+	    if(j<4 || (j>7 && j<12)){
+		    if(j%2 == 0) msign = 1;
+		    if(j%2 == 1) msign = -1;	
+		}
+		else{
+			if(j%2 == 0) msign = -1;
+		    if(j%2 == 1) msign = 1;
+		}		
+	    for(i=0;i<4;i++){
+		    max = maxnum[j] - i ; 
+		    k = i*4 + j*16;
+		    ch[max -1] = k;
+		    ch[max+msign*16-1] = k+1;
+		    ch[max+msign*32-1] = k+2;
+		    ch[max+msign*48-1] = k+3;
+		 }   		 	
+	}	
+		
+		
 	for(i=0;i<256;i++) {
 		fprintf(stderr, "cha: %d, PMT: %d \n",i,ch[i]);
 	}
