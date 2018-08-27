@@ -72,11 +72,11 @@ namespace {
 #define VECTOR_CT(dst, src) \
   std::vector<CoarseTracker> dst(countof(unpack_event::src))
 CoarseTracker g_los_tamex_ms_ct;
-VECTOR_CT(g_tofd_tamex0_tr_ct, tofd_tamex.tamex0);
-VECTOR_CT(g_tofd_tamex2_tr_ct, tofd_tamex.tamex2);
+VECTOR_CT(g_tofd_tamex0_tr_ct, tofd_tamex.data.tamex0);
+VECTOR_CT(g_tofd_tamex2_tr_ct, tofd_tamex.data.tamex2);
 CoarseTracker g_fib_tamex_ms_ct;
-VECTOR_CT(g_fib_tamex_tr_ct, fib_tamex.tamex);
-VECTOR_CT(g_fib7_ctdc_ct, fib_ctdc.fibseven);
+VECTOR_CT(g_fib_tamex_tr_ct, fib_tamex.data.tamex);
+VECTOR_CT(g_fib7_ctdc_ct, fib_ctdc.data.fibseven);
 }
 
 void map_unpack_raw_sst(EXT_SST &unpack,
@@ -160,7 +160,7 @@ void raw_user_function(unpack_event *event,
   std::vector<Time> tofd_tamex2_trigger(countof(event->tofd_tamex.tamex2));
   Time fib_tamex_ms;
   std::vector<Time> fib_tamex_trigger(countof(event->fib_tamex.tamex));
-  std::vector<Time> fib7_trigger(countof(event->fib_ctdc.fibseven));
+  std::vector<Time> fib7_trigger(countof(event->fib_ctdc.sfp0.fibseven));
 
 #define TIME_GET(a_module, a_trigger_ch, a_trigger) do {\
     auto &mod = event->a_module;\
@@ -205,7 +205,7 @@ void raw_user_function(unpack_event *event,
   TAMEX_ARRAY_TIME_GET(fib_tamex.tamex, fib_tamex_trigger);
   TIME_GET(fib_tamex.tamex[0], 31, fib_tamex_ms);
 
-  CTDC_ARRAY_TIME_GET(fib_ctdc.fibseven, fib7_trigger);
+  CTDC_ARRAY_TIME_GET(fib_ctdc.sfp0.fibseven, fib7_trigger);
 
   //
   // Compare various targets.

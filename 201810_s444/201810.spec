@@ -162,38 +162,50 @@ SUBEVENT(CALIFA){
 	}
 }
 
-SUBEVENT(fib_ctdc_subev)
+fib_ctdc_subev_data()
 {
 	land_vme = LAND_STD_VME();
-//	select several {
-//		ctdc_padding = GSI_CLOCKTDC_PADDING();
-//	}
 	select several {
+		padding0 = GSI_CLOCKTDC_PADDING();
 		fibseven[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
 		fibseven[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
 		fibseven[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
 		fibseven[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
 	}
-	barrier = BARRIER();
+
+//	barrier = BARRIER();
+//	select several {
+//		padding2 = GSI_CLOCKTDC_PADDING();
+//		fibten[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=0);
+//		fibten[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=1);
+//		fibten[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=2);
+//		fibten[3] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=3);
+//	}
+}
+
+SUBEVENT(fib_ctdc_subev)
+{
 	select several {
-		fibten[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=0);
-		fibten[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=1);
-		fibten[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=2);
-		fibten[3] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=3);
+		data = fib_ctdc_subev_data();
+	}
+}
+
+fib_tamex_data()
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		tamex_padding = TAMEX3_PADDING();
+		tamex[0] = TAMEX3_SFP(sfp=0, card=0);
+		tamex[1] = TAMEX3_SFP(sfp=0, card=1);
+		tamex[2] = TAMEX3_SFP(sfp=0, card=2);
+		tamex[3] = TAMEX3_SFP(sfp=0, card=3);
 	}
 }
 
 SUBEVENT(fib_tamex_subev)
 {
-	land_vme = LAND_STD_VME();
 	select several {
-		tamex_padding = TAMEX3_PADDING();
-	}
-	select several {
-		tamex[0] = TAMEX3_SFP(sfp=0, card=0);
-		tamex[1] = TAMEX3_SFP(sfp=0, card=1);
-		tamex[2] = TAMEX3_SFP(sfp=0, card=2);
-		tamex[3] = TAMEX3_SFP(sfp=0, card=3);
+		data = fib_tamex_data();
 	}
 }
 
@@ -202,42 +214,57 @@ SUBEVENT(lmu_scalers_subev)
 	scalers = TRLOII_LMU_SCALERS(id=0xc7);
 }
 
-SUBEVENT(los_tamex_subev)
+los_tamex_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
 		padding = TAMEX3_PADDING();
+		tamex = TAMEX3_SFP(sfp=2, card=0);
 	}
-	tamex = TAMEX3_SFP(sfp=2, card=0);
+}
+
+SUBEVENT(los_tamex_subev)
+{
+	select several {
+		data = los_tamex_data();
+	}
+}
+
+los_vme_subev_data()
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		barrier = BARRIER();
+		vftx2 = VME_GSI_VFTX2_7PS(id=1);
+	}
 }
 
 SUBEVENT(los_vme_subev)
 {
-	land_vme = LAND_STD_VME();
-	barrier = BARRIER();
-	vftx2 = VME_GSI_VFTX2_7PS(id=1);
+	select several {
+		data = los_vme_subev_data();
+	}
 }
 
-SUBEVENT(tofd_tamex_subev)
+tofd_tamex_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
 		padding0 = TAMEX3_PADDING();
+		tamex0[ 0] = TAMEX3_SFP(sfp=0, card= 0);
+		tamex0[ 1] = TAMEX3_SFP(sfp=0, card= 1);
+		tamex0[ 2] = TAMEX3_SFP(sfp=0, card= 2);
+		tamex0[ 3] = TAMEX3_SFP(sfp=0, card= 3);
+		tamex0[ 4] = TAMEX3_SFP(sfp=0, card= 4);
+		tamex0[ 5] = TAMEX3_SFP(sfp=0, card= 5);
+		tamex0[ 6] = TAMEX3_SFP(sfp=0, card= 6);
+		tamex0[ 7] = TAMEX3_SFP(sfp=0, card= 7);
+		tamex0[ 8] = TAMEX3_SFP(sfp=0, card= 8);
 	}
-	tamex0[ 0] = TAMEX3_SFP(sfp=0, card= 0);
-	tamex0[ 1] = TAMEX3_SFP(sfp=0, card= 1);
-	tamex0[ 2] = TAMEX3_SFP(sfp=0, card= 2);
-	tamex0[ 3] = TAMEX3_SFP(sfp=0, card= 3);
-	tamex0[ 4] = TAMEX3_SFP(sfp=0, card= 4);
-	tamex0[ 5] = TAMEX3_SFP(sfp=0, card= 5);
-	tamex0[ 6] = TAMEX3_SFP(sfp=0, card= 6);
-	tamex0[ 7] = TAMEX3_SFP(sfp=0, card= 7);
-	tamex0[ 8] = TAMEX3_SFP(sfp=0, card= 8);
+
 	barrier2 = BARRIER();
 	select several {
 		padding2 = TAMEX3_PADDING();
-	}
-	select several {
 		tamex2[ 0] = TAMEX3_SFP(sfp=2, card= 0);
 		tamex2[ 1] = TAMEX3_SFP(sfp=2, card= 1);
 		tamex2[ 2] = TAMEX3_SFP(sfp=2, card= 2);
@@ -250,17 +277,19 @@ SUBEVENT(tofd_tamex_subev)
 		tamex2[ 9] = TAMEX3_SFP(sfp=2, card= 9);
 		tamex2[10] = TAMEX3_SFP(sfp=2, card=10);
 		tamex2[11] = TAMEX3_SFP(sfp=2, card=11);
-		tamex2[12] = TAMEX3_SFP(sfp=2, card=12);
-		tamex2[13] = TAMEX3_SFP(sfp=2, card=13);
-		tamex2[14] = TAMEX3_SFP(sfp=2, card=14);
+	}
+}
+
+SUBEVENT(tofd_tamex_subev)
+{
+	select several {
+		data = tofd_tamex_subev_data();
 	}
 }
 
 SUBEVENT(tpat_subev)
 {
-	select several {
-		tpat = TRLOII_TPAT(id=0xcf);
-	}
+	tpat = TRLOII_TPAT(id=0xcf);
 }
 
 SUBEVENT(wr_100)

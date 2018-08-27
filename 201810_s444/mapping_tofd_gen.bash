@@ -24,10 +24,10 @@ function map_octopus()
 	cht=$((chl+1))
 	for paddle_sub in $(seq 0 7)
 	do
-		echo "SIGNAL(TOFD_P${plane}T${side}_TFL${paddle},tofd_tamex.tamex$sfp[$card].time_fine[$chl], DATA12);"
-		echo "SIGNAL(TOFD_P${plane}T${side}_TFT${paddle},tofd_tamex.tamex$sfp[$card].time_fine[$cht], DATA12);"
-		echo "SIGNAL(TOFD_P${plane}T${side}_TCL${paddle},tofd_tamex.tamex$sfp[$card].time_coarse[$chl], DATA12);"
-		echo "SIGNAL(TOFD_P${plane}T${side}_TCT${paddle},tofd_tamex.tamex$sfp[$card].time_coarse[$cht], DATA12);"
+		echo "SIGNAL(TOFD_P${plane}T${side}_TFL${paddle},tofd_tamex.data.tamex$sfp[$card].time_fine[$chl], DATA12);"
+		echo "SIGNAL(TOFD_P${plane}T${side}_TFT${paddle},tofd_tamex.data.tamex$sfp[$card].time_fine[$cht], DATA12);"
+		echo "SIGNAL(TOFD_P${plane}T${side}_TCL${paddle},tofd_tamex.data.tamex$sfp[$card].time_coarse[$chl], DATA12);"
+		echo "SIGNAL(TOFD_P${plane}T${side}_TCT${paddle},tofd_tamex.data.tamex$sfp[$card].time_coarse[$cht], DATA12);"
 		((paddle++))
 		((chl+=2))
 		((cht+=2))

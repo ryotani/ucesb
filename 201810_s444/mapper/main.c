@@ -4,7 +4,7 @@
 #include <string.h>
 
 void
-map(char const *a_dst, char const *a_src, unsigned a_subs, unsigned a_mapmt,
+map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 {
 	// electronics mapping of the adapter board from multi-anode PMT to clock TDC boards
@@ -296,10 +296,10 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		for (i = 0; i < a_mapmt; +i++) {
 			unsigned card_i, channel_i, bunch_i;
 			channel_i=ch[i];
-			if(0 == strcmp("fibzero", a_src)){
+			if(0 == strcmp("fibzero", a_name)){
 				bunch_i=fib0[i];
 			}
-			else if(0 == strcmp("fibone", a_src)){
+			else if(0 == strcmp("fibone", a_name)){
 			  if (sub_i == 0)
 			    {
 			      bunch_i=fib1[i];
@@ -309,19 +309,19 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 			      bunch_i=fib1b[i];
 			    }
 			}
-			else if(0 == strcmp("fibfour", a_src)){
+			else if(0 == strcmp("fibfour", a_name)){
 				bunch_i=fib4[i];	   
 			}
-			else if(0 == strcmp("fibfive", a_src)){
+			else if(0 == strcmp("fibfive", a_name)){
 				bunch_i=fib5[i];	   
 			}
-			else if(0 == strcmp("fibsix", a_src)){
+			else if(0 == strcmp("fibsix", a_name)){
 				bunch_i=fib6[i];	   
 			}
-			else if(0 == strcmp("fibseven", a_src)){
+			else if(0 == strcmp("fibseven", a_name)){
 				bunch_i=fib7[i];	   
 			}
-			else if(0 == strcmp("fibten", a_src)){
+			else if(0 == strcmp("fibten", a_name)){
 				bunch_i=fib10[i];	   
 			}
 			bunch_i += sub_i * a_mapmt;
@@ -338,9 +338,9 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 				for (prec_i = 0; prec_i < 2; ++prec_i) {
 					printf(
 					    "SIGNAL(%s_TM%c%c%u, "
-					    "fib_ctdc.%s[%u].time_%s[%u], DATA12);\n",
+					    "fib_ctdc.data.%s[%u].time_%s[%u], DATA12);\n",
 					    a_dst, edge_array[edge_i],
-					    prec_array[prec_i], bunch_i, a_src,
+					    prec_array[prec_i], bunch_i, a_name,
 					    card_i, prec_name_array[prec_i], 
 					    2*channel_i + edge_i);
 				}
@@ -355,7 +355,7 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 				for (prec_i = 0; prec_i < 2; ++prec_i) {
 					printf(
 					    "SIGNAL(%s_TS%c%c%u, "
-					    "fib_tamex.tamex[%u].time_%s[%u], DATA12);\n",
+					    "fib_tamex.data.tamex[%u].time_%s[%u], DATA12);\n",
 					    a_dst, edge_array[edge_i],
 					    prec_array[prec_i], sub_i * a_spmt + spmt_i + 1,
 					    a_tamex_i,
@@ -376,6 +376,6 @@ main()
 /*	map("FIBFIVE", "fibfive", 1, 256, 4, 2, 0);*/
 /*	map("FIBSIX", "fibsix", 1, 256, 2, 2, 8);*/
 	map("FIBSEVEN", "fibseven", 2, 256, 1, 0, 8);
-	map("FIBTEN", "fibten", 2, 256, 2, 0, 10);
+/*	map("FIBTEN", "fibten", 2, 256, 2, 0, 10);*/
 	return 0;
 }
