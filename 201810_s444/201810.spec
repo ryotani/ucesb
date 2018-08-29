@@ -167,15 +167,21 @@ fib_ctdc_subev_data()
 	land_vme = LAND_STD_VME();
 	select several {
 		padding0 = GSI_CLOCKTDC_PADDING();
+	}
+	select several {
 		fibseven[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
 		fibseven[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
 		fibseven[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
 		fibseven[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
 	}
 
-//	barrier = BARRIER();
+//	select several {
+//		barrier = BARRIER();
+//	}
 //	select several {
 //		padding2 = GSI_CLOCKTDC_PADDING();
+//	}
+//	select several {
 //		fibten[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=0);
 //		fibten[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=1);
 //		fibten[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=2);
@@ -195,6 +201,8 @@ fib_tamex_data()
 	land_vme = LAND_STD_VME();
 	select several {
 		tamex_padding = TAMEX3_PADDING();
+	}
+	select several {
 		tamex[0] = TAMEX3_SFP(sfp=0, card=0);
 		tamex[1] = TAMEX3_SFP(sfp=0, card=1);
 		tamex[2] = TAMEX3_SFP(sfp=0, card=2);
@@ -214,11 +222,23 @@ SUBEVENT(lmu_scalers_subev)
 	scalers = TRLOII_LMU_SCALERS(id=0xc7);
 }
 
+master_scalers_data()
+{
+	UINT32 mega;
+}
+
+SUBEVENT(master_scalers_subev)
+{
+	scalers = master_scalers_data();
+}
+
 los_tamex_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
 		padding = TAMEX3_PADDING();
+	}
+	select several {
 		tamex = TAMEX3_SFP(sfp=2, card=0);
 	}
 }
@@ -235,6 +255,8 @@ los_vme_subev_data()
 	land_vme = LAND_STD_VME();
 	select several {
 		barrier = BARRIER();
+	}
+	select several {
 		vftx2 = VME_GSI_VFTX2_7PS(id=1);
 	}
 }
@@ -251,6 +273,8 @@ tofd_tamex_subev_data()
 	land_vme = LAND_STD_VME();
 	select several {
 		padding0 = TAMEX3_PADDING();
+	}
+	select several {
 		tamex0[ 0] = TAMEX3_SFP(sfp=0, card= 0);
 		tamex0[ 1] = TAMEX3_SFP(sfp=0, card= 1);
 		tamex0[ 2] = TAMEX3_SFP(sfp=0, card= 2);
@@ -262,9 +286,13 @@ tofd_tamex_subev_data()
 		tamex0[ 8] = TAMEX3_SFP(sfp=0, card= 8);
 	}
 
-	barrier2 = BARRIER();
+	select several {
+		barrier2 = BARRIER();
+	}
 	select several {
 		padding2 = TAMEX3_PADDING();
+	}
+	select several {
 		tamex2[ 0] = TAMEX3_SFP(sfp=2, card= 0);
 		tamex2[ 1] = TAMEX3_SFP(sfp=2, card= 1);
 		tamex2[ 2] = TAMEX3_SFP(sfp=2, card= 2);
@@ -303,6 +331,7 @@ EVENT
 	master_ts = wr_100(type=10, subtype=1, control=0);
 	master_tpat = tpat_subev(type=36, subtype=3600, control=0);
 	master_lmu_scalers = lmu_scalers_subev(type=37, subtype=3700, control=0);
+	master_scalers = master_scalers_subev(type=38, subtype=3800, control=0);
 	los_vme = los_vme_subev(type=88, subtype=8800, control=1);
 	los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);
 	tofd_tamex = tofd_tamex_subev(type=102, subtype=10200, control=3);
