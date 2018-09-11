@@ -4,6 +4,7 @@
 #include "sst_ext.spec"
 #include "../land_common/barrier.spec"
 #include "../land_common/gsi_clocktdc.spec"
+#include "../land_common/gsi_febex_v2.spec"
 #include "../land_common/gsi_tamex3.spec"
 #include "../land_common/land_vme.spec"
 #include "../land_common/trloii.spec"
@@ -156,9 +157,58 @@ FEBEX3_CALIFA_BASE(){
 	}
 }
 
-SUBEVENT(CALIFA){
+SUBEVENT(CALIFA)
+{
 	select several{
 		febex3 = FEBEX3_CALIFA_BASE();
+	}
+}
+
+febex_subev_data()
+{
+	select optional {
+		header0 = FEBEX_EVENTHEADER();
+	}
+	select several {
+		febex_0[ 0] = FEBEX_NOTRACE(sfp=0, card=0);
+		febex_0[ 1] = FEBEX_NOTRACE(sfp=0, card=1);
+		febex_0[ 2] = FEBEX_NOTRACE(sfp=0, card=2);
+		febex_0[ 3] = FEBEX_NOTRACE(sfp=0, card=3);
+		febex_0[ 4] = FEBEX_NOTRACE(sfp=0, card=4);
+		febex_0[ 5] = FEBEX_NOTRACE(sfp=0, card=5);
+		febex_0[ 6] = FEBEX_NOTRACE(sfp=0, card=6);
+		febex_0[ 7] = FEBEX_NOTRACE(sfp=0, card=7);
+		febex_0[ 8] = FEBEX_NOTRACE(sfp=0, card=8);
+		febex_0[ 9] = FEBEX_NOTRACE(sfp=0, card=9);
+		febex_0[10] = FEBEX_NOTRACE(sfp=0, card=10);
+		febex_0[11] = FEBEX_NOTRACE(sfp=0, card=11);
+		febex_0[12] = FEBEX_NOTRACE(sfp=0, card=12);
+		febex_0[13] = FEBEX_NOTRACE(sfp=0, card=13);
+		febex_0[14] = FEBEX_NOTRACE(sfp=0, card=14);
+		febex_0[15] = FEBEX_NOTRACE(sfp=0, card=15);
+		febextrace_0[ 0] = FEBEX_TRACE(sfp=0, card=0);
+		febextrace_0[ 1] = FEBEX_TRACE(sfp=0, card=1);
+		febextrace_0[ 2] = FEBEX_TRACE(sfp=0, card=2);
+		febextrace_0[ 3] = FEBEX_TRACE(sfp=0, card=3);
+		febextrace_0[ 4] = FEBEX_TRACE(sfp=0, card=4);
+		febextrace_0[ 5] = FEBEX_TRACE(sfp=0, card=5);
+		febextrace_0[ 6] = FEBEX_TRACE(sfp=0, card=6);
+		febextrace_0[ 7] = FEBEX_TRACE(sfp=0, card=7);
+		febextrace_0[ 8] = FEBEX_TRACE(sfp=0, card=8);
+		febextrace_0[ 9] = FEBEX_TRACE(sfp=0, card=9);
+		febextrace_0[10] = FEBEX_TRACE(sfp=0, card=10);
+		febextrace_0[11] = FEBEX_TRACE(sfp=0, card=11);
+		febextrace_0[12] = FEBEX_TRACE(sfp=0, card=12);
+		febextrace_0[13] = FEBEX_TRACE(sfp=0, card=13);
+		febextrace_0[14] = FEBEX_TRACE(sfp=0, card=14);
+		febextrace_0[15] = FEBEX_TRACE(sfp=0, card=15);
+	}
+}
+
+SUBEVENT(febex_subev)
+{
+	select several {
+		data = febex_subev_data();
 	}
 }
 
@@ -175,18 +225,18 @@ fib_ctdc_subev_data()
 		fibseven[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
 	}
 
-//	select several {
-//		barrier = BARRIER();
-//	}
-//	select several {
-//		padding2 = GSI_CLOCKTDC_PADDING();
-//	}
-//	select several {
-//		fibten[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=0);
-//		fibten[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=1);
-//		fibten[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=2);
-//		fibten[3] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=3);
-//	}
+	select several {
+		barrier = BARRIER();
+	}
+	select several {
+		padding2 = GSI_CLOCKTDC_PADDING();
+	}
+	select several {
+		fibten[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=0);
+		fibten[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=1);
+		fibten[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=2);
+		fibten[3] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=3);
+	}
 }
 
 SUBEVENT(fib_ctdc_subev)
@@ -337,7 +387,8 @@ EVENT
 	tofd_tamex = tofd_tamex_subev(type=102, subtype=10200, control=3);
 	fib_ctdc = fib_ctdc_subev(type=103, subtype=10300, control=4);
 	fib_tamex = fib_tamex_subev(type=102, subtype=10200, control=5);
-	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=6);
+	pspx = febex_subev(type=101, subtype=10100, control=6);
+	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);
 	califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
 }
 

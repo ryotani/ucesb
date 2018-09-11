@@ -376,6 +376,6 @@ main()
 /*	map("FIBFIVE", "fibfive", 1, 256, 4, 2, 0);*/
 /*	map("FIBSIX", "fibsix", 1, 256, 2, 2, 8);*/
 	map("FIBSEVEN", "fibseven", 2, 256, 1, 0, 8);
-/*	map("FIBTEN", "fibten", 2, 256, 2, 0, 10);*/
+	map("FIBTEN", "fibten", 2, 256, 2, 0, 10);
 	return 0;
 }
