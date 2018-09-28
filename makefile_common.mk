@@ -16,8 +16,10 @@ export USE_CURSES
 
 TREE_OR_HOME_SRC_DIR = $(firstword $(wildcard $(addsuffix /$(1),$(shell pwd)/../.. $(HOME))))
 
+ifeq ($(UCESB_BASE_DIR),)
 UCESB_BASE_DIR=$(call TREE_OR_HOME_SRC_DIR,ucesb)
 export UCESB_BASE_DIR
+endif
 
 #CXX=g++-3.4
 #export CXX

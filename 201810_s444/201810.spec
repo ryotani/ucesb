@@ -232,10 +232,14 @@ fib_ctdc_subev_data()
 		padding2 = GSI_CLOCKTDC_PADDING();
 	}
 	select several {
-		fibten[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=0);
-		fibten[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=1);
-		fibten[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=2);
-		fibten[3] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=3);
+		fibten[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=4);
+		fibten[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=5);
+		fibten[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=6);
+		fibten[3] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=7);
+		fibeleven[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=0);
+		fibeleven[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=1);
+		fibeleven[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=2);
+		fibeleven[3] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=3);
 	}
 }
 
@@ -256,7 +260,8 @@ fib_tamex_data()
 		tamex[0] = TAMEX3_SFP(sfp=0, card=0);
 		tamex[1] = TAMEX3_SFP(sfp=0, card=1);
 		tamex[2] = TAMEX3_SFP(sfp=0, card=2);
-		tamex[3] = TAMEX3_SFP(sfp=0, card=3);
+// Clock cable lent to Nik.
+//		tamex[3] = TAMEX3_SFP(sfp=0, card=3);
 	}
 }
 
@@ -322,39 +327,21 @@ tofd_tamex_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		padding0 = TAMEX3_PADDING();
+		padding = TAMEX3_PADDING();
 	}
 	select several {
-		tamex0[ 0] = TAMEX3_SFP(sfp=0, card= 0);
-		tamex0[ 1] = TAMEX3_SFP(sfp=0, card= 1);
-		tamex0[ 2] = TAMEX3_SFP(sfp=0, card= 2);
-		tamex0[ 3] = TAMEX3_SFP(sfp=0, card= 3);
-		tamex0[ 4] = TAMEX3_SFP(sfp=0, card= 4);
-		tamex0[ 5] = TAMEX3_SFP(sfp=0, card= 5);
-		tamex0[ 6] = TAMEX3_SFP(sfp=0, card= 6);
-		tamex0[ 7] = TAMEX3_SFP(sfp=0, card= 7);
-		tamex0[ 8] = TAMEX3_SFP(sfp=0, card= 8);
-	}
-
-	select several {
-		barrier2 = BARRIER();
-	}
-	select several {
-		padding2 = TAMEX3_PADDING();
-	}
-	select several {
-		tamex2[ 0] = TAMEX3_SFP(sfp=2, card= 0);
-		tamex2[ 1] = TAMEX3_SFP(sfp=2, card= 1);
-		tamex2[ 2] = TAMEX3_SFP(sfp=2, card= 2);
-		tamex2[ 3] = TAMEX3_SFP(sfp=2, card= 3);
-		tamex2[ 4] = TAMEX3_SFP(sfp=2, card= 4);
-		tamex2[ 5] = TAMEX3_SFP(sfp=2, card= 5);
-		tamex2[ 6] = TAMEX3_SFP(sfp=2, card= 6);
-		tamex2[ 7] = TAMEX3_SFP(sfp=2, card= 7);
-		tamex2[ 8] = TAMEX3_SFP(sfp=2, card= 8);
-		tamex2[ 9] = TAMEX3_SFP(sfp=2, card= 9);
-		tamex2[10] = TAMEX3_SFP(sfp=2, card=10);
-		tamex2[11] = TAMEX3_SFP(sfp=2, card=11);
+		tamex[ 0] = TAMEX3_SFP(sfp=0, card= 0);
+		tamex[ 1] = TAMEX3_SFP(sfp=0, card= 1);
+		tamex[ 2] = TAMEX3_SFP(sfp=0, card= 2);
+		tamex[ 3] = TAMEX3_SFP(sfp=0, card= 3);
+		tamex[ 4] = TAMEX3_SFP(sfp=0, card= 4);
+		tamex[ 5] = TAMEX3_SFP(sfp=0, card= 5);
+		tamex[ 6] = TAMEX3_SFP(sfp=0, card= 6);
+		tamex[ 7] = TAMEX3_SFP(sfp=0, card= 7);
+		tamex[ 8] = TAMEX3_SFP(sfp=0, card= 8);
+		tamex[ 9] = TAMEX3_SFP(sfp=0, card= 9);
+		tamex[10] = TAMEX3_SFP(sfp=0, card=10);
+		tamex[11] = TAMEX3_SFP(sfp=0, card=11);
 	}
 }
 
@@ -384,7 +371,8 @@ EVENT
 	master_scalers = master_scalers_subev(type=38, subtype=3800, control=0);
 	los_vme = los_vme_subev(type=88, subtype=8800, control=1);
 	los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);
-	tofd_tamex = tofd_tamex_subev(type=102, subtype=10200, control=3);
+	tofd_tamex_1 = tofd_tamex_subev(type=102, subtype=10200, control=3);
+	tofd_tamex_2 = tofd_tamex_subev(type=102, subtype=10200, control=8);
 	fib_ctdc = fib_ctdc_subev(type=103, subtype=10300, control=4);
 	fib_tamex = fib_tamex_subev(type=102, subtype=10200, control=5);
 	pspx = febex_subev(type=101, subtype=10100, control=6);

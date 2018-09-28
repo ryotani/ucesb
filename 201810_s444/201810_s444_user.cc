@@ -5,6 +5,8 @@
 
 #define NUM_SST 8 // 4 box detectors taken out
 
+#define TAMEX_MASK 0x7ff
+#define VFTX2_MASK 0x1fff
 // Smallest coarse counter range among all electronics.
 #define COARSE_MASK 0x7ff
 #define COARSE_ADD(a, b) (COARSE_MASK & (a + b))
@@ -48,8 +50,8 @@ class CoarseTracker {
       uint32_t const c_diff = COARSE_SUB(a_ref.coarse, a_trig.coarse);
       if (UINT32_MAX == m_left) {
         m_right = m_left = c_diff;
-        fprintf(stderr, "\n%s: Tracking started at %u.", m_name.c_str(),
-            m_left);
+	fprintf(stderr, "\n%s:%s: Tracking started at %u.", __func__,
+	    m_name.c_str(), m_left);
         return;
       }
       for (unsigned i = 0; i <= 2; ++i) {
@@ -72,10 +74,11 @@ class CoarseTracker {
           return;
         }
       }
-      fprintf(stderr, "\n%s: Tracking failed! Range=%u..%u "
-          "%s:%u=%u(%u) - %s:%u=%u(%u) -> %u\n", m_name.c_str(), m_left,
-          m_right, a_trig.module, a_trig.ch, a_trig.coarse, a_trig.fine,
-          a_ref.module, a_ref.ch, a_ref.coarse, a_ref.fine, c_diff);
+      fprintf(stderr, "\n%s:%s: Tracking failed! "
+	  "Range=%u..%u %s:%u=%u(%u) - %s:%u=%u(%u) -> %u\n", __func__,
+	  m_name.c_str(), m_left, m_right, a_trig.module, a_trig.ch,
+	  a_trig.coarse, a_trig.fine, a_ref.module, a_ref.ch, a_ref.coarse,
+	  a_ref.fine, c_diff);
       {
         static int counter = 0;
         ++counter;
@@ -105,8 +108,8 @@ namespace {
 #define VECTOR_CT(dst, src) \
   std::vector<CoarseTracker> dst(countof(unpack_event::src))
 CoarseTracker g_los_tamex_ms_ct;
-VECTOR_CT(g_tofd_tamex0_trig_ct, tofd_tamex.data.tamex0);
-VECTOR_CT(g_tofd_tamex2_trig_ct, tofd_tamex.data.tamex2);
+VECTOR_CT(g_tofd_tamex0_trig_ct, tofd_tamex_1.data.tamex);
+VECTOR_CT(g_tofd_tamex2_trig_ct, tofd_tamex_2.data.tamex);
 CoarseTracker g_fib_tamex_ms_ct;
 VECTOR_CT(g_fib_tamex_trig_ct, fib_tamex.data.tamex);
 VECTOR_CT(g_fi7_ctdc_trig_ct, fib_ctdc.data.fibseven);
@@ -205,7 +208,8 @@ int unpack_user_function(unpack_event *event)
   //
   if (0 != event->los_vme.data.land_vme.failure.u32 ||
       0 != event->los_tamex.data.land_vme.failure.u32 ||
-      0 != event->tofd_tamex.data.land_vme.failure.u32 ||
+      0 != event->tofd_tamex_1.data.land_vme.failure.u32 ||
+      0 != event->tofd_tamex_2.data.land_vme.failure.u32 ||
       0 != event->fib_tamex.data.land_vme.failure.u32 ||
       0 != event->fib_ctdc.data.land_vme.failure.u32) {
 #define RESET_ARRAY(array) do {\
@@ -249,7 +253,8 @@ int unpack_user_function(unpack_event *event)
       }\
     }\
     if (a_exists && UINT32_MAX == a_time.coarse) {\
-      fprintf(stderr, "Missing time ref "#a_module"["#a_ref_ch"]!\n");\
+      fprintf(stderr, "%s: Missing time ref "#a_module"["#a_ref_ch"]!\n",\
+	  __func__);\
       return 1;\
     }\
   } while (0)
@@ -281,8 +286,8 @@ int unpack_user_function(unpack_event *event)
   TIME_GET_SINGLE(los_tamex_trig, los_tamex.data.tamex, 0);
   TIME_GET_SINGLE(los_tamex_ms, los_tamex.data.tamex, 31);
 
-  TAMEX_TIME_GET_ARRAY(tofd_tamex0_trig, tofd_tamex.data.tamex0);
-  TAMEX_TIME_GET_ARRAY(tofd_tamex2_trig, tofd_tamex.data.tamex2);
+  TAMEX_TIME_GET_ARRAY(tofd_tamex0_trig, tofd_tamex_1.data.tamex);
+  TAMEX_TIME_GET_ARRAY(tofd_tamex2_trig, tofd_tamex_2.data.tamex);
 
   TAMEX_TIME_GET_ARRAY(fib_tamex_trig, fib_tamex.data.tamex);
   TIME_GET_SINGLE(fib_tamex_ms, fib_tamex.data.tamex[0], 31);
@@ -305,7 +310,7 @@ int unpack_user_function(unpack_event *event)
 #define TRACK_ADJUST_SINGLE(a_name, a_module, a_mask, a_ref_name) do {\
     if (a_name##_exists && a_ref_name##_exists) {\
       g_##a_name##_ct.Track(a_name##_time, a_ref_name##_time);\
-      TIME_SET(a_module, g_##a_name##_ct, 0xfff);\
+      TIME_SET(a_module, g_##a_name##_ct, a_mask);\
     }\
   } while (0)
 #define TRACK_ADJUST_ARRAY(a_name, a_module_array, a_mask, a_ref_name,\
@@ -322,23 +327,23 @@ int unpack_user_function(unpack_event *event)
     }\
   } while (0)
 
-  // DANGER: Adjust the mask to the DATA* type!
+  // DANGER: Adjust the mask to the HW ranges!
 
   // (LOS TAMEX3 MS -- LOS VFTX2 MS)
-  TRACK_ADJUST_SINGLE(los_tamex_ms, los_tamex.data.tamex, 0xfff,
+  TRACK_ADJUST_SINGLE(los_tamex_ms, los_tamex.data.tamex, TAMEX_MASK,
       los_vftx2_ms);
 
   // (TOFD TAMEX3 Trig -- LOS TAMEX3 Trig) + (LOS TAMEX3 MS -- LOS VFTX2 MS)
-  TRACK_ADJUST_ARRAY(tofd_tamex0_trig, tofd_tamex.data.tamex0, 0xfff,
+  TRACK_ADJUST_ARRAY(tofd_tamex0_trig, tofd_tamex_1.data.tamex, TAMEX_MASK,
       los_tamex_trig, g_los_tamex_ms_ct);
-  TRACK_ADJUST_ARRAY(tofd_tamex2_trig, tofd_tamex.data.tamex2, 0xfff,
+  TRACK_ADJUST_ARRAY(tofd_tamex2_trig, tofd_tamex_2.data.tamex, TAMEX_MASK,
       los_tamex_trig, g_los_tamex_ms_ct);
 
   // (FIB TAMEX3 MS -- LOS VFTX2 MS)
-  TRACK_ADJUST_SINGLE(fib_tamex_ms, fib_tamex.data.tamex[0], 0xfff,
+  TRACK_ADJUST_SINGLE(fib_tamex_ms, fib_tamex.data.tamex[0], TAMEX_MASK,
       los_vftx2_ms);
   // (FIB TAMEX3 Trig -- LOS TAMEX3 Trig) + (LOS TAMEX3 MS -- LOS VFTX2 MS)
-  TRACK_ADJUST_ARRAY(fib_tamex_trig, fib_tamex.data.tamex, 0xfff,
+  TRACK_ADJUST_ARRAY(fib_tamex_trig, fib_tamex.data.tamex, TAMEX_MASK,
       los_tamex_trig, g_los_tamex_ms_ct);
 
   // (FI7 CTDC Trig -- LOS TAMEX3 Trig) + (LOS TAMEX3 MS -- LOS VFTX2 MS)
@@ -352,24 +357,24 @@ int unpack_user_function(unpack_event *event)
     }
     if (time_now > g_stat_time_prev + 5) {
       g_stat_time_prev += 5;
-      std::cout << '\n';
+      std::cerr << '\n';
 
-      std::cout << "LOS:" << g_los_tamex_ms_ct.m_left << ' ' << g_los_tamex_ms_ct.m_right << '\n';
+      std::cerr << "LOS:" << g_los_tamex_ms_ct.m_left << ' ' << g_los_tamex_ms_ct.m_right << '\n';
 
       for (size_t i = 0; i < tofd_tamex0_trig_time.size(); ++i) {
-        std::cout << "TOFD0_" << i << ':' << g_tofd_tamex0_trig_ct[i].m_left << ' ' << g_tofd_tamex0_trig_ct[i].m_left << ' ';
+        std::cerr << "TOFD0_" << i << ':' << g_tofd_tamex0_trig_ct[i].m_left << ' ' << g_tofd_tamex0_trig_ct[i].m_left << ' ';
       }
-      std::cout << '\n';
+      std::cerr << '\n';
       for (size_t i = 0; i < tofd_tamex2_trig_time.size(); ++i) {
-        std::cout << "TOFD2_" << i << ':' << g_tofd_tamex2_trig_ct[i].m_left << ' ' << g_tofd_tamex2_trig_ct[i].m_left << ' ';
+        std::cerr << "TOFD2_" << i << ':' << g_tofd_tamex2_trig_ct[i].m_left << ' ' << g_tofd_tamex2_trig_ct[i].m_left << ' ';
       }
-      std::cout << '\n';
+      std::cerr << '\n';
 
-      std::cout << "FIBTMS:" << g_fib_tamex_ms_ct.m_left << ' ' << g_fib_tamex_ms_ct.m_left << '\n';
+      std::cerr << "FIBTMS:" << g_fib_tamex_ms_ct.m_left << ' ' << g_fib_tamex_ms_ct.m_left << '\n';
       for (size_t i = 1; i < fib_tamex_trig_time.size(); ++i) {
-        std::cout << "FIBTTR_" << i << ':' << g_fib_tamex_trig_ct[i].m_left << ' ' << g_fib_tamex_trig_ct[i].m_left << ' ';
+        std::cerr << "FIBTTR_" << i << ':' << g_fib_tamex_trig_ct[i].m_left << ' ' << g_fib_tamex_trig_ct[i].m_left << ' ';
       }
-      std::cout << '\n';
+      std::cerr << '\n';
     }
   }
 #endif

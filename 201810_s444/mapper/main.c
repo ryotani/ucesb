@@ -5,7 +5,7 @@
 
 void
 map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
-unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
+    unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 {
 	// electronics mapping of the adapter board from multi-anode PMT to clock TDC boards
 
@@ -16,33 +16,31 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 	for(j=0;j<256;j++){
 		ch[j]=0;
 	}
-	
-	
+
 	for(j=0;j<16;j++){  // loop over slots
-	    if(j<4 || (j>7 && j<12)){
-		    if(j%2 == 0) msign = 1;
-		    if(j%2 == 1) msign = -1;	
+		if(j<4 || (j>7 && j<12)){
+			if(j%2 == 0) msign = 1;
+			if(j%2 == 1) msign = -1;
 		}
 		else{
 			if(j%2 == 0) msign = -1;
-		    if(j%2 == 1) msign = 1;
-		}		
-	    for(i=0;i<4;i++){
-		    max = maxnum[j] - i ; 
-		    k = i*4 + j*16;
-		    ch[max -1] = k;
-		    ch[max+msign*16-1] = k+1;
-		    ch[max+msign*32-1] = k+2;
-		    ch[max+msign*48-1] = k+3;
-		 }   		 	
-	}	
-		
-		
+			if(j%2 == 1) msign = 1;
+		}
+		for(i=0;i<4;i++){
+			max = maxnum[j] - i ;
+			k = i*4 + j*16;
+			ch[max -1] = k;
+			ch[max+msign*16-1] = k+1;
+			ch[max+msign*32-1] = k+2;
+			ch[max+msign*48-1] = k+3;
+		}
+	}
+
 	for(i=0;i<256;i++) {
 		fprintf(stderr, "cha: %d, PMT: %d \n",i,ch[i]);
 	}
 
-	// fiber mapping in the PMT mask	
+	// fiber mapping in the PMT mask
 	unsigned fib0[256],fib1[256],fib1b[256],fib2[256],fib3[256],fib4[256],fib5[256],fib6[256],fib7[256],fib10[256]; // fiber number of mask
 	for(j=0;j<256;j++){
 		fib0[j]=0;
@@ -75,7 +73,7 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		fib0[i+12]=j*16+4;
 		fib0[i+13]=j*16+3;
 		fib0[i+14]=j*16+2;
-		fib0[i+15]=j*16+1;	
+		fib0[i+15]=j*16+1;
 		// fibers in colums from top to bottom
 		fib1[i]=j*16+1;
 		fib1[i+1]=j*16+5;
@@ -92,12 +90,12 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		fib1[i+12]=j*16+4;
 		fib1[i+13]=j*16+8;
 		fib1[i+14]=j*16+12;
-		fib1[i+15]=j*16+16;	
-		
+		fib1[i+15]=j*16+16;
+
 		// fibers in colums from bottom to top
 		//sorting of fiber detector 1
 		//different order for second MPMT
-		
+
 		fib1b[i+15]=j*16+1;
 		fib1b[i+14]=j*16+5;
 		fib1b[i+13]=j*16+9;
@@ -113,10 +111,9 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		fib1b[i+3]=j*16+4;
 		fib1b[i+2]=j*16+8;
 		fib1b[i+1]=j*16+12;
-		fib1b[i]=j*16+16;	
-		 	   
+		fib1b[i]=j*16+16;
 
-		// fibers in row from top to bottom	   
+		// fibers in row from top to bottom
 		/*
 		   fib3[0+j]=j*16+1;
 		   fib3[16+j]=j*16+5;
@@ -133,10 +130,9 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		   fib3[192+j]=j*16+4;
 		   fib3[208+j]=j*16+8;
 		   fib3[224+j]=j*16+12;
-		   fib3[240+j]=j*16+16;	
-		 */
+		   fib3[240+j]=j*16+16;
+		   */
 		// fibers in row from top to bottom
-			   
 		fib4[i+15]=j*16+1;
 		fib4[i+14]=j*16+5;
 		fib4[i+13]=j*16+9;
@@ -152,45 +148,45 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		fib4[i+3]=j*16+4;
 		fib4[i+2]=j*16+8;
 		fib4[i+1]=j*16+12;
-		fib4[i]=j*16+16;	
+		fib4[i]=j*16+16;
 
-/*
-		fib4[i]=j*16+1;
-		fib4[i+1]=j*16+5;
-		fib4[i+2]=j*16+9;
-		fib4[i+3]=j*16+13;
-		fib4[i+4]=j*16+2;
-		fib4[i+5]=j*16+6;
-		fib4[i+6]=j*16+10;
-		fib4[i+7]=j*16+14;
-		fib4[i+8]=j*16+3;
-		fib4[i+9]=j*16+7;
-		fib4[i+10]=j*16+11;
-		fib4[i+11]=j*16+15;
-		fib4[i+12]=j*16+4;
-		fib4[i+13]=j*16+8;
-		fib4[i+14]=j*16+12;
-		fib4[i+15]=j*16+16;	
-*/
-/*
-		fib4[0+j]=j*16+16;
-		fib4[16+j]=j*16+12;
-		fib4[32+j]=j*16+8;
-		fib4[48+j]=j*16+4;
-		fib4[64+j]=j*16+15;
-		fib4[80+j]=j*16+11;
-		fib4[96+j]=j*16+7;
-		fib4[112+j]=j*16+3;
-		fib4[128+j]=j*16+14;
-		fib4[144+j]=j*16+10;
-		fib4[160+j]=j*16+6;
-		fib4[176+j]=j*16+2;
-		fib4[192+j]=j*16+13;
-		fib4[208+j]=j*16+9;
-		fib4[224+j]=j*16+5;
-		fib4[240+j]=j*16+1;	
-*/
-		// fibers in row from bottom to top, fiber sorting starts at bottom	   
+		/*
+		   fib4[i]=j*16+1;
+		   fib4[i+1]=j*16+5;
+		   fib4[i+2]=j*16+9;
+		   fib4[i+3]=j*16+13;
+		   fib4[i+4]=j*16+2;
+		   fib4[i+5]=j*16+6;
+		   fib4[i+6]=j*16+10;
+		   fib4[i+7]=j*16+14;
+		   fib4[i+8]=j*16+3;
+		   fib4[i+9]=j*16+7;
+		   fib4[i+10]=j*16+11;
+		   fib4[i+11]=j*16+15;
+		   fib4[i+12]=j*16+4;
+		   fib4[i+13]=j*16+8;
+		   fib4[i+14]=j*16+12;
+		   fib4[i+15]=j*16+16;
+		   */
+		/*
+		   fib4[0+j]=j*16+16;
+		   fib4[16+j]=j*16+12;
+		   fib4[32+j]=j*16+8;
+		   fib4[48+j]=j*16+4;
+		   fib4[64+j]=j*16+15;
+		   fib4[80+j]=j*16+11;
+		   fib4[96+j]=j*16+7;
+		   fib4[112+j]=j*16+3;
+		   fib4[128+j]=j*16+14;
+		   fib4[144+j]=j*16+10;
+		   fib4[160+j]=j*16+6;
+		   fib4[176+j]=j*16+2;
+		   fib4[192+j]=j*16+13;
+		   fib4[208+j]=j*16+9;
+		   fib4[224+j]=j*16+5;
+		   fib4[240+j]=j*16+1;
+		   */
+		// fibers in row from bottom to top, fiber sorting starts at bottom
 		//sorting of fiber detector 5
 		fib5[240+j]=j*16+16;
 		fib5[224+j]=j*16+12;
@@ -207,9 +203,9 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		fib5[48+j]=j*16+13;
 		fib5[32+j]=j*16+9;
 		fib5[16+j]=j*16+5;
-		fib5[0+j]=j*16+1;	
+		fib5[0+j]=j*16+1;
 		// fibers in row from bottom to top, fiber sorting starts at bottom
-		// sorting of fiber detector 6	   
+		// sorting of fiber detector 6
 		fib6[240+j]=j*16+16;
 		fib6[224+j]=j*16+12;
 		fib6[208+j]=j*16+8;
@@ -225,7 +221,7 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		fib6[48+j]=j*16+13;
 		fib6[32+j]=j*16+9;
 		fib6[16+j]=j*16+5;
-		fib6[0+j]=j*16+1;	
+		fib6[0+j]=j*16+1;
 		// Fib7.
 		fib7[i]=j*16+1;
 		fib7[i+1]=j*16+5;
@@ -242,8 +238,8 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		fib7[i+12]=j*16+4;
 		fib7[i+13]=j*16+8;
 		fib7[i+14]=j*16+12;
-		fib7[i+15]=j*16+16;	
-		// Fib10.
+		fib7[i+15]=j*16+16;
+		// Fib10 + Fib11.
 		fib10[i]=j*16+1;
 		fib10[i+1]=j*16+5;
 		fib10[i+2]=j*16+9;
@@ -259,7 +255,7 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		fib10[i+12]=j*16+4;
 		fib10[i+13]=j*16+8;
 		fib10[i+14]=j*16+12;
-		fib10[i+15]=j*16+16;	
+		fib10[i+15]=j*16+16;
 	}
 
 	for(i=0;i<256;i++) {
@@ -283,10 +279,10 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 		for (edge_i = 0; edge_i < 2; ++edge_i) {
 			for (prec_i = 0; prec_i < 2; ++prec_i) {
 				printf(
-						"SIGNAL(ZERO_SUPPRESS_MULTI(64): "
-						"%s_T%c%c%c1);\n", a_dst,
-						side_array[side_i], edge_array[edge_i],
-						prec_array[prec_i]);
+				    "SIGNAL(ZERO_SUPPRESS_MULTI(64): "
+				    "%s_T%c%c%c1);\n", a_dst,
+				    side_array[side_i], edge_array[edge_i],
+				    prec_array[prec_i]);
 			}
 		}
 	}
@@ -300,32 +296,35 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 				bunch_i=fib0[i];
 			}
 			else if(0 == strcmp("fibone", a_name)){
-			  if (sub_i == 0)
-			    {
-			      bunch_i=fib1[i];
-			    }
-			  else
-			    {
-			      bunch_i=fib1b[i];
-			    }
+				if (sub_i == 0)
+				{
+					bunch_i=fib1[i];
+				}
+				else
+				{
+					bunch_i=fib1b[i];
+				}
 			}
 			else if(0 == strcmp("fibfour", a_name)){
-				bunch_i=fib4[i];	   
+				bunch_i=fib4[i];
 			}
 			else if(0 == strcmp("fibfive", a_name)){
-				bunch_i=fib5[i];	   
+				bunch_i=fib5[i];
 			}
 			else if(0 == strcmp("fibsix", a_name)){
-				bunch_i=fib6[i];	   
+				bunch_i=fib6[i];
 			}
 			else if(0 == strcmp("fibseven", a_name)){
-				bunch_i=fib7[i];	   
+				bunch_i=fib7[i];
 			}
 			else if(0 == strcmp("fibten", a_name)){
-				bunch_i=fib10[i];	   
+				bunch_i=fib10[i];
+			}
+			else if(0 == strcmp("fibeleven", a_name)){
+				bunch_i=fib10[i];
 			}
 			bunch_i += sub_i * a_mapmt;
-	
+
 			card_i=0;
 			if (channel_i>127) {
 				card_i = 1;
@@ -341,7 +340,7 @@ unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
 					    "fib_ctdc.data.%s[%u].time_%s[%u], DATA12);\n",
 					    a_dst, edge_array[edge_i],
 					    prec_array[prec_i], bunch_i, a_name,
-					    card_i, prec_name_array[prec_i], 
+					    card_i, prec_name_array[prec_i],
 					    2*channel_i + edge_i);
 				}
 			}
@@ -377,5 +376,6 @@ main()
 /*	map("FIBSIX", "fibsix", 1, 256, 2, 2, 8);*/
 	map("FIBSEVEN", "fibseven", 2, 256, 1, 0, 8);
 	map("FIBTEN", "fibten", 2, 256, 2, 0, 10);
+	map("FIBELEVEN", "fibeleven", 2, 256, 2, 1, 0);
 	return 0;
 }
