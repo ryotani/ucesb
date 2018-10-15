@@ -16,6 +16,10 @@ namespace {
 int g_error_delay = 0;
 bool g_do_stat = false;
 time_t g_stat_time_prev = 0;
+
+// If there were 5 errors in the last 5 s, abort!
+unsigned const g_error_tolerance_s = 5;
+time_t g_error_time[5];
 };
 
 struct Time {
@@ -46,13 +50,13 @@ class CoarseTracker {
     void SetName(char const *a_name) {
       m_name = a_name;
     }
-    void Track(Time const &a_trig, Time const &a_ref) {
+    bool Track(Time const &a_trig, Time const &a_ref) {
       uint32_t const c_diff = COARSE_SUB(a_ref.coarse, a_trig.coarse);
       if (UINT32_MAX == m_left) {
         m_right = m_left = c_diff;
-	fprintf(stderr, "\n%s:%s: Tracking started at %u.", __func__,
-	    m_name.c_str(), m_left);
-        return;
+        fprintf(stderr, "%s:%s: Tracking started at %u.\n", __func__,
+            m_name.c_str(), m_left);
+        return true;
       }
       for (unsigned i = 0; i <= 2; ++i) {
         if (COARSE_ADD(c_diff, i) == m_right) {
@@ -61,7 +65,7 @@ class CoarseTracker {
           } else if (2 == i && COARSE_ADD(m_left, 2) != m_right) {
             m_left = COARSE_ADD(m_right, -2);
           }
-          return;
+          return true;
         }
       }
       for (unsigned i = 1; i <= 2; ++i) {
@@ -71,21 +75,15 @@ class CoarseTracker {
           } else if (2 == i && COARSE_ADD(m_left, 2) != m_right) {
             m_right = COARSE_ADD(m_left, 2);
           }
-          return;
+          return true;
         }
       }
-      fprintf(stderr, "\n%s:%s: Tracking failed! "
-	  "Range=%u..%u %s:%u=%u(%u) - %s:%u=%u(%u) -> %u\n", __func__,
-	  m_name.c_str(), m_left, m_right, a_trig.module, a_trig.ch,
-	  a_trig.coarse, a_trig.fine, a_ref.module, a_ref.ch, a_ref.coarse,
-	  a_ref.fine, c_diff);
-      {
-        static int counter = 0;
-        ++counter;
-        if (10 < counter) {
-          abort();
-        }
-      }
+      fprintf(stderr, "%s:%s: Tracking failed! "
+          "Range=%u..%u %s:%u=%u(%u) - %s:%u=%u(%u) -> %u\n", __func__,
+          m_name.c_str(), m_left, m_right, a_trig.module, a_trig.ch,
+          a_trig.coarse, a_trig.fine, a_ref.module, a_ref.ch, a_ref.coarse,
+          a_ref.fine, c_diff);
+      return false;
     }
     CoarseTracker operator+(CoarseTracker const &a_term) const {
       CoarseTracker ct;
@@ -212,6 +210,7 @@ int unpack_user_function(unpack_event *event)
       0 != event->tofd_tamex_2.data.land_vme.failure.u32 ||
       0 != event->fib_tamex.data.land_vme.failure.u32 ||
       0 != event->fib_ctdc.data.land_vme.failure.u32) {
+    fprintf(stderr, "%s: DAQ failure, tracking reset.\n", __func__);
 #define RESET_ARRAY(array) do {\
     for (auto it = array.begin(); array.end() != it; ++it) {\
       it->Reset();\
@@ -298,6 +297,7 @@ int unpack_user_function(unpack_event *event)
   //
   // Compare and alter coarse counters.
   //
+  bool track_ok = true;
 #define TIME_SET(a_module, a_ct, a_mask) do {\
     auto &mod = event->a_module;\
     bitsone_iterator iter;\
@@ -309,7 +309,7 @@ int unpack_user_function(unpack_event *event)
   } while (0)
 #define TRACK_ADJUST_SINGLE(a_name, a_module, a_mask, a_ref_name) do {\
     if (a_name##_exists && a_ref_name##_exists) {\
-      g_##a_name##_ct.Track(a_name##_time, a_ref_name##_time);\
+      track_ok &= g_##a_name##_ct.Track(a_name##_time, a_ref_name##_time);\
       TIME_SET(a_module, g_##a_name##_ct, a_mask);\
     }\
   } while (0)
@@ -317,7 +317,8 @@ int unpack_user_function(unpack_event *event)
     a_ofs_ct) do {\
     if (a_name##_exists && a_ref_name##_exists) {\
       for (size_t i = 0; i < a_name##_time.size(); ++i) {\
-        g_##a_name##_ct[i].Track(a_name##_time[i], a_ref_name##_time);\
+        track_ok &= g_##a_name##_ct[i].Track(a_name##_time[i],\
+            a_ref_name##_time);\
       }\
       auto ofs = a_ofs_ct;\
       for (size_t i = 0; i < countof(event->a_module_array); ++i) {\
@@ -350,8 +351,21 @@ int unpack_user_function(unpack_event *event)
 //  TRACK_ADJUST_ARRAY(fi7_ctdc_trig, fib_ctdc.data.fibseven, 0xfff,
 //      los_tamex_trig_time, g_los_tamex_ms_ct);
 
+  time_t time_now = time(NULL);
+  if (!track_ok) {
+    if (time_now - g_error_time[0] < g_error_tolerance_s) {
+      /* If we have 10 errors in 5 s, then something is really wrong, exit. */
+      fprintf(stderr, "Way too many errors in a short time, fix it!\n");
+      exit(EXIT_FAILURE);
+    }
+    size_t i;
+    for (i = 0; i < countof(g_error_time) - 1; ++i) {
+      g_error_time[i] = g_error_time[i + 1];
+    }
+    g_error_time[i] = time_now;
+  }
+
   if (g_do_stat) {
-    time_t time_now = time(NULL);
     if (0 == g_stat_time_prev) {
       g_stat_time_prev = time_now;
     }

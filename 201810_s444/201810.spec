@@ -226,16 +226,25 @@ fib_ctdc_subev_data()
 	}
 
 	select several {
-		barrier = BARRIER();
+		barrier1 = BARRIER();
+	}
+	select several {
+		padding1 = GSI_CLOCKTDC_PADDING();
+	}
+	select several {
+		fibten[0] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=0);
+		fibten[1] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=1);
+		fibten[2] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=2);
+		fibten[3] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=3);
+	}
+
+	select several {
+		barrier2 = BARRIER();
 	}
 	select several {
 		padding2 = GSI_CLOCKTDC_PADDING();
 	}
 	select several {
-		fibten[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=4);
-		fibten[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=5);
-		fibten[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=6);
-		fibten[3] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=7);
 		fibeleven[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=0);
 		fibeleven[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=1);
 		fibeleven[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=2);
@@ -323,6 +332,57 @@ SUBEVENT(los_vme_subev)
 	}
 }
 
+neuland_sfp(sfp)
+{
+	select several {
+		card[0] = TAMEX3_SFP(sfp = sfp, card = 0);
+		card[1] = TAMEX3_SFP(sfp = sfp, card = 1);
+		card[2] = TAMEX3_SFP(sfp = sfp, card = 2);
+		card[3] = TAMEX3_SFP(sfp = sfp, card = 3);
+		card[4] = TAMEX3_SFP(sfp = sfp, card = 4);
+		card[5] = TAMEX3_SFP(sfp = sfp, card = 5);
+		card[6] = TAMEX3_SFP(sfp = sfp, card = 6);
+		card[7] = TAMEX3_SFP(sfp = sfp, card = 7);
+		card[8] = TAMEX3_SFP(sfp = sfp, card = 8);
+		card[9] = TAMEX3_SFP(sfp = sfp, card = 9);
+		card[10] = TAMEX3_SFP(sfp = sfp, card = 10);
+		card[11] = TAMEX3_SFP(sfp = sfp, card = 11);
+		card[12] = TAMEX3_SFP(sfp = sfp, card = 12);
+		card[13] = TAMEX3_SFP(sfp = sfp, card = 13);
+		card[14] = TAMEX3_SFP(sfp = sfp, card = 14);
+		card[15] = TAMEX3_SFP(sfp = sfp, card = 15);
+		card[16] = TAMEX3_SFP(sfp = sfp, card = 16);
+		card[17] = TAMEX3_SFP(sfp = sfp, card = 17);
+		card[18] = TAMEX3_SFP(sfp = sfp, card = 18);
+		card[19] = TAMEX3_SFP(sfp = sfp, card = 19);
+		card[20] = TAMEX3_SFP(sfp = sfp, card = 20);
+		card[21] = TAMEX3_SFP(sfp = sfp, card = 21);
+		card[22] = TAMEX3_SFP(sfp = sfp, card = 22);
+		card[23] = TAMEX3_SFP(sfp = sfp, card = 23);
+		card[24] = TAMEX3_SFP(sfp = sfp, card = 24);
+		card[25] = TAMEX3_SFP(sfp = sfp, card = 25);
+		card[26] = TAMEX3_SFP(sfp = sfp, card = 26);
+		card[27] = TAMEX3_SFP(sfp = sfp, card = 27);
+	}
+}
+
+neuland_tamex_subev_data()
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		padding = TAMEX3_PADDING();
+	}
+	neuland_sfp_0 = neuland_sfp(sfp = 0);
+	neuland_sfp_1 = neuland_sfp(sfp = 1);
+}
+
+SUBEVENT(neuland_tamex_subev)
+{
+	select several {
+		data = neuland_tamex_subev_data();
+	}
+}
+
 tofd_tamex_subev_data()
 {
 	land_vme = LAND_STD_VME();
@@ -378,6 +438,8 @@ EVENT
 	pspx = febex_subev(type=101, subtype=10100, control=6);
 	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);
 	califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
+	neuland_tamex_1 = neuland_tamex_subev(type = 102, subtype = 10200, control = 10);
+	neuland_tamex_2 = neuland_tamex_subev(type = 102, subtype = 10200, control = 11);
 }
 
 #include "mapping.hh"
