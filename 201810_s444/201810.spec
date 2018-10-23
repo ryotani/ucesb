@@ -212,7 +212,7 @@ SUBEVENT(febex_subev)
 	}
 }
 
-fib_ctdc_subev_data()
+fib_ctdc1_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
@@ -250,12 +250,59 @@ fib_ctdc_subev_data()
 		fibeleven[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=2);
 		fibeleven[3] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=3);
 	}
+
+	select several {
+		barrier3 = BARRIER();
+	}
+	select several {
+		padding3 = GSI_CLOCKTDC_PADDING();
+	}
+	select several {
+		fibeight[0] = GSI_CLOCKTDC_ITEM(sfp=3, tdc=0);
+		fibeight[1] = GSI_CLOCKTDC_ITEM(sfp=3, tdc=1);
+		fibeight[2] = GSI_CLOCKTDC_ITEM(sfp=3, tdc=2);
+		fibeight[3] = GSI_CLOCKTDC_ITEM(sfp=3, tdc=3);
+	}
 }
 
-SUBEVENT(fib_ctdc_subev)
+SUBEVENT(fib_ctdc1_subev)
 {
 	select several {
-		data = fib_ctdc_subev_data();
+		data = fib_ctdc1_subev_data();
+	}
+}
+
+fib_ctdc2_subev_data()
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		padding0 = GSI_CLOCKTDC_PADDING();
+	}
+	select several {
+		fibthreea[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
+		fibthreea[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
+		fibthreea[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
+		fibthreea[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
+	}
+
+	select several {
+		barrier1 = BARRIER();
+	}
+	select several {
+		padding1 = GSI_CLOCKTDC_PADDING();
+	}
+	select several {
+		fibthreeb[0] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=0);
+		fibthreeb[1] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=1);
+		fibthreeb[2] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=2);
+		fibthreeb[3] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=3);
+	}
+}
+
+SUBEVENT(fib_ctdc2_subev)
+{
+	select several {
+		data = fib_ctdc2_subev_data();
 	}
 }
 
@@ -269,8 +316,7 @@ fib_tamex_data()
 		tamex[0] = TAMEX3_SFP(sfp=0, card=0);
 		tamex[1] = TAMEX3_SFP(sfp=0, card=1);
 		tamex[2] = TAMEX3_SFP(sfp=0, card=2);
-// Clock cable lent to Nik.
-//		tamex[3] = TAMEX3_SFP(sfp=0, card=3);
+		tamex[3] = TAMEX3_SFP(sfp=0, card=3);
 	}
 }
 
@@ -284,16 +330,6 @@ SUBEVENT(fib_tamex_subev)
 SUBEVENT(lmu_scalers_subev)
 {
 	scalers = TRLOII_LMU_SCALERS(id=0xc7);
-}
-
-master_scalers_data()
-{
-	UINT32 mega;
-}
-
-SUBEVENT(master_scalers_subev)
-{
-	scalers = master_scalers_data();
 }
 
 los_tamex_data()
@@ -330,6 +366,16 @@ SUBEVENT(los_vme_subev)
 	select several {
 		data = los_vme_subev_data();
 	}
+}
+
+master_scalers_data()
+{
+	UINT32 mega;
+}
+
+SUBEVENT(master_scalers_subev)
+{
+	scalers = master_scalers_data();
 }
 
 neuland_sfp(sfp)
@@ -433,7 +479,8 @@ EVENT
 	los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);
 	tofd_tamex_1 = tofd_tamex_subev(type=102, subtype=10200, control=3);
 	tofd_tamex_2 = tofd_tamex_subev(type=102, subtype=10200, control=8);
-	fib_ctdc = fib_ctdc_subev(type=103, subtype=10300, control=4);
+	fib_ctdc1 = fib_ctdc1_subev(type=103, subtype=10300, control=4);
+	fib_ctdc2 = fib_ctdc2_subev(type=103, subtype=10300, control=12);
 	fib_tamex = fib_tamex_subev(type=102, subtype=10200, control=5);
 	pspx = febex_subev(type=101, subtype=10100, control=6);
 	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);

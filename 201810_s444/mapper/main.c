@@ -5,7 +5,8 @@
 
 void
 map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
-    unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i)
+    unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i, unsigned
+    a_group)
 {
 	// electronics mapping of the adapter board from multi-anode PMT to clock TDC boards
 
@@ -305,6 +306,12 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 					bunch_i=fib1b[i];
 				}
 			}
+			else if(0 == strcmp("fibthreea", a_name)){
+				bunch_i=fib7[i];
+			}
+			else if(0 == strcmp("fibthreeb", a_name)){
+				bunch_i=fib7[i];
+			}
 			else if(0 == strcmp("fibfour", a_name)){
 				bunch_i=fib4[i];
 			}
@@ -315,6 +322,9 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 				bunch_i=fib6[i];
 			}
 			else if(0 == strcmp("fibseven", a_name)){
+				bunch_i=fib7[i];
+			}
+			else if(0 == strcmp("fibeight", a_name)){
 				bunch_i=fib7[i];
 			}
 			else if(0 == strcmp("fibten", a_name)){
@@ -337,10 +347,12 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 				for (prec_i = 0; prec_i < 2; ++prec_i) {
 					printf(
 					    "SIGNAL(%s_TM%c%c%u, "
-					    "fib_ctdc.data.%s[%u].time_%s[%u], DATA12);\n",
+					    "fib_ctdc%u.data.%s[%u].time_%s[%u], DATA12);\n",
 					    a_dst, edge_array[edge_i],
-					    prec_array[prec_i], bunch_i, a_name,
-					    card_i, prec_name_array[prec_i],
+					    prec_array[prec_i], bunch_i,
+					    a_group,
+					    a_name, card_i,
+					    prec_name_array[prec_i],
 					    2*channel_i + edge_i);
 				}
 			}
@@ -369,13 +381,11 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 int
 main()
 {
-/*	map("FIBZERO", "fibzero", 256, 1);*/
-/*	map("FIBONE", "fibone", 2, 256, 1, 1, 0);*/
-/*	map("FIBFOUR", "fibfour", 2, 256, 4, 1, 8);*/
-/*	map("FIBFIVE", "fibfive", 1, 256, 4, 2, 0);*/
-/*	map("FIBSIX", "fibsix", 1, 256, 2, 2, 8);*/
-	map("FIBSEVEN", "fibseven", 2, 256, 1, 0, 8);
-	map("FIBTEN", "fibten", 2, 256, 2, 0, 10);
-	map("FIBELEVEN", "fibeleven", 2, 256, 2, 1, 0);
+	map("FIBSEVEN", "fibseven", 2, 256, 1, 0, 0, 1);
+	map("FIBEIGHT", "fibeight", 2, 256, 1, 0, 8, 1);
+	map("FIBTEN", "fibten", 2, 256, 2, 1, 0, 1);
+	map("FIBELEVEN", "fibeleven", 2, 256, 2, 1, 8, 1);
+	map("FIBTHREEA", "fibthreea", 2, 256, 1, 2, 0, 2);
+	map("FIBTHREEB", "fibthreeb", 2, 256, 1, 2, 8, 2);
 	return 0;
 }
