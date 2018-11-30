@@ -7,3 +7,4 @@
 #include "gen/mapping_tofd.hh"
 #include "mapping_CALIFA.hh"
 #include "mapping_pspx.hh"
+#include "mapping_neuland.h"

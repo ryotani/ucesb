@@ -42,9 +42,9 @@ FEBEX3_CALIFA_BASE(){
 	// }
 	// if(CALIFA_SYSTEM_ID.system_id == 0x400){
 	//   //Should be encoded for a multidetector environment
-	//   list (0 <= index < 4){
-	//     UINT32 WRTS NOENCODE;
-	//   }
+	 //  list (0 <= index < 4){
+	 //    UINT32 WRTS NOENCODE;
+	 //  }
 	// }
 
 	several UINT32 PADDING NOENCODE{
@@ -212,97 +212,54 @@ SUBEVENT(febex_subev)
 	}
 }
 
-fib_ctdc1_subev_data()
+fib_ctdc0_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		padding0 = GSI_CLOCKTDC_PADDING();
+		padding = GSI_CLOCKTDC_PADDING();
 	}
 	select several {
-		fibseven[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
-		fibseven[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
-		fibseven[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
-		fibseven[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
-	}
-
-	select several {
-		barrier1 = BARRIER();
-	}
-	select several {
-		padding1 = GSI_CLOCKTDC_PADDING();
-	}
-	select several {
-		fibten[0] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=0);
-		fibten[1] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=1);
-		fibten[2] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=2);
-		fibten[3] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=3);
-	}
-
-	select several {
-		barrier2 = BARRIER();
-	}
-	select several {
-		padding2 = GSI_CLOCKTDC_PADDING();
-	}
-	select several {
-		fibeleven[0] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=0);
-		fibeleven[1] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=1);
-		fibeleven[2] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=2);
-		fibeleven[3] = GSI_CLOCKTDC_ITEM(sfp=2, tdc=3);
-	}
-
-	select several {
-		barrier3 = BARRIER();
-	}
-	select several {
-		padding3 = GSI_CLOCKTDC_PADDING();
-	}
-	select several {
-		fibeight[0] = GSI_CLOCKTDC_ITEM(sfp=3, tdc=0);
-		fibeight[1] = GSI_CLOCKTDC_ITEM(sfp=3, tdc=1);
-		fibeight[2] = GSI_CLOCKTDC_ITEM(sfp=3, tdc=2);
-		fibeight[3] = GSI_CLOCKTDC_ITEM(sfp=3, tdc=3);
+		ctdc[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
+		ctdc[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
+		ctdc[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
+		ctdc[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
 	}
 }
 
-SUBEVENT(fib_ctdc1_subev)
+SUBEVENT(fib_ctdc0_subev)
 {
 	select several {
-		data = fib_ctdc1_subev_data();
+		data = fib_ctdc0_subev_data();
 	}
 }
 
-fib_ctdc2_subev_data()
+fib_ctdc0_fib3_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		padding0 = GSI_CLOCKTDC_PADDING();
+		padding = GSI_CLOCKTDC_PADDING();
 	}
 	select several {
-		fibthreea[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
-		fibthreea[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
-		fibthreea[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
-		fibthreea[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
-	}
-
-	select several {
-		barrier1 = BARRIER();
+		ctdc[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
+		ctdc[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
+		ctdc[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
+		ctdc[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
 	}
 	select several {
-		padding1 = GSI_CLOCKTDC_PADDING();
+		barrier = BARRIER();
 	}
 	select several {
-		fibthreeb[0] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=0);
-		fibthreeb[1] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=1);
-		fibthreeb[2] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=2);
-		fibthreeb[3] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=3);
+		ctdc3[0] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=0);
+		ctdc3[1] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=1);
+		ctdc3[2] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=2);
+		ctdc3[3] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=3);
 	}
 }
 
-SUBEVENT(fib_ctdc2_subev)
+SUBEVENT(fib_ctdc0_fib3_subev)
 {
 	select several {
-		data = fib_ctdc2_subev_data();
+		data = fib_ctdc0_fib3_subev_data();
 	}
 }
 
@@ -310,13 +267,13 @@ fib_tamex_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		tamex_padding = TAMEX3_PADDING();
+		padding = TAMEX3_PADDING();
 	}
 	select several {
-		tamex[0] = TAMEX3_SFP(sfp=0, card=0);
-		tamex[1] = TAMEX3_SFP(sfp=0, card=1);
-		tamex[2] = TAMEX3_SFP(sfp=0, card=2);
-		tamex[3] = TAMEX3_SFP(sfp=0, card=3);
+		tamex[0] = TAMEX3_SFP(sfp=2, card=0);
+		tamex[1] = TAMEX3_SFP(sfp=2, card=1);
+		tamex[2] = TAMEX3_SFP(sfp=2, card=2);
+		tamex[3] = TAMEX3_SFP(sfp=2, card=3);
 	}
 }
 
@@ -327,9 +284,41 @@ SUBEVENT(fib_tamex_subev)
 	}
 }
 
+lmu_scalers_data()
+{
+	UINT32 beam;
+}
+
 SUBEVENT(lmu_scalers_subev)
 {
-	scalers = TRLOII_LMU_SCALERS(id=0xc7);
+	select several {
+		scalers = lmu_scalers_data();
+	}
+}
+
+los_sampler_data()
+{
+	UINT32 beam;
+}
+
+SUBEVENT(los_sampler_subev)
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		sampler = TRLOII_SAMPLER(mark=0x1050);
+	}
+}
+
+los_scalers_data()
+{
+	UINT32 beam;
+}
+
+SUBEVENT(los_scalers_subev)
+{
+	select several {
+		scalers = los_scalers_data();
+	}
 }
 
 los_tamex_data()
@@ -368,6 +357,21 @@ SUBEVENT(los_vme_subev)
 	}
 }
 
+master_monitor_subev_data()
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		v830 = VME_CAEN_V830(geom=3);
+	}
+}
+
+SUBEVENT(master_monitor_subev)
+{
+	select several {
+		data = master_monitor_subev_data();
+	}
+}
+
 master_scalers_data()
 {
 	UINT32 mega;
@@ -381,16 +385,16 @@ SUBEVENT(master_scalers_subev)
 neuland_sfp(sfp)
 {
 	select several {
-		card[0] = TAMEX3_SFP(sfp = sfp, card = 0);
-		card[1] = TAMEX3_SFP(sfp = sfp, card = 1);
-		card[2] = TAMEX3_SFP(sfp = sfp, card = 2);
-		card[3] = TAMEX3_SFP(sfp = sfp, card = 3);
-		card[4] = TAMEX3_SFP(sfp = sfp, card = 4);
-		card[5] = TAMEX3_SFP(sfp = sfp, card = 5);
-		card[6] = TAMEX3_SFP(sfp = sfp, card = 6);
-		card[7] = TAMEX3_SFP(sfp = sfp, card = 7);
-		card[8] = TAMEX3_SFP(sfp = sfp, card = 8);
-		card[9] = TAMEX3_SFP(sfp = sfp, card = 9);
+		card[ 0] = TAMEX3_SFP(sfp = sfp, card =  0);
+		card[ 1] = TAMEX3_SFP(sfp = sfp, card =  1);
+		card[ 2] = TAMEX3_SFP(sfp = sfp, card =  2);
+		card[ 3] = TAMEX3_SFP(sfp = sfp, card =  3);
+		card[ 4] = TAMEX3_SFP(sfp = sfp, card =  4);
+		card[ 5] = TAMEX3_SFP(sfp = sfp, card =  5);
+		card[ 6] = TAMEX3_SFP(sfp = sfp, card =  6);
+		card[ 7] = TAMEX3_SFP(sfp = sfp, card =  7);
+		card[ 8] = TAMEX3_SFP(sfp = sfp, card =  8);
+		card[ 9] = TAMEX3_SFP(sfp = sfp, card =  9);
 		card[10] = TAMEX3_SFP(sfp = sfp, card = 10);
 		card[11] = TAMEX3_SFP(sfp = sfp, card = 11);
 		card[12] = TAMEX3_SFP(sfp = sfp, card = 12);
@@ -409,23 +413,75 @@ neuland_sfp(sfp)
 		card[25] = TAMEX3_SFP(sfp = sfp, card = 25);
 		card[26] = TAMEX3_SFP(sfp = sfp, card = 26);
 		card[27] = TAMEX3_SFP(sfp = sfp, card = 27);
+		card[28] = TAMEX3_SFP(sfp = sfp, card = 28);
+		card[29] = TAMEX3_SFP(sfp = sfp, card = 29);
+		card[30] = TAMEX3_SFP(sfp = sfp, card = 30);
+		card[31] = TAMEX3_SFP(sfp = sfp, card = 31);
+		card[32] = TAMEX3_SFP(sfp = sfp, card = 32);
+		card[33] = TAMEX3_SFP(sfp = sfp, card = 33);
+		card[34] = TAMEX3_SFP(sfp = sfp, card = 34);
+		card[35] = TAMEX3_SFP(sfp = sfp, card = 35);
+		card[36] = TAMEX3_SFP(sfp = sfp, card = 36);
+		card[37] = TAMEX3_SFP(sfp = sfp, card = 37);
+		card[38] = TAMEX3_SFP(sfp = sfp, card = 38);
+		card[39] = TAMEX3_SFP(sfp = sfp, card = 39);
+		card[40] = TAMEX3_SFP(sfp = sfp, card = 40);
+		card[41] = TAMEX3_SFP(sfp = sfp, card = 41);
+		card[42] = TAMEX3_SFP(sfp = sfp, card = 42);
+		card[43] = TAMEX3_SFP(sfp = sfp, card = 43);
+		card[44] = TAMEX3_SFP(sfp = sfp, card = 44);
+		card[45] = TAMEX3_SFP(sfp = sfp, card = 45);
+		card[46] = TAMEX3_SFP(sfp = sfp, card = 46);
+		card[47] = TAMEX3_SFP(sfp = sfp, card = 47);
+		card[48] = TAMEX3_SFP(sfp = sfp, card = 48);
+		card[49] = TAMEX3_SFP(sfp = sfp, card = 49);
+		card[50] = TAMEX3_SFP(sfp = sfp, card = 50);
+		card[51] = TAMEX3_SFP(sfp = sfp, card = 51);
+		card[52] = TAMEX3_SFP(sfp = sfp, card = 52);
+		card[53] = TAMEX3_SFP(sfp = sfp, card = 53);
+		card[54] = TAMEX3_SFP(sfp = sfp, card = 54);
+		card[55] = TAMEX3_SFP(sfp = sfp, card = 55);
 	}
 }
 
-neuland_tamex_subev_data()
+neuland_window()
 {
-	land_vme = LAND_STD_VME();
+	UINT32 window;
+}
+
+neuland_tamex_1_subev_data()
+{
+//	land_vme = LAND_STD_VME();
+	window = neuland_window();
 	select several {
 		padding = TAMEX3_PADDING();
 	}
-	neuland_sfp_0 = neuland_sfp(sfp = 0);
-	neuland_sfp_1 = neuland_sfp(sfp = 1);
+	sfp[0] = neuland_sfp(sfp = 0);
+	sfp[1] = neuland_sfp(sfp = 1);
 }
 
-SUBEVENT(neuland_tamex_subev)
+neuland_tamex_2_subev_data()
+{
+//	land_vme = LAND_STD_VME();
+	window = neuland_window();
+	select several {
+		padding = TAMEX3_PADDING();
+	}
+	sfp[0] = neuland_sfp(sfp = 0);
+	sfp[1] = neuland_sfp(sfp = 1);
+}
+
+SUBEVENT(neuland_tamex_1_subev)
 {
 	select several {
-		data = neuland_tamex_subev_data();
+		data = neuland_tamex_1_subev_data();
+	}
+}
+
+SUBEVENT(neuland_tamex_2_subev)
+{
+	select several {
+		data = neuland_tamex_2_subev_data();
 	}
 }
 
@@ -475,18 +531,25 @@ EVENT
 	master_tpat = tpat_subev(type=36, subtype=3600, control=0);
 	master_lmu_scalers = lmu_scalers_subev(type=37, subtype=3700, control=0);
 	master_scalers = master_scalers_subev(type=38, subtype=3800, control=0);
+	master_monitor = master_monitor_subev(type=88, subtype=8800, control=0);
+	los_sampler = los_sampler_subev(type=39, subtype=3900, control=1);
+	los_scalers = los_scalers_subev(type=38, subtype=3800, control=1);
 	los_vme = los_vme_subev(type=88, subtype=8800, control=1);
 	los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);
 	tofd_tamex_1 = tofd_tamex_subev(type=102, subtype=10200, control=3);
 	tofd_tamex_2 = tofd_tamex_subev(type=102, subtype=10200, control=8);
-	fib_ctdc1 = fib_ctdc1_subev(type=103, subtype=10300, control=4);
-	fib_ctdc2 = fib_ctdc2_subev(type=103, subtype=10300, control=12);
+	fib7_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=4);
+	fib8_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=12);
+//fib10_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=13);
+	fib10_ctdc = fib_ctdc0_fib3_subev(type=103, subtype=10300, control=13);
+	fib11_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=14);
 	fib_tamex = fib_tamex_subev(type=102, subtype=10200, control=5);
 	pspx = febex_subev(type=101, subtype=10100, control=6);
 	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);
 	califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
-	neuland_tamex_1 = neuland_tamex_subev(type = 102, subtype = 10200, control = 10);
-	neuland_tamex_2 = neuland_tamex_subev(type = 102, subtype = 10200, control = 11);
+	neuland_tamex_1 = neuland_tamex_1_subev(type = 102, subtype = 10200, control = 10);
+	neuland_tamex_2 = neuland_tamex_2_subev(type = 102, subtype = 10200, control = 11);
+//	sistrip_tamex = sistrip_tamex_subev(type=102, subtype=10200, control=15);
 }
 
 #include "mapping.hh"

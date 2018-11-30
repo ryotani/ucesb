@@ -21,11 +21,12 @@ SRC_DIRS += $(LAND_COMMON_DIR)
 
 CXXFLAGS += -DCONTROL_INCLUDE -I$(LAND_COMMON_DIR)
 
-DEPENDENCIES+=$(GENDIR)/mapping_fiber.hh $(GENDIR)/mapping_tofd.hh
+DEPENDENCIES+=$(GENDIR)/mapping_fiber.hh $(GENDIR)/mapping_tofd.hh mapping_neuland.h
 
-$(GENDIR)/mapping_fiber.hh: $(GENDIR)/mapper
+$(GENDIR)/mapping_fiber.hh: $(GENDIR)/mapper $(GENDIR)/fib3
 	@echo " MAPPING $@"
-	@./$< > $@ 2> /dev/null
+	@./$(GENDIR)/mapper > $@ 2> /dev/null
+	@./$(GENDIR)/fib3 >> $@ 2> /dev/null
 
 $(GENDIR)/mapping_tofd.hh: mapping_tofd_gen.bash 
 	@echo " MAPPING $@"
@@ -33,4 +34,8 @@ $(GENDIR)/mapping_tofd.hh: mapping_tofd_gen.bash
 
 $(GENDIR)/mapper: mapper/main.c
 	@echo " MAPPER  $@"
+	@gcc -Wshadow -o $@ $<
+
+$(GENDIR)/fib3: mapper/fib3.c
+	@echo " FIB3  $@"
 	@gcc -Wshadow -o $@ $<

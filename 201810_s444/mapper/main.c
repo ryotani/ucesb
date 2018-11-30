@@ -10,6 +10,8 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 {
 	// electronics mapping of the adapter board from multi-anode PMT to clock TDC boards
 
+	char const *sub;
+	char *fib_src;
 	unsigned i, j, p, k, max,board;
 	signed msign;
 	unsigned maxnum[16]={8,60,4,64,120,76,116,80,132,192,136,188,244,208,248,204};
@@ -38,9 +40,10 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 	}
 
 	for(i=0;i<256;i++) {
-		fprintf(stderr, "cha: %d, PMT: %d \n",i,ch[i]);
+		fprintf(stderr, "PMT ch: %d, electronic ch: %d \n",i,ch[i]);
 	}
 
+	
 	// fiber mapping in the PMT mask
 	unsigned fib0[256],fib1[256],fib1b[256],fib2[256],fib3[256],fib4[256],fib5[256],fib6[256],fib7[256],fib10[256]; // fiber number of mask
 	for(j=0;j<256;j++){
@@ -115,24 +118,22 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 		fib1b[i]=j*16+16;
 
 		// fibers in row from top to bottom
-		/*
-		   fib3[0+j]=j*16+1;
-		   fib3[16+j]=j*16+5;
-		   fib3[32+j]=j*16+9;
-		   fib3[48+j]=j*16+13;
-		   fib3[64+j]=j*16+2;
-		   fib3[80+j]=j*16+6;
-		   fib3[96+j]=j*16+10;
-		   fib3[112+j]=j*16+14;
-		   fib3[128+j]=j*16+3;
-		   fib3[144+j]=j*16+7;
-		   fib3[160+j]=j*16+11;
-		   fib3[176+j]=j*16+15;
-		   fib3[192+j]=j*16+4;
-		   fib3[208+j]=j*16+8;
-		   fib3[224+j]=j*16+12;
-		   fib3[240+j]=j*16+16;
-		   */
+		fib3[ 0 + i] = i + 16;
+		fib3[ 1 + i] = i + 12;
+		fib3[ 2 + i] = i + 8;
+		fib3[ 3 + i] = i + 4;
+		fib3[ 4 + i] = i + 15;
+		fib3[ 5 + i] = i + 11;
+		fib3[ 6 + i] = i + 7;
+		fib3[ 7 + i] = i + 3;
+		fib3[ 8 + i] = i + 14;
+		fib3[ 9 + i] = i + 10;
+		fib3[10 + i] = i + 6;
+		fib3[11 + i] = i + 2;
+		fib3[12 + i] = i + 13;
+		fib3[13 + i] = i + 9;
+		fib3[14 + i] = i + 5;
+		fib3[15 + i] = i + 1;
 		// fibers in row from top to bottom
 		fib4[i+15]=j*16+1;
 		fib4[i+14]=j*16+5;
@@ -288,15 +289,26 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 		}
 	}
 
+	if (0 == strcmp("3a", a_name) ||
+	    0 == strcmp("3b", a_name)) {
+		fib_src = "fib10_ctdc";
+		sub = "3";
+	} else {
+		static char store[100];
+		fib_src = store;
+		sprintf(fib_src, "fib%s_ctdc", a_name);
+		sub = "";
+	}
+
 	//Go through the 256 holes of the mask. Assign a fiber on one side and a channel on the other side.
 	for (sub_i = 0; sub_i < a_subs; ++sub_i) {
-		for (i = 0; i < a_mapmt; +i++) {
+		for (i = 0; i < a_mapmt; i++) {
 			unsigned card_i, channel_i, bunch_i;
 			channel_i=ch[i];
-			if(0 == strcmp("fibzero", a_name)){
+			if(0 == strcmp("0", a_name)){
 				bunch_i=fib0[i];
 			}
-			else if(0 == strcmp("fibone", a_name)){
+			else if(0 == strcmp("1", a_name)){
 				if (sub_i == 0)
 				{
 					bunch_i=fib1[i];
@@ -306,39 +318,53 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 					bunch_i=fib1b[i];
 				}
 			}
-			else if(0 == strcmp("fibthreea", a_name)){
-				bunch_i=fib7[i];
+			else if(0 == strcmp("3a", a_name)){
+				bunch_i=fib3[i];
 			}
-			else if(0 == strcmp("fibthreeb", a_name)){
-				bunch_i=fib7[i];
+			else if(0 == strcmp("3b", a_name)){
+				bunch_i=fib3[i];
 			}
-			else if(0 == strcmp("fibfour", a_name)){
+			else if(0 == strcmp("4", a_name)){
 				bunch_i=fib4[i];
 			}
-			else if(0 == strcmp("fibfive", a_name)){
+			else if(0 == strcmp("5", a_name)){
 				bunch_i=fib5[i];
 			}
-			else if(0 == strcmp("fibsix", a_name)){
+			else if(0 == strcmp("6", a_name)){
 				bunch_i=fib6[i];
 			}
-			else if(0 == strcmp("fibseven", a_name)){
+			else if(0 == strcmp("7", a_name)){
 				bunch_i=fib7[i];
 			}
-			else if(0 == strcmp("fibeight", a_name)){
+			else if(0 == strcmp("8", a_name)){
 				bunch_i=fib7[i];
 			}
-			else if(0 == strcmp("fibten", a_name)){
+			else if(0 == strcmp("10", a_name)){
 				bunch_i=fib10[i];
 			}
-			else if(0 == strcmp("fibeleven", a_name)){
+			else if(0 == strcmp("11", a_name)){
 				bunch_i=fib10[i];
 			}
 			bunch_i += sub_i * a_mapmt;
 
-			card_i=0;
-			if (channel_i>127) {
+			if (0 == strcmp("3a", a_name)) {
+				card_i = 3;
+				if (channel_i > 127) {
+					--card_i;
+					channel_i = channel_i - 128;
+				}
+			} else if (0 == strcmp("3b", a_name)) {
 				card_i = 1;
-				channel_i=channel_i-128;
+				if (channel_i > 127) {
+					--card_i;
+					channel_i = channel_i - 128;
+				}
+			} else {
+				card_i = 0;
+				if (channel_i > 127) {
+					++card_i;
+					channel_i = channel_i - 128;
+				}
 			}
 			card_i += sub_i * 2;
 
@@ -347,11 +373,10 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 				for (prec_i = 0; prec_i < 2; ++prec_i) {
 					printf(
 					    "SIGNAL(%s_TM%c%c%u, "
-					    "fib_ctdc%u.data.%s[%u].time_%s[%u], DATA12);\n",
+					    "%s.data.ctdc%s[%u].time_%s[%u], DATA12);\n",
 					    a_dst, edge_array[edge_i],
 					    prec_array[prec_i], bunch_i,
-					    a_group,
-					    a_name, card_i,
+					    fib_src, sub, card_i,
 					    prec_name_array[prec_i],
 					    2*channel_i + edge_i);
 				}
@@ -369,8 +394,10 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 					    "fib_tamex.data.tamex[%u].time_%s[%u], DATA12);\n",
 					    a_dst, edge_array[edge_i],
 					    prec_array[prec_i], sub_i * a_spmt + spmt_i + 1,
-					    a_tamex_i,
-					    prec_name_array[prec_i],
+					    a_tamex_i, prec_name_array[prec_i],
+						(0 == strcmp("10", a_name) ||
+						0 == strcmp("11", a_name)) ?
+					    (a_tamex_ch_i + sub_i * a_spmt + (a_spmt - spmt_i - 1)) * 2 + edge_i + 1 :
 					    (a_tamex_ch_i + sub_i * a_spmt + spmt_i) * 2 + edge_i + 1);
 				}
 			}
@@ -381,11 +408,11 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 int
 main()
 {
-	map("FIBSEVEN", "fibseven", 2, 256, 1, 0, 0, 1);
-	map("FIBEIGHT", "fibeight", 2, 256, 1, 0, 8, 1);
-	map("FIBTEN", "fibten", 2, 256, 2, 1, 0, 1);
-	map("FIBELEVEN", "fibeleven", 2, 256, 2, 1, 8, 1);
-	map("FIBTHREEA", "fibthreea", 2, 256, 1, 2, 0, 2);
-	map("FIBTHREEB", "fibthreeb", 2, 256, 1, 2, 8, 2);
+	map("FIBSEVEN", "7", 2, 256, 1, 1, 0, 1);
+	map("FIBEIGHT", "8", 2, 256, 1, 1, 8, 1);
+	map("FIBTEN", "10", 2, 256, 2, 2, 0, 1);
+	map("FIBELEVEN", "11", 2, 256, 2, 2, 8, 1);
+/*	map("FIBTHREEA", "3a", 1, 256, 2, 0, 0, 2);
+	map("FIBTHREEB", "3b", 1, 256, 2, 0, 8, 2);*/
 	return 0;
 }

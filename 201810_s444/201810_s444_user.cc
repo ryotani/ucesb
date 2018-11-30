@@ -58,9 +58,11 @@ int g_error_delay = 0;
 bool g_do_stat = false;
 time_t g_stat_time_prev = 0;
 
-// If there were 5 errors in the last 5 s, abort!
-unsigned const g_error_tolerance_s = 5;
-time_t g_error_time[5];
+// If there were 10 errors in the last 1 s, abort!
+unsigned const g_error_limit_n = 10;
+unsigned const g_error_limit_s = 1;
+time_t g_error_time;
+unsigned g_error_n;
 
 std::string g_path = std::string(getenv("HOME")) + "/.201810_s444_ranges";
 
@@ -167,12 +169,16 @@ CT_VECTOR(tofd_tamex0_trig, tofd_tamex_1.data.tamex);
 CT_VECTOR(tofd_tamex2_trig, tofd_tamex_2.data.tamex);
 CT_SINGLE(fib_tamex_ms);
 CT_VECTOR(fib_tamex_trig, fib_tamex.data.tamex);
-CT_VECTOR(fi3a_ctdc_trig, fib_ctdc2.data.fibthreea);
-CT_VECTOR(fi3b_ctdc_trig, fib_ctdc2.data.fibthreeb);
-CT_VECTOR(fi7_ctdc_trig, fib_ctdc1.data.fibseven);
-//CT_VECTOR(fi8_ctdc_trig, fib_ctdc1.data.fibeight);
-CT_VECTOR(fi10_ctdc_trig, fib_ctdc1.data.fibten);
-CT_VECTOR(fi11_ctdc_trig, fib_ctdc1.data.fibeleven);
+//CT_VECTOR(fi3a_ctdc_trig, fib_ctdc.data.fibthreea);
+//CT_VECTOR(fi3b_ctdc_trig, fib_ctdc.data.fibthreeb);
+CT_VECTOR(fi7_ctdc_trig, fib7_ctdc.data.ctdc);
+CT_VECTOR(fi8_ctdc_trig, fib8_ctdc.data.ctdc);
+CT_VECTOR(fi10_ctdc_trig, fib10_ctdc.data.ctdc);
+CT_VECTOR(fi11_ctdc_trig, fib11_ctdc.data.ctdc);
+CT_SINGLE(nl_tamex_ms);
+CT_VECTOR(nl10_tamex_trig, neuland_tamex_1.data.sfp[0].card);
+CT_VECTOR(nl20_tamex_trig, neuland_tamex_2.data.sfp[0].card);
+CT_VECTOR(nl21_tamex_trig, neuland_tamex_2.data.sfp[1].card);
 }
 
 void map_unpack_raw_sst(EXT_SST &unpack,
@@ -259,12 +265,16 @@ void init_user_function()
   SET_NAME_ARRAY(tofd_tamex2_trig);
   SET_NAME(fib_tamex_ms);
   SET_NAME_ARRAY(fib_tamex_trig);
-  SET_NAME_ARRAY(fi3a_ctdc_trig);
-  SET_NAME_ARRAY(fi3b_ctdc_trig);
+//  SET_NAME_ARRAY(fi3a_ctdc_trig);
+//  SET_NAME_ARRAY(fi3b_ctdc_trig);
   SET_NAME_ARRAY(fi7_ctdc_trig);
-//  SET_NAME_ARRAY(fi8_ctdc_trig);
+  SET_NAME_ARRAY(fi8_ctdc_trig);
   SET_NAME_ARRAY(fi10_ctdc_trig);
   SET_NAME_ARRAY(fi11_ctdc_trig);
+  SET_NAME(nl_tamex_ms);
+  SET_NAME_ARRAY(nl10_tamex_trig);
+  SET_NAME_ARRAY(nl20_tamex_trig);
+  SET_NAME_ARRAY(nl21_tamex_trig);
 }
 
 void exit_user_function()
@@ -338,8 +348,12 @@ int unpack_user_function(unpack_event *event)
       0 != event->tofd_tamex_1.data.land_vme.failure.u32 ||
       0 != event->tofd_tamex_2.data.land_vme.failure.u32 ||
       0 != event->fib_tamex.data.land_vme.failure.u32 ||
-      0 != event->fib_ctdc1.data.land_vme.failure.u32 ||
-      0 != event->fib_ctdc2.data.land_vme.failure.u32) {
+      0 != event->fib7_ctdc.data.land_vme.failure.u32 ||
+      0 != event->fib8_ctdc.data.land_vme.failure.u32 ||
+      0 != event->fib10_ctdc.data.land_vme.failure.u32 ||
+      0 != event->fib11_ctdc.data.land_vme.failure.u32/* ||
+      0 != event->neuland_tamex_1.data.land_vme.failure.u32 ||
+      0 != event->neuland_tamex_2.data.land_vme.failure.u32*/) {
     fprintf(stderr, "%s: DAQ failure, tracking reset.\n", __func__);
 #define RESET_ARRAY(array) do {\
     for (auto it = array.begin(); array.end() != it; ++it) {\
@@ -351,12 +365,16 @@ int unpack_user_function(unpack_event *event)
     RESET_ARRAY(g_tofd_tamex2_trig_ct);
     g_fib_tamex_ms_ct.Reset();
     RESET_ARRAY(g_fib_tamex_trig_ct);
-    RESET_ARRAY(g_fi3a_ctdc_trig_ct);
-    RESET_ARRAY(g_fi3b_ctdc_trig_ct);
+//    RESET_ARRAY(g_fi3a_ctdc_trig_ct);
+//    RESET_ARRAY(g_fi3b_ctdc_trig_ct);
     RESET_ARRAY(g_fi7_ctdc_trig_ct);
-//    RESET_ARRAY(g_fi8_ctdc_trig_ct);
+    RESET_ARRAY(g_fi8_ctdc_trig_ct);
     RESET_ARRAY(g_fi10_ctdc_trig_ct);
     RESET_ARRAY(g_fi11_ctdc_trig_ct);
+    g_nl_tamex_ms_ct.Reset();
+    RESET_ARRAY(g_nl10_tamex_trig_ct);
+    RESET_ARRAY(g_nl20_tamex_trig_ct);
+    RESET_ARRAY(g_nl21_tamex_trig_ct);
     // 1 erronous + 2 more events will be skipped, we're trying to wait until
     // the electronics has recovered.
     g_error_delay = 3;
@@ -438,12 +456,17 @@ int unpack_user_function(unpack_event *event)
   TAMEX_TIME_GET_ARRAY(fib_tamex_trig, fib_tamex.data.tamex);
   TIME_GET_SINGLE(fib_tamex_ms, fib_tamex.data.tamex[3], 1);
 
-  CTDC_TIME_GET_ARRAY(fi3a_ctdc_trig, fib_ctdc2.data.fibthreea);
-  CTDC_TIME_GET_ARRAY(fi3b_ctdc_trig, fib_ctdc2.data.fibthreeb);
-  CTDC_TIME_GET_ARRAY(fi7_ctdc_trig, fib_ctdc1.data.fibseven);
-//  CTDC_TIME_GET_ARRAY(fi8_ctdc_trig, fib_ctdc1.data.fibeight);
-  CTDC_TIME_GET_ARRAY(fi10_ctdc_trig, fib_ctdc1.data.fibten);
-  CTDC_TIME_GET_ARRAY(fi11_ctdc_trig, fib_ctdc1.data.fibeleven);
+//  CTDC_TIME_GET_ARRAY(fi3a_ctdc_trig, fib_ctdc2.data.fibthreea);
+//  CTDC_TIME_GET_ARRAY(fi3b_ctdc_trig, fib_ctdc2.data.fibthreeb);
+  CTDC_TIME_GET_ARRAY(fi7_ctdc_trig, fib7_ctdc.data.ctdc);
+  CTDC_TIME_GET_ARRAY(fi8_ctdc_trig, fib8_ctdc.data.ctdc);
+  CTDC_TIME_GET_ARRAY(fi10_ctdc_trig, fib10_ctdc.data.ctdc);
+  CTDC_TIME_GET_ARRAY(fi11_ctdc_trig, fib11_ctdc.data.ctdc);
+
+  TIME_GET_SINGLE(nl_tamex_ms, neuland_tamex_1.data.sfp[0].card[0], 31);
+  TAMEX_TIME_GET_ARRAY(nl10_tamex_trig, neuland_tamex_1.data.sfp[0].card);
+  TAMEX_TIME_GET_ARRAY(nl20_tamex_trig, neuland_tamex_2.data.sfp[0].card);
+  TAMEX_TIME_GET_ARRAY(nl21_tamex_trig, neuland_tamex_2.data.sfp[1].card);
 
   //
   // Compare and alter coarse counters.
@@ -465,15 +488,30 @@ int unpack_user_function(unpack_event *event)
     }\
   } while (0)
 #define TRACK_ADJUST_ARRAY(a_name, a_module_array, a_mask, a_ref_name,\
-    a_ofs_ct) do {\
+    a_ofs_ct, a_skip) do {\
     if (a_name##_exists && a_ref_name##_exists) {\
+      auto ofs = a_ofs_ct;\
       for (size_t i = 0; i < a_name##_time.size(); ++i) {\
+        if (a_skip == i) {\
+          continue;\
+        }\
         track_ok &= g_##a_name##_ct[i].Track(a_name##_time[i],\
             a_ref_name##_time);\
-      }\
-      auto ofs = a_ofs_ct;\
-      for (size_t i = 0; i < countof(event->a_module_array); ++i) {\
         CoarseTracker diff = g_##a_name##_ct.at(i) + ofs;\
+        TIME_SET(a_module_array[i], diff, a_mask);\
+      }\
+    }\
+  } while (0)
+#define TRACK_ADJUST_ARRAY_STANDALONE(a_name, a_module_array, a_mask,\
+    a_ref_name, a_ref_ch, a_skip_card) do {\
+    if (a_name##_exists && a_ref_name##_exists) {\
+      for (size_t i = 0; i < a_name##_time.size(); ++i) {\
+        if (a_skip_card == i) {\
+          continue;\
+        }\
+        track_ok &= g_##a_name##_ct[i].Track(a_name##_time[i],\
+            a_ref_name##_time.at(i));\
+        CoarseTracker diff = g_##a_name##_ct.at(i);\
         TIME_SET(a_module_array[i], diff, a_mask);\
       }\
     }\
@@ -487,33 +525,65 @@ int unpack_user_function(unpack_event *event)
 
   // (TOFD TAMEX3 Trig -- LOS TAMEX3 Trig) + (LOS TAMEX3 MS -- LOS VFTX2 MS)
   TRACK_ADJUST_ARRAY(tofd_tamex0_trig, tofd_tamex_1.data.tamex, TAMEX_MASK,
-      los_tamex_trig, g_los_tamex_ms_ct);
+      los_tamex_trig, g_los_tamex_ms_ct, 999);
   TRACK_ADJUST_ARRAY(tofd_tamex2_trig, tofd_tamex_2.data.tamex, TAMEX_MASK,
-      los_tamex_trig, g_los_tamex_ms_ct);
+      los_tamex_trig, g_los_tamex_ms_ct, 999);
 
   // (FIB TAMEX3 MS -- LOS VFTX2 MS)
-  TRACK_ADJUST_SINGLE(fib_tamex_ms, fib_tamex.data.tamex[0], TAMEX_MASK,
+  TRACK_ADJUST_SINGLE(fib_tamex_ms, fib_tamex.data.tamex[3], TAMEX_MASK,
       los_vftx2_ms);
-  // (FIB TAMEX3 Trig -- LOS TAMEX3 Trig) + (LOS TAMEX3 MS -- LOS VFTX2 MS)
+  // (FIB TAMEX3 Trig -- FIB TAMEX3[3] Trig) + (FIB TAMEX3 MS -- LOS VFTX2 MS)
+  auto const &fib_tamex_trig3_time = fib_tamex_trig_time[3];
+  auto const &fib_tamex_trig3 = g_fib_tamex_trig_ct[3];
+  auto fib_tamex_trig3_exists = fib_tamex_trig_exists;
   TRACK_ADJUST_ARRAY(fib_tamex_trig, fib_tamex.data.tamex, TAMEX_MASK,
-      los_tamex_trig, g_los_tamex_ms_ct);
+      fib_tamex_trig3, g_los_tamex_ms_ct, 3);
 
   // (FI7 CTDC Trig -- LOS TAMEX3 Trig) + (LOS TAMEX3 MS -- LOS VFTX2 MS)
 //  TRACK_ADJUST_ARRAY(fi7_ctdc_trig, fib_ctdc1.data.fibseven, 0xfff,
 //      los_tamex_trig_time, g_los_tamex_ms_ct);
 
+  if (los_vftx2_ms_exists) {
+    // If LOS is in the data stream, we sync against it.
+    // (NeuLANDx SFPy TAMEX3 Trig -- LOS TAMEX3 Trig) + (LOS TAMEX3 MS -- LOS VFTX2 MS)
+    TRACK_ADJUST_SINGLE(nl_tamex_ms, neuland_tamex_1.data.sfp[0].card[0],
+        TAMEX_MASK, los_vftx2_ms);
+    TRACK_ADJUST_ARRAY(nl10_tamex_trig, neuland_tamex_1.data.sfp[0].card,
+        TAMEX_MASK, los_tamex_trig, g_nl_tamex_ms_ct, 999);
+    TRACK_ADJUST_ARRAY(nl20_tamex_trig, neuland_tamex_2.data.sfp[0].card,
+        TAMEX_MASK, los_tamex_trig, g_nl_tamex_ms_ct, 999);
+    TRACK_ADJUST_ARRAY(nl21_tamex_trig, neuland_tamex_2.data.sfp[1].card,
+        TAMEX_MASK, los_tamex_trig, g_nl_tamex_ms_ct, 999);
+  } else {
+    // If not, NeuLAND is standalone and we sync only between trigger-clock
+    // distributions.
+    // (NeuLAND2 TAMEX3 MS -- NeuLAND1 TAMEX3 MS)
+//    TRACK_ADJUST_SINGLE(nl_tamex_ms, neuland_tamex_1.data.sfp[0].card[0],
+//        TAMEX_MASK, los_vftx2_ms);
+    // (NeuLANDx SFPy TAMEX3 Trig -- NeuLAND1 SFP0 TAMEX3_0 Trig)
+    TRACK_ADJUST_ARRAY_STANDALONE(nl10_tamex_trig,
+        neuland_tamex_1.data.sfp[0].card, TAMEX_MASK, nl10_tamex_trig, 0, 0);
+    TRACK_ADJUST_ARRAY_STANDALONE(nl20_tamex_trig,
+        neuland_tamex_2.data.sfp[0].card, TAMEX_MASK, nl10_tamex_trig, 0,
+        999);
+    TRACK_ADJUST_ARRAY_STANDALONE(nl21_tamex_trig,
+        neuland_tamex_2.data.sfp[1].card, TAMEX_MASK, nl10_tamex_trig, 0,
+        999);
+  }
+
   time_t time_now = time(NULL);
   if (!track_ok) {
-    if (time_now - g_error_time[0] < g_error_tolerance_s) {
-      /* If we have 10 errors in 5 s, then something is really wrong, exit. */
+    if (0 == g_error_n) {
+      g_error_time = time_now;
+    }
+    ++g_error_n;
+    if (g_error_n >= g_error_limit_n &&
+        time_now - g_error_time < g_error_limit_s) {
       fprintf(stderr, "Way too many errors in a short time, fix it!\n");
       exit(EXIT_FAILURE);
     }
-    size_t i;
-    for (i = 0; i < countof(g_error_time) - 1; ++i) {
-      g_error_time[i] = g_error_time[i + 1];
-    }
-    g_error_time[i] = time_now;
+  } else if (time_now - g_error_time > g_error_limit_s) {
+    g_error_n = 0;
   }
 
   if (g_do_stat) {
