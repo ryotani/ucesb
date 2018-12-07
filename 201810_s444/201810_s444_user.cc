@@ -56,6 +56,11 @@ std::list<Range> g_range_list;
 
 int g_error_delay = 0;
 bool g_do_stat = false;
+struct {
+  bool yes;
+  uint64_t wr;
+  unsigned ch[2];
+} g_ics;
 time_t g_stat_time_prev = 0;
 
 // If there were 10 errors in the last 1 s, abort!
@@ -313,6 +318,37 @@ int unpack_user_function(unpack_event *event)
     return 1;
   }
 
+  if (g_ics.yes) {
+    auto &ts100 = event->master_ts.ts100;
+    uint64_t wr =
+        ((uint64_t)ts100.t4.value << 48) |
+        ((uint64_t)ts100.t3.value << 32) |
+        ((uint64_t)ts100.t2.value << 16) |
+        ((uint64_t)ts100.t1.value);
+    bitsone_iterator iter;
+    ssize_t i;
+    auto &array = event->master_monitor.data.v830.data;
+    if (0 == g_ics.wr) {
+      g_ics.wr = wr;
+      while ((i = array._valid.next(iter)) >= 0) {
+        if (2 > i) {
+          g_ics.ch[i] = array._items[i].value;
+        }
+      }
+    } else if (wr > g_ics.wr + (uint64_t).1e9) {
+      while ((i = array._valid.next(iter)) >= 0) {
+        if (2 > i) {
+          uint32_t mask = 0x03ffffff;
+          printf("%u = %g\n",
+              (unsigned)i,
+              1e9 * (double)(mask & (array._items[i].value - g_ics.ch[i] +
+              mask + 1)) / (double)(wr - g_ics.wr));
+        }
+      }
+      g_ics.wr = 0;
+    }
+  }
+
 #if 1
   //
   // Track coarse counter offsets on trigger=1.
@@ -463,10 +499,12 @@ int unpack_user_function(unpack_event *event)
   CTDC_TIME_GET_ARRAY(fi10_ctdc_trig, fib10_ctdc.data.ctdc);
   CTDC_TIME_GET_ARRAY(fi11_ctdc_trig, fib11_ctdc.data.ctdc);
 
+#if 0
   TIME_GET_SINGLE(nl_tamex_ms, neuland_tamex_1.data.sfp[0].card[0], 31);
   TAMEX_TIME_GET_ARRAY(nl10_tamex_trig, neuland_tamex_1.data.sfp[0].card);
   TAMEX_TIME_GET_ARRAY(nl20_tamex_trig, neuland_tamex_2.data.sfp[0].card);
   TAMEX_TIME_GET_ARRAY(nl21_tamex_trig, neuland_tamex_2.data.sfp[1].card);
+#endif
 
   //
   // Compare and alter coarse counters.
@@ -543,6 +581,7 @@ int unpack_user_function(unpack_event *event)
 //  TRACK_ADJUST_ARRAY(fi7_ctdc_trig, fib_ctdc1.data.fibseven, 0xfff,
 //      los_tamex_trig_time, g_los_tamex_ms_ct);
 
+#if 0
   if (los_vftx2_ms_exists) {
     // If LOS is in the data stream, we sync against it.
     // (NeuLANDx SFPy TAMEX3 Trig -- LOS TAMEX3 Trig) + (LOS TAMEX3 MS -- LOS VFTX2 MS)
@@ -570,6 +609,7 @@ int unpack_user_function(unpack_event *event)
         neuland_tamex_2.data.sfp[1].card, TAMEX_MASK, nl10_tamex_trig, 0,
         999);
   }
+#endif
 
   time_t time_now = time(NULL);
   if (!track_ok) {
@@ -627,10 +667,15 @@ bool handle_command_line_option(const char *arg)
     g_do_stat = true;
     return true;
   }
+  if (0 == strcmp(arg, "--ics")) {
+    g_ics.yes = true;
+    return true;
+  }
   return false;
 }
 
 void usage_command_line_options()
 {
   printf("  --ct-stat           Print coarse counter tracking stats.\n");
+  printf("  --ics               Print IC beam monitors.\n");
 }

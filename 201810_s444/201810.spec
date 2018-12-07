@@ -545,6 +545,7 @@ EVENT
 	fib11_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=14);
 	fib_tamex = fib_tamex_subev(type=102, subtype=10200, control=5);
 	pspx = febex_subev(type=101, subtype=10100, control=6);
+	pspx2 = febex_subev(type=101, subtype=10100, control=16);
 	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);
 	califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
 	neuland_tamex_1 = neuland_tamex_1_subev(type = 102, subtype = 10200, control = 10);
