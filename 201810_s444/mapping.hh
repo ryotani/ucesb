@@ -6,5 +6,5 @@
 #include "gen/mapping_fiber.hh"
 #include "gen/mapping_tofd.hh"
 #include "mapping_CALIFA.hh"
-#include "mapping_pspx.hh"
+#include "mapping_pspx_r3broot_filter_splitter_2det.hh"
 #include "mapping_neuland.h"
