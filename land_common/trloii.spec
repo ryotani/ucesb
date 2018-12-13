@@ -76,7 +76,7 @@ TRLOII_SAMPLER(mark)
 TRLOII_TPAT(id)
 {
 	MEMBER(DATA32 n);
-	MEMBER(DATA32 tpat[170] NO_INDEX_LIST);
+	MEMBER(DATA16 tpat[170] NO_INDEX_LIST);
 	MEMBER(DATA8 trig[170] NO_INDEX_LIST);
 	MEMBER(DATA32 ts_lo[170] NO_INDEX_LIST);
 	MEMBER(DATA32 ts_hi[170] NO_INDEX_LIST);
@@ -99,7 +99,8 @@ TRLOII_TPAT(id)
 			ENCODE(ts_hi APPEND_LIST, (value=t));
 		}
 		UINT32 trigger NOENCODE {
-			0_23:  tpat;
+			 0_15: tpat;
+			16_23: dunno;
 			24_27: encoded;
 			28_31: lec;
 			ENCODE(tpat APPEND_LIST, (value=tpat));

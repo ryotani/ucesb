@@ -59,7 +59,7 @@ bool g_do_stat = false;
 struct {
   bool yes;
   uint64_t wr;
-  unsigned ch[2];
+  unsigned ch[2][2];
 } g_ics;
 time_t g_stat_time_prev = 0;
 
@@ -314,39 +314,37 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 
 int unpack_user_function(unpack_event *event)
 {
-  if (1 != event->trigger) {
-    return 1;
-  }
+  auto &ts100 = event->master_ts.ts100;
+  uint64_t wr =
+      ((uint64_t)ts100.t4.value << 48) |
+      ((uint64_t)ts100.t3.value << 32) |
+      ((uint64_t)ts100.t2.value << 16) |
+      ((uint64_t)ts100.t1.value);
 
   if (g_ics.yes) {
-    auto &ts100 = event->master_ts.ts100;
-    uint64_t wr =
-        ((uint64_t)ts100.t4.value << 48) |
-        ((uint64_t)ts100.t3.value << 32) |
-        ((uint64_t)ts100.t2.value << 16) |
-        ((uint64_t)ts100.t1.value);
+    uint32_t mask = 0x03ffffff;
+    if (12 == event->trigger || 13 == event->trigger) {
+      printf("\nTrig=%u\n", event->trigger);
+      for (unsigned i = 0; i < 2; ++i) {
+        printf(" %u = %g\n", i, 1e9 * (mask & (g_ics.ch[1][i] - g_ics.ch[0][i]
+            + mask + 1)) / (wr - g_ics.wr));
+      }
+      g_ics.wr = wr;
+      memcpy(g_ics.ch[0], g_ics.ch[1], sizeof g_ics.ch[0]);
+      return 1;
+    }
     bitsone_iterator iter;
     ssize_t i;
     auto &array = event->master_monitor.data.v830.data;
-    if (0 == g_ics.wr) {
-      g_ics.wr = wr;
-      while ((i = array._valid.next(iter)) >= 0) {
-        if (2 > i) {
-          g_ics.ch[i] = array._items[i].value;
-        }
+    while ((i = array._valid.next(iter)) >= 0) {
+      if (2 > i) {
+        g_ics.ch[1][i] = mask & array._items[i].value;
       }
-    } else if (wr > g_ics.wr + (uint64_t).1e9) {
-      while ((i = array._valid.next(iter)) >= 0) {
-        if (2 > i) {
-          uint32_t mask = 0x03ffffff;
-          printf("%u = %g\n",
-              (unsigned)i,
-              1e9 * (double)(mask & (array._items[i].value - g_ics.ch[i] +
-              mask + 1)) / (double)(wr - g_ics.wr));
-        }
-      }
-      g_ics.wr = 0;
     }
+  }
+
+  if (1 != event->trigger) {
+    return 1;
   }
 
 #if 1
