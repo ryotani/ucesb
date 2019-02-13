@@ -176,8 +176,8 @@ CT_SINGLE(fib_tamex_ms);
 CT_VECTOR(fib_tamex_trig, fib_tamex.data.tamex);
 //CT_VECTOR(fi3a_ctdc_trig, fib_ctdc.data.fibthreea);
 //CT_VECTOR(fi3b_ctdc_trig, fib_ctdc.data.fibthreeb);
-CT_VECTOR(fi7_ctdc_trig, fib7_ctdc.data.ctdc);
-CT_VECTOR(fi8_ctdc_trig, fib8_ctdc.data.ctdc);
+CT_VECTOR(fi12_ctdc_trig, fib12_ctdc.data.ctdc);
+CT_VECTOR(fi13_ctdc_trig, fib13_ctdc.data.ctdc);
 CT_VECTOR(fi10_ctdc_trig, fib10_ctdc.data.ctdc);
 CT_VECTOR(fi11_ctdc_trig, fib11_ctdc.data.ctdc);
 CT_SINGLE(nl_tamex_ms);
@@ -275,8 +275,8 @@ void init_user_function()
   SET_NAME_ARRAY(fib_tamex_trig);
 //  SET_NAME_ARRAY(fi3a_ctdc_trig);
 //  SET_NAME_ARRAY(fi3b_ctdc_trig);
-  SET_NAME_ARRAY(fi7_ctdc_trig);
-  SET_NAME_ARRAY(fi8_ctdc_trig);
+  SET_NAME_ARRAY(fi12_ctdc_trig);
+  SET_NAME_ARRAY(fi13_ctdc_trig);
   SET_NAME_ARRAY(fi10_ctdc_trig);
   SET_NAME_ARRAY(fi11_ctdc_trig);
   SET_NAME(nl_tamex_ms);
@@ -415,8 +415,8 @@ int unpack_user_function(unpack_event *event)
       0 != event->tofd_tamex_1.data.land_vme.failure.u32 ||
       0 != event->tofd_tamex_2.data.land_vme.failure.u32 ||
       0 != event->fib_tamex.data.land_vme.failure.u32 ||
-      0 != event->fib7_ctdc.data.land_vme.failure.u32 ||
-      0 != event->fib8_ctdc.data.land_vme.failure.u32 ||
+      0 != event->fib12_ctdc.data.land_vme.failure.u32 ||
+      0 != event->fib13_ctdc.data.land_vme.failure.u32 ||
       0 != event->fib10_ctdc.data.land_vme.failure.u32 ||
       0 != event->fib11_ctdc.data.land_vme.failure.u32 ||
       0 != event->neuland_tamex_1.data.land_vme.failure.u32 ||
@@ -434,8 +434,8 @@ int unpack_user_function(unpack_event *event)
     RESET_ARRAY(g_fib_tamex_trig_ct);
 //    RESET_ARRAY(g_fi3a_ctdc_trig_ct);
 //    RESET_ARRAY(g_fi3b_ctdc_trig_ct);
-    RESET_ARRAY(g_fi7_ctdc_trig_ct);
-    RESET_ARRAY(g_fi8_ctdc_trig_ct);
+    RESET_ARRAY(g_fi12_ctdc_trig_ct);
+    RESET_ARRAY(g_fi13_ctdc_trig_ct);
     RESET_ARRAY(g_fi10_ctdc_trig_ct);
     RESET_ARRAY(g_fi11_ctdc_trig_ct);
     g_nl_tamex_ms_ct.Reset();
@@ -525,8 +525,8 @@ int unpack_user_function(unpack_event *event)
 
 //  CTDC_TIME_GET_ARRAY(fi3a_ctdc_trig, fib_ctdc2.data.fibthreea);
 //  CTDC_TIME_GET_ARRAY(fi3b_ctdc_trig, fib_ctdc2.data.fibthreeb);
-  CTDC_TIME_GET_ARRAY(fi7_ctdc_trig, fib7_ctdc.data.ctdc);
-  CTDC_TIME_GET_ARRAY(fi8_ctdc_trig, fib8_ctdc.data.ctdc);
+  CTDC_TIME_GET_ARRAY(fi12_ctdc_trig, fib12_ctdc.data.ctdc);
+  CTDC_TIME_GET_ARRAY(fi13_ctdc_trig, fib13_ctdc.data.ctdc);
   CTDC_TIME_GET_ARRAY(fi10_ctdc_trig, fib10_ctdc.data.ctdc);
   CTDC_TIME_GET_ARRAY(fi11_ctdc_trig, fib11_ctdc.data.ctdc);
 
@@ -622,7 +622,7 @@ if (0) {
       fib_tamex3_trig, g_los_tamex_ms_ct, 3);
 
   // (FI7 CTDC Trig -- LOS TAMEX3 Trig) + (LOS TAMEX3 MS -- LOS VFTX2 MS)
-//  TRACK_ADJUST_ARRAY(fi7_ctdc_trig, fib_ctdc1.data.fibseven, 0xfff,
+//  TRACK_ADJUST_ARRAY(fi12_ctdc_trig, fib_ctdc1.data.fibseven, 0xfff,
 //      los_tamex_trig_time, g_los_tamex_ms_ct);
 
   if (los_vftx2_ms_exists) {

@@ -566,8 +566,8 @@ EVENT
 	los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);
 	tofd_tamex_1 = tofd_tamex_subev(type=102, subtype=10200, control=3);
 	tofd_tamex_2 = tofd_tamex_subev(type=102, subtype=10200, control=8);
-	fib7_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=4);
-	fib8_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=12);
+	fib12_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=4);
+	fib13_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=12);
 	fib10_ctdc = fib_ctdc0_fib3_subev(type=103, subtype=10300, control=13);
 	fib11_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=14);
 	fib_tamex = fib_tamex_subev(type=102, subtype=10200, control=5);
@@ -578,6 +578,7 @@ EVENT
 	califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
 	neuland_tamex_1 = neuland_tamex_1_subev(type = 102, subtype = 10200, control = 10);
 	neuland_tamex_2 = neuland_tamex_2_subev(type = 102, subtype = 10200, control = 11);
+	fibsipm_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=18);
 }
 
 #include "mapping.hh"

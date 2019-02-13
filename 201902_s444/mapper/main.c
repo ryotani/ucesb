@@ -345,6 +345,12 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 			else if(0 == strcmp("11", a_name)){
 				bunch_i=fib10[i];
 			}
+			else if(0 == strcmp("12", a_name)){
+				bunch_i=fib10[i];
+			}
+			else if(0 == strcmp("13", a_name)){
+				bunch_i=fib10[i];
+			}
 			bunch_i += sub_i * a_mapmt;
 
 			if (0 == strcmp("3a", a_name)) {
@@ -408,10 +414,12 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 int
 main()
 {
-	map("FIBSEVEN", "7", 2, 256, 1, 1, 0, 1);
-	map("FIBEIGHT", "8", 2, 256, 1, 1, 8, 1);
+/*	map("FIBSEVEN", "7", 2, 256, 1, 1, 0, 1);
+	map("FIBEIGHT", "8", 2, 256, 1, 1, 8, 1);*/
 	map("FIBTEN", "10", 2, 256, 2, 2, 0, 1);
 	map("FIBELEVEN", "11", 2, 256, 2, 2, 8, 1);
+	map("FIBTWELVE", "12", 2, 256, 2, 1, 0, 1);
+	map("FIBTHIRTEEN", "13", 2, 256, 2, 1, 8, 1);
 /*	map("FIBTHREEA", "3a", 1, 256, 2, 0, 0, 2);
 	map("FIBTHREEB", "3b", 1, 256, 2, 0, 8, 2);*/
 	return 0;
