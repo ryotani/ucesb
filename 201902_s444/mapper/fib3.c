@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+static char side_array[2] = {'M', 'S'};
+static char edge_array[2] = {'L', 'T'};
+static char prec_array[2] = {'C', 'F'};
+static char const *prec_name_array[2] = {"coarse", "fine  "};
+
 void
 ctdc_from_mapmt(int a_mapmt_ch, int *a_ctdc_i, int *a_ctdc_ch)
 {
@@ -52,10 +57,6 @@ map(char const *a_dst, char const *a_name, unsigned a_mapmt, unsigned
     a_ctdc_i, unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i,
     unsigned a_group)
 {
-	char side_array[2] = {'M', 'S'};
-	char edge_array[2] = {'L', 'T'};
-	char prec_array[2] = {'C', 'F'};
-	char const *prec_name_array[2] = {"coarse", "fine  "};
 	unsigned side_i, edge_i, prec_i;
 	unsigned spmt_i;
 	unsigned i;

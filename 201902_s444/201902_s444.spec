@@ -15,8 +15,8 @@ SUBEVENT(ams_siderem_subev)
 {
 	select several {
 		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=5, branch=0);
-		external sst[2] = EXT_SST(siderem=2, gtb=0, sam=5, branch=0);
-		external sst[1] = EXT_SST(siderem=1, gtb=1, sam=5, branch=0);
+		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=5, branch=0);
+		external sst[2] = EXT_SST(siderem=1, gtb=1, sam=5, branch=0);
 		external sst[3] = EXT_SST(siderem=2, gtb=1, sam=5, branch=0);
 	}
 }
@@ -193,43 +193,6 @@ febex_subev_data()
 //		febextrace_0[13] = FEBEX_TRACE(sfp=0, card=13);
 //		febextrace_0[14] = FEBEX_TRACE(sfp=0, card=14);
 //		febextrace_0[15] = FEBEX_TRACE(sfp=0, card=15);
-	}
-	select several {
-		padding1 = FEBEX_PADDING();
-	}
-	select several {
-		febex_1[ 0] = FEBEX_NOTRACE(sfp=1, card=0);
-		febex_1[ 1] = FEBEX_NOTRACE(sfp=1, card=1);
-		febex_1[ 2] = FEBEX_NOTRACE(sfp=1, card=2);
-		febex_1[ 3] = FEBEX_NOTRACE(sfp=1, card=3);
-		febex_1[ 4] = FEBEX_NOTRACE(sfp=1, card=4);
-		febex_1[ 5] = FEBEX_NOTRACE(sfp=1, card=5);
-		febex_1[ 6] = FEBEX_NOTRACE(sfp=1, card=6);
-		febex_1[ 7] = FEBEX_NOTRACE(sfp=1, card=7);
-		febex_1[ 8] = FEBEX_NOTRACE(sfp=1, card=8);
-		febex_1[ 9] = FEBEX_NOTRACE(sfp=1, card=9);
-		febex_1[10] = FEBEX_NOTRACE(sfp=1, card=10);
-		febex_1[11] = FEBEX_NOTRACE(sfp=1, card=11);
-		febex_1[12] = FEBEX_NOTRACE(sfp=1, card=12);
-		febex_1[13] = FEBEX_NOTRACE(sfp=1, card=13);
-		febex_1[14] = FEBEX_NOTRACE(sfp=1, card=14);
-		febex_1[15] = FEBEX_NOTRACE(sfp=1, card=15);
-//		febextrace_1[ 0] = FEBEX_TRACE(sfp=1, card=0);
-//		febextrace_1[ 1] = FEBEX_TRACE(sfp=1, card=1);
-//		febextrace_1[ 2] = FEBEX_TRACE(sfp=1, card=2);
-//		febextrace_1[ 3] = FEBEX_TRACE(sfp=1, card=3);
-//		febextrace_1[ 4] = FEBEX_TRACE(sfp=1, card=4);
-//		febextrace_1[ 5] = FEBEX_TRACE(sfp=1, card=5);
-//		febextrace_1[ 6] = FEBEX_TRACE(sfp=1, card=6);
-//		febextrace_1[ 7] = FEBEX_TRACE(sfp=1, card=7);
-//		febextrace_1[ 8] = FEBEX_TRACE(sfp=1, card=8);
-//		febextrace_1[ 9] = FEBEX_TRACE(sfp=1, card=9);
-//		febextrace_1[10] = FEBEX_TRACE(sfp=1, card=10);
-//		febextrace_1[11] = FEBEX_TRACE(sfp=1, card=11);
-//		febextrace_1[12] = FEBEX_TRACE(sfp=1, card=12);
-//		febextrace_1[13] = FEBEX_TRACE(sfp=1, card=13);
-//		febextrace_1[14] = FEBEX_TRACE(sfp=1, card=14);
-//		febextrace_1[15] = FEBEX_TRACE(sfp=1, card=15);
 	}
 }
 

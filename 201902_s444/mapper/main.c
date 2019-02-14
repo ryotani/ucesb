@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+static char side_array[2] = {'M', 'S'};
+static char edge_array[2] = {'L', 'T'};
+static char prec_array[2] = {'C', 'F'};
+static char const *prec_name_array[2] = {"coarse", "fine  "};
+
 void
 map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
     unsigned a_spmt, unsigned a_tamex_i, unsigned a_tamex_ch_i, unsigned
@@ -266,10 +271,6 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 	fprintf(stderr, "PMT: %d, ch: %d \n",0,ch[0]);
 	fprintf(stderr, "PMT: %d, fiber: %d \n",0,fib5[0]);
 
-	char side_array[2] = {'M', 'S'};
-	char edge_array[2] = {'L', 'T'};
-	char prec_array[2] = {'C', 'F'};
-	char const *prec_name_array[2] = {"coarse", "fine  "};
 	unsigned sub_i, side_i, edge_i, prec_i;
 	unsigned spmt_i;
 
@@ -411,6 +412,43 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 	}
 }
 
+void
+sipm_map()
+{
+	unsigned ch;
+
+	for (ch = 0; ch < 256; ++ch) {
+	  unsigned top_ctdc, padi, pch, bottom_ctdc, edge_i, prec_i;
+
+		/* Top side electronics mapping. */
+		top_ctdc = ch / 128;
+		padi = 7 & ((1 & ch) + 2 * (ch / 32));
+		pch = 15 & (ch / 2);
+		if ((1 & padi) == 0) pch = 15 - pch;
+
+		/* Bottom side electronics mapping. */
+		bottom_ctdc = 2 + (ch / 128);
+
+		for (edge_i = 0; edge_i < 2; ++edge_i) {
+			for (prec_i = 0; prec_i < 2; ++prec_i) {
+				printf("SIGNAL(SFIB_TT%c%c%u, "
+				    "fibsipm_ctdc.data.ctdc[%u].time_%s[%u], "
+				    "DATA12);\n",
+				    edge_array[edge_i], prec_array[prec_i],
+				    ch + 1, top_ctdc, prec_name_array[prec_i],
+				    2 * (padi * 16 + pch) + edge_i);
+				printf("SIGNAL(SFIB_BT%c%c%u, "
+				    "fibsipm_ctdc.data.ctdc[%u].time_%s[%u], "
+				    "DATA12);\n",
+				    edge_array[edge_i], prec_array[prec_i],
+				    ch + 1, bottom_ctdc,
+				    prec_name_array[prec_i],
+				    2 * (padi * 16 + pch) + edge_i);
+			}
+		}
+	}
+}
+
 int
 main()
 {
@@ -422,5 +460,6 @@ main()
 	map("FIBTHIRTEEN", "13", 2, 256, 2, 1, 8, 1);
 /*	map("FIBTHREEA", "3a", 1, 256, 2, 0, 0, 2);
 	map("FIBTHREEB", "3b", 1, 256, 2, 0, 8, 2);*/
+	sipm_map();
 	return 0;
 }
