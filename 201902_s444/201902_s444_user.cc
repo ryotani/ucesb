@@ -216,47 +216,46 @@ void map_unpack_raw_sst(EXT_SST &unpack,
 void init_user_function()
 {
   auto file = fopen(g_path.c_str(), "rb");
-  if (!file) {
-    return;
+  if (file) {
+    auto fno = fileno(file);
+    flock(fno, LOCK_SH);
+    for (unsigned line_no = 1;; ++line_no) {
+      char line[80];
+      if (NULL == fgets(line, sizeof line, file)) {
+        break;
+      }
+      char *s;
+      auto name = strtok_r(line, " \t", &s);
+      auto left = strtok_r(nullptr, " \t", &s);
+      auto right = strtok_r(nullptr, " \t", &s);
+      if (!name || !left || !right) {
+        fprintf(stderr, "%s:%u: Missing tokens on line.\n", g_path.c_str(),
+            line_no);
+        break;
+      }
+      auto left_i = strtol(left, &s, 10);
+      if (s == left) {
+        fprintf(stderr, "%s:%u: Corrupt left value '%s'.\n", g_path.c_str(),
+            line_no, left);
+        break;
+      }
+      auto right_i = strtol(right, &s, 10);
+      if (s == right) {
+        fprintf(stderr, "%s:%u: Corrupt right value '%s'.\n", g_path.c_str(),
+            line_no, right);
+        break;
+      }
+      if (left >= right) {
+        fprintf(stderr, "%s:%u: Left='%s' >= right='%s'.\n", g_path.c_str(),
+            line_no, left, right);
+        break;
+      }
+      g_range_list.push_back(Range(name, (unsigned)left_i,
+          (unsigned)right_i));
+    }
+    flock(fno, LOCK_UN);
+    fclose(file);
   }
-  auto fno = fileno(file);
-  flock(fno, LOCK_SH);
-  for (unsigned line_no = 1;; ++line_no) {
-    char line[80];
-    if (NULL == fgets(line, sizeof line, file)) {
-      break;
-    }
-    char *s;
-    auto name = strtok_r(line, " \t", &s);
-    auto left = strtok_r(nullptr, " \t", &s);
-    auto right = strtok_r(nullptr, " \t", &s);
-    if (!name || !left || !right) {
-      fprintf(stderr, "%s:%u: Missing tokens on line.\n", g_path.c_str(),
-          line_no);
-      break;
-    }
-    auto left_i = strtol(left, &s, 10);
-    if (s == left) {
-      fprintf(stderr, "%s:%u: Corrupt left value '%s'.\n", g_path.c_str(),
-          line_no, left);
-      break;
-    }
-    auto right_i = strtol(right, &s, 10);
-    if (s == right) {
-      fprintf(stderr, "%s:%u: Corrupt right value '%s'.\n", g_path.c_str(),
-          line_no, right);
-      break;
-    }
-    if (left >= right) {
-      fprintf(stderr, "%s:%u: Left='%s' >= right='%s'.\n", g_path.c_str(),
-          line_no, left, right);
-      break;
-    }
-    g_range_list.push_back(Range(name, (unsigned)left_i,
-        (unsigned)right_i));
-  }
-  flock(fno, LOCK_UN);
-  fclose(file);
 
 #define SET_NAME(ct) \
   g_##ct##_ct.SetName(#ct)
