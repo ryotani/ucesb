@@ -13,6 +13,7 @@
 
 SUBEVENT(ams_siderem_subev)
 {
+	ts300 = TIMESTAMP_WHITERABBIT(id=0x300);
 	select several {
 		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=5, branch=0);
 		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=5, branch=0);
@@ -440,39 +441,24 @@ neuland_window()
 	UINT32 window;
 }
 
-neuland_tamex_1_subev_data()
+neuland_tamex_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		padding = TAMEX3_PADDING();
+		padding0 = TAMEX3_PADDING();
 	}
 	sfp[0] = neuland_sfp(sfp = 0);
-	barrier = BARRIER();
+	select several {
+		barrier = BARRIER();
+		padding1 = TAMEX3_PADDING();
+	}
 	sfp[1] = neuland_sfp(sfp = 1);
 }
 
-neuland_tamex_2_subev_data()
-{
-	land_vme = LAND_STD_VME();
-	select several {
-		padding = TAMEX3_PADDING();
-	}
-	sfp[0] = neuland_sfp(sfp = 0);
-	barrier = BARRIER();
-	sfp[1] = neuland_sfp(sfp = 1);
-}
-
-SUBEVENT(neuland_tamex_1_subev)
+SUBEVENT(neuland_tamex_subev)
 {
 	select several {
-		data = neuland_tamex_1_subev_data();
-	}
-}
-
-SUBEVENT(neuland_tamex_2_subev)
-{
-	select several {
-		data = neuland_tamex_2_subev_data();
+		data = neuland_tamex_subev_data();
 	}
 }
 
@@ -539,9 +525,10 @@ EVENT
 	pspx3 = febex_subev(type=101, subtype=10100, control=17);
 	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);
 	califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
-	neuland_tamex_1 = neuland_tamex_1_subev(type = 102, subtype = 10200, control = 10);
-	neuland_tamex_2 = neuland_tamex_2_subev(type = 102, subtype = 10200, control = 11);
+	neuland_tamex_1 = neuland_tamex_subev(type = 102, subtype = 10200, control = 10);
+	neuland_tamex_2 = neuland_tamex_subev(type = 102, subtype = 10200, control = 11);
 	fibsipm_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=18);
+	ignore_unknown_subevent;
 }
 
 #include "mapping.hh"

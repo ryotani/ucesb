@@ -531,7 +531,7 @@ int unpack_user_function(unpack_event *event)
 
   // 17 = last channel, because the FQT 8-fold connectors are swapped, like
   // they always were with Tacquila:s.
-  TIME_GET_SINGLE(nl_tamex_ms, neuland_tamex_2.data.sfp[0].card[11], 17);
+//  TIME_GET_SINGLE(nl_tamex_ms, neuland_tamex_2.data.sfp[0].card[11], 17);
   TAMEX_TIME_GET_ARRAY(nl10_tamex_trig, neuland_tamex_1.data.sfp[0].card);
   TAMEX_TIME_GET_ARRAY(nl11_tamex_trig, neuland_tamex_1.data.sfp[1].card);
   TAMEX_TIME_GET_ARRAY(nl20_tamex_trig, neuland_tamex_2.data.sfp[0].card);
@@ -545,7 +545,7 @@ if (0) {
   bitsone_iterator iter;
   ssize_t i;
   while ((i = mod.time_coarse._valid.next(iter)) >= 0) {
-    printf("%u\n", i);
+    printf("%u\n", (unsigned)i);
   }
 }
 
@@ -628,7 +628,7 @@ if (0) {
 // HAXX!!!
 //TRACK_ADJUST_SINGLE(tofd_tjo_ms, tofd_tamex_2.data.tamex[11], TAMEX_MASK,
 //    los_vftx2_ms);
-#if 1
+#if 0
     // If LOS is in the data stream, we sync against it.
     // (NeuLAND TAMEX3 MS -- LOS VFTX2 MS)
     TRACK_ADJUST_SINGLE(nl_tamex_ms, neuland_tamex_2.data.sfp[0].card[11],
@@ -646,6 +646,7 @@ if (0) {
     TRACK_ADJUST_ARRAY(nl21_tamex_trig, neuland_tamex_2.data.sfp[1].card,
         TAMEX_MASK, nl20_tamex11_trig, g_nl_tamex_ms_ct, 999);
 #else
+    // (NL TAMEX3 Trig -- LOS TAMEX3 Trig) + (LOS TAMEX3 MS -- LOS VFTX2 MS)
     TRACK_ADJUST_ARRAY(nl10_tamex_trig, neuland_tamex_1.data.sfp[0].card,
         TAMEX_MASK, los_tamex_trig, g_los_tamex_ms_ct, 999);
     TRACK_ADJUST_ARRAY(nl11_tamex_trig, neuland_tamex_1.data.sfp[1].card,

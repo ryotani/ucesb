@@ -460,6 +460,6 @@ main()
 	map("FIBTHIRTEEN", "13", 2, 256, 2, 1, 8, 1);
 /*	map("FIBTHREEA", "3a", 1, 256, 2, 0, 0, 2);
 	map("FIBTHREEB", "3b", 1, 256, 2, 0, 8, 2);*/
-	sipm_map();
+/*	sipm_map();*/
 	return 0;
 }
