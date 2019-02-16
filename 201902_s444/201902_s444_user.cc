@@ -15,6 +15,11 @@
 #define COARSE_ADD(a, b) (COARSE_MASK & (a + b))
 #define COARSE_SUB(a, b) (COARSE_MASK & (a - b + (1 << 16)))
 
+static struct {
+  bool yes;
+  uint32_t map[3][32 * 32];
+} g_psp;
+
 namespace {
 class Range {
   public:
@@ -315,6 +320,84 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
     map_unpack_raw_sst(event->ams_siderem.sst[det],raw_event->SST[dest_det++]);
 
   assert (dest_det <= countof(raw_event->SST));
+
+  if (g_psp.yes) {
+    unsigned i;
+
+    // Collect PSPX hits in heat maps.
+    if (1 == event->trigger) {
+      for (i = 0; i < 3; ++i) {
+	// Get edges per strip.
+	char mask[64];
+	memset(mask, 0, sizeof mask);
+	auto &pspx = raw_event->PSPX[2 * i];
+	bitsone_iterator iter;
+	ssize_t ch;
+	while ((ch = pspx._valid.next(iter)) >= 0) {
+	  auto strip_i = ch / 2;
+	  auto strip_e = ch & 1;
+	  assert((unsigned)strip_i < countof(mask));
+	  mask[strip_i] |= (char)(1 << strip_e);
+	}
+	// Zero-suppress strips.
+	unsigned strip[2][64];
+	unsigned strip_num[2] = {0, 0};
+	for (unsigned strip_i = 0; strip_i < 64; ++strip_i) {
+	  if (mask[strip_i] == 3) {
+	    auto side = strip_i / 32;
+	    strip[side][strip_num[side]++] = 31 & strip_i;
+	  }
+	}
+	// Fill map.
+	for (unsigned j = 0; j < strip_num[0]; ++j) {
+	  auto strip_0 = strip[0][j];
+	  unsigned x;
+	  switch (i) {
+	    case 0: x = 31 - strip_0; break;
+	    case 1:
+	    case 2: x = strip_0; break;
+	  }
+	  for (unsigned k = 0; k < strip_num[1]; ++k) {
+	    auto strip_1 = strip[1][k];
+	    unsigned y;
+	    switch (i) {
+	      case 0: y = 31 - strip_1; break;
+	      case 1:
+	      case 2: y = strip_1; break;
+	    }
+	    ++g_psp.map[i][x + 32 * y];
+	  }
+	}
+      }
+    } else if (13 == event->trigger) {
+      // Publish new maps when we've finished on-spill.
+
+      // End of spill, heat maps have been accumulated during the spill, write
+      // images in /u/land/web-docs/r3bbm and clear.
+      for (i = 0; i < countof(g_psp.map); ++i) {
+        char path[256];
+
+        snprintf(path, sizeof path, "/u/land/web-docs/r3bbm/psp%u.txt", i);
+	FILE *file = fopen(path, "wb");
+	if (NULL == file) {
+	  fprintf(stderr, "%s: Failed to write.\n", path);
+	} else {
+	  uint32_t *p32;
+	  unsigned ofs;
+
+	  p32 = g_psp.map[i];
+	  for (ofs = 0; ofs < countof(g_psp.map[i]); ++ofs) {
+	    fprintf(file, " %u", *p32++);
+	    if (31 == (31 & ofs)) {
+	      fprintf(file, "\n");
+	    }
+	  }
+	  fclose(file);
+	}
+	memset(g_psp.map[i], 0, sizeof g_psp.map[i]);
+      }
+    }
+  }
 }
 
 int unpack_user_function(unpack_event *event)
@@ -730,6 +813,10 @@ bool handle_command_line_option(const char *arg)
     g_ics.yes = true;
     return true;
   }
+  if (0 == strcmp(arg, "--psp-publish")) {
+    g_psp.yes = true;
+    return true;
+  }
   return false;
 }
 
@@ -737,4 +824,5 @@ void usage_command_line_options()
 {
   printf("  --ct-stat           Print coarse counter tracking stats.\n");
   printf("  --ics               Print IC beam monitors.\n");
+  printf("  --psp-publish       Put PSP heat maps on land beam monitor page.\n");
 }

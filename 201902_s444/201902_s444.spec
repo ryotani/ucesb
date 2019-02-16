@@ -155,9 +155,7 @@ SUBEVENT(CALIFA)
 
 febex_subev_data()
 {
-	select optional {
-		header0 = FEBEX_EVENTHEADER();
-	}
+	header0 = FEBEX_EVENTHEADER();
 	select several {
 		padding0 = FEBEX_PADDING();
 	}
