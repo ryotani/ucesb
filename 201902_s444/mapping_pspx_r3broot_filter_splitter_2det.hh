@@ -4,16 +4,16 @@
 
 /* Febex traces function */
 #define SIGNAL_Traces(name, ch, card, febex_ch, tl, sfp)\
-SIGNAL(name##_##ch##_##Tr1   , febex.febextrace_##sfp[card].trace[febex_ch][0],\
-       name##_##ch##_##Tr##tl, febex.febextrace_##sfp[card].trace[febex_ch][trace_length_m1], DATA16);
+SIGNAL(name##_##ch##_##Tr1   , pspx2.data.febextrace_##sfp[card].trace[febex_ch][0],\
+       name##_##ch##_##Tr##tl, pspx2.data.febextrace_##sfp[card].trace[febex_ch][trace_length_m1], DATA16);
 
 
 /* Febex filter traces function */
 //#define xstr(x) str(x), test to replace number in "Fi400", did not work 
 //#define str(x) #x
 #define SIGNAL_Filter(name, ch, card, febex_ch, tl, sfp)\
-SIGNAL(name##_##ch##_##Fi1   , febex.febextrace_##sfp[card].filter[febex_ch][0],\
-       name##_##ch##_##Fi##tl, febex.febextrace_##sfp[card].filter[febex_ch][trace_length_m1], DATA32);
+SIGNAL(name##_##ch##_##Fi1   , pspx2.data.febextrace_##sfp[card].filter[febex_ch][0],\
+       name##_##ch##_##Fi##tl, pspx2.data.febextrace_##sfp[card].filter[febex_ch][trace_length_m1], DATA32);
 
 //SFP 0
 SIGNAL(ZERO_SUPPRESS_MULTI(20): PSPX01_01); //PSP1: energy
@@ -1568,141 +1568,141 @@ SIGNAL(ZERO_SUPPRESS: PSPXT03_124_Tr1);
 SIGNAL(ZERO_SUPPRESS: PSPXT03_126_Tr1);      
 SIGNAL(ZERO_SUPPRESS: PSPXT03_128_Tr1);  
 
-SIGNAL_Traces(PSPXT03, 1, 10, 0, 1000, 1)  
-SIGNAL_Traces(PSPXT03, 3, 10, 1, 1000, 1)
-SIGNAL_Traces(PSPXT03, 5, 10, 2, 1000, 1)  
-SIGNAL_Traces(PSPXT03, 7, 10, 3, 1000, 1)
-SIGNAL_Traces(PSPXT03, 9, 10, 4, 1000, 1)  
-SIGNAL_Traces(PSPXT03, 11, 10, 5, 1000, 1)
-SIGNAL_Traces(PSPXT03, 13, 10, 6, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 15, 10, 7, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 17, 10, 8, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 19, 10, 9, 1000, 1)
-SIGNAL_Traces(PSPXT03, 21, 10, 10, 1000, 1)
-SIGNAL_Traces(PSPXT03, 23, 10, 11, 1000, 1)
-SIGNAL_Traces(PSPXT03, 25, 10, 12, 1000, 1)
-SIGNAL_Traces(PSPXT03, 27, 10, 13, 1000, 1)
-SIGNAL_Traces(PSPXT03, 29, 10, 14, 1000, 1)
-SIGNAL_Traces(PSPXT03, 31, 10, 15, 1000, 1)
+SIGNAL_Traces(PSPXT03, 1, 10, 0, 1000, 0)  
+SIGNAL_Traces(PSPXT03, 3, 10, 1, 1000, 0)
+SIGNAL_Traces(PSPXT03, 5, 10, 2, 1000, 0)  
+SIGNAL_Traces(PSPXT03, 7, 10, 3, 1000, 0)
+SIGNAL_Traces(PSPXT03, 9, 10, 4, 1000, 0)  
+SIGNAL_Traces(PSPXT03, 11, 10, 5, 1000, 0)
+SIGNAL_Traces(PSPXT03, 13, 10, 6, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 15, 10, 7, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 17, 10, 8, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 19, 10, 9, 1000, 0)
+SIGNAL_Traces(PSPXT03, 21, 10, 10, 1000, 0)
+SIGNAL_Traces(PSPXT03, 23, 10, 11, 1000, 0)
+SIGNAL_Traces(PSPXT03, 25, 10, 12, 1000, 0)
+SIGNAL_Traces(PSPXT03, 27, 10, 13, 1000, 0)
+SIGNAL_Traces(PSPXT03, 29, 10, 14, 1000, 0)
+SIGNAL_Traces(PSPXT03, 31, 10, 15, 1000, 0)
 
-SIGNAL_Traces(PSPXT03, 33, 8, 0, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 35, 8, 1, 1000, 1)
-SIGNAL_Traces(PSPXT03, 37, 8, 2, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 39, 8, 3, 1000, 1)
-SIGNAL_Traces(PSPXT03, 41, 8, 4, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 43, 8, 5, 1000, 1)
-SIGNAL_Traces(PSPXT03, 45, 8, 6, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 47, 8, 7, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 49, 8, 8, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 51, 8, 9, 1000, 1)
-SIGNAL_Traces(PSPXT03, 53, 8, 10, 1000, 1)
-SIGNAL_Traces(PSPXT03, 55, 8, 11, 1000, 1)
-SIGNAL_Traces(PSPXT03, 57, 8, 12, 1000, 1)
-SIGNAL_Traces(PSPXT03, 59, 8, 13, 1000, 1)
-SIGNAL_Traces(PSPXT03, 61, 8, 14, 1000, 1)
-SIGNAL_Traces(PSPXT03, 63, 8, 15, 1000, 1)
+SIGNAL_Traces(PSPXT03, 33, 8, 0, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 35, 8, 1, 1000, 0)
+SIGNAL_Traces(PSPXT03, 37, 8, 2, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 39, 8, 3, 1000, 0)
+SIGNAL_Traces(PSPXT03, 41, 8, 4, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 43, 8, 5, 1000, 0)
+SIGNAL_Traces(PSPXT03, 45, 8, 6, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 47, 8, 7, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 49, 8, 8, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 51, 8, 9, 1000, 0)
+SIGNAL_Traces(PSPXT03, 53, 8, 10, 1000, 0)
+SIGNAL_Traces(PSPXT03, 55, 8, 11, 1000, 0)
+SIGNAL_Traces(PSPXT03, 57, 8, 12, 1000, 0)
+SIGNAL_Traces(PSPXT03, 59, 8, 13, 1000, 0)
+SIGNAL_Traces(PSPXT03, 61, 8, 14, 1000, 0)
+SIGNAL_Traces(PSPXT03, 63, 8, 15, 1000, 0)
 
-SIGNAL_Traces(PSPXT03, 2, 12, 0, 1000, 1)  
-SIGNAL_Traces(PSPXT03, 4, 12, 1, 1000, 1)
-SIGNAL_Traces(PSPXT03, 6, 12, 2, 1000, 1)  
-SIGNAL_Traces(PSPXT03, 8, 12, 3, 1000, 1)
-SIGNAL_Traces(PSPXT03, 10, 12, 4, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 12, 12, 5, 1000, 1)
-SIGNAL_Traces(PSPXT03, 14, 12, 6, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 16, 12, 7, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 18, 12, 8, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 20, 12, 9, 1000, 1)
-SIGNAL_Traces(PSPXT03, 22, 12, 10, 1000, 1)
-SIGNAL_Traces(PSPXT03, 24, 12, 11, 1000, 1)
-SIGNAL_Traces(PSPXT03, 26, 12, 12, 1000, 1)
-SIGNAL_Traces(PSPXT03, 28, 12, 13, 1000, 1)
-SIGNAL_Traces(PSPXT03, 30, 12, 14, 1000, 1)
-SIGNAL_Traces(PSPXT03, 32, 12, 15, 1000, 1)
+SIGNAL_Traces(PSPXT03, 2, 12, 0, 1000, 0)  
+SIGNAL_Traces(PSPXT03, 4, 12, 1, 1000, 0)
+SIGNAL_Traces(PSPXT03, 6, 12, 2, 1000, 0)  
+SIGNAL_Traces(PSPXT03, 8, 12, 3, 1000, 0)
+SIGNAL_Traces(PSPXT03, 10, 12, 4, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 12, 12, 5, 1000, 0)
+SIGNAL_Traces(PSPXT03, 14, 12, 6, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 16, 12, 7, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 18, 12, 8, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 20, 12, 9, 1000, 0)
+SIGNAL_Traces(PSPXT03, 22, 12, 10, 1000, 0)
+SIGNAL_Traces(PSPXT03, 24, 12, 11, 1000, 0)
+SIGNAL_Traces(PSPXT03, 26, 12, 12, 1000, 0)
+SIGNAL_Traces(PSPXT03, 28, 12, 13, 1000, 0)
+SIGNAL_Traces(PSPXT03, 30, 12, 14, 1000, 0)
+SIGNAL_Traces(PSPXT03, 32, 12, 15, 1000, 0)
 
-SIGNAL_Traces(PSPXT03, 34, 14, 0, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 36, 14, 1, 1000, 1)
-SIGNAL_Traces(PSPXT03, 38, 14, 2, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 40, 14, 3, 1000, 1)
-SIGNAL_Traces(PSPXT03, 42, 14, 4, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 44, 14, 5, 1000, 1)
-SIGNAL_Traces(PSPXT03, 46, 14, 6, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 48, 14, 7, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 50, 14, 8, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 52, 14, 9, 1000, 1)
-SIGNAL_Traces(PSPXT03, 54, 14, 10, 1000, 1)
-SIGNAL_Traces(PSPXT03, 56, 14, 11, 1000, 1)
-SIGNAL_Traces(PSPXT03, 58, 14, 12, 1000, 1)
-SIGNAL_Traces(PSPXT03, 60, 14, 13, 1000, 1)
-SIGNAL_Traces(PSPXT03, 62, 14, 14, 1000, 1)
-SIGNAL_Traces(PSPXT03, 64, 14, 15, 1000, 1)
+SIGNAL_Traces(PSPXT03, 34, 14, 0, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 36, 14, 1, 1000, 0)
+SIGNAL_Traces(PSPXT03, 38, 14, 2, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 40, 14, 3, 1000, 0)
+SIGNAL_Traces(PSPXT03, 42, 14, 4, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 44, 14, 5, 1000, 0)
+SIGNAL_Traces(PSPXT03, 46, 14, 6, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 48, 14, 7, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 50, 14, 8, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 52, 14, 9, 1000, 0)
+SIGNAL_Traces(PSPXT03, 54, 14, 10, 1000, 0)
+SIGNAL_Traces(PSPXT03, 56, 14, 11, 1000, 0)
+SIGNAL_Traces(PSPXT03, 58, 14, 12, 1000, 0)
+SIGNAL_Traces(PSPXT03, 60, 14, 13, 1000, 0)
+SIGNAL_Traces(PSPXT03, 62, 14, 14, 1000, 0)
+SIGNAL_Traces(PSPXT03, 64, 14, 15, 1000, 0)
 
-SIGNAL_Traces(PSPXT03, 65, 2, 0, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 67, 2, 1, 1000, 1)
-SIGNAL_Traces(PSPXT03, 69, 2, 2, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 71, 2, 3, 1000, 1)
-SIGNAL_Traces(PSPXT03, 73, 2, 4, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 75, 2, 5, 1000, 1)
-SIGNAL_Traces(PSPXT03, 77, 2, 6, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 79, 2, 7, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 81, 2, 8, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 83, 2, 9, 1000, 1)
-SIGNAL_Traces(PSPXT03, 85, 2, 10, 1000, 1)
-SIGNAL_Traces(PSPXT03, 87, 2, 11, 1000, 1)
-SIGNAL_Traces(PSPXT03, 89, 2, 12, 1000, 1)
-SIGNAL_Traces(PSPXT03, 91, 2, 13, 1000, 1)
-SIGNAL_Traces(PSPXT03, 93, 2, 14, 1000, 1)
-SIGNAL_Traces(PSPXT03, 95, 2, 15, 1000, 1)
+SIGNAL_Traces(PSPXT03, 65, 2, 0, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 67, 2, 1, 1000, 0)
+SIGNAL_Traces(PSPXT03, 69, 2, 2, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 71, 2, 3, 1000, 0)
+SIGNAL_Traces(PSPXT03, 73, 2, 4, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 75, 2, 5, 1000, 0)
+SIGNAL_Traces(PSPXT03, 77, 2, 6, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 79, 2, 7, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 81, 2, 8, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 83, 2, 9, 1000, 0)
+SIGNAL_Traces(PSPXT03, 85, 2, 10, 1000, 0)
+SIGNAL_Traces(PSPXT03, 87, 2, 11, 1000, 0)
+SIGNAL_Traces(PSPXT03, 89, 2, 12, 1000, 0)
+SIGNAL_Traces(PSPXT03, 91, 2, 13, 1000, 0)
+SIGNAL_Traces(PSPXT03, 93, 2, 14, 1000, 0)
+SIGNAL_Traces(PSPXT03, 95, 2, 15, 1000, 0)
 
-SIGNAL_Traces(PSPXT03,  97, 0, 0, 1000, 1)   
-SIGNAL_Traces(PSPXT03,  99, 0, 1, 1000, 1)
-SIGNAL_Traces(PSPXT03, 101, 0, 2, 1000, 1)   
-SIGNAL_Traces(PSPXT03, 103, 0, 3, 1000, 1)
-SIGNAL_Traces(PSPXT03, 105, 0, 4, 1000, 1)   
-SIGNAL_Traces(PSPXT03, 107, 0, 5, 1000, 1)
-SIGNAL_Traces(PSPXT03, 109, 0, 6, 1000, 1)   
-SIGNAL_Traces(PSPXT03, 111, 0, 7, 1000, 1)   
-SIGNAL_Traces(PSPXT03, 113, 0, 8, 1000, 1)   
-SIGNAL_Traces(PSPXT03, 115, 0, 9, 1000, 1)
-SIGNAL_Traces(PSPXT03, 117, 0, 10, 1000, 1)  
-SIGNAL_Traces(PSPXT03, 119, 0, 11, 1000, 1)
-SIGNAL_Traces(PSPXT03, 121, 0, 12, 1000, 1)  
-SIGNAL_Traces(PSPXT03, 123, 0, 13, 1000, 1)  
-SIGNAL_Traces(PSPXT03, 125, 0, 14, 1000, 1)  
-SIGNAL_Traces(PSPXT03, 127, 0, 15, 1000, 1)
+SIGNAL_Traces(PSPXT03,  97, 0, 0, 1000, 0)   
+SIGNAL_Traces(PSPXT03,  99, 0, 1, 1000, 0)
+SIGNAL_Traces(PSPXT03, 101, 0, 2, 1000, 0)   
+SIGNAL_Traces(PSPXT03, 103, 0, 3, 1000, 0)
+SIGNAL_Traces(PSPXT03, 105, 0, 4, 1000, 0)   
+SIGNAL_Traces(PSPXT03, 107, 0, 5, 1000, 0)
+SIGNAL_Traces(PSPXT03, 109, 0, 6, 1000, 0)   
+SIGNAL_Traces(PSPXT03, 111, 0, 7, 1000, 0)   
+SIGNAL_Traces(PSPXT03, 113, 0, 8, 1000, 0)   
+SIGNAL_Traces(PSPXT03, 115, 0, 9, 1000, 0)
+SIGNAL_Traces(PSPXT03, 117, 0, 10, 1000, 0)  
+SIGNAL_Traces(PSPXT03, 119, 0, 11, 1000, 0)
+SIGNAL_Traces(PSPXT03, 121, 0, 12, 1000, 0)  
+SIGNAL_Traces(PSPXT03, 123, 0, 13, 1000, 0)  
+SIGNAL_Traces(PSPXT03, 125, 0, 14, 1000, 0)  
+SIGNAL_Traces(PSPXT03, 127, 0, 15, 1000, 0)
 
-SIGNAL_Traces(PSPXT03, 66, 4, 0, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 68, 4, 1, 1000, 1)
-SIGNAL_Traces(PSPXT03, 70, 4, 2, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 72, 4, 3, 1000, 1)
-SIGNAL_Traces(PSPXT03, 74, 4, 4, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 76, 4, 5, 1000, 1)
-SIGNAL_Traces(PSPXT03, 78, 4, 6, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 80, 4, 7, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 82, 4, 8, 1000, 1) 
-SIGNAL_Traces(PSPXT03, 84, 4, 9, 1000, 1)
-SIGNAL_Traces(PSPXT03, 86, 4, 10, 1000, 1)
-SIGNAL_Traces(PSPXT03, 88, 4, 11, 1000, 1)
-SIGNAL_Traces(PSPXT03, 90, 4, 12, 1000, 1)
-SIGNAL_Traces(PSPXT03, 92, 4, 13, 1000, 1)
-SIGNAL_Traces(PSPXT03, 94, 4, 14, 1000, 1)
-SIGNAL_Traces(PSPXT03, 96, 4, 15, 1000, 1)
+SIGNAL_Traces(PSPXT03, 66, 4, 0, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 68, 4, 1, 1000, 0)
+SIGNAL_Traces(PSPXT03, 70, 4, 2, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 72, 4, 3, 1000, 0)
+SIGNAL_Traces(PSPXT03, 74, 4, 4, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 76, 4, 5, 1000, 0)
+SIGNAL_Traces(PSPXT03, 78, 4, 6, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 80, 4, 7, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 82, 4, 8, 1000, 0) 
+SIGNAL_Traces(PSPXT03, 84, 4, 9, 1000, 0)
+SIGNAL_Traces(PSPXT03, 86, 4, 10, 1000, 0)
+SIGNAL_Traces(PSPXT03, 88, 4, 11, 1000, 0)
+SIGNAL_Traces(PSPXT03, 90, 4, 12, 1000, 0)
+SIGNAL_Traces(PSPXT03, 92, 4, 13, 1000, 0)
+SIGNAL_Traces(PSPXT03, 94, 4, 14, 1000, 0)
+SIGNAL_Traces(PSPXT03, 96, 4, 15, 1000, 0)
 
-SIGNAL_Traces(PSPXT03,  98, 6, 0, 1000, 1)     
-SIGNAL_Traces(PSPXT03, 100, 6, 1, 1000, 1)
-SIGNAL_Traces(PSPXT03, 102, 6, 2, 1000, 1)     
-SIGNAL_Traces(PSPXT03, 104, 6, 3, 1000, 1)
-SIGNAL_Traces(PSPXT03, 106, 6, 4, 1000, 1)     
-SIGNAL_Traces(PSPXT03, 108, 6, 5, 1000, 1)
-SIGNAL_Traces(PSPXT03, 110, 6, 6, 1000, 1)     
-SIGNAL_Traces(PSPXT03, 112, 6, 7, 1000, 1)   
-SIGNAL_Traces(PSPXT03, 114, 6, 8, 1000, 1)     
-SIGNAL_Traces(PSPXT03, 116, 6, 9, 1000, 1)
-SIGNAL_Traces(PSPXT03, 118, 6, 10, 1000, 1)     
-SIGNAL_Traces(PSPXT03, 120, 6, 11, 1000, 1)
-SIGNAL_Traces(PSPXT03, 122, 6, 12, 1000, 1)     
-SIGNAL_Traces(PSPXT03, 124, 6, 13, 1000, 1)   
-SIGNAL_Traces(PSPXT03, 126, 6, 14, 1000, 1)     
-SIGNAL_Traces(PSPXT03, 128, 6, 15, 1000, 1)
+SIGNAL_Traces(PSPXT03,  98, 6, 0, 1000, 0)     
+SIGNAL_Traces(PSPXT03, 100, 6, 1, 1000, 0)
+SIGNAL_Traces(PSPXT03, 102, 6, 2, 1000, 0)     
+SIGNAL_Traces(PSPXT03, 104, 6, 3, 1000, 0)
+SIGNAL_Traces(PSPXT03, 106, 6, 4, 1000, 0)     
+SIGNAL_Traces(PSPXT03, 108, 6, 5, 1000, 0)
+SIGNAL_Traces(PSPXT03, 110, 6, 6, 1000, 0)     
+SIGNAL_Traces(PSPXT03, 112, 6, 7, 1000, 0)   
+SIGNAL_Traces(PSPXT03, 114, 6, 8, 1000, 0)     
+SIGNAL_Traces(PSPXT03, 116, 6, 9, 1000, 0)
+SIGNAL_Traces(PSPXT03, 118, 6, 10, 1000, 0)     
+SIGNAL_Traces(PSPXT03, 120, 6, 11, 1000, 0)
+SIGNAL_Traces(PSPXT03, 122, 6, 12, 1000, 0)     
+SIGNAL_Traces(PSPXT03, 124, 6, 13, 1000, 0)   
+SIGNAL_Traces(PSPXT03, 126, 6, 14, 1000, 0)     
+SIGNAL_Traces(PSPXT03, 128, 6, 15, 1000, 0)
 
 
 /* FEBEX filter traces PSP2: energy*/       
@@ -1842,141 +1842,141 @@ SIGNAL(ZERO_SUPPRESS: PSPXT03_124_Fi1);
 SIGNAL(ZERO_SUPPRESS: PSPXT03_126_Fi1);      
 SIGNAL(ZERO_SUPPRESS: PSPXT03_128_Fi1);  
 
-SIGNAL_Filter(PSPXT03, 1, 10, 0, 1000, 1)  
-SIGNAL_Filter(PSPXT03, 3, 10, 1, 1000, 1)
-SIGNAL_Filter(PSPXT03, 5, 10, 2, 1000, 1)  
-SIGNAL_Filter(PSPXT03, 7, 10, 3, 1000, 1)
-SIGNAL_Filter(PSPXT03, 9, 10, 4, 1000, 1)  
-SIGNAL_Filter(PSPXT03, 11, 10, 5, 1000, 1)
-SIGNAL_Filter(PSPXT03, 13, 10, 6, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 15, 10, 7, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 17, 10, 8, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 19, 10, 9, 1000, 1)
-SIGNAL_Filter(PSPXT03, 21, 10, 10, 1000, 1)
-SIGNAL_Filter(PSPXT03, 23, 10, 11, 1000, 1)
-SIGNAL_Filter(PSPXT03, 25, 10, 12, 1000, 1)
-SIGNAL_Filter(PSPXT03, 27, 10, 13, 1000, 1)
-SIGNAL_Filter(PSPXT03, 29, 10, 14, 1000, 1)
-SIGNAL_Filter(PSPXT03, 31, 10, 15, 1000, 1)
+SIGNAL_Filter(PSPXT03, 1, 10, 0, 1000, 0)  
+SIGNAL_Filter(PSPXT03, 3, 10, 1, 1000, 0)
+SIGNAL_Filter(PSPXT03, 5, 10, 2, 1000, 0)  
+SIGNAL_Filter(PSPXT03, 7, 10, 3, 1000, 0)
+SIGNAL_Filter(PSPXT03, 9, 10, 4, 1000, 0)  
+SIGNAL_Filter(PSPXT03, 11, 10, 5, 1000, 0)
+SIGNAL_Filter(PSPXT03, 13, 10, 6, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 15, 10, 7, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 17, 10, 8, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 19, 10, 9, 1000, 0)
+SIGNAL_Filter(PSPXT03, 21, 10, 10, 1000, 0)
+SIGNAL_Filter(PSPXT03, 23, 10, 11, 1000, 0)
+SIGNAL_Filter(PSPXT03, 25, 10, 12, 1000, 0)
+SIGNAL_Filter(PSPXT03, 27, 10, 13, 1000, 0)
+SIGNAL_Filter(PSPXT03, 29, 10, 14, 1000, 0)
+SIGNAL_Filter(PSPXT03, 31, 10, 15, 1000, 0)
 
-SIGNAL_Filter(PSPXT03, 33, 8, 0, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 35, 8, 1, 1000, 1)
-SIGNAL_Filter(PSPXT03, 37, 8, 2, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 39, 8, 3, 1000, 1)
-SIGNAL_Filter(PSPXT03, 41, 8, 4, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 43, 8, 5, 1000, 1)
-SIGNAL_Filter(PSPXT03, 45, 8, 6, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 47, 8, 7, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 49, 8, 8, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 51, 8, 9, 1000, 1)
-SIGNAL_Filter(PSPXT03, 53, 8, 10, 1000, 1)
-SIGNAL_Filter(PSPXT03, 55, 8, 11, 1000, 1)
-SIGNAL_Filter(PSPXT03, 57, 8, 12, 1000, 1)
-SIGNAL_Filter(PSPXT03, 59, 8, 13, 1000, 1)
-SIGNAL_Filter(PSPXT03, 61, 8, 14, 1000, 1)
-SIGNAL_Filter(PSPXT03, 63, 8, 15, 1000, 1)
+SIGNAL_Filter(PSPXT03, 33, 8, 0, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 35, 8, 1, 1000, 0)
+SIGNAL_Filter(PSPXT03, 37, 8, 2, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 39, 8, 3, 1000, 0)
+SIGNAL_Filter(PSPXT03, 41, 8, 4, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 43, 8, 5, 1000, 0)
+SIGNAL_Filter(PSPXT03, 45, 8, 6, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 47, 8, 7, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 49, 8, 8, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 51, 8, 9, 1000, 0)
+SIGNAL_Filter(PSPXT03, 53, 8, 10, 1000, 0)
+SIGNAL_Filter(PSPXT03, 55, 8, 11, 1000, 0)
+SIGNAL_Filter(PSPXT03, 57, 8, 12, 1000, 0)
+SIGNAL_Filter(PSPXT03, 59, 8, 13, 1000, 0)
+SIGNAL_Filter(PSPXT03, 61, 8, 14, 1000, 0)
+SIGNAL_Filter(PSPXT03, 63, 8, 15, 1000, 0)
 
-SIGNAL_Filter(PSPXT03, 2, 12, 0, 1000, 1)  
-SIGNAL_Filter(PSPXT03, 4, 12, 1, 1000, 1)
-SIGNAL_Filter(PSPXT03, 6, 12, 2, 1000, 1)  
-SIGNAL_Filter(PSPXT03, 8, 12, 3, 1000, 1)
-SIGNAL_Filter(PSPXT03, 10, 12, 4, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 12, 12, 5, 1000, 1)
-SIGNAL_Filter(PSPXT03, 14, 12, 6, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 16, 12, 7, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 18, 12, 8, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 20, 12, 9, 1000, 1)
-SIGNAL_Filter(PSPXT03, 22, 12, 10, 1000, 1)
-SIGNAL_Filter(PSPXT03, 24, 12, 11, 1000, 1)
-SIGNAL_Filter(PSPXT03, 26, 12, 12, 1000, 1)
-SIGNAL_Filter(PSPXT03, 28, 12, 13, 1000, 1)
-SIGNAL_Filter(PSPXT03, 30, 12, 14, 1000, 1)
-SIGNAL_Filter(PSPXT03, 32, 12, 15, 1000, 1)
+SIGNAL_Filter(PSPXT03, 2, 12, 0, 1000, 0)  
+SIGNAL_Filter(PSPXT03, 4, 12, 1, 1000, 0)
+SIGNAL_Filter(PSPXT03, 6, 12, 2, 1000, 0)  
+SIGNAL_Filter(PSPXT03, 8, 12, 3, 1000, 0)
+SIGNAL_Filter(PSPXT03, 10, 12, 4, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 12, 12, 5, 1000, 0)
+SIGNAL_Filter(PSPXT03, 14, 12, 6, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 16, 12, 7, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 18, 12, 8, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 20, 12, 9, 1000, 0)
+SIGNAL_Filter(PSPXT03, 22, 12, 10, 1000, 0)
+SIGNAL_Filter(PSPXT03, 24, 12, 11, 1000, 0)
+SIGNAL_Filter(PSPXT03, 26, 12, 12, 1000, 0)
+SIGNAL_Filter(PSPXT03, 28, 12, 13, 1000, 0)
+SIGNAL_Filter(PSPXT03, 30, 12, 14, 1000, 0)
+SIGNAL_Filter(PSPXT03, 32, 12, 15, 1000, 0)
 
-SIGNAL_Filter(PSPXT03, 34, 14, 0, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 36, 14, 1, 1000, 1)
-SIGNAL_Filter(PSPXT03, 38, 14, 2, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 40, 14, 3, 1000, 1)
-SIGNAL_Filter(PSPXT03, 42, 14, 4, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 44, 14, 5, 1000, 1)
-SIGNAL_Filter(PSPXT03, 46, 14, 6, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 48, 14, 7, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 50, 14, 8, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 52, 14, 9, 1000, 1)
-SIGNAL_Filter(PSPXT03, 54, 14, 10, 1000, 1)
-SIGNAL_Filter(PSPXT03, 56, 14, 11, 1000, 1)
-SIGNAL_Filter(PSPXT03, 58, 14, 12, 1000, 1)
-SIGNAL_Filter(PSPXT03, 60, 14, 13, 1000, 1)
-SIGNAL_Filter(PSPXT03, 62, 14, 14, 1000, 1)
-SIGNAL_Filter(PSPXT03, 64, 14, 15, 1000, 1)
+SIGNAL_Filter(PSPXT03, 34, 14, 0, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 36, 14, 1, 1000, 0)
+SIGNAL_Filter(PSPXT03, 38, 14, 2, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 40, 14, 3, 1000, 0)
+SIGNAL_Filter(PSPXT03, 42, 14, 4, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 44, 14, 5, 1000, 0)
+SIGNAL_Filter(PSPXT03, 46, 14, 6, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 48, 14, 7, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 50, 14, 8, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 52, 14, 9, 1000, 0)
+SIGNAL_Filter(PSPXT03, 54, 14, 10, 1000, 0)
+SIGNAL_Filter(PSPXT03, 56, 14, 11, 1000, 0)
+SIGNAL_Filter(PSPXT03, 58, 14, 12, 1000, 0)
+SIGNAL_Filter(PSPXT03, 60, 14, 13, 1000, 0)
+SIGNAL_Filter(PSPXT03, 62, 14, 14, 1000, 0)
+SIGNAL_Filter(PSPXT03, 64, 14, 15, 1000, 0)
 
-SIGNAL_Filter(PSPXT03, 65, 2, 0, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 67, 2, 1, 1000, 1)
-SIGNAL_Filter(PSPXT03, 69, 2, 2, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 71, 2, 3, 1000, 1)
-SIGNAL_Filter(PSPXT03, 73, 2, 4, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 75, 2, 5, 1000, 1)
-SIGNAL_Filter(PSPXT03, 77, 2, 6, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 79, 2, 7, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 81, 2, 8, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 83, 2, 9, 1000, 1)
-SIGNAL_Filter(PSPXT03, 85, 2, 10, 1000, 1)
-SIGNAL_Filter(PSPXT03, 87, 2, 11, 1000, 1)
-SIGNAL_Filter(PSPXT03, 89, 2, 12, 1000, 1)
-SIGNAL_Filter(PSPXT03, 91, 2, 13, 1000, 1)
-SIGNAL_Filter(PSPXT03, 93, 2, 14, 1000, 1)
-SIGNAL_Filter(PSPXT03, 95, 2, 15, 1000, 1)
+SIGNAL_Filter(PSPXT03, 65, 2, 0, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 67, 2, 1, 1000, 0)
+SIGNAL_Filter(PSPXT03, 69, 2, 2, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 71, 2, 3, 1000, 0)
+SIGNAL_Filter(PSPXT03, 73, 2, 4, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 75, 2, 5, 1000, 0)
+SIGNAL_Filter(PSPXT03, 77, 2, 6, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 79, 2, 7, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 81, 2, 8, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 83, 2, 9, 1000, 0)
+SIGNAL_Filter(PSPXT03, 85, 2, 10, 1000, 0)
+SIGNAL_Filter(PSPXT03, 87, 2, 11, 1000, 0)
+SIGNAL_Filter(PSPXT03, 89, 2, 12, 1000, 0)
+SIGNAL_Filter(PSPXT03, 91, 2, 13, 1000, 0)
+SIGNAL_Filter(PSPXT03, 93, 2, 14, 1000, 0)
+SIGNAL_Filter(PSPXT03, 95, 2, 15, 1000, 0)
 
-SIGNAL_Filter(PSPXT03,  97, 0, 0, 1000, 1)   
-SIGNAL_Filter(PSPXT03,  99, 0, 1, 1000, 1)
-SIGNAL_Filter(PSPXT03, 101, 0, 2, 1000, 1)   
-SIGNAL_Filter(PSPXT03, 103, 0, 3, 1000, 1)
-SIGNAL_Filter(PSPXT03, 105, 0, 4, 1000, 1)   
-SIGNAL_Filter(PSPXT03, 107, 0, 5, 1000, 1)
-SIGNAL_Filter(PSPXT03, 109, 0, 6, 1000, 1)   
-SIGNAL_Filter(PSPXT03, 111, 0, 7, 1000, 1)   
-SIGNAL_Filter(PSPXT03, 113, 0, 8, 1000, 1)   
-SIGNAL_Filter(PSPXT03, 115, 0, 9, 1000, 1)
-SIGNAL_Filter(PSPXT03, 117, 0, 10, 1000, 1)  
-SIGNAL_Filter(PSPXT03, 119, 0, 11, 1000, 1)
-SIGNAL_Filter(PSPXT03, 121, 0, 12, 1000, 1)  
-SIGNAL_Filter(PSPXT03, 123, 0, 13, 1000, 1)  
-SIGNAL_Filter(PSPXT03, 125, 0, 14, 1000, 1)  
-SIGNAL_Filter(PSPXT03, 127, 0, 15, 1000, 1)
+SIGNAL_Filter(PSPXT03,  97, 0, 0, 1000, 0)   
+SIGNAL_Filter(PSPXT03,  99, 0, 1, 1000, 0)
+SIGNAL_Filter(PSPXT03, 101, 0, 2, 1000, 0)   
+SIGNAL_Filter(PSPXT03, 103, 0, 3, 1000, 0)
+SIGNAL_Filter(PSPXT03, 105, 0, 4, 1000, 0)   
+SIGNAL_Filter(PSPXT03, 107, 0, 5, 1000, 0)
+SIGNAL_Filter(PSPXT03, 109, 0, 6, 1000, 0)   
+SIGNAL_Filter(PSPXT03, 111, 0, 7, 1000, 0)   
+SIGNAL_Filter(PSPXT03, 113, 0, 8, 1000, 0)   
+SIGNAL_Filter(PSPXT03, 115, 0, 9, 1000, 0)
+SIGNAL_Filter(PSPXT03, 117, 0, 10, 1000, 0)  
+SIGNAL_Filter(PSPXT03, 119, 0, 11, 1000, 0)
+SIGNAL_Filter(PSPXT03, 121, 0, 12, 1000, 0)  
+SIGNAL_Filter(PSPXT03, 123, 0, 13, 1000, 0)  
+SIGNAL_Filter(PSPXT03, 125, 0, 14, 1000, 0)  
+SIGNAL_Filter(PSPXT03, 127, 0, 15, 1000, 0)
 
-SIGNAL_Filter(PSPXT03, 66, 4, 0, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 68, 4, 1, 1000, 1)
-SIGNAL_Filter(PSPXT03, 70, 4, 2, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 72, 4, 3, 1000, 1)
-SIGNAL_Filter(PSPXT03, 74, 4, 4, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 76, 4, 5, 1000, 1)
-SIGNAL_Filter(PSPXT03, 78, 4, 6, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 80, 4, 7, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 82, 4, 8, 1000, 1) 
-SIGNAL_Filter(PSPXT03, 84, 4, 9, 1000, 1)
-SIGNAL_Filter(PSPXT03, 86, 4, 10, 1000, 1)
-SIGNAL_Filter(PSPXT03, 88, 4, 11, 1000, 1)
-SIGNAL_Filter(PSPXT03, 90, 4, 12, 1000, 1)
-SIGNAL_Filter(PSPXT03, 92, 4, 13, 1000, 1)
-SIGNAL_Filter(PSPXT03, 94, 4, 14, 1000, 1)
-SIGNAL_Filter(PSPXT03, 96, 4, 15, 1000, 1)
+SIGNAL_Filter(PSPXT03, 66, 4, 0, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 68, 4, 1, 1000, 0)
+SIGNAL_Filter(PSPXT03, 70, 4, 2, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 72, 4, 3, 1000, 0)
+SIGNAL_Filter(PSPXT03, 74, 4, 4, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 76, 4, 5, 1000, 0)
+SIGNAL_Filter(PSPXT03, 78, 4, 6, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 80, 4, 7, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 82, 4, 8, 1000, 0) 
+SIGNAL_Filter(PSPXT03, 84, 4, 9, 1000, 0)
+SIGNAL_Filter(PSPXT03, 86, 4, 10, 1000, 0)
+SIGNAL_Filter(PSPXT03, 88, 4, 11, 1000, 0)
+SIGNAL_Filter(PSPXT03, 90, 4, 12, 1000, 0)
+SIGNAL_Filter(PSPXT03, 92, 4, 13, 1000, 0)
+SIGNAL_Filter(PSPXT03, 94, 4, 14, 1000, 0)
+SIGNAL_Filter(PSPXT03, 96, 4, 15, 1000, 0)
 
-SIGNAL_Filter(PSPXT03,  98, 6, 0, 1000, 1)     
-SIGNAL_Filter(PSPXT03, 100, 6, 1, 1000, 1)
-SIGNAL_Filter(PSPXT03, 102, 6, 2, 1000, 1)     
-SIGNAL_Filter(PSPXT03, 104, 6, 3, 1000, 1)
-SIGNAL_Filter(PSPXT03, 106, 6, 4, 1000, 1)     
-SIGNAL_Filter(PSPXT03, 108, 6, 5, 1000, 1)
-SIGNAL_Filter(PSPXT03, 110, 6, 6, 1000, 1)     
-SIGNAL_Filter(PSPXT03, 112, 6, 7, 1000, 1)   
-SIGNAL_Filter(PSPXT03, 114, 6, 8, 1000, 1)     
-SIGNAL_Filter(PSPXT03, 116, 6, 9, 1000, 1)
-SIGNAL_Filter(PSPXT03, 118, 6, 10, 1000, 1)     
-SIGNAL_Filter(PSPXT03, 120, 6, 11, 1000, 1)
-SIGNAL_Filter(PSPXT03, 122, 6, 12, 1000, 1)     
-SIGNAL_Filter(PSPXT03, 124, 6, 13, 1000, 1)   
-SIGNAL_Filter(PSPXT03, 126, 6, 14, 1000, 1)     
-SIGNAL_Filter(PSPXT03, 128, 6, 15, 1000, 1)
+SIGNAL_Filter(PSPXT03,  98, 6, 0, 1000, 0)     
+SIGNAL_Filter(PSPXT03, 100, 6, 1, 1000, 0)
+SIGNAL_Filter(PSPXT03, 102, 6, 2, 1000, 0)     
+SIGNAL_Filter(PSPXT03, 104, 6, 3, 1000, 0)
+SIGNAL_Filter(PSPXT03, 106, 6, 4, 1000, 0)     
+SIGNAL_Filter(PSPXT03, 108, 6, 5, 1000, 0)
+SIGNAL_Filter(PSPXT03, 110, 6, 6, 1000, 0)     
+SIGNAL_Filter(PSPXT03, 112, 6, 7, 1000, 0)   
+SIGNAL_Filter(PSPXT03, 114, 6, 8, 1000, 0)     
+SIGNAL_Filter(PSPXT03, 116, 6, 9, 1000, 0)
+SIGNAL_Filter(PSPXT03, 118, 6, 10, 1000, 0)     
+SIGNAL_Filter(PSPXT03, 120, 6, 11, 1000, 0)
+SIGNAL_Filter(PSPXT03, 122, 6, 12, 1000, 0)     
+SIGNAL_Filter(PSPXT03, 124, 6, 13, 1000, 0)   
+SIGNAL_Filter(PSPXT03, 126, 6, 14, 1000, 0)     
+SIGNAL_Filter(PSPXT03, 128, 6, 15, 1000, 0)
 
 #endif
 
@@ -1984,144 +1984,142 @@ SIGNAL_Filter(PSPXT03, 128, 6, 15, 1000, 1)
 
 
 
-/* FEBEX SFP0 without traces PSP2: energy*/
+/* PSP 2: PSPX03 energy filter */
 
-
-SIGNAL(PSPX03_1, pspx2.data.febex_0[10].e[0], DATA32);
-SIGNAL(PSPX03_3, pspx2.data.febex_0[10].e[1], DATA32);
-SIGNAL(PSPX03_5, pspx2.data.febex_0[10].e[2], DATA32);
+SIGNAL(PSPX03_1, pspx2.data.febex_0[10].e[6], DATA32);
+SIGNAL(PSPX03_3, pspx2.data.febex_0[10].e[5], DATA32);
+SIGNAL(PSPX03_5, pspx2.data.febex_0[10].e[4], DATA32);
 SIGNAL(PSPX03_7, pspx2.data.febex_0[10].e[3], DATA32);
-SIGNAL(PSPX03_9, pspx2.data.febex_0[10].e[4], DATA32);
-SIGNAL(PSPX03_11, pspx2.data.febex_0[10].e[5], DATA32);
-SIGNAL(PSPX03_13, pspx2.data.febex_0[10].e[6], DATA32);
+SIGNAL(PSPX03_9, pspx2.data.febex_0[10].e[2], DATA32);
+SIGNAL(PSPX03_11, pspx2.data.febex_0[10].e[1], DATA32);
+SIGNAL(PSPX03_13, pspx2.data.febex_0[10].e[0], DATA32);
 SIGNAL(PSPX03_15, pspx2.data.febex_0[10].e[7], DATA32);
 SIGNAL(PSPX03_17, pspx2.data.febex_0[10].e[8], DATA32);
-SIGNAL(PSPX03_19, pspx2.data.febex_0[10].e[9], DATA32);
-SIGNAL(PSPX03_21, pspx2.data.febex_0[10].e[10], DATA32);
-SIGNAL(PSPX03_23, pspx2.data.febex_0[10].e[11], DATA32);
+SIGNAL(PSPX03_19, pspx2.data.febex_0[10].e[15], DATA32);
+SIGNAL(PSPX03_21, pspx2.data.febex_0[10].e[14], DATA32);
+SIGNAL(PSPX03_23, pspx2.data.febex_0[10].e[13], DATA32);
 SIGNAL(PSPX03_25, pspx2.data.febex_0[10].e[12], DATA32);
-SIGNAL(PSPX03_27, pspx2.data.febex_0[10].e[13], DATA32);
-SIGNAL(PSPX03_29, pspx2.data.febex_0[10].e[14], DATA32);
-SIGNAL(PSPX03_31, pspx2.data.febex_0[10].e[15], DATA32);
+SIGNAL(PSPX03_27, pspx2.data.febex_0[10].e[11], DATA32);
+SIGNAL(PSPX03_29, pspx2.data.febex_0[10].e[10], DATA32);
+SIGNAL(PSPX03_31, pspx2.data.febex_0[10].e[9], DATA32);
 
-SIGNAL(PSPX03_33, pspx2.data.febex_0[8].e[0], DATA32);
-SIGNAL(PSPX03_35, pspx2.data.febex_0[8].e[1], DATA32);
-SIGNAL(PSPX03_37, pspx2.data.febex_0[8].e[2], DATA32);
+SIGNAL(PSPX03_33, pspx2.data.febex_0[8].e[6], DATA32);
+SIGNAL(PSPX03_35, pspx2.data.febex_0[8].e[5], DATA32);
+SIGNAL(PSPX03_37, pspx2.data.febex_0[8].e[4], DATA32);
 SIGNAL(PSPX03_39, pspx2.data.febex_0[8].e[3], DATA32);
-SIGNAL(PSPX03_41, pspx2.data.febex_0[8].e[4], DATA32);
-SIGNAL(PSPX03_43, pspx2.data.febex_0[8].e[5], DATA32);
-SIGNAL(PSPX03_45, pspx2.data.febex_0[8].e[6], DATA32);
+SIGNAL(PSPX03_41, pspx2.data.febex_0[8].e[2], DATA32);
+SIGNAL(PSPX03_43, pspx2.data.febex_0[8].e[1], DATA32);
+SIGNAL(PSPX03_45, pspx2.data.febex_0[8].e[0], DATA32);
 SIGNAL(PSPX03_47, pspx2.data.febex_0[8].e[7], DATA32);
 SIGNAL(PSPX03_49, pspx2.data.febex_0[8].e[8], DATA32);
-SIGNAL(PSPX03_51, pspx2.data.febex_0[8].e[9], DATA32);
-SIGNAL(PSPX03_53, pspx2.data.febex_0[8].e[10], DATA32);
-SIGNAL(PSPX03_55, pspx2.data.febex_0[8].e[11], DATA32);
+SIGNAL(PSPX03_51, pspx2.data.febex_0[8].e[15], DATA32);
+SIGNAL(PSPX03_53, pspx2.data.febex_0[8].e[14], DATA32);
+SIGNAL(PSPX03_55, pspx2.data.febex_0[8].e[13], DATA32);
 SIGNAL(PSPX03_57, pspx2.data.febex_0[8].e[12], DATA32);
-SIGNAL(PSPX03_59, pspx2.data.febex_0[8].e[13], DATA32);
-SIGNAL(PSPX03_61, pspx2.data.febex_0[8].e[14], DATA32);
-SIGNAL(PSPX03_63, pspx2.data.febex_0[8].e[15], DATA32);
+SIGNAL(PSPX03_59, pspx2.data.febex_0[8].e[11], DATA32);
+SIGNAL(PSPX03_61, pspx2.data.febex_0[8].e[10], DATA32);
+SIGNAL(PSPX03_63, pspx2.data.febex_0[8].e[9], DATA32);
 
-SIGNAL(PSPX03_2, pspx2.data.febex_0[12].e[0], DATA32);
-SIGNAL(PSPX03_4, pspx2.data.febex_0[12].e[1], DATA32);
-SIGNAL(PSPX03_6, pspx2.data.febex_0[12].e[2], DATA32);
+SIGNAL(PSPX03_2, pspx2.data.febex_0[12].e[6], DATA32);
+SIGNAL(PSPX03_4, pspx2.data.febex_0[12].e[5], DATA32);
+SIGNAL(PSPX03_6, pspx2.data.febex_0[12].e[4], DATA32);
 SIGNAL(PSPX03_8, pspx2.data.febex_0[12].e[3], DATA32);
-SIGNAL(PSPX03_10, pspx2.data.febex_0[12].e[4], DATA32);
-SIGNAL(PSPX03_12, pspx2.data.febex_0[12].e[5], DATA32);
-SIGNAL(PSPX03_14, pspx2.data.febex_0[12].e[6], DATA32);
+SIGNAL(PSPX03_10, pspx2.data.febex_0[12].e[2], DATA32);
+SIGNAL(PSPX03_12, pspx2.data.febex_0[12].e[1], DATA32);
+SIGNAL(PSPX03_14, pspx2.data.febex_0[12].e[0], DATA32);
 SIGNAL(PSPX03_16, pspx2.data.febex_0[12].e[7], DATA32);
 SIGNAL(PSPX03_18, pspx2.data.febex_0[12].e[8], DATA32);
-SIGNAL(PSPX03_20, pspx2.data.febex_0[12].e[9], DATA32);
-SIGNAL(PSPX03_22, pspx2.data.febex_0[12].e[10], DATA32);
-SIGNAL(PSPX03_24, pspx2.data.febex_0[12].e[11], DATA32);
+SIGNAL(PSPX03_20, pspx2.data.febex_0[12].e[15], DATA32);
+SIGNAL(PSPX03_22, pspx2.data.febex_0[12].e[14], DATA32);
+SIGNAL(PSPX03_24, pspx2.data.febex_0[12].e[13], DATA32);
 SIGNAL(PSPX03_26, pspx2.data.febex_0[12].e[12], DATA32);
-SIGNAL(PSPX03_28, pspx2.data.febex_0[12].e[13], DATA32);
-SIGNAL(PSPX03_30, pspx2.data.febex_0[12].e[14], DATA32);
-SIGNAL(PSPX03_32, pspx2.data.febex_0[12].e[15], DATA32);
-
-SIGNAL(PSPX03_34, pspx2.data.febex_0[14].e[0], DATA32);
-SIGNAL(PSPX03_36, pspx2.data.febex_0[14].e[1], DATA32);
-SIGNAL(PSPX03_38, pspx2.data.febex_0[14].e[2], DATA32);
+SIGNAL(PSPX03_28, pspx2.data.febex_0[12].e[11], DATA32);
+SIGNAL(PSPX03_30, pspx2.data.febex_0[12].e[10], DATA32);
+SIGNAL(PSPX03_32, pspx2.data.febex_0[12].e[9], DATA32);
+SIGNAL(PSPX03_34, pspx2.data.febex_0[14].e[6], DATA32);
+SIGNAL(PSPX03_36, pspx2.data.febex_0[14].e[5], DATA32);
+SIGNAL(PSPX03_38, pspx2.data.febex_0[14].e[4], DATA32);
 SIGNAL(PSPX03_40, pspx2.data.febex_0[14].e[3], DATA32);
-SIGNAL(PSPX03_42, pspx2.data.febex_0[14].e[4], DATA32);
-SIGNAL(PSPX03_44, pspx2.data.febex_0[14].e[5], DATA32);
-SIGNAL(PSPX03_46, pspx2.data.febex_0[14].e[6], DATA32);
+SIGNAL(PSPX03_42, pspx2.data.febex_0[14].e[2], DATA32);
+SIGNAL(PSPX03_44, pspx2.data.febex_0[14].e[1], DATA32);
+SIGNAL(PSPX03_46, pspx2.data.febex_0[14].e[0], DATA32);
 SIGNAL(PSPX03_48, pspx2.data.febex_0[14].e[7], DATA32);
 SIGNAL(PSPX03_50, pspx2.data.febex_0[14].e[8], DATA32);
-SIGNAL(PSPX03_52, pspx2.data.febex_0[14].e[9], DATA32);
-SIGNAL(PSPX03_54, pspx2.data.febex_0[14].e[10], DATA32);
-SIGNAL(PSPX03_56, pspx2.data.febex_0[14].e[11], DATA32);
+SIGNAL(PSPX03_52, pspx2.data.febex_0[14].e[15], DATA32);
+SIGNAL(PSPX03_54, pspx2.data.febex_0[14].e[14], DATA32);
+SIGNAL(PSPX03_56, pspx2.data.febex_0[14].e[13], DATA32);
 SIGNAL(PSPX03_58, pspx2.data.febex_0[14].e[12], DATA32);
-SIGNAL(PSPX03_60, pspx2.data.febex_0[14].e[13], DATA32);
-SIGNAL(PSPX03_62, pspx2.data.febex_0[14].e[14], DATA32);
-SIGNAL(PSPX03_64, pspx2.data.febex_0[14].e[15], DATA32);
+SIGNAL(PSPX03_60, pspx2.data.febex_0[14].e[11], DATA32);
+SIGNAL(PSPX03_62, pspx2.data.febex_0[14].e[10], DATA32);
+SIGNAL(PSPX03_64, pspx2.data.febex_0[14].e[9], DATA32);
 
-SIGNAL(PSPX03_65, pspx2.data.febex_0[2].e[0], DATA32);
-SIGNAL(PSPX03_67, pspx2.data.febex_0[2].e[1], DATA32);
-SIGNAL(PSPX03_69, pspx2.data.febex_0[2].e[2], DATA32);
+SIGNAL(PSPX03_65, pspx2.data.febex_0[2].e[6], DATA32);
+SIGNAL(PSPX03_67, pspx2.data.febex_0[2].e[5], DATA32);
+SIGNAL(PSPX03_69, pspx2.data.febex_0[2].e[4], DATA32);
 SIGNAL(PSPX03_71, pspx2.data.febex_0[2].e[3], DATA32);
-SIGNAL(PSPX03_73, pspx2.data.febex_0[2].e[4], DATA32);
-SIGNAL(PSPX03_75, pspx2.data.febex_0[2].e[5], DATA32);
-SIGNAL(PSPX03_77, pspx2.data.febex_0[2].e[6], DATA32);
+SIGNAL(PSPX03_73, pspx2.data.febex_0[2].e[2], DATA32);
+SIGNAL(PSPX03_75, pspx2.data.febex_0[2].e[1], DATA32);
+SIGNAL(PSPX03_77, pspx2.data.febex_0[2].e[0], DATA32);
 SIGNAL(PSPX03_79, pspx2.data.febex_0[2].e[7], DATA32);
 SIGNAL(PSPX03_81, pspx2.data.febex_0[2].e[8], DATA32);
-SIGNAL(PSPX03_83, pspx2.data.febex_0[2].e[9], DATA32);
-SIGNAL(PSPX03_85, pspx2.data.febex_0[2].e[10], DATA32);
-SIGNAL(PSPX03_87, pspx2.data.febex_0[2].e[11], DATA32);
+SIGNAL(PSPX03_83, pspx2.data.febex_0[2].e[15], DATA32);
+SIGNAL(PSPX03_85, pspx2.data.febex_0[2].e[14], DATA32);
+SIGNAL(PSPX03_87, pspx2.data.febex_0[2].e[13], DATA32);
 SIGNAL(PSPX03_89, pspx2.data.febex_0[2].e[12], DATA32);
-SIGNAL(PSPX03_91, pspx2.data.febex_0[2].e[13], DATA32);
-SIGNAL(PSPX03_93, pspx2.data.febex_0[2].e[14], DATA32);
-SIGNAL(PSPX03_95, pspx2.data.febex_0[2].e[15], DATA32);
+SIGNAL(PSPX03_91, pspx2.data.febex_0[2].e[11], DATA32);
+SIGNAL(PSPX03_93, pspx2.data.febex_0[2].e[10], DATA32);
+SIGNAL(PSPX03_95, pspx2.data.febex_0[2].e[9], DATA32);
 
-SIGNAL(PSPX03_97, pspx2.data.febex_0[0].e[0], DATA32);
-SIGNAL(PSPX03_99, pspx2.data.febex_0[0].e[1], DATA32);
-SIGNAL(PSPX03_101, pspx2.data.febex_0[0].e[2], DATA32);
+SIGNAL(PSPX03_97, pspx2.data.febex_0[0].e[6], DATA32);
+SIGNAL(PSPX03_99, pspx2.data.febex_0[0].e[5], DATA32);
+SIGNAL(PSPX03_101, pspx2.data.febex_0[0].e[4], DATA32);
 SIGNAL(PSPX03_103, pspx2.data.febex_0[0].e[3], DATA32);
-SIGNAL(PSPX03_105, pspx2.data.febex_0[0].e[4], DATA32);
-SIGNAL(PSPX03_107, pspx2.data.febex_0[0].e[5], DATA32);
-SIGNAL(PSPX03_109, pspx2.data.febex_0[0].e[6], DATA32);
+SIGNAL(PSPX03_105, pspx2.data.febex_0[0].e[2], DATA32);
+SIGNAL(PSPX03_107, pspx2.data.febex_0[0].e[1], DATA32);
+SIGNAL(PSPX03_109, pspx2.data.febex_0[0].e[0], DATA32);
 SIGNAL(PSPX03_111, pspx2.data.febex_0[0].e[7], DATA32);
 SIGNAL(PSPX03_113, pspx2.data.febex_0[0].e[8], DATA32);
-SIGNAL(PSPX03_115, pspx2.data.febex_0[0].e[9], DATA32);
-SIGNAL(PSPX03_117, pspx2.data.febex_0[0].e[10], DATA32);
-SIGNAL(PSPX03_119, pspx2.data.febex_0[0].e[11], DATA32);
+SIGNAL(PSPX03_115, pspx2.data.febex_0[0].e[15], DATA32);
+SIGNAL(PSPX03_117, pspx2.data.febex_0[0].e[14], DATA32);
+SIGNAL(PSPX03_119, pspx2.data.febex_0[0].e[13], DATA32);
 SIGNAL(PSPX03_121, pspx2.data.febex_0[0].e[12], DATA32);
-SIGNAL(PSPX03_123, pspx2.data.febex_0[0].e[13], DATA32);
-SIGNAL(PSPX03_125, pspx2.data.febex_0[0].e[14], DATA32);
-SIGNAL(PSPX03_127, pspx2.data.febex_0[0].e[15], DATA32);
+SIGNAL(PSPX03_123, pspx2.data.febex_0[0].e[11], DATA32);
+SIGNAL(PSPX03_125, pspx2.data.febex_0[0].e[10], DATA32);
+SIGNAL(PSPX03_127, pspx2.data.febex_0[0].e[9], DATA32);
 
-SIGNAL(PSPX03_66, pspx2.data.febex_0[4].e[0], DATA32);
-SIGNAL(PSPX03_68, pspx2.data.febex_0[4].e[1], DATA32);
-SIGNAL(PSPX03_70, pspx2.data.febex_0[4].e[2], DATA32);
+SIGNAL(PSPX03_66, pspx2.data.febex_0[4].e[6], DATA32);
+SIGNAL(PSPX03_68, pspx2.data.febex_0[4].e[5], DATA32);
+SIGNAL(PSPX03_70, pspx2.data.febex_0[4].e[4], DATA32);
 SIGNAL(PSPX03_72, pspx2.data.febex_0[4].e[3], DATA32);
-SIGNAL(PSPX03_74, pspx2.data.febex_0[4].e[4], DATA32);
-SIGNAL(PSPX03_76, pspx2.data.febex_0[4].e[5], DATA32);
-SIGNAL(PSPX03_78, pspx2.data.febex_0[4].e[6], DATA32);
+SIGNAL(PSPX03_74, pspx2.data.febex_0[4].e[2], DATA32);
+SIGNAL(PSPX03_76, pspx2.data.febex_0[4].e[1], DATA32);
+SIGNAL(PSPX03_78, pspx2.data.febex_0[4].e[0], DATA32);
 SIGNAL(PSPX03_80, pspx2.data.febex_0[4].e[7], DATA32);
 SIGNAL(PSPX03_82, pspx2.data.febex_0[4].e[8], DATA32);
-SIGNAL(PSPX03_84, pspx2.data.febex_0[4].e[9], DATA32);
-SIGNAL(PSPX03_86, pspx2.data.febex_0[4].e[10], DATA32);
-SIGNAL(PSPX03_88, pspx2.data.febex_0[4].e[11], DATA32);
+SIGNAL(PSPX03_84, pspx2.data.febex_0[4].e[15], DATA32);
+SIGNAL(PSPX03_86, pspx2.data.febex_0[4].e[14], DATA32);
+SIGNAL(PSPX03_88, pspx2.data.febex_0[4].e[13], DATA32);
 SIGNAL(PSPX03_90, pspx2.data.febex_0[4].e[12], DATA32);
-SIGNAL(PSPX03_92, pspx2.data.febex_0[4].e[13], DATA32);
-SIGNAL(PSPX03_94, pspx2.data.febex_0[4].e[14], DATA32);
-SIGNAL(PSPX03_96, pspx2.data.febex_0[4].e[15], DATA32);
+SIGNAL(PSPX03_92, pspx2.data.febex_0[4].e[11], DATA32);
+SIGNAL(PSPX03_94, pspx2.data.febex_0[4].e[10], DATA32);
+SIGNAL(PSPX03_96, pspx2.data.febex_0[4].e[9], DATA32);
 
-SIGNAL(PSPX03_98, pspx2.data.febex_0[6].e[0], DATA32);
-SIGNAL(PSPX03_100, pspx2.data.febex_0[6].e[1], DATA32);
-SIGNAL(PSPX03_102, pspx2.data.febex_0[6].e[2], DATA32);
+SIGNAL(PSPX03_98, pspx2.data.febex_0[6].e[6], DATA32);
+SIGNAL(PSPX03_100, pspx2.data.febex_0[6].e[5], DATA32);
+SIGNAL(PSPX03_102, pspx2.data.febex_0[6].e[4], DATA32);
 SIGNAL(PSPX03_104, pspx2.data.febex_0[6].e[3], DATA32);
-SIGNAL(PSPX03_106, pspx2.data.febex_0[6].e[4], DATA32);
-SIGNAL(PSPX03_108, pspx2.data.febex_0[6].e[5], DATA32);
-SIGNAL(PSPX03_110, pspx2.data.febex_0[6].e[6], DATA32);
+SIGNAL(PSPX03_106, pspx2.data.febex_0[6].e[2], DATA32);
+SIGNAL(PSPX03_108, pspx2.data.febex_0[6].e[1], DATA32);
+SIGNAL(PSPX03_110, pspx2.data.febex_0[6].e[0], DATA32);
 SIGNAL(PSPX03_112, pspx2.data.febex_0[6].e[7], DATA32);
 SIGNAL(PSPX03_114, pspx2.data.febex_0[6].e[8], DATA32);
-SIGNAL(PSPX03_116, pspx2.data.febex_0[6].e[9], DATA32);
-SIGNAL(PSPX03_118, pspx2.data.febex_0[6].e[10], DATA32);
-SIGNAL(PSPX03_120, pspx2.data.febex_0[6].e[11], DATA32);
+SIGNAL(PSPX03_116, pspx2.data.febex_0[6].e[15], DATA32);
+SIGNAL(PSPX03_118, pspx2.data.febex_0[6].e[14], DATA32);
+SIGNAL(PSPX03_120, pspx2.data.febex_0[6].e[13], DATA32);
 SIGNAL(PSPX03_122, pspx2.data.febex_0[6].e[12], DATA32);
-SIGNAL(PSPX03_124, pspx2.data.febex_0[6].e[13], DATA32);
-SIGNAL(PSPX03_126, pspx2.data.febex_0[6].e[14], DATA32);
-SIGNAL(PSPX03_128, pspx2.data.febex_0[6].e[15], DATA32);
+SIGNAL(PSPX03_124, pspx2.data.febex_0[6].e[11], DATA32);
+SIGNAL(PSPX03_126, pspx2.data.febex_0[6].e[10], DATA32);
+SIGNAL(PSPX03_128, pspx2.data.febex_0[6].e[9], DATA32);
 
 
 
@@ -2684,142 +2682,431 @@ SIGNAL_Filter(PSPXT04, 128, 7, 15, 1000, 1)
 
 
 
-/* FEBEX SFP1 without traces */
+/* PSP 2: PSPX04 position filter */
 
-
-SIGNAL(PSPX04_1, pspx2.data.febex_0[11].e[0], DATA32);
-SIGNAL(PSPX04_3, pspx2.data.febex_0[11].e[1], DATA32);
-SIGNAL(PSPX04_5, pspx2.data.febex_0[11].e[2], DATA32);
+SIGNAL(PSPX04_1, pspx2.data.febex_0[11].e[6], DATA32);
+SIGNAL(PSPX04_3, pspx2.data.febex_0[11].e[5], DATA32);
+SIGNAL(PSPX04_5, pspx2.data.febex_0[11].e[4], DATA32);
 SIGNAL(PSPX04_7, pspx2.data.febex_0[11].e[3], DATA32);
-SIGNAL(PSPX04_9, pspx2.data.febex_0[11].e[4], DATA32);
-SIGNAL(PSPX04_11, pspx2.data.febex_0[11].e[5], DATA32);
-SIGNAL(PSPX04_13, pspx2.data.febex_0[11].e[6], DATA32);
+SIGNAL(PSPX04_9, pspx2.data.febex_0[11].e[2], DATA32);
+SIGNAL(PSPX04_11, pspx2.data.febex_0[11].e[1], DATA32);
+SIGNAL(PSPX04_13, pspx2.data.febex_0[11].e[0], DATA32);
 SIGNAL(PSPX04_15, pspx2.data.febex_0[11].e[7], DATA32);
 SIGNAL(PSPX04_17, pspx2.data.febex_0[11].e[8], DATA32);
-SIGNAL(PSPX04_19, pspx2.data.febex_0[11].e[9], DATA32);
-SIGNAL(PSPX04_21, pspx2.data.febex_0[11].e[10], DATA32);
-SIGNAL(PSPX04_23, pspx2.data.febex_0[11].e[11], DATA32);
+SIGNAL(PSPX04_19, pspx2.data.febex_0[11].e[15], DATA32);
+SIGNAL(PSPX04_21, pspx2.data.febex_0[11].e[14], DATA32);
+SIGNAL(PSPX04_23, pspx2.data.febex_0[11].e[13], DATA32);
 SIGNAL(PSPX04_25, pspx2.data.febex_0[11].e[12], DATA32);
-SIGNAL(PSPX04_27, pspx2.data.febex_0[11].e[13], DATA32);
-SIGNAL(PSPX04_29, pspx2.data.febex_0[11].e[14], DATA32);
-SIGNAL(PSPX04_31, pspx2.data.febex_0[11].e[15], DATA32);
+SIGNAL(PSPX04_27, pspx2.data.febex_0[11].e[11], DATA32);
+SIGNAL(PSPX04_29, pspx2.data.febex_0[11].e[10], DATA32);
+SIGNAL(PSPX04_31, pspx2.data.febex_0[11].e[9], DATA32);
 
-SIGNAL(PSPX04_33, pspx2.data.febex_0[9].e[0], DATA32);
-SIGNAL(PSPX04_35, pspx2.data.febex_0[9].e[1], DATA32);
-SIGNAL(PSPX04_37, pspx2.data.febex_0[9].e[2], DATA32);
+SIGNAL(PSPX04_33, pspx2.data.febex_0[9].e[6], DATA32);
+SIGNAL(PSPX04_35, pspx2.data.febex_0[9].e[5], DATA32);
+SIGNAL(PSPX04_37, pspx2.data.febex_0[9].e[4], DATA32);
 SIGNAL(PSPX04_39, pspx2.data.febex_0[9].e[3], DATA32);
-SIGNAL(PSPX04_41, pspx2.data.febex_0[9].e[4], DATA32);
-SIGNAL(PSPX04_43, pspx2.data.febex_0[9].e[5], DATA32);
-SIGNAL(PSPX04_45, pspx2.data.febex_0[9].e[6], DATA32);
+SIGNAL(PSPX04_41, pspx2.data.febex_0[9].e[2], DATA32);
+SIGNAL(PSPX04_43, pspx2.data.febex_0[9].e[1], DATA32);
+SIGNAL(PSPX04_45, pspx2.data.febex_0[9].e[0], DATA32);
 SIGNAL(PSPX04_47, pspx2.data.febex_0[9].e[7], DATA32);
 SIGNAL(PSPX04_49, pspx2.data.febex_0[9].e[8], DATA32);
-SIGNAL(PSPX04_51, pspx2.data.febex_0[9].e[9], DATA32);
-SIGNAL(PSPX04_53, pspx2.data.febex_0[9].e[10], DATA32);
-SIGNAL(PSPX04_55, pspx2.data.febex_0[9].e[11], DATA32);
+SIGNAL(PSPX04_51, pspx2.data.febex_0[9].e[15], DATA32);
+SIGNAL(PSPX04_53, pspx2.data.febex_0[9].e[14], DATA32);
+SIGNAL(PSPX04_55, pspx2.data.febex_0[9].e[13], DATA32);
 SIGNAL(PSPX04_57, pspx2.data.febex_0[9].e[12], DATA32);
-SIGNAL(PSPX04_59, pspx2.data.febex_0[9].e[13], DATA32);
-SIGNAL(PSPX04_61, pspx2.data.febex_0[9].e[14], DATA32);
-SIGNAL(PSPX04_63, pspx2.data.febex_0[9].e[15], DATA32);
+SIGNAL(PSPX04_59, pspx2.data.febex_0[9].e[11], DATA32);
+SIGNAL(PSPX04_61, pspx2.data.febex_0[9].e[10], DATA32);
+SIGNAL(PSPX04_63, pspx2.data.febex_0[9].e[9], DATA32);
 
-SIGNAL(PSPX04_2, pspx2.data.febex_0[13].e[0], DATA32);
-SIGNAL(PSPX04_4, pspx2.data.febex_0[13].e[1], DATA32);
-SIGNAL(PSPX04_6, pspx2.data.febex_0[13].e[2], DATA32);
+SIGNAL(PSPX04_2, pspx2.data.febex_0[13].e[6], DATA32);
+SIGNAL(PSPX04_4, pspx2.data.febex_0[13].e[5], DATA32);
+SIGNAL(PSPX04_6, pspx2.data.febex_0[13].e[4], DATA32);
 SIGNAL(PSPX04_8, pspx2.data.febex_0[13].e[3], DATA32);
-SIGNAL(PSPX04_10, pspx2.data.febex_0[13].e[4], DATA32);
-SIGNAL(PSPX04_12, pspx2.data.febex_0[13].e[5], DATA32);
-SIGNAL(PSPX04_14, pspx2.data.febex_0[13].e[6], DATA32);
+SIGNAL(PSPX04_10, pspx2.data.febex_0[13].e[2], DATA32);
+SIGNAL(PSPX04_12, pspx2.data.febex_0[13].e[1], DATA32);
+SIGNAL(PSPX04_14, pspx2.data.febex_0[13].e[0], DATA32);
 SIGNAL(PSPX04_16, pspx2.data.febex_0[13].e[7], DATA32);
 SIGNAL(PSPX04_18, pspx2.data.febex_0[13].e[8], DATA32);
-SIGNAL(PSPX04_20, pspx2.data.febex_0[13].e[9], DATA32);
-SIGNAL(PSPX04_22, pspx2.data.febex_0[13].e[10], DATA32);
-SIGNAL(PSPX04_24, pspx2.data.febex_0[13].e[11], DATA32);
+SIGNAL(PSPX04_20, pspx2.data.febex_0[13].e[15], DATA32);
+SIGNAL(PSPX04_22, pspx2.data.febex_0[13].e[14], DATA32);
+SIGNAL(PSPX04_24, pspx2.data.febex_0[13].e[13], DATA32);
 SIGNAL(PSPX04_26, pspx2.data.febex_0[13].e[12], DATA32);
-SIGNAL(PSPX04_28, pspx2.data.febex_0[13].e[13], DATA32);
-SIGNAL(PSPX04_30, pspx2.data.febex_0[13].e[14], DATA32);
-SIGNAL(PSPX04_32, pspx2.data.febex_0[13].e[15], DATA32);
-
-SIGNAL(PSPX04_34, pspx2.data.febex_0[15].e[0], DATA32);
-SIGNAL(PSPX04_36, pspx2.data.febex_0[15].e[1], DATA32);
-SIGNAL(PSPX04_38, pspx2.data.febex_0[15].e[2], DATA32);
+SIGNAL(PSPX04_28, pspx2.data.febex_0[13].e[11], DATA32);
+SIGNAL(PSPX04_30, pspx2.data.febex_0[13].e[10], DATA32);
+SIGNAL(PSPX04_32, pspx2.data.febex_0[13].e[9], DATA32);
+SIGNAL(PSPX04_34, pspx2.data.febex_0[15].e[6], DATA32);
+SIGNAL(PSPX04_36, pspx2.data.febex_0[15].e[5], DATA32);
+SIGNAL(PSPX04_38, pspx2.data.febex_0[15].e[4], DATA32);
 SIGNAL(PSPX04_40, pspx2.data.febex_0[15].e[3], DATA32);
-SIGNAL(PSPX04_42, pspx2.data.febex_0[15].e[4], DATA32);
-SIGNAL(PSPX04_44, pspx2.data.febex_0[15].e[5], DATA32);
-SIGNAL(PSPX04_46, pspx2.data.febex_0[15].e[6], DATA32);
+SIGNAL(PSPX04_42, pspx2.data.febex_0[15].e[2], DATA32);
+SIGNAL(PSPX04_44, pspx2.data.febex_0[15].e[1], DATA32);
+SIGNAL(PSPX04_46, pspx2.data.febex_0[15].e[0], DATA32);
 SIGNAL(PSPX04_48, pspx2.data.febex_0[15].e[7], DATA32);
 SIGNAL(PSPX04_50, pspx2.data.febex_0[15].e[8], DATA32);
-SIGNAL(PSPX04_52, pspx2.data.febex_0[15].e[9], DATA32);
-SIGNAL(PSPX04_54, pspx2.data.febex_0[15].e[10], DATA32);
-SIGNAL(PSPX04_56, pspx2.data.febex_0[15].e[11], DATA32);
+SIGNAL(PSPX04_52, pspx2.data.febex_0[15].e[15], DATA32);
+SIGNAL(PSPX04_54, pspx2.data.febex_0[15].e[14], DATA32);
+SIGNAL(PSPX04_56, pspx2.data.febex_0[15].e[13], DATA32);
 SIGNAL(PSPX04_58, pspx2.data.febex_0[15].e[12], DATA32);
-SIGNAL(PSPX04_60, pspx2.data.febex_0[15].e[13], DATA32);
-SIGNAL(PSPX04_62, pspx2.data.febex_0[15].e[14], DATA32);
-SIGNAL(PSPX04_64, pspx2.data.febex_0[15].e[15], DATA32);
+SIGNAL(PSPX04_60, pspx2.data.febex_0[15].e[11], DATA32);
+SIGNAL(PSPX04_62, pspx2.data.febex_0[15].e[10], DATA32);
+SIGNAL(PSPX04_64, pspx2.data.febex_0[15].e[9], DATA32);
 
-SIGNAL(PSPX04_65, pspx2.data.febex_0[3].e[0], DATA32);
-SIGNAL(PSPX04_67, pspx2.data.febex_0[3].e[1], DATA32);
-SIGNAL(PSPX04_69, pspx2.data.febex_0[3].e[2], DATA32);
+SIGNAL(PSPX04_65, pspx2.data.febex_0[3].e[6], DATA32);
+SIGNAL(PSPX04_67, pspx2.data.febex_0[3].e[5], DATA32);
+SIGNAL(PSPX04_69, pspx2.data.febex_0[3].e[4], DATA32);
 SIGNAL(PSPX04_71, pspx2.data.febex_0[3].e[3], DATA32);
-SIGNAL(PSPX04_73, pspx2.data.febex_0[3].e[4], DATA32);
-SIGNAL(PSPX04_75, pspx2.data.febex_0[3].e[5], DATA32);
-SIGNAL(PSPX04_77, pspx2.data.febex_0[3].e[6], DATA32);
+SIGNAL(PSPX04_73, pspx2.data.febex_0[3].e[2], DATA32);
+SIGNAL(PSPX04_75, pspx2.data.febex_0[3].e[1], DATA32);
+SIGNAL(PSPX04_77, pspx2.data.febex_0[3].e[0], DATA32);
 SIGNAL(PSPX04_79, pspx2.data.febex_0[3].e[7], DATA32);
 SIGNAL(PSPX04_81, pspx2.data.febex_0[3].e[8], DATA32);
-SIGNAL(PSPX04_83, pspx2.data.febex_0[3].e[9], DATA32);
-SIGNAL(PSPX04_85, pspx2.data.febex_0[3].e[10], DATA32);
-SIGNAL(PSPX04_87, pspx2.data.febex_0[3].e[11], DATA32);
+SIGNAL(PSPX04_83, pspx2.data.febex_0[3].e[15], DATA32);
+SIGNAL(PSPX04_85, pspx2.data.febex_0[3].e[14], DATA32);
+SIGNAL(PSPX04_87, pspx2.data.febex_0[3].e[13], DATA32);
 SIGNAL(PSPX04_89, pspx2.data.febex_0[3].e[12], DATA32);
-SIGNAL(PSPX04_91, pspx2.data.febex_0[3].e[13], DATA32);
-SIGNAL(PSPX04_93, pspx2.data.febex_0[3].e[14], DATA32);
-SIGNAL(PSPX04_95, pspx2.data.febex_0[3].e[15], DATA32);
+SIGNAL(PSPX04_91, pspx2.data.febex_0[3].e[11], DATA32);
+SIGNAL(PSPX04_93, pspx2.data.febex_0[3].e[10], DATA32);
+SIGNAL(PSPX04_95, pspx2.data.febex_0[3].e[9], DATA32);
 
-SIGNAL(PSPX04_97, pspx2.data.febex_0[1].e[0], DATA32);
-SIGNAL(PSPX04_99, pspx2.data.febex_0[1].e[1], DATA32);
-SIGNAL(PSPX04_101, pspx2.data.febex_0[1].e[2], DATA32);
+SIGNAL(PSPX04_97, pspx2.data.febex_0[1].e[6], DATA32);
+SIGNAL(PSPX04_99, pspx2.data.febex_0[1].e[5], DATA32);
+SIGNAL(PSPX04_101, pspx2.data.febex_0[1].e[4], DATA32);
 SIGNAL(PSPX04_103, pspx2.data.febex_0[1].e[3], DATA32);
-SIGNAL(PSPX04_105, pspx2.data.febex_0[1].e[4], DATA32);
-SIGNAL(PSPX04_107, pspx2.data.febex_0[1].e[5], DATA32);
-SIGNAL(PSPX04_109, pspx2.data.febex_0[1].e[6], DATA32);
+SIGNAL(PSPX04_105, pspx2.data.febex_0[1].e[2], DATA32);
+SIGNAL(PSPX04_107, pspx2.data.febex_0[1].e[1], DATA32);
+SIGNAL(PSPX04_109, pspx2.data.febex_0[1].e[0], DATA32);
 SIGNAL(PSPX04_111, pspx2.data.febex_0[1].e[7], DATA32);
 SIGNAL(PSPX04_113, pspx2.data.febex_0[1].e[8], DATA32);
-SIGNAL(PSPX04_115, pspx2.data.febex_0[1].e[9], DATA32);
-SIGNAL(PSPX04_117, pspx2.data.febex_0[1].e[10], DATA32);
-SIGNAL(PSPX04_119, pspx2.data.febex_0[1].e[11], DATA32);
+SIGNAL(PSPX04_115, pspx2.data.febex_0[1].e[15], DATA32);
+SIGNAL(PSPX04_117, pspx2.data.febex_0[1].e[14], DATA32);
+SIGNAL(PSPX04_119, pspx2.data.febex_0[1].e[13], DATA32);
 SIGNAL(PSPX04_121, pspx2.data.febex_0[1].e[12], DATA32);
-SIGNAL(PSPX04_123, pspx2.data.febex_0[1].e[13], DATA32);
-SIGNAL(PSPX04_125, pspx2.data.febex_0[1].e[14], DATA32);
-SIGNAL(PSPX04_127, pspx2.data.febex_0[1].e[15], DATA32);
+SIGNAL(PSPX04_123, pspx2.data.febex_0[1].e[11], DATA32);
+SIGNAL(PSPX04_125, pspx2.data.febex_0[1].e[10], DATA32);
+SIGNAL(PSPX04_127, pspx2.data.febex_0[1].e[9], DATA32);
 
-SIGNAL(PSPX04_66, pspx2.data.febex_0[5].e[0], DATA32);
-SIGNAL(PSPX04_68, pspx2.data.febex_0[5].e[1], DATA32);
-SIGNAL(PSPX04_70, pspx2.data.febex_0[5].e[2], DATA32);
+SIGNAL(PSPX04_66, pspx2.data.febex_0[5].e[6], DATA32);
+SIGNAL(PSPX04_68, pspx2.data.febex_0[5].e[5], DATA32);
+SIGNAL(PSPX04_70, pspx2.data.febex_0[5].e[4], DATA32);
 SIGNAL(PSPX04_72, pspx2.data.febex_0[5].e[3], DATA32);
-SIGNAL(PSPX04_74, pspx2.data.febex_0[5].e[4], DATA32);
-SIGNAL(PSPX04_76, pspx2.data.febex_0[5].e[5], DATA32);
-SIGNAL(PSPX04_78, pspx2.data.febex_0[5].e[6], DATA32);
+SIGNAL(PSPX04_74, pspx2.data.febex_0[5].e[2], DATA32);
+SIGNAL(PSPX04_76, pspx2.data.febex_0[5].e[1], DATA32);
+SIGNAL(PSPX04_78, pspx2.data.febex_0[5].e[0], DATA32);
 SIGNAL(PSPX04_80, pspx2.data.febex_0[5].e[7], DATA32);
 SIGNAL(PSPX04_82, pspx2.data.febex_0[5].e[8], DATA32);
-SIGNAL(PSPX04_84, pspx2.data.febex_0[5].e[9], DATA32);
-SIGNAL(PSPX04_86, pspx2.data.febex_0[5].e[10], DATA32);
-SIGNAL(PSPX04_88, pspx2.data.febex_0[5].e[11], DATA32);
+SIGNAL(PSPX04_84, pspx2.data.febex_0[5].e[15], DATA32);
+SIGNAL(PSPX04_86, pspx2.data.febex_0[5].e[14], DATA32);
+SIGNAL(PSPX04_88, pspx2.data.febex_0[5].e[13], DATA32);
 SIGNAL(PSPX04_90, pspx2.data.febex_0[5].e[12], DATA32);
-SIGNAL(PSPX04_92, pspx2.data.febex_0[5].e[13], DATA32);
-SIGNAL(PSPX04_94, pspx2.data.febex_0[5].e[14], DATA32);
-SIGNAL(PSPX04_96, pspx2.data.febex_0[5].e[15], DATA32);
+SIGNAL(PSPX04_92, pspx2.data.febex_0[5].e[11], DATA32);
+SIGNAL(PSPX04_94, pspx2.data.febex_0[5].e[10], DATA32);
+SIGNAL(PSPX04_96, pspx2.data.febex_0[5].e[9], DATA32);
 
-SIGNAL(PSPX04_98, pspx2.data.febex_0[7].e[0], DATA32);
-SIGNAL(PSPX04_100, pspx2.data.febex_0[7].e[1], DATA32);
-SIGNAL(PSPX04_102, pspx2.data.febex_0[7].e[2], DATA32);
+SIGNAL(PSPX04_98, pspx2.data.febex_0[7].e[6], DATA32);
+SIGNAL(PSPX04_100, pspx2.data.febex_0[7].e[5], DATA32);
+SIGNAL(PSPX04_102, pspx2.data.febex_0[7].e[4], DATA32);
 SIGNAL(PSPX04_104, pspx2.data.febex_0[7].e[3], DATA32);
-SIGNAL(PSPX04_106, pspx2.data.febex_0[7].e[4], DATA32);
-SIGNAL(PSPX04_108, pspx2.data.febex_0[7].e[5], DATA32);
-SIGNAL(PSPX04_110, pspx2.data.febex_0[7].e[6], DATA32);
+SIGNAL(PSPX04_106, pspx2.data.febex_0[7].e[2], DATA32);
+SIGNAL(PSPX04_108, pspx2.data.febex_0[7].e[1], DATA32);
+SIGNAL(PSPX04_110, pspx2.data.febex_0[7].e[0], DATA32);
 SIGNAL(PSPX04_112, pspx2.data.febex_0[7].e[7], DATA32);
 SIGNAL(PSPX04_114, pspx2.data.febex_0[7].e[8], DATA32);
-SIGNAL(PSPX04_116, pspx2.data.febex_0[7].e[9], DATA32);
-SIGNAL(PSPX04_118, pspx2.data.febex_0[7].e[10], DATA32);
-SIGNAL(PSPX04_120, pspx2.data.febex_0[7].e[11], DATA32);
+SIGNAL(PSPX04_116, pspx2.data.febex_0[7].e[15], DATA32);
+SIGNAL(PSPX04_118, pspx2.data.febex_0[7].e[14], DATA32);
+SIGNAL(PSPX04_120, pspx2.data.febex_0[7].e[13], DATA32);
 SIGNAL(PSPX04_122, pspx2.data.febex_0[7].e[12], DATA32);
-SIGNAL(PSPX04_124, pspx2.data.febex_0[7].e[13], DATA32);
-SIGNAL(PSPX04_126, pspx2.data.febex_0[7].e[14], DATA32);
-SIGNAL(PSPX04_128, pspx2.data.febex_0[7].e[15], DATA32);
+SIGNAL(PSPX04_124, pspx2.data.febex_0[7].e[11], DATA32);
+SIGNAL(PSPX04_126, pspx2.data.febex_0[7].e[10], DATA32);
+SIGNAL(PSPX04_128, pspx2.data.febex_0[7].e[9], DATA32);
+
+
+
+
+
+// PSPX 3: PSPX05 energy filter 
+
+
+
+SIGNAL(PSPX05_1, pspx3.data.febex_0[10].e[0], DATA32);
+SIGNAL(PSPX05_3, pspx3.data.febex_0[10].e[1], DATA32);
+SIGNAL(PSPX05_5, pspx3.data.febex_0[10].e[2], DATA32);
+SIGNAL(PSPX05_7, pspx3.data.febex_0[10].e[3], DATA32);
+SIGNAL(PSPX05_9, pspx3.data.febex_0[10].e[4], DATA32);
+SIGNAL(PSPX05_11, pspx3.data.febex_0[10].e[5], DATA32);
+SIGNAL(PSPX05_13, pspx3.data.febex_0[10].e[6], DATA32);
+SIGNAL(PSPX05_15, pspx3.data.febex_0[10].e[7], DATA32);
+SIGNAL(PSPX05_17, pspx3.data.febex_0[10].e[8], DATA32);
+SIGNAL(PSPX05_19, pspx3.data.febex_0[10].e[9], DATA32);
+SIGNAL(PSPX05_21, pspx3.data.febex_0[10].e[10], DATA32);
+SIGNAL(PSPX05_23, pspx3.data.febex_0[10].e[11], DATA32);
+SIGNAL(PSPX05_25, pspx3.data.febex_0[10].e[12], DATA32);
+SIGNAL(PSPX05_27, pspx3.data.febex_0[10].e[13], DATA32);
+SIGNAL(PSPX05_29, pspx3.data.febex_0[10].e[14], DATA32);
+SIGNAL(PSPX05_31, pspx3.data.febex_0[10].e[15], DATA32);
+
+SIGNAL(PSPX05_33, pspx3.data.febex_0[8].e[0], DATA32);
+SIGNAL(PSPX05_35, pspx3.data.febex_0[8].e[1], DATA32);
+SIGNAL(PSPX05_37, pspx3.data.febex_0[8].e[2], DATA32);
+SIGNAL(PSPX05_39, pspx3.data.febex_0[8].e[3], DATA32);
+SIGNAL(PSPX05_41, pspx3.data.febex_0[8].e[4], DATA32);
+SIGNAL(PSPX05_43, pspx3.data.febex_0[8].e[5], DATA32);
+SIGNAL(PSPX05_45, pspx3.data.febex_0[8].e[6], DATA32);
+SIGNAL(PSPX05_47, pspx3.data.febex_0[8].e[7], DATA32);
+SIGNAL(PSPX05_49, pspx3.data.febex_0[8].e[8], DATA32);
+SIGNAL(PSPX05_51, pspx3.data.febex_0[8].e[9], DATA32);
+SIGNAL(PSPX05_53, pspx3.data.febex_0[8].e[10], DATA32);
+SIGNAL(PSPX05_55, pspx3.data.febex_0[8].e[11], DATA32);
+SIGNAL(PSPX05_57, pspx3.data.febex_0[8].e[12], DATA32);
+SIGNAL(PSPX05_59, pspx3.data.febex_0[8].e[13], DATA32);
+SIGNAL(PSPX05_61, pspx3.data.febex_0[8].e[14], DATA32);
+SIGNAL(PSPX05_63, pspx3.data.febex_0[8].e[15], DATA32);
+
+SIGNAL(PSPX05_2, pspx3.data.febex_0[12].e[0], DATA32);
+SIGNAL(PSPX05_4, pspx3.data.febex_0[12].e[1], DATA32);
+SIGNAL(PSPX05_6, pspx3.data.febex_0[12].e[2], DATA32);
+SIGNAL(PSPX05_8, pspx3.data.febex_0[12].e[3], DATA32);
+SIGNAL(PSPX05_10, pspx3.data.febex_0[12].e[4], DATA32);
+SIGNAL(PSPX05_12, pspx3.data.febex_0[12].e[5], DATA32);
+SIGNAL(PSPX05_14, pspx3.data.febex_0[12].e[6], DATA32);
+SIGNAL(PSPX05_16, pspx3.data.febex_0[12].e[7], DATA32);
+SIGNAL(PSPX05_18, pspx3.data.febex_0[12].e[8], DATA32);
+SIGNAL(PSPX05_20, pspx3.data.febex_0[12].e[9], DATA32);
+SIGNAL(PSPX05_22, pspx3.data.febex_0[12].e[10], DATA32);
+SIGNAL(PSPX05_24, pspx3.data.febex_0[12].e[11], DATA32);
+SIGNAL(PSPX05_26, pspx3.data.febex_0[12].e[12], DATA32);
+SIGNAL(PSPX05_28, pspx3.data.febex_0[12].e[13], DATA32);
+SIGNAL(PSPX05_30, pspx3.data.febex_0[12].e[14], DATA32);
+SIGNAL(PSPX05_32, pspx3.data.febex_0[12].e[15], DATA32);
+
+SIGNAL(PSPX05_34, pspx3.data.febex_0[14].e[0], DATA32);
+SIGNAL(PSPX05_36, pspx3.data.febex_0[14].e[1], DATA32);
+SIGNAL(PSPX05_38, pspx3.data.febex_0[14].e[2], DATA32);
+SIGNAL(PSPX05_40, pspx3.data.febex_0[14].e[3], DATA32);
+SIGNAL(PSPX05_42, pspx3.data.febex_0[14].e[4], DATA32);
+SIGNAL(PSPX05_44, pspx3.data.febex_0[14].e[5], DATA32);
+SIGNAL(PSPX05_46, pspx3.data.febex_0[14].e[6], DATA32);
+SIGNAL(PSPX05_48, pspx3.data.febex_0[14].e[7], DATA32);
+SIGNAL(PSPX05_50, pspx3.data.febex_0[14].e[8], DATA32);
+SIGNAL(PSPX05_52, pspx3.data.febex_0[14].e[9], DATA32);
+SIGNAL(PSPX05_54, pspx3.data.febex_0[14].e[10], DATA32);
+SIGNAL(PSPX05_56, pspx3.data.febex_0[14].e[11], DATA32);
+SIGNAL(PSPX05_58, pspx3.data.febex_0[14].e[12], DATA32);
+SIGNAL(PSPX05_60, pspx3.data.febex_0[14].e[13], DATA32);
+SIGNAL(PSPX05_62, pspx3.data.febex_0[14].e[14], DATA32);
+SIGNAL(PSPX05_64, pspx3.data.febex_0[14].e[15], DATA32);
+
+SIGNAL(PSPX05_65, pspx3.data.febex_0[2].e[0], DATA32);
+SIGNAL(PSPX05_67, pspx3.data.febex_0[2].e[1], DATA32);
+SIGNAL(PSPX05_69, pspx3.data.febex_0[2].e[2], DATA32);
+SIGNAL(PSPX05_71, pspx3.data.febex_0[2].e[3], DATA32);
+SIGNAL(PSPX05_73, pspx3.data.febex_0[2].e[4], DATA32);
+SIGNAL(PSPX05_75, pspx3.data.febex_0[2].e[5], DATA32);
+SIGNAL(PSPX05_77, pspx3.data.febex_0[2].e[6], DATA32);
+SIGNAL(PSPX05_79, pspx3.data.febex_0[2].e[7], DATA32);
+SIGNAL(PSPX05_81, pspx3.data.febex_0[2].e[8], DATA32);
+SIGNAL(PSPX05_83, pspx3.data.febex_0[2].e[9], DATA32);
+SIGNAL(PSPX05_85, pspx3.data.febex_0[2].e[10], DATA32);
+SIGNAL(PSPX05_87, pspx3.data.febex_0[2].e[11], DATA32);
+SIGNAL(PSPX05_89, pspx3.data.febex_0[2].e[12], DATA32);
+SIGNAL(PSPX05_91, pspx3.data.febex_0[2].e[13], DATA32);
+SIGNAL(PSPX05_93, pspx3.data.febex_0[2].e[14], DATA32);
+SIGNAL(PSPX05_95, pspx3.data.febex_0[2].e[15], DATA32);
+
+SIGNAL(PSPX05_97, pspx3.data.febex_0[0].e[0], DATA32);
+SIGNAL(PSPX05_99, pspx3.data.febex_0[0].e[1], DATA32);
+SIGNAL(PSPX05_101, pspx3.data.febex_0[0].e[2], DATA32);
+SIGNAL(PSPX05_103, pspx3.data.febex_0[0].e[3], DATA32);
+SIGNAL(PSPX05_105, pspx3.data.febex_0[0].e[4], DATA32);
+SIGNAL(PSPX05_107, pspx3.data.febex_0[0].e[5], DATA32);
+SIGNAL(PSPX05_109, pspx3.data.febex_0[0].e[6], DATA32);
+SIGNAL(PSPX05_111, pspx3.data.febex_0[0].e[7], DATA32);
+SIGNAL(PSPX05_113, pspx3.data.febex_0[0].e[8], DATA32);
+SIGNAL(PSPX05_115, pspx3.data.febex_0[0].e[9], DATA32);
+SIGNAL(PSPX05_117, pspx3.data.febex_0[0].e[10], DATA32);
+SIGNAL(PSPX05_119, pspx3.data.febex_0[0].e[11], DATA32);
+SIGNAL(PSPX05_121, pspx3.data.febex_0[0].e[12], DATA32);
+SIGNAL(PSPX05_123, pspx3.data.febex_0[0].e[13], DATA32);
+SIGNAL(PSPX05_125, pspx3.data.febex_0[0].e[14], DATA32);
+SIGNAL(PSPX05_127, pspx3.data.febex_0[0].e[15], DATA32);
+
+SIGNAL(PSPX05_66, pspx3.data.febex_0[4].e[0], DATA32);
+SIGNAL(PSPX05_68, pspx3.data.febex_0[4].e[1], DATA32);
+SIGNAL(PSPX05_70, pspx3.data.febex_0[4].e[2], DATA32);
+SIGNAL(PSPX05_72, pspx3.data.febex_0[4].e[3], DATA32);
+SIGNAL(PSPX05_74, pspx3.data.febex_0[4].e[4], DATA32);
+SIGNAL(PSPX05_76, pspx3.data.febex_0[4].e[5], DATA32);
+SIGNAL(PSPX05_78, pspx3.data.febex_0[4].e[6], DATA32);
+SIGNAL(PSPX05_80, pspx3.data.febex_0[4].e[7], DATA32);
+SIGNAL(PSPX05_82, pspx3.data.febex_0[4].e[8], DATA32);
+SIGNAL(PSPX05_84, pspx3.data.febex_0[4].e[9], DATA32);
+SIGNAL(PSPX05_86, pspx3.data.febex_0[4].e[10], DATA32);
+SIGNAL(PSPX05_88, pspx3.data.febex_0[4].e[11], DATA32);
+SIGNAL(PSPX05_90, pspx3.data.febex_0[4].e[12], DATA32);
+SIGNAL(PSPX05_92, pspx3.data.febex_0[4].e[13], DATA32);
+SIGNAL(PSPX05_94, pspx3.data.febex_0[4].e[14], DATA32);
+SIGNAL(PSPX05_96, pspx3.data.febex_0[4].e[15], DATA32);
+
+SIGNAL(PSPX05_98, pspx3.data.febex_0[6].e[0], DATA32);
+SIGNAL(PSPX05_100, pspx3.data.febex_0[6].e[1], DATA32);
+SIGNAL(PSPX05_102, pspx3.data.febex_0[6].e[2], DATA32);
+SIGNAL(PSPX05_104, pspx3.data.febex_0[6].e[3], DATA32);
+SIGNAL(PSPX05_106, pspx3.data.febex_0[6].e[4], DATA32);
+SIGNAL(PSPX05_108, pspx3.data.febex_0[6].e[5], DATA32);
+SIGNAL(PSPX05_110, pspx3.data.febex_0[6].e[6], DATA32);
+SIGNAL(PSPX05_112, pspx3.data.febex_0[6].e[7], DATA32);
+SIGNAL(PSPX05_114, pspx3.data.febex_0[6].e[8], DATA32);
+SIGNAL(PSPX05_116, pspx3.data.febex_0[6].e[9], DATA32);
+SIGNAL(PSPX05_118, pspx3.data.febex_0[6].e[10], DATA32);
+SIGNAL(PSPX05_120, pspx3.data.febex_0[6].e[11], DATA32);
+SIGNAL(PSPX05_122, pspx3.data.febex_0[6].e[12], DATA32);
+SIGNAL(PSPX05_124, pspx3.data.febex_0[6].e[13], DATA32);
+SIGNAL(PSPX05_126, pspx3.data.febex_0[6].e[14], DATA32);
+SIGNAL(PSPX05_128, pspx3.data.febex_0[6].e[15], DATA32);
+
+
+
+
+
+// PSPX 3: PSPX6 position filter // 
+
+SIGNAL(PSPX06_1, pspx3.data.febex_0[11].e[0], DATA32);
+SIGNAL(PSPX06_3, pspx3.data.febex_0[11].e[1], DATA32);
+SIGNAL(PSPX06_5, pspx3.data.febex_0[11].e[2], DATA32);
+SIGNAL(PSPX06_7, pspx3.data.febex_0[11].e[3], DATA32);
+SIGNAL(PSPX06_9, pspx3.data.febex_0[11].e[4], DATA32);
+SIGNAL(PSPX06_11, pspx3.data.febex_0[11].e[5], DATA32);
+SIGNAL(PSPX06_13, pspx3.data.febex_0[11].e[6], DATA32);
+SIGNAL(PSPX06_15, pspx3.data.febex_0[11].e[7], DATA32);
+SIGNAL(PSPX06_17, pspx3.data.febex_0[11].e[8], DATA32);
+SIGNAL(PSPX06_19, pspx3.data.febex_0[11].e[9], DATA32);
+SIGNAL(PSPX06_21, pspx3.data.febex_0[11].e[10], DATA32);
+SIGNAL(PSPX06_23, pspx3.data.febex_0[11].e[11], DATA32);
+SIGNAL(PSPX06_25, pspx3.data.febex_0[11].e[12], DATA32);
+SIGNAL(PSPX06_27, pspx3.data.febex_0[11].e[13], DATA32);
+SIGNAL(PSPX06_29, pspx3.data.febex_0[11].e[14], DATA32);
+SIGNAL(PSPX06_31, pspx3.data.febex_0[11].e[15], DATA32);
+
+SIGNAL(PSPX06_33, pspx3.data.febex_0[9].e[0], DATA32);
+SIGNAL(PSPX06_35, pspx3.data.febex_0[9].e[1], DATA32);
+SIGNAL(PSPX06_37, pspx3.data.febex_0[9].e[2], DATA32);
+SIGNAL(PSPX06_39, pspx3.data.febex_0[9].e[3], DATA32);
+SIGNAL(PSPX06_41, pspx3.data.febex_0[9].e[4], DATA32);
+SIGNAL(PSPX06_43, pspx3.data.febex_0[9].e[5], DATA32);
+SIGNAL(PSPX06_45, pspx3.data.febex_0[9].e[6], DATA32);
+SIGNAL(PSPX06_47, pspx3.data.febex_0[9].e[7], DATA32);
+SIGNAL(PSPX06_49, pspx3.data.febex_0[9].e[8], DATA32);
+SIGNAL(PSPX06_51, pspx3.data.febex_0[9].e[9], DATA32);
+SIGNAL(PSPX06_53, pspx3.data.febex_0[9].e[10], DATA32);
+SIGNAL(PSPX06_55, pspx3.data.febex_0[9].e[11], DATA32);
+SIGNAL(PSPX06_57, pspx3.data.febex_0[9].e[12], DATA32);
+SIGNAL(PSPX06_59, pspx3.data.febex_0[9].e[13], DATA32);
+SIGNAL(PSPX06_61, pspx3.data.febex_0[9].e[14], DATA32);
+SIGNAL(PSPX06_63, pspx3.data.febex_0[9].e[15], DATA32);
+
+SIGNAL(PSPX06_2, pspx3.data.febex_0[13].e[0], DATA32);
+SIGNAL(PSPX06_4, pspx3.data.febex_0[13].e[1], DATA32);
+SIGNAL(PSPX06_6, pspx3.data.febex_0[13].e[2], DATA32);
+SIGNAL(PSPX06_8, pspx3.data.febex_0[13].e[3], DATA32);
+SIGNAL(PSPX06_10, pspx3.data.febex_0[13].e[4], DATA32);
+SIGNAL(PSPX06_12, pspx3.data.febex_0[13].e[5], DATA32);
+SIGNAL(PSPX06_14, pspx3.data.febex_0[13].e[6], DATA32);
+SIGNAL(PSPX06_16, pspx3.data.febex_0[13].e[7], DATA32);
+SIGNAL(PSPX06_18, pspx3.data.febex_0[13].e[8], DATA32);
+SIGNAL(PSPX06_20, pspx3.data.febex_0[13].e[9], DATA32);
+SIGNAL(PSPX06_22, pspx3.data.febex_0[13].e[10], DATA32);
+SIGNAL(PSPX06_24, pspx3.data.febex_0[13].e[11], DATA32);
+SIGNAL(PSPX06_26, pspx3.data.febex_0[13].e[12], DATA32);
+SIGNAL(PSPX06_28, pspx3.data.febex_0[13].e[13], DATA32);
+SIGNAL(PSPX06_30, pspx3.data.febex_0[13].e[14], DATA32);
+SIGNAL(PSPX06_32, pspx3.data.febex_0[13].e[15], DATA32);
+
+SIGNAL(PSPX06_34, pspx3.data.febex_0[15].e[0], DATA32);
+SIGNAL(PSPX06_36, pspx3.data.febex_0[15].e[1], DATA32);
+SIGNAL(PSPX06_38, pspx3.data.febex_0[15].e[2], DATA32);
+SIGNAL(PSPX06_40, pspx3.data.febex_0[15].e[3], DATA32);
+SIGNAL(PSPX06_42, pspx3.data.febex_0[15].e[4], DATA32);
+SIGNAL(PSPX06_44, pspx3.data.febex_0[15].e[5], DATA32);
+SIGNAL(PSPX06_46, pspx3.data.febex_0[15].e[6], DATA32);
+SIGNAL(PSPX06_48, pspx3.data.febex_0[15].e[7], DATA32);
+SIGNAL(PSPX06_50, pspx3.data.febex_0[15].e[8], DATA32);
+SIGNAL(PSPX06_52, pspx3.data.febex_0[15].e[9], DATA32);
+SIGNAL(PSPX06_54, pspx3.data.febex_0[15].e[10], DATA32);
+SIGNAL(PSPX06_56, pspx3.data.febex_0[15].e[11], DATA32);
+SIGNAL(PSPX06_58, pspx3.data.febex_0[15].e[12], DATA32);
+SIGNAL(PSPX06_60, pspx3.data.febex_0[15].e[13], DATA32);
+SIGNAL(PSPX06_62, pspx3.data.febex_0[15].e[14], DATA32);
+SIGNAL(PSPX06_64, pspx3.data.febex_0[15].e[15], DATA32);
+
+SIGNAL(PSPX06_65, pspx3.data.febex_0[3].e[0], DATA32);
+SIGNAL(PSPX06_67, pspx3.data.febex_0[3].e[1], DATA32);
+SIGNAL(PSPX06_69, pspx3.data.febex_0[3].e[2], DATA32);
+SIGNAL(PSPX06_71, pspx3.data.febex_0[3].e[3], DATA32);
+SIGNAL(PSPX06_73, pspx3.data.febex_0[3].e[4], DATA32);
+SIGNAL(PSPX06_75, pspx3.data.febex_0[3].e[5], DATA32);
+SIGNAL(PSPX06_77, pspx3.data.febex_0[3].e[6], DATA32);
+SIGNAL(PSPX06_79, pspx3.data.febex_0[3].e[7], DATA32);
+SIGNAL(PSPX06_81, pspx3.data.febex_0[3].e[8], DATA32);
+SIGNAL(PSPX06_83, pspx3.data.febex_0[3].e[9], DATA32);
+SIGNAL(PSPX06_85, pspx3.data.febex_0[3].e[10], DATA32);
+SIGNAL(PSPX06_87, pspx3.data.febex_0[3].e[11], DATA32);
+SIGNAL(PSPX06_89, pspx3.data.febex_0[3].e[12], DATA32);
+SIGNAL(PSPX06_91, pspx3.data.febex_0[3].e[13], DATA32);
+SIGNAL(PSPX06_93, pspx3.data.febex_0[3].e[14], DATA32);
+SIGNAL(PSPX06_95, pspx3.data.febex_0[3].e[15], DATA32);
+
+SIGNAL(PSPX06_97, pspx3.data.febex_0[1].e[0], DATA32);
+SIGNAL(PSPX06_99, pspx3.data.febex_0[1].e[1], DATA32);
+SIGNAL(PSPX06_101, pspx3.data.febex_0[1].e[2], DATA32);
+SIGNAL(PSPX06_103, pspx3.data.febex_0[1].e[3], DATA32);
+SIGNAL(PSPX06_105, pspx3.data.febex_0[1].e[4], DATA32);
+SIGNAL(PSPX06_107, pspx3.data.febex_0[1].e[5], DATA32);
+SIGNAL(PSPX06_109, pspx3.data.febex_0[1].e[6], DATA32);
+SIGNAL(PSPX06_111, pspx3.data.febex_0[1].e[7], DATA32);
+SIGNAL(PSPX06_113, pspx3.data.febex_0[1].e[8], DATA32);
+SIGNAL(PSPX06_115, pspx3.data.febex_0[1].e[9], DATA32);
+SIGNAL(PSPX06_117, pspx3.data.febex_0[1].e[10], DATA32);
+SIGNAL(PSPX06_119, pspx3.data.febex_0[1].e[11], DATA32);
+SIGNAL(PSPX06_121, pspx3.data.febex_0[1].e[12], DATA32);
+SIGNAL(PSPX06_123, pspx3.data.febex_0[1].e[13], DATA32);
+SIGNAL(PSPX06_125, pspx3.data.febex_0[1].e[14], DATA32);
+SIGNAL(PSPX06_127, pspx3.data.febex_0[1].e[15], DATA32);
+
+SIGNAL(PSPX06_66, pspx3.data.febex_0[5].e[0], DATA32);
+SIGNAL(PSPX06_68, pspx3.data.febex_0[5].e[1], DATA32);
+SIGNAL(PSPX06_70, pspx3.data.febex_0[5].e[2], DATA32);
+SIGNAL(PSPX06_72, pspx3.data.febex_0[5].e[3], DATA32);
+SIGNAL(PSPX06_74, pspx3.data.febex_0[5].e[4], DATA32);
+SIGNAL(PSPX06_76, pspx3.data.febex_0[5].e[5], DATA32);
+SIGNAL(PSPX06_78, pspx3.data.febex_0[5].e[6], DATA32);
+SIGNAL(PSPX06_80, pspx3.data.febex_0[5].e[7], DATA32);
+SIGNAL(PSPX06_82, pspx3.data.febex_0[5].e[8], DATA32);
+SIGNAL(PSPX06_84, pspx3.data.febex_0[5].e[9], DATA32);
+SIGNAL(PSPX06_86, pspx3.data.febex_0[5].e[10], DATA32);
+SIGNAL(PSPX06_88, pspx3.data.febex_0[5].e[11], DATA32);
+SIGNAL(PSPX06_90, pspx3.data.febex_0[5].e[12], DATA32);
+SIGNAL(PSPX06_92, pspx3.data.febex_0[5].e[13], DATA32);
+SIGNAL(PSPX06_94, pspx3.data.febex_0[5].e[14], DATA32);
+SIGNAL(PSPX06_96, pspx3.data.febex_0[5].e[15], DATA32);
+
+SIGNAL(PSPX06_98, pspx3.data.febex_0[7].e[0], DATA32);
+SIGNAL(PSPX06_100, pspx3.data.febex_0[7].e[1], DATA32);
+SIGNAL(PSPX06_102, pspx3.data.febex_0[7].e[2], DATA32);
+SIGNAL(PSPX06_104, pspx3.data.febex_0[7].e[3], DATA32);
+SIGNAL(PSPX06_106, pspx3.data.febex_0[7].e[4], DATA32);
+SIGNAL(PSPX06_108, pspx3.data.febex_0[7].e[5], DATA32);
+SIGNAL(PSPX06_110, pspx3.data.febex_0[7].e[6], DATA32);
+SIGNAL(PSPX06_112, pspx3.data.febex_0[7].e[7], DATA32);
+SIGNAL(PSPX06_114, pspx3.data.febex_0[7].e[8], DATA32);
+SIGNAL(PSPX06_116, pspx3.data.febex_0[7].e[9], DATA32);
+SIGNAL(PSPX06_118, pspx3.data.febex_0[7].e[10], DATA32);
+SIGNAL(PSPX06_120, pspx3.data.febex_0[7].e[11], DATA32);
+SIGNAL(PSPX06_122, pspx3.data.febex_0[7].e[12], DATA32);
+SIGNAL(PSPX06_124, pspx3.data.febex_0[7].e[13], DATA32);
+SIGNAL(PSPX06_126, pspx3.data.febex_0[7].e[14], DATA32);
+SIGNAL(PSPX06_128, pspx3.data.febex_0[7].e[15], DATA32);
+
+
+
+
+
 

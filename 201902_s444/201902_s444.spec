@@ -155,7 +155,10 @@ SUBEVENT(CALIFA)
 
 febex_subev_data()
 {
-	header0 = FEBEX_EVENTHEADER();
+	land_vme = LAND_STD_VME();
+	select several {
+		header0 = FEBEX_GOOD_EVENTHEADER();
+	}
 	select several {
 		padding0 = FEBEX_PADDING();
 	}

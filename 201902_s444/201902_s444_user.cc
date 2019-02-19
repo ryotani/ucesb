@@ -17,7 +17,7 @@
 
 static struct {
   bool yes;
-  uint32_t map[3][32 * 32];
+  uint32_t map[5][32 * 32];
 } g_psp;
 
 namespace {
@@ -326,6 +326,10 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 
     // Collect PSPX hits in heat maps.
     if (1 == event->trigger) {
+      // Zero-suppressed strip arrays per detector.
+      unsigned strip[3][2][64];
+      unsigned strip_num[3][2];
+      memset(strip_num, 0, sizeof strip_num);
       for (i = 0; i < 3; ++i) {
 	// Get edges per strip.
 	char mask[64];
@@ -340,25 +344,23 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 	  mask[strip_i] |= (char)(1 << strip_e);
 	}
 	// Zero-suppress strips.
-	unsigned strip[2][64];
-	unsigned strip_num[2] = {0, 0};
 	for (unsigned strip_i = 0; strip_i < 64; ++strip_i) {
 	  if (mask[strip_i] == 3) {
 	    auto side = strip_i / 32;
-	    strip[side][strip_num[side]++] = 31 & strip_i;
+	    strip[i][side][strip_num[i][side]++] = 31 & strip_i;
 	  }
 	}
 	// Fill map.
-	for (unsigned j = 0; j < strip_num[0]; ++j) {
-	  auto strip_0 = strip[0][j];
+	for (unsigned j = 0; j < strip_num[i][0]; ++j) {
+	  auto strip_0 = strip[i][0][j];
 	  unsigned x;
 	  switch (i) {
 	    case 0: x = 31 - strip_0; break;
 	    case 1:
 	    case 2: x = strip_0; break;
 	  }
-	  for (unsigned k = 0; k < strip_num[1]; ++k) {
-	    auto strip_1 = strip[1][k];
+	  for (unsigned k = 0; k < strip_num[i][1]; ++k) {
+	    auto strip_1 = strip[i][1][k];
 	    unsigned y;
 	    switch (i) {
 	      case 0: y = 31 - strip_1; break;
@@ -369,9 +371,31 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 	  }
 	}
       }
-    } else if (13 == event->trigger) {
-      // Publish new maps when we've finished on-spill.
-
+      for (i = 0; i < 2; ++i) {
+        // Fill coord vs coord map for the PSPs on either side of the target.
+	for (unsigned j = 0; j < strip_num[0][i]; ++j) {
+	  auto strip_0 = strip[0][i][j];
+	  unsigned x;
+	  switch (i) {
+	    case 0: x = 31 - strip_0; break;
+	    case 1:
+	    case 2: x = strip_0; break;
+	  }
+	  for (unsigned k = 0; k < strip_num[1][i]; ++k) {
+	    auto strip_1 = strip[1][i][k];
+	    unsigned y;
+	    switch (i) {
+	      case 0: y = 31 - strip_1; break;
+	      case 1:
+	      case 2: y = strip_1; break;
+	    }
+	    ++g_psp.map[3 + i][x + 32 * y];
+	  }
+	}
+      }
+    } else if (10 == event->trigger ||
+	       11 == event->trigger ||
+	       13 == event->trigger) {
       // End of spill, heat maps have been accumulated during the spill, write
       // images in /u/land/web-docs/r3bbm and clear.
       for (i = 0; i < countof(g_psp.map); ++i) {
@@ -432,6 +456,11 @@ int unpack_user_function(unpack_event *event)
   }
 
   if (1 != event->trigger) {
+    return 1;
+  }
+
+  if (g_psp.yes) {
+    // Don|t do expensive tracking for PSP publishing.
     return 1;
   }
 
