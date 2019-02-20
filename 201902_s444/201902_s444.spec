@@ -413,27 +413,6 @@ neuland_sfp(sfp)
 		card[32] = TAMEX3_SFP(sfp = sfp, card = 32);
 		card[33] = TAMEX3_SFP(sfp = sfp, card = 33);
 		card[34] = TAMEX3_SFP(sfp = sfp, card = 34);
-		card[35] = TAMEX3_SFP(sfp = sfp, card = 35);
-		card[36] = TAMEX3_SFP(sfp = sfp, card = 36);
-		card[37] = TAMEX3_SFP(sfp = sfp, card = 37);
-		card[38] = TAMEX3_SFP(sfp = sfp, card = 38);
-		card[39] = TAMEX3_SFP(sfp = sfp, card = 39);
-		card[40] = TAMEX3_SFP(sfp = sfp, card = 40);
-		card[41] = TAMEX3_SFP(sfp = sfp, card = 41);
-		card[42] = TAMEX3_SFP(sfp = sfp, card = 42);
-		card[43] = TAMEX3_SFP(sfp = sfp, card = 43);
-		card[44] = TAMEX3_SFP(sfp = sfp, card = 44);
-		card[45] = TAMEX3_SFP(sfp = sfp, card = 45);
-		card[46] = TAMEX3_SFP(sfp = sfp, card = 46);
-		card[47] = TAMEX3_SFP(sfp = sfp, card = 47);
-		card[48] = TAMEX3_SFP(sfp = sfp, card = 48);
-		card[49] = TAMEX3_SFP(sfp = sfp, card = 49);
-		card[50] = TAMEX3_SFP(sfp = sfp, card = 50);
-		card[51] = TAMEX3_SFP(sfp = sfp, card = 51);
-		card[52] = TAMEX3_SFP(sfp = sfp, card = 52);
-		card[53] = TAMEX3_SFP(sfp = sfp, card = 53);
-		card[54] = TAMEX3_SFP(sfp = sfp, card = 54);
-		card[55] = TAMEX3_SFP(sfp = sfp, card = 55);
 	}
 }
 
@@ -525,7 +504,7 @@ EVENT
 	pspx2 = febex_subev(type=101, subtype=10100, control=16);
 	pspx3 = febex_subev(type=101, subtype=10100, control=17);
 	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);
-	califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
+	revisit califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
 	neuland_tamex_1 = neuland_tamex_subev(type = 102, subtype = 10200, control = 10);
 	neuland_tamex_2 = neuland_tamex_subev(type = 102, subtype = 10200, control = 11);
 	fibsipm_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=18);

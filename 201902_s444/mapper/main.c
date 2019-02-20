@@ -402,8 +402,8 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 					    a_dst, edge_array[edge_i],
 					    prec_array[prec_i], sub_i * a_spmt + spmt_i + 1,
 					    a_tamex_i, prec_name_array[prec_i],
-						(0 == strcmp("10", a_name) ||
-						0 == strcmp("11", a_name)) ?
+						(0 == strcmp("99", a_name) ||
+						0 == strcmp("99", a_name)) ?
 					    (a_tamex_ch_i + sub_i * a_spmt + (a_spmt - spmt_i - 1)) * 2 + edge_i + 1 :
 					    (a_tamex_ch_i + sub_i * a_spmt + spmt_i) * 2 + edge_i + 1);
 				}

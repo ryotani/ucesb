@@ -343,6 +343,15 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 	  assert((unsigned)strip_i < countof(mask));
 	  mask[strip_i] |= (char)(1 << strip_e);
 	}
+/*#define TJO \
+do{auto strip_i = ch / 2;\
+auto strip_e = ch & 1;\
+assert((unsigned)strip_i < countof(mask));\
+mask[strip_i] |= (char)(1 << strip_e);} while (0)
+ch=62;TJO;
+ch=63;TJO;
+ch=64;TJO;
+ch=65;TJO;*/
 	// Zero-suppress strips.
 	for (unsigned strip_i = 0; strip_i < 64; ++strip_i) {
 	  if (mask[strip_i] == 3) {
@@ -353,12 +362,7 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 	// Fill map.
 	for (unsigned j = 0; j < strip_num[i][0]; ++j) {
 	  auto strip_0 = strip[i][0][j];
-	  unsigned x;
-	  switch (i) {
-	    case 0: x = 31 - strip_0; break;
-	    case 1:
-	    case 2: x = strip_0; break;
-	  }
+	  unsigned x = strip_0;
 	  for (unsigned k = 0; k < strip_num[i][1]; ++k) {
 	    auto strip_1 = strip[i][1][k];
 	    unsigned y;
@@ -372,23 +376,13 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 	}
       }
       for (i = 0; i < 2; ++i) {
-        // Fill coord vs coord map for the PSPs on either side of the target.
+	// Fill coord vs coord map for the PSPs on either side of the target.
 	for (unsigned j = 0; j < strip_num[0][i]; ++j) {
 	  auto strip_0 = strip[0][i][j];
-	  unsigned x;
-	  switch (i) {
-	    case 0: x = 31 - strip_0; break;
-	    case 1:
-	    case 2: x = strip_0; break;
-	  }
+	  unsigned x = strip_0;
 	  for (unsigned k = 0; k < strip_num[1][i]; ++k) {
 	    auto strip_1 = strip[1][i][k];
-	    unsigned y;
-	    switch (i) {
-	      case 0: y = 31 - strip_1; break;
-	      case 1:
-	      case 2: y = strip_1; break;
-	    }
+	    unsigned y = 31 - strip_1;
 	    ++g_psp.map[3 + i][x + 32 * y];
 	  }
 	}
