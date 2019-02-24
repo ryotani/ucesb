@@ -17,8 +17,10 @@
 
 static struct {
   bool yes;
+  size_t wr_i;
+  uint64_t wr_array[100000];
   uint32_t map[5][32 * 32];
-  uint32_t tofd[44];
+  uint32_t tofd[4][44];
 } g_web;
 
 namespace {
@@ -380,22 +382,24 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
         }
       }
       {
-        // Fill TOFD first plane.
-        int mask[44];
-        memset(mask, 0, sizeof mask);
-        for (int side = 0; side < 2; ++side) {
-          auto &tcl = raw_event->TOFD.P[0].T[side].TCL;
-          bitsone_iterator iter;
-          ssize_t ch;
-          while ((ch = tcl._valid.next(iter)) >= 0) {
-            if (ch < (ssize_t)countof(mask)) {
-              mask[ch] |= 1 << side;
+        // Fill TOFD planes.
+        for (unsigned plane = 0; plane < countof(g_web.tofd); ++plane) {
+          int mask[44];
+          memset(mask, 0, sizeof mask);
+          for (int side = 0; side < 2; ++side) {
+            auto &tcl = raw_event->TOFD.P[plane].T[side].TCL;
+            bitsone_iterator iter;
+            ssize_t ch;
+            while ((ch = tcl._valid.next(iter)) >= 0) {
+              if (ch < (ssize_t)countof(mask)) {
+                mask[ch] |= 1 << side;
+              }
             }
           }
-        }
-        for (size_t i = 0; i < countof(mask); ++i) {
-          if (3 == mask[i]) {
-            ++g_web.tofd[(countof(mask) - 1) - i];
+          for (size_t i = 0; i < countof(mask); ++i) {
+            if (3 == mask[i]) {
+              ++g_web.tofd[plane][(countof(mask) - 1) - i];
+            }
           }
         }
       }
@@ -430,10 +434,12 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
       if (NULL == file) {
         fprintf(stderr, "%s: Failed to write.\n", path);
       } else {
-        for (unsigned i = 0; i < countof(g_web.tofd); ++i) {
-          fprintf(file, " %u", g_web.tofd[i]);
+        for (unsigned plane = 0; plane < countof(g_web.tofd); ++plane) {
+          for (unsigned i = 0; i < countof(g_web.tofd[0]); ++i) {
+            fprintf(file, " %u", g_web.tofd[plane][i]);
+          }
+          fprintf(file, "\n");
         }
-        fprintf(file, "\n");
         fclose(file);
       }
       memset(g_web.tofd, 0, sizeof g_web.tofd);
@@ -472,12 +478,40 @@ int unpack_user_function(unpack_event *event)
     }
   }
 
-  if (1 != event->trigger) {
+  if (g_web.yes) {
+    if (12 == event->trigger) {
+      g_web.wr_i = 0;
+      g_web.wr_array[g_web.wr_i++] = wr;
+    } else if (1 == event->trigger && 0 < g_web.wr_i) {
+      if (g_web.wr_i < countof(g_web.wr_array)) {
+        g_web.wr_array[g_web.wr_i++] = wr;
+      }
+    } else if (13 == event->trigger) {
+      /* Spill done, create spill structure. */
+      uint32_t spill[100];
+      memset(spill, 0, sizeof spill);
+      auto begin = g_web.wr_array[0];
+      auto end = wr;
+      auto span = end - begin;
+      for (size_t i = 1; i < g_web.wr_i; ++i) {
+        size_t j = countof(spill) * (g_web.wr_array[i] - begin) / span;
+        if (j < countof(spill)) {
+          ++spill[j];
+        }
+      }
+      FILE *file = fopen("/u/land/web-docs/r3bbm/spill.txt", "wb");
+      if (file) {
+        for (size_t i = 0; i < countof(spill); ++i) {
+          fprintf(file, " %u", spill[i]);
+        }
+        fprintf(file, "\n");
+        fclose(file);
+      }
+    }
     return 1;
   }
 
-  if (g_web.yes) {
-    // Don|t do expensive tracking for PSP publishing.
+  if (1 != event->trigger) {
     return 1;
   }
 
