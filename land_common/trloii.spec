@@ -66,9 +66,36 @@ TRLOII_SAMPLER(mark)
 	list(0 <= index < header.word_num) {
 		UINT32 time_lo NOENCODE {
 			0_29: time;
-			30:   dunno;
+			30:   dunno; // == 0?
 			31:   overflow;
 			ENCODE(sampler[index], (value = time));
+		}
+	}
+}
+
+TRLOII_SAMPLER_TWO(mark)
+{
+	MEMBER(DATA32 sampler_hi[512] ZERO_SUPPRESS);
+	MEMBER(DATA32 sampler_lo[512] ZERO_SUPPRESS);
+
+	UINT32 header {
+		0_9:   word_num;
+		10:    overflow;
+		16_31: mark = MATCH(mark);
+	}
+
+	list(0 <= index < header.word_num / 2) {
+		UINT32 time_lo NOENCODE {
+			0_29: time;
+			30:   dunno; // == 0?
+			31:   overflow;
+			ENCODE(sampler_lo[index], (value = time));
+		}
+		UINT32 time_hi NOENCODE {
+			0_29: time;
+			30:   dunno; // == 1?
+			31:   overflow;
+			ENCODE(sampler_hi[index], (value = time));
 		}
 	}
 }
