@@ -298,8 +298,8 @@ SUBEVENT(los_sampler_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		sampler_los = TRLOII_SAMPLER(mark=0x1050);
-		sampler_ms = TRLOII_SAMPLER(mark=0x1060);
+		los = TRLOII_SAMPLER(mark=0x1050);
+		ms = TRLOII_SAMPLER(mark=0x1060);
 	}
 }
 
