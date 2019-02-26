@@ -356,7 +356,7 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
         // Fill map.
         for (unsigned j = 0; j < strip_num[i][0]; ++j) {
           auto strip_0 = strip[i][0][j];
-          unsigned x = strip_0;
+          unsigned x = 31 - strip_0;
           for (unsigned k = 0; k < strip_num[i][1]; ++k) {
             auto strip_1 = strip[i][1][k];
             unsigned y;
@@ -373,10 +373,10 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
         // Fill coord vs coord map for the PSPs on either side of the target.
         for (unsigned j = 0; j < strip_num[0][i]; ++j) {
           auto strip_0 = strip[0][i][j];
-          unsigned x = strip_0;
+          unsigned x = 0 == i ? 31 - strip_0 : strip_0;
           for (unsigned k = 0; k < strip_num[1][i]; ++k) {
             auto strip_1 = strip[1][i][k];
-            unsigned y = 0 == i ? 31 - strip_1 : strip_1;
+            unsigned y = strip_1;
             ++g_web.map[3 + i][x + 32 * y];
           }
         }
