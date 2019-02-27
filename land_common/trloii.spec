@@ -84,7 +84,7 @@ TRLOII_SAMPLER_TWO(mark)
 		16_31: mark = MATCH(mark);
 	}
 
-	list(0 <= index < header.word_num / 2) {
+	list(0 <= index < (header.word_num) / 2) {
 		UINT32 time_lo NOENCODE {
 			0_29: time;
 			30:   dunno; // == 0?
@@ -98,6 +98,11 @@ TRLOII_SAMPLER_TWO(mark)
 			ENCODE(sampler_hi[index], (value = time));
 		}
 	}
+
+	if ((header.word_num % 2) == 1) {
+		UINT32 last_word NOENCODE;
+	}
+
 }
 
 TRLOII_TPAT(id)
