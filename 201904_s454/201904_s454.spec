@@ -233,19 +233,10 @@ fib_ctdc0_fib3_subev_data()
 		padding = GSI_CLOCKTDC_PADDING();
 	}
 	select several {
-		ctdc[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
-		ctdc[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
-		ctdc[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
-		ctdc[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
-	}
-	select several {
-		barrier = BARRIER();
-	}
-	select several {
-		ctdc3[0] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=0);
-		ctdc3[1] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=1);
-		ctdc3[2] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=2);
-		ctdc3[3] = GSI_CLOCKTDC_ITEM(sfp=1, tdc=3);
+		ctdc3[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
+		ctdc3[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
+		ctdc3[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
+		ctdc3[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
 	}
 }
 
@@ -263,10 +254,10 @@ fib_tamex_data()
 		padding = TAMEX3_PADDING();
 	}
 	select several {
-		tamex[0] = TAMEX3_SFP(sfp=2, card=0);
-		tamex[1] = TAMEX3_SFP(sfp=2, card=1);
-		tamex[2] = TAMEX3_SFP(sfp=2, card=2);
-		tamex[3] = TAMEX3_SFP(sfp=2, card=3);
+		tamex[0] = TAMEX3_SFP(sfp=0, card=0);
+		tamex[1] = TAMEX3_SFP(sfp=0, card=1);
+		tamex[2] = TAMEX3_SFP(sfp=0, card=2);
+		tamex[3] = TAMEX3_SFP(sfp=0, card=3);
 	}
 }
 

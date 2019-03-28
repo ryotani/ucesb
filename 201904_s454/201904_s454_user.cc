@@ -21,6 +21,7 @@ static struct {
   uint64_t wr_array[100000];
   uint32_t map[5][32 * 32];
   uint32_t tofd[4][44];
+  uint32_t fib3[23 + 26 + 26 + 23];
 } g_web;
 
 namespace {
@@ -67,7 +68,8 @@ bool g_do_stat = false;
 struct {
   bool yes;
   uint64_t wr;
-  unsigned ch[2][2];
+  unsigned ch[2][3];
+  double rate[3];
 } g_ics;
 time_t g_stat_time_prev = 0;
 
@@ -413,6 +415,41 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
           }
         }
       }
+      {
+        // Fill Fib3.
+        {
+          auto &tcl = raw_event->FIBTHREEB.TMLC;
+          bitsone_iterator iter;
+          ssize_t ch;
+          while ((ch = tcl._valid.next(iter)) >= 0) {
+            int idx = -1;
+            if (ch < 26) {
+              idx = 23 + 26 - ch - 1;
+            } else if (ch < 256) {
+              idx = 23 - (ch - 26) / 10 - 1;
+            }
+            if (-1 != i) {
+              ++g_web.fib3[idx];
+            }
+          }
+        }
+        {
+          auto &tcl = raw_event->FIBTHREEA.TMLC;
+          bitsone_iterator iter;
+          ssize_t ch;
+          while ((ch = tcl._valid.next(iter)) >= 0) {
+            int idx = -1;
+            if (ch < 26) {
+              idx = 23 + 26 + ch;
+            } else if (ch < 256) {
+              idx = 23 + 26 + 26 + (ch - 26) / 10;
+            }
+            if (-1 != i) {
+              ++g_web.fib3[idx];
+            }
+          }
+        }
+      }
     } else if (10 == event->trigger ||
         11 == event->trigger ||
         13 == event->trigger) {
@@ -439,20 +476,52 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
         }
         memset(g_web.map[i], 0, sizeof g_web.map[i]);
       }
-      strcpy(path, "/u/land/web-docs/r3bbm/tofd.txt");
-      FILE *file = fopen(path, "wb");
-      if (NULL == file) {
-        fprintf(stderr, "%s: Failed to write.\n", path);
-      } else {
-        for (unsigned plane = 0; plane < countof(g_web.tofd); ++plane) {
-          for (unsigned i = 0; i < countof(g_web.tofd[0]); ++i) {
-            fprintf(file, " %u", g_web.tofd[plane][i]);
+
+      {
+        strcpy(path, "/u/land/web-docs/r3bbm/tofd.txt");
+        FILE *file = fopen(path, "wb");
+        if (NULL == file) {
+          fprintf(stderr, "%s: Failed to write.\n", path);
+        } else {
+          for (unsigned plane = 0; plane < countof(g_web.tofd); ++plane) {
+            for (unsigned i = 0; i < countof(g_web.tofd[0]); ++i) {
+              fprintf(file, " %u", g_web.tofd[plane][i]);
+            }
+            fprintf(file, "\n");
+          }
+          fclose(file);
+        }
+        memset(g_web.tofd, 0, sizeof g_web.tofd);
+      }
+
+      {
+        strcpy(path, "/u/land/web-docs/r3bbm/fib3.txt");
+        FILE *file = fopen(path, "wb");
+        if (NULL == file) {
+          fprintf(stderr, "%s: Failed to write.\n", path);
+        } else {
+          for (unsigned i = 0; i < countof(g_web.fib3); ++i) {
+            fprintf(file, " %u", g_web.fib3[i]);
           }
           fprintf(file, "\n");
+          fclose(file);
         }
-        fclose(file);
+        memset(g_web.fib3, 0, sizeof g_web.fib3);
       }
-      memset(g_web.tofd, 0, sizeof g_web.tofd);
+
+      {
+        strcpy(path, "/u/land/web-docs/r3bbm/ics.txt");
+        FILE *file = fopen(path, "wb");
+        if (NULL == file) {
+          fprintf(stderr, "%s: Failed to write.\n", path);
+        } else {
+          for (unsigned i = 0; i < countof(g_ics.rate); ++i) {
+            fprintf(file, " %g", g_ics.rate[i]);
+          }
+          fprintf(file, "\n");
+          fclose(file);
+        }
+      }
     }
   }
 }
@@ -468,11 +537,14 @@ int unpack_user_function(unpack_event *event)
 
   if (g_ics.yes) {
     uint32_t mask = 0x03ffffff;
-    if (12 == event->trigger || 13 == event->trigger) {
+    if (10 == event->trigger || 11 == event->trigger ||
+        12 == event->trigger || 13 == event->trigger) {
       printf("\nTrig=%u\n", event->trigger);
-      for (unsigned i = 0; i < 2; ++i) {
-        printf(" %u = %g\n", i, 1e9 * (double)(mask & (g_ics.ch[1][i] -
-            g_ics.ch[0][i] + mask + 1)) / (double)(wr - g_ics.wr));
+      for (unsigned i = 0; i < 3; ++i) {
+        double rate = 1e9 * (double)(mask & (g_ics.ch[1][i] -
+            g_ics.ch[0][i] + mask + 1)) / (double)(wr - g_ics.wr);
+        g_ics.rate[i] = rate;
+        printf(" %u = %g\n", i, g_ics.rate[i]);
       }
       g_ics.wr = wr;
       memcpy(g_ics.ch[0], g_ics.ch[1], sizeof g_ics.ch[0]);
@@ -482,7 +554,7 @@ int unpack_user_function(unpack_event *event)
     ssize_t i;
     auto &array = event->master_beammon.data.v830.data;
     while ((i = array._valid.next(iter)) >= 0) {
-      if (2 > i) {
+      if (3 > i) {
         g_ics.ch[1][i] = mask & array._items[i].value;
       }
     }
