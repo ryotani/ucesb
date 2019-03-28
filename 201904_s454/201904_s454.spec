@@ -496,6 +496,12 @@ SUBEVENT(wr_100)
 	wr_multi = WR_MULTI();
 }
 
+SUBEVENT(wr_500)
+{
+	ts500 = TIMESTAMP_WHITERABBIT(id=0x500);
+	wr_multi = WR_MULTI();
+}
+
 EVENT
 {
 	master_ts = wr_100(type=10, subtype=1, control=0);
@@ -522,8 +528,10 @@ EVENT
 	//los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);
 	//ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);
 	revisit califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
-	//neuland_tamex_1 = neuland_tamex_subev(type = 102, subtype = 10200, control = 10);
-	//neuland_tamex_2 = neuland_tamex_swapped_subev(type = 102, subtype = 10200, control = 11);
+	neuland_ts = wr_500(type=10, subtype=1, control=20);
+	neuland_tamex_1 = neuland_tamex_subev(type = 102, subtype = 10200, control = 21);
+//	neuland_tamex_2 = neuland_tamex_swapped_subev(type = 102, subtype = 10200, control = 22);
+	neuland_tamex_2 = neuland_tamex_subev(type = 102, subtype = 10200, control = 22);
 	//fibsipm_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=18);
 	ignore_unknown_subevent;
 }
