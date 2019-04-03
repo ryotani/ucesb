@@ -68,9 +68,9 @@ bool g_do_stat = false;
 struct {
   bool yes;
   uint64_t wr;
-  unsigned ch[2][3];
-  uint32_t diff[3];
-  double rate[3];
+  unsigned ch[2][4];
+  uint32_t diff[4];
+  double rate[4];
 } g_ics;
 time_t g_stat_time_prev = 0;
 
@@ -543,10 +543,13 @@ int unpack_user_function(unpack_event *event)
     if (10 == event->trigger || 11 == event->trigger ||
         12 == event->trigger || 13 == event->trigger) {
       if (g_ics.yes) printf("\nTrig=%u\n", event->trigger);
-      for (unsigned i = 0; i < 3; ++i) {
+      for (unsigned i = 0; i < countof(g_ics.ch[0]); ++i) {
         uint32_t diff = mask & (g_ics.ch[1][i] - g_ics.ch[0][i] + mask + 1);
         g_ics.diff[i] = diff;
         g_ics.rate[i] = 1e9 * (double)diff / (double)(wr - g_ics.wr);
+        if (1 == i) {
+          g_ics.rate[i] = std::max(0., g_ics.rate[i] - 7.1) * 135641.7786;
+        }
         if (g_ics.yes) {
           printf(" %u = %u (%.1f Hz)\n", i, g_ics.diff[i], g_ics.rate[i]);
         }
@@ -559,7 +562,7 @@ int unpack_user_function(unpack_event *event)
     ssize_t i;
     auto &array = event->master_beammon.data.v830.data;
     while ((i = array._valid.next(iter)) >= 0) {
-      if (3 > i) {
+      if ((ssize_t)countof(g_ics.ch[1]) > i) {
         g_ics.ch[1][i] = mask & array._items[i].value;
       }
     }
