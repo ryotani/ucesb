@@ -420,11 +420,6 @@ neuland_tamex_subev_data()
 		padding0 = TAMEX3_PADDING();
 	}
 	sfp[0] = neuland_sfp(sfp = 0);
-	select several {
-		barrier = BARRIER();
-		padding1 = TAMEX3_PADDING();
-	}
-	sfp[1] = neuland_sfp(sfp = 1);
 }
 
 /* This readout scheme shaves 6 us off the PC deadtime */
@@ -510,7 +505,7 @@ EVENT
 	master_scalers = master_scalers_subev(type=38, subtype=3800, control=0);
 	master_beammon = master_beammon_subev(type=88, subtype=8800, control=0);
 	fib_tamex = fib_tamex_subev(type=102, subtype=10200, control=1);
-	fib3_ctdc  = fib_ctdc0_fib3_subev(type=103, subtype=10300, control=2);
+	fib3_ctdc  = fib_ctdc0_subev(type=103, subtype=10300, control=2);
 	fib10_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=3);
 	fib11_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=4);
 	fib12_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=5);
@@ -530,8 +525,9 @@ EVENT
 	revisit califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
 	neuland_ts = wr_500(type=10, subtype=1, control=20);
 	neuland_tamex_1 = neuland_tamex_subev(type = 102, subtype = 10200, control = 21);
-//	neuland_tamex_2 = neuland_tamex_swapped_subev(type = 102, subtype = 10200, control = 22);
 	neuland_tamex_2 = neuland_tamex_subev(type = 102, subtype = 10200, control = 22);
+	neuland_tamex_3 = neuland_tamex_subev(type = 102, subtype = 10200, control = 23);
+	neuland_tamex_4 = neuland_tamex_subev(type = 102, subtype = 10200, control = 24);
 	//fibsipm_ctdc = fib_ctdc0_subev(type=103, subtype=10300, control=18);
 	ignore_unknown_subevent;
 }

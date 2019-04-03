@@ -89,7 +89,7 @@ map(char const *a_dst, char const *a_name, unsigned a_mapmt, unsigned
 			for (prec_i = 0; prec_i < 2; ++prec_i) {
 				printf(
 				    "SIGNAL(%s_TM%c%c%u, "
-				    "fib3_ctdc.data.ctdc3[%u].time_%s[%u], DATA12);\n",
+				    "fib3_ctdc.data.ctdc[%u].time_%s[%u], DATA12);\n",
 				    a_dst, edge_array[edge_i],
 				    prec_array[prec_i], bunch_i,
 				    a_ctdc_i + ctdc_i,

@@ -69,6 +69,7 @@ struct {
   bool yes;
   uint64_t wr;
   unsigned ch[2][3];
+  uint32_t diff[3];
   double rate[3];
 } g_ics;
 time_t g_stat_time_prev = 0;
@@ -180,21 +181,22 @@ namespace {
 #define CT_VECTOR(dst, src) \
   std::vector<CoarseTracker> g_##dst##_ct(countof(unpack_event::src))
   //CT_SINGLE(los_tamex_ms);
-  CT_VECTOR(tofd_tamex1_trig, tofd_tamex_1.data.tamex);
-  CT_VECTOR(tofd_tamex2_trig, tofd_tamex_2.data.tamex);
   CT_SINGLE(fib_tamex_ms);
   CT_VECTOR(fib_tamex_trig, fib_tamex.data.tamex);
-  //CT_VECTOR(fi3a_ctdc_trig, fib_ctdc.data.fibthreea);
-  //CT_VECTOR(fi3b_ctdc_trig, fib_ctdc.data.fibthreeb);
-  CT_VECTOR(fi12_ctdc_trig, fib12_ctdc.data.ctdc);
-  CT_VECTOR(fi13_ctdc_trig, fib13_ctdc.data.ctdc);
-  CT_VECTOR(fi10_ctdc_trig, fib10_ctdc.data.ctdc);
-  CT_VECTOR(fi11_ctdc_trig, fib11_ctdc.data.ctdc);
-  //CT_SINGLE(nl_tamex_ms);
-  //CT_VECTOR(nl10_tamex_trig, neuland_tamex_1.data.sfp[0].card);
-  //CT_VECTOR(nl11_tamex_trig, neuland_tamex_1.data.sfp[1].card);
-  //CT_VECTOR(nl20_tamex_trig, neuland_tamex_2.data.sfp[0].card);
-  //CT_VECTOR(nl21_tamex_trig, neuland_tamex_2.data.sfp[1].card);
+//  CT_VECTOR(fi3_ctdc_trig, fib3_ctdc.data.ctdc);
+//  CT_VECTOR(fi10_ctdc_trig, fib10_ctdc.data.ctdc);
+//  CT_VECTOR(fi11_ctdc_trig, fib11_ctdc.data.ctdc);
+//  CT_VECTOR(fi12_ctdc_trig, fib12_ctdc.data.ctdc);
+//  CT_VECTOR(fi13_ctdc_trig, fib13_ctdc.data.ctdc);
+  CT_VECTOR(tofd_tamex1_trig, tofd_tamex_1.data.tamex);
+  CT_VECTOR(tofd_tamex2_trig, tofd_tamex_2.data.tamex);
+  CT_VECTOR(tofd_tamex3_trig, tofd_tamex_3.data.tamex);
+  CT_VECTOR(tofd_tamex4_trig, tofd_tamex_4.data.tamex);
+  CT_SINGLE(nl_tamex_ms);
+  CT_VECTOR(nl1_tamex_trig, neuland_tamex_1.data.sfp[0].card);
+  CT_VECTOR(nl2_tamex_trig, neuland_tamex_2.data.sfp[0].card);
+  CT_VECTOR(nl3_tamex_trig, neuland_tamex_3.data.sfp[0].card);
+  CT_VECTOR(nl4_tamex_trig, neuland_tamex_4.data.sfp[0].card);
   // HAXX!!!
   //CT_SINGLE(tofd_tjo_ms);
 }
@@ -272,35 +274,33 @@ void init_user_function()
 #define SET_NAME(ct) \
   g_##ct##_ct.SetName(#ct)
 #define SET_NAME_ARRAY(ct) do {\
-  unsigned i = 0;\
-  for (auto it = g_##ct##_ct.begin(); g_##ct##_ct.end() != it; ++it, ++i) {\
-    std::ostringstream oss;\
-    oss << #ct << i;\
-    it->SetName(oss.str().c_str());\
-  }\
-} while (0)
-//SET_NAME(los_tamex_ms);
-SET_NAME_ARRAY(tofd_tamex1_trig);
-SET_NAME_ARRAY(tofd_tamex2_trig);
-SET_NAME(fib_tamex_ms);
-SET_NAME_ARRAY(fib_tamex_trig);
-//  SET_NAME_ARRAY(fi3a_ctdc_trig);
-//  SET_NAME_ARRAY(fi3b_ctdc_trig);
-SET_NAME_ARRAY(fi12_ctdc_trig);
-SET_NAME_ARRAY(fi13_ctdc_trig);
-SET_NAME_ARRAY(fi10_ctdc_trig);
-SET_NAME_ARRAY(fi11_ctdc_trig);
-//SET_NAME(nl_tamex_ms);
-//SET_NAME_ARRAY(nl10_tamex_trig);
-//SET_NAME_ARRAY(nl11_tamex_trig);
-//SET_NAME_ARRAY(nl20_tamex_trig);
-//eiiiiiiiiiiiiiiiiieeeeeeeeeeeeeeeeeVeeeckiiiiiiipil
-//uint32_t
-//trloii_get_master_start(struct Module *a_modlue)kbkbkbkbule)
-//{
-//}bSET_NAME_ARRAY(nl21_tamex_trig);
-// HAXX!!!
-//SET_NAME(tofd_tjo_ms);
+    unsigned i = 0;\
+    for (auto it = g_##ct##_ct.begin(); g_##ct##_ct.end() != it; ++it, ++i) {\
+      std::ostringstream oss;\
+      oss << #ct << i;\
+      it->SetName(oss.str().c_str());\
+    }\
+  } while (0)
+  //SET_NAME(los_tamex_ms);
+  SET_NAME(fib_tamex_ms);
+  SET_NAME_ARRAY(fib_tamex_trig);
+  SET_NAME_ARRAY(fib_tamex_trig);
+//  SET_NAME_ARRAY(fi3_ctdc_trig);
+//  SET_NAME_ARRAY(fi10_ctdc_trig);
+//  SET_NAME_ARRAY(fi11_ctdc_trig);
+//  SET_NAME_ARRAY(fi12_ctdc_trig);
+//  SET_NAME_ARRAY(fi13_ctdc_trig);
+  SET_NAME_ARRAY(tofd_tamex1_trig);
+  SET_NAME_ARRAY(tofd_tamex2_trig);
+  SET_NAME_ARRAY(tofd_tamex3_trig);
+  SET_NAME_ARRAY(tofd_tamex4_trig);
+  SET_NAME(nl_tamex_ms);
+  SET_NAME_ARRAY(nl1_tamex_trig);
+  SET_NAME_ARRAY(nl2_tamex_trig);
+  SET_NAME_ARRAY(nl3_tamex_trig);
+  SET_NAME_ARRAY(nl4_tamex_trig);
+  // HAXX!!!
+  //SET_NAME(tofd_tjo_ms);
 }
 
 void exit_user_function()
@@ -422,13 +422,13 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
           bitsone_iterator iter;
           ssize_t ch;
           while ((ch = tcl._valid.next(iter)) >= 0) {
-            int idx = -1;
+            ssize_t idx = -1;
             if (ch < 26) {
               idx = 23 + 26 - ch - 1;
             } else if (ch < 256) {
               idx = 23 - (ch - 26) / 10 - 1;
             }
-            if (-1 != i) {
+            if (idx >= 0 && idx < (ssize_t)countof(g_web.fib3)) {
               ++g_web.fib3[idx];
             }
           }
@@ -438,13 +438,13 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
           bitsone_iterator iter;
           ssize_t ch;
           while ((ch = tcl._valid.next(iter)) >= 0) {
-            int idx = -1;
+            ssize_t idx = -1;
             if (ch < 26) {
               idx = 23 + 26 + ch;
             } else if (ch < 256) {
               idx = 23 + 26 + 26 + (ch - 26) / 10;
             }
-            if (-1 != i) {
+            if (idx >= 0 && idx < (ssize_t)countof(g_web.fib3)) {
               ++g_web.fib3[idx];
             }
           }
@@ -515,8 +515,11 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
         if (NULL == file) {
           fprintf(stderr, "%s: Failed to write.\n", path);
         } else {
+          for (unsigned i = 0; i < countof(g_ics.diff); ++i) {
+            fprintf(file, " %u", g_ics.diff[i]);
+          }
           for (unsigned i = 0; i < countof(g_ics.rate); ++i) {
-            fprintf(file, " %g", g_ics.rate[i]);
+            fprintf(file, " %.1f", g_ics.rate[i]);
           }
           fprintf(file, "\n");
           fclose(file);
@@ -535,16 +538,18 @@ int unpack_user_function(unpack_event *event)
       ((uint64_t)ts100.t2.value << 16) |
       ((uint64_t)ts100.t1.value);
 
-  if (g_ics.yes) {
+  if (g_ics.yes || g_web.yes) {
     uint32_t mask = 0x03ffffff;
     if (10 == event->trigger || 11 == event->trigger ||
         12 == event->trigger || 13 == event->trigger) {
-      printf("\nTrig=%u\n", event->trigger);
+      if (g_ics.yes) printf("\nTrig=%u\n", event->trigger);
       for (unsigned i = 0; i < 3; ++i) {
-        double rate = 1e9 * (double)(mask & (g_ics.ch[1][i] -
-            g_ics.ch[0][i] + mask + 1)) / (double)(wr - g_ics.wr);
-        g_ics.rate[i] = rate;
-        printf(" %u = %g\n", i, g_ics.rate[i]);
+        uint32_t diff = mask & (g_ics.ch[1][i] - g_ics.ch[0][i] + mask + 1);
+        g_ics.diff[i] = diff;
+        g_ics.rate[i] = 1e9 * (double)diff / (double)(wr - g_ics.wr);
+        if (g_ics.yes) {
+          printf(" %u = %u (%.1f Hz)\n", i, g_ics.diff[i], g_ics.rate[i]);
+        }
       }
       g_ics.wr = wr;
       memcpy(g_ics.ch[0], g_ics.ch[1], sizeof g_ics.ch[0]);
@@ -591,6 +596,10 @@ int unpack_user_function(unpack_event *event)
       }
     }
     return 1;
+  }
+
+  if (g_ics.yes) {
+	  return 1;
   }
 
   if (1 != event->trigger) {
@@ -656,15 +665,20 @@ int unpack_user_function(unpack_event *event)
     //
   if (/*0 != event->los_vme.data.land_vme.failure.u32 ||*/
       /*0 != event->los_tamex.data.land_vme.failure.u32 ||*/
+      0 != event->fib_tamex.data.land_vme.failure.u32 ||
+//      0 != event->fib3_ctdc.data.land_vme.failure.u32 ||
+//      0 != event->fib10_ctdc.data.land_vme.failure.u32 ||
+//      0 != event->fib11_ctdc.data.land_vme.failure.u32 ||
+//      0 != event->fib12_ctdc.data.land_vme.failure.u32 ||
+//      0 != event->fib13_ctdc.data.land_vme.failure.u32 ||
       0 != event->tofd_tamex_1.data.land_vme.failure.u32 ||
       0 != event->tofd_tamex_2.data.land_vme.failure.u32 ||
-      0 != event->fib_tamex.data.land_vme.failure.u32 ||
-      0 != event->fib12_ctdc.data.land_vme.failure.u32 ||
-      0 != event->fib13_ctdc.data.land_vme.failure.u32 ||
-      0 != event->fib10_ctdc.data.land_vme.failure.u32 ||
-      0 != event->fib11_ctdc.data.land_vme.failure.u32 /*||
+      0 != event->tofd_tamex_3.data.land_vme.failure.u32 ||
+      0 != event->tofd_tamex_4.data.land_vme.failure.u32 ||
       0 != event->neuland_tamex_1.data.land_vme.failure.u32 ||
-      0 != event->neuland_tamex_2.data.land_vme.failure.u32*/) {
+      0 != event->neuland_tamex_2.data.land_vme.failure.u32 ||
+      0 != event->neuland_tamex_3.data.land_vme.failure.u32 ||
+      0 != event->neuland_tamex_4.data.land_vme.failure.u32) {
     fprintf(stderr, "%s: DAQ failure, tracking reset.\n", __func__);
 #define RESET_ARRAY(array) do {\
   for (auto it = array.begin(); array.end() != it; ++it) {\
@@ -672,21 +686,22 @@ int unpack_user_function(unpack_event *event)
   }\
 } while (0)
     //g_los_tamex_ms_ct.Reset();
-    RESET_ARRAY(g_tofd_tamex1_trig_ct);
-    RESET_ARRAY(g_tofd_tamex2_trig_ct);
     g_fib_tamex_ms_ct.Reset();
     RESET_ARRAY(g_fib_tamex_trig_ct);
-    //    RESET_ARRAY(g_fi3a_ctdc_trig_ct);
-    //    RESET_ARRAY(g_fi3b_ctdc_trig_ct);
-    RESET_ARRAY(g_fi12_ctdc_trig_ct);
-    RESET_ARRAY(g_fi13_ctdc_trig_ct);
-    RESET_ARRAY(g_fi10_ctdc_trig_ct);
-    RESET_ARRAY(g_fi11_ctdc_trig_ct);
-    //g_nl_tamex_ms_ct.Reset();
-    //RESET_ARRAY(g_nl10_tamex_trig_ct);
-    //RESET_ARRAY(g_nl11_tamex_trig_ct);
-    //RESET_ARRAY(g_nl20_tamex_trig_ct);
-    //RESET_ARRAY(g_nl21_tamex_trig_ct);
+//    RESET_ARRAY(g_fi3_ctdc_trig_ct);
+//    RESET_ARRAY(g_fi10_ctdc_trig_ct);
+//    RESET_ARRAY(g_fi11_ctdc_trig_ct);
+//    RESET_ARRAY(g_fi12_ctdc_trig_ct);
+//    RESET_ARRAY(g_fi13_ctdc_trig_ct);
+    RESET_ARRAY(g_tofd_tamex1_trig_ct);
+    RESET_ARRAY(g_tofd_tamex2_trig_ct);
+    RESET_ARRAY(g_tofd_tamex3_trig_ct);
+    RESET_ARRAY(g_tofd_tamex4_trig_ct);
+    g_nl_tamex_ms_ct.Reset();
+    RESET_ARRAY(g_nl1_tamex_trig_ct);
+    RESET_ARRAY(g_nl2_tamex_trig_ct);
+    RESET_ARRAY(g_nl3_tamex_trig_ct);
+    RESET_ARRAY(g_nl4_tamex_trig_ct);
     // 1 erronous + 2 more events will be skipped, we're trying to wait until
     // the electronics have recovered.
     g_error_delay = 3;
@@ -751,38 +766,37 @@ for (size_t card_i = 0; card_i < countof(event->a_module); ++card_i) {\
 #define TAMEX_TIME_GET_ARRAY(_name, a_module)\
     TIME_GET_ARRAY(_name, a_module, 0)
 
-#ifdef HAS_LOS
 /*TIME_GET_SINGLE(los_vftx2_ms, los_vme.data.vftx2, 15);*/
-if (!los_vftx2_ms_exists) {
+//if (!los_vftx2_ms_exists) {
   // We sync against LOS VFTX2, plus we do all this work because we want the
   // ToF from LOS, so we must have it!
   //    return 1;
-}
-#endif
+//}
 
 //TIME_GET_SINGLE(los_tamex_trig, los_tamex.data.tamex, 0);
 //TIME_GET_SINGLE(los_tamex_ms, los_tamex.data.tamex, 31);
 
-TAMEX_TIME_GET_ARRAY(tofd_tamex1_trig, tofd_tamex_1.data.tamex);
-TAMEX_TIME_GET_ARRAY(tofd_tamex2_trig, tofd_tamex_2.data.tamex);
-
 TAMEX_TIME_GET_ARRAY(fib_tamex_trig, fib_tamex.data.tamex);
 TIME_GET_SINGLE(fib_tamex_ms, fib_tamex.data.tamex[3], 1);
 
-//  CTDC_TIME_GET_ARRAY(fi3a_ctdc_trig, fib_ctdc2.data.fibthreea);
-//  CTDC_TIME_GET_ARRAY(fi3b_ctdc_trig, fib_ctdc2.data.fibthreeb);
-CTDC_TIME_GET_ARRAY(fi12_ctdc_trig, fib12_ctdc.data.ctdc);
-CTDC_TIME_GET_ARRAY(fi13_ctdc_trig, fib13_ctdc.data.ctdc);
-CTDC_TIME_GET_ARRAY(fi10_ctdc_trig, fib10_ctdc.data.ctdc);
-CTDC_TIME_GET_ARRAY(fi11_ctdc_trig, fib11_ctdc.data.ctdc);
+//CTDC_TIME_GET_ARRAY(fi3_ctdc_trig, fib3_ctdc.data.ctdc);
+//CTDC_TIME_GET_ARRAY(fi10_ctdc_trig, fib10_ctdc.data.ctdc);
+//CTDC_TIME_GET_ARRAY(fi11_ctdc_trig, fib11_ctdc.data.ctdc);
+//CTDC_TIME_GET_ARRAY(fi12_ctdc_trig, fib12_ctdc.data.ctdc);
+//CTDC_TIME_GET_ARRAY(fi13_ctdc_trig, fib13_ctdc.data.ctdc);
+
+TAMEX_TIME_GET_ARRAY(tofd_tamex1_trig, tofd_tamex_1.data.tamex);
+TAMEX_TIME_GET_ARRAY(tofd_tamex2_trig, tofd_tamex_2.data.tamex);
+TAMEX_TIME_GET_ARRAY(tofd_tamex3_trig, tofd_tamex_3.data.tamex);
+TAMEX_TIME_GET_ARRAY(tofd_tamex4_trig, tofd_tamex_4.data.tamex);
 
 // 17 = last channel, because the FQT 8-fold connectors are swapped, like
 // they always were with Tacquila:s.
-//  TIME_GET_SINGLE(nl_tamex_ms, neuland_tamex_2.data.sfp[0].card[11], 17);
-//TAMEX_TIME_GET_ARRAY(nl10_tamex_trig, neuland_tamex_1.data.sfp[0].card);
-//TAMEX_TIME_GET_ARRAY(nl11_tamex_trig, neuland_tamex_1.data.sfp[1].card);
-//TAMEX_TIME_GET_ARRAY(nl20_tamex_trig, neuland_tamex_2.data.sfp[0].card);
-//TAMEX_TIME_GET_ARRAY(nl21_tamex_trig, neuland_tamex_2.data.sfp[1].card);
+//TIME_GET_SINGLE(nl_tamex_ms, neuland_tamex_2.data.sfp[0].card[11], 17);
+TAMEX_TIME_GET_ARRAY(nl1_tamex_trig, neuland_tamex_1.data.sfp[0].card);
+TAMEX_TIME_GET_ARRAY(nl2_tamex_trig, neuland_tamex_2.data.sfp[0].card);
+TAMEX_TIME_GET_ARRAY(nl3_tamex_trig, neuland_tamex_3.data.sfp[0].card);
+TAMEX_TIME_GET_ARRAY(nl4_tamex_trig, neuland_tamex_4.data.sfp[0].card);
 
 // HAXX!!!
 //TIME_GET_SINGLE(tofd_tjo_ms, tofd_tamex_2.data.tamex[11], 1);
@@ -847,6 +861,42 @@ bool track_ok = true;
 
 // DANGER: Adjust the mask to the HW ranges!
 
+TRACK_ADJUST_ARRAY_STANDALONE(fib_tamex_trig, fib_tamex.data.tamex,
+    TAMEX_MASK, fib_tamex_trig, 3, 1);
+
+TRACK_ADJUST_ARRAY_STANDALONE(tofd_tamex1_trig, tofd_tamex_1.data.tamex,
+    TAMEX_MASK, fib_tamex_trig, 3, 0);
+TRACK_ADJUST_ARRAY_STANDALONE(tofd_tamex2_trig, tofd_tamex_2.data.tamex,
+    TAMEX_MASK, fib_tamex_trig, 3, 0);
+TRACK_ADJUST_ARRAY_STANDALONE(tofd_tamex3_trig, tofd_tamex_3.data.tamex,
+    TAMEX_MASK, fib_tamex_trig, 3, 0);
+TRACK_ADJUST_ARRAY_STANDALONE(tofd_tamex4_trig, tofd_tamex_4.data.tamex,
+    TAMEX_MASK, fib_tamex_trig, 3, 0);
+
+if (nl1_tamex_trig_time.at(0).first) {
+  if (fib_tamex_trig_time.at(0).first) {
+    // If we have NL + Fib tamexes, sync them.
+    TRACK_ADJUST_ARRAY_STANDALONE(nl1_tamex_trig,
+        neuland_tamex_1.data.sfp[0].card, TAMEX_MASK, fib_tamex_trig, 3, 0);
+    TRACK_ADJUST_ARRAY_STANDALONE(nl2_tamex_trig,
+        neuland_tamex_2.data.sfp[0].card, TAMEX_MASK, fib_tamex_trig, 3, 0);
+    TRACK_ADJUST_ARRAY_STANDALONE(nl3_tamex_trig,
+        neuland_tamex_3.data.sfp[0].card, TAMEX_MASK, fib_tamex_trig, 3, 0);
+    TRACK_ADJUST_ARRAY_STANDALONE(nl4_tamex_trig,
+        neuland_tamex_4.data.sfp[0].card, TAMEX_MASK, fib_tamex_trig, 3, 0);
+  } else {
+    // Otherwise do NL standalone.
+    TRACK_ADJUST_ARRAY_STANDALONE(nl1_tamex_trig,
+        neuland_tamex_1.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 1);
+    TRACK_ADJUST_ARRAY_STANDALONE(nl2_tamex_trig,
+        neuland_tamex_2.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 0);
+    TRACK_ADJUST_ARRAY_STANDALONE(nl3_tamex_trig,
+        neuland_tamex_3.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 0);
+    TRACK_ADJUST_ARRAY_STANDALONE(nl4_tamex_trig,
+        neuland_tamex_4.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 0);
+  }
+}
+
 // (LOS TAMEX3 MS -- LOS VFTX2 MS)
 //TRACK_ADJUST_SINGLE(los_tamex_ms, los_tamex.data.tamex, TAMEX_MASK,
 //    los_vftx2_ms);
@@ -858,10 +908,8 @@ bool track_ok = true;
 //    los_tamex_trig, g_los_tamex_ms_ct, 999);
 
 // (FIB TAMEX3 MS -- LOS VFTX2 MS)
-#ifdef HAS_LOS
-TRACK_ADJUST_SINGLE(fib_tamex_ms, fib_tamex.data.tamex[3], TAMEX_MASK,
-    los_vftx2_ms);
-#endif
+//TRACK_ADJUST_SINGLE(fib_tamex_ms, fib_tamex.data.tamex[3], TAMEX_MASK,
+//    los_vftx2_ms);
 // (FIB TAMEX3[0..2] Trig -- FIB TAMEX3[3] Trig) + (FIB TAMEX3 MS -- LOS VFTX2 MS)
 //auto fib_tamex3_trig_exists = fib_tamex_trig_time.at(3).first;
 //auto const &fib_tamex3_trig_time = fib_tamex_trig_time.at(3).second;
