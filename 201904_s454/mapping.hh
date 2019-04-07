@@ -1,7 +1,7 @@
 #include "mapping_trloii.hh"
 #include "mapping_timestamp.hh"
 #include "mapping_beammon.hh"
-//#include "mapping_rolu.hh"
+#include "mapping_rolu.hh"
 //#include "mapping_s8.hh"
 #include "gen/mapping_fiber.hh"
 #include "gen/mapping_tofd.hh"
