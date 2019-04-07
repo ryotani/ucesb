@@ -1,0 +1,2 @@
+SIGNAL(NLTPAT1, neuland_tpat.tpat.tpat, DATA16);
+SIGNAL(NO_INDEX_LIST: NLTPAT170);
