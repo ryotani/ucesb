@@ -21,7 +21,7 @@ SRC_DIRS += $(LAND_COMMON_DIR)
 
 CXXFLAGS += -DCONTROL_INCLUDE -I$(LAND_COMMON_DIR)
 
-DEPENDENCIES+=$(GENDIR)/mapping_fiber.hh $(GENDIR)/mapping_tofd.hh mapping_neuland.h
+DEPENDENCIES+=$(GENDIR)/mapping_fiber.hh $(GENDIR)/mapping_tofd.hh mapping_neuland.h mapping_neuland_trloii.hh
 
 $(GENDIR)/mapping_fiber.hh: $(GENDIR)/mapper $(GENDIR)/fib3
 	@echo " MAPPING $@"

@@ -360,6 +360,9 @@ SUBEVENT(master_beammon_subev)
 master_scalers_data()
 {
 	UINT32 mega;
+	list (0 <= i < 32) {
+		UINT32 poisson NOENCODE;
+	}
 }
 
 SUBEVENT(master_scalers_subev)
@@ -524,6 +527,7 @@ EVENT
 	//ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);
 	revisit califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
 	neuland_ts = wr_500(type=10, subtype=1, control=20);
+	neuland_tpat = tpat_subev(type=36, subtype=3600, control=20);
 	neuland_tamex_1 = neuland_tamex_subev(type = 102, subtype = 10200, control = 21);
 	neuland_tamex_2 = neuland_tamex_subev(type = 102, subtype = 10200, control = 22);
 	neuland_tamex_3 = neuland_tamex_subev(type = 102, subtype = 10200, control = 23);

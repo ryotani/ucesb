@@ -181,7 +181,7 @@ namespace {
 #define CT_VECTOR(dst, src) \
   std::vector<CoarseTracker> g_##dst##_ct(countof(unpack_event::src))
   //CT_SINGLE(los_tamex_ms);
-  CT_SINGLE(fib_tamex_ms);
+  //CT_SINGLE(fib_tamex_ms);
   CT_VECTOR(fib_tamex_trig, fib_tamex.data.tamex);
 //  CT_VECTOR(fi3_ctdc_trig, fib3_ctdc.data.ctdc);
 //  CT_VECTOR(fi10_ctdc_trig, fib10_ctdc.data.ctdc);
@@ -192,7 +192,7 @@ namespace {
   CT_VECTOR(tofd_tamex2_trig, tofd_tamex_2.data.tamex);
   CT_VECTOR(tofd_tamex3_trig, tofd_tamex_3.data.tamex);
   CT_VECTOR(tofd_tamex4_trig, tofd_tamex_4.data.tamex);
-  CT_SINGLE(nl_tamex_ms);
+  //CT_SINGLE(nl_tamex_ms);
   CT_VECTOR(nl1_tamex_trig, neuland_tamex_1.data.sfp[0].card);
   CT_VECTOR(nl2_tamex_trig, neuland_tamex_2.data.sfp[0].card);
   CT_VECTOR(nl3_tamex_trig, neuland_tamex_3.data.sfp[0].card);
@@ -282,7 +282,7 @@ void init_user_function()
     }\
   } while (0)
   //SET_NAME(los_tamex_ms);
-  SET_NAME(fib_tamex_ms);
+  //SET_NAME(fib_tamex_ms);
   SET_NAME_ARRAY(fib_tamex_trig);
   SET_NAME_ARRAY(fib_tamex_trig);
 //  SET_NAME_ARRAY(fi3_ctdc_trig);
@@ -294,7 +294,7 @@ void init_user_function()
   SET_NAME_ARRAY(tofd_tamex2_trig);
   SET_NAME_ARRAY(tofd_tamex3_trig);
   SET_NAME_ARRAY(tofd_tamex4_trig);
-  SET_NAME(nl_tamex_ms);
+  //SET_NAME(nl_tamex_ms);
   SET_NAME_ARRAY(nl1_tamex_trig);
   SET_NAME_ARRAY(nl2_tamex_trig);
   SET_NAME_ARRAY(nl3_tamex_trig);
@@ -689,7 +689,7 @@ int unpack_user_function(unpack_event *event)
   }\
 } while (0)
     //g_los_tamex_ms_ct.Reset();
-    g_fib_tamex_ms_ct.Reset();
+    //g_fib_tamex_ms_ct.Reset();
     RESET_ARRAY(g_fib_tamex_trig_ct);
 //    RESET_ARRAY(g_fi3_ctdc_trig_ct);
 //    RESET_ARRAY(g_fi10_ctdc_trig_ct);
@@ -700,7 +700,7 @@ int unpack_user_function(unpack_event *event)
     RESET_ARRAY(g_tofd_tamex2_trig_ct);
     RESET_ARRAY(g_tofd_tamex3_trig_ct);
     RESET_ARRAY(g_tofd_tamex4_trig_ct);
-    g_nl_tamex_ms_ct.Reset();
+    //g_nl_tamex_ms_ct.Reset();
     RESET_ARRAY(g_nl1_tamex_trig_ct);
     RESET_ARRAY(g_nl2_tamex_trig_ct);
     RESET_ARRAY(g_nl3_tamex_trig_ct);
@@ -780,7 +780,6 @@ for (size_t card_i = 0; card_i < countof(event->a_module); ++card_i) {\
 //TIME_GET_SINGLE(los_tamex_ms, los_tamex.data.tamex, 31);
 
 TAMEX_TIME_GET_ARRAY(fib_tamex_trig, fib_tamex.data.tamex);
-TIME_GET_SINGLE(fib_tamex_ms, fib_tamex.data.tamex[3], 1);
 
 //CTDC_TIME_GET_ARRAY(fi3_ctdc_trig, fib3_ctdc.data.ctdc);
 //CTDC_TIME_GET_ARRAY(fi10_ctdc_trig, fib10_ctdc.data.ctdc);
@@ -864,6 +863,7 @@ bool track_ok = true;
 
 // DANGER: Adjust the mask to the HW ranges!
 
+// Adjust everything against Fiber Tamex card 3.
 TRACK_ADJUST_ARRAY_STANDALONE(fib_tamex_trig, fib_tamex.data.tamex,
     TAMEX_MASK, fib_tamex_trig, 3, 1);
 
@@ -877,27 +877,25 @@ TRACK_ADJUST_ARRAY_STANDALONE(tofd_tamex4_trig, tofd_tamex_4.data.tamex,
     TAMEX_MASK, fib_tamex_trig, 3, 0);
 
 if (nl1_tamex_trig_time.at(0).first) {
-  if (fib_tamex_trig_time.at(0).first) {
-    // If we have NL + Fib tamexes, sync them.
-    TRACK_ADJUST_ARRAY_STANDALONE(nl1_tamex_trig,
-        neuland_tamex_1.data.sfp[0].card, TAMEX_MASK, fib_tamex_trig, 3, 0);
-    TRACK_ADJUST_ARRAY_STANDALONE(nl2_tamex_trig,
-        neuland_tamex_2.data.sfp[0].card, TAMEX_MASK, fib_tamex_trig, 3, 0);
-    TRACK_ADJUST_ARRAY_STANDALONE(nl3_tamex_trig,
-        neuland_tamex_3.data.sfp[0].card, TAMEX_MASK, fib_tamex_trig, 3, 0);
-    TRACK_ADJUST_ARRAY_STANDALONE(nl4_tamex_trig,
-        neuland_tamex_4.data.sfp[0].card, TAMEX_MASK, fib_tamex_trig, 3, 0);
-  } else {
-    // Otherwise do NL standalone.
-    TRACK_ADJUST_ARRAY_STANDALONE(nl1_tamex_trig,
-        neuland_tamex_1.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 1);
-    TRACK_ADJUST_ARRAY_STANDALONE(nl2_tamex_trig,
-        neuland_tamex_2.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 0);
-    TRACK_ADJUST_ARRAY_STANDALONE(nl3_tamex_trig,
-        neuland_tamex_3.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 0);
-    TRACK_ADJUST_ARRAY_STANDALONE(nl4_tamex_trig,
-        neuland_tamex_4.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 0);
-  }
+  // Do NL standalone, do the time sync in analysis as:
+  //  [(event_NL - MS_NL) - (MS_main - MS_NL)] - (event_ToFD - MS_main)
+  // where:
+  //  (event_NL - MS_NS)     = NL hit measured against NL VULOM MS.
+  //  (MS_main - MS_NL)      = main MS measured against NL VULOM MS.
+  //  (event_ToFD - MS_main) = ToFD hit measured again main VULOM MS.
+  // and
+  //  MS_main < MS_NL, because if we require MS_main in the NL VULOM, the
+  //  VULOM MS will always come later.
+  //  MS_main also has a dt of >15 us, so it will be way out of the NL ROI
+  //  (TDC gate) of at most 5 us.
+  TRACK_ADJUST_ARRAY_STANDALONE(nl1_tamex_trig,
+      neuland_tamex_1.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 1);
+  TRACK_ADJUST_ARRAY_STANDALONE(nl2_tamex_trig,
+      neuland_tamex_2.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 0);
+  TRACK_ADJUST_ARRAY_STANDALONE(nl3_tamex_trig,
+      neuland_tamex_3.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 0);
+  TRACK_ADJUST_ARRAY_STANDALONE(nl4_tamex_trig,
+      neuland_tamex_4.data.sfp[0].card, TAMEX_MASK, nl1_tamex_trig, 0, 0);
 }
 
 // (LOS TAMEX3 MS -- LOS VFTX2 MS)
@@ -1009,8 +1007,8 @@ if (g_do_stat) {
     }
     std::cerr << '\n';
 
-    std::cerr << "FIBTMS:" << g_fib_tamex_ms_ct.m_left << ' ' <<
-        g_fib_tamex_ms_ct.m_left << '\n';
+//    std::cerr << "FIBTMS:" << g_fib_tamex_ms_ct.m_left << ' ' <<
+//        g_fib_tamex_ms_ct.m_left << '\n';
     for (size_t i = 1; i < fib_tamex_trig_time.size(); ++i) {
       std::cerr << "FIBTTR_" << i << ':' << g_fib_tamex_trig_ct[i].m_left <<
           ' ' << g_fib_tamex_trig_ct[i].m_left << ' ';

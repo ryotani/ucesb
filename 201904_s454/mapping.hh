@@ -11,3 +11,4 @@
 //#include "mapping_sst.hh"
 #include "mapping_CALIFA.hh"
 #include "mapping_neuland.h"
+#include "mapping_neuland_trloii.hh"
