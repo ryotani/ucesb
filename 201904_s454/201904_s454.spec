@@ -280,16 +280,11 @@ SUBEVENT(lmu_scalers_subev)
 	}
 }
 
-los_sampler_data()
-{
-	UINT32 beam;
-}
-
-SUBEVENT(los_sampler_subev)
+SUBEVENT(tofd_sampler_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		los = TRLOII_SAMPLER_TWO(mark=0x1050);
+		tofd = TRLOII_SAMPLER_TWO(mark=0x1050);
 		ms = TRLOII_SAMPLER_TWO(mark=0x1060);
 	}
 }
@@ -506,6 +501,7 @@ EVENT
 	master_tpat = tpat_subev(type=36, subtype=3600, control=0);
 	master_lmu_scalers = lmu_scalers_subev(type=37, subtype=3700, control=0);
 	master_scalers = master_scalers_subev(type=38, subtype=3800, control=0);
+	tofd_sampler = tofd_sampler_subev(type=39, subtype=3900, control=0);
 	master_beammon = master_beammon_subev(type=88, subtype=8800, control=0);
 	fib_tamex = fib_tamex_subev(type=102, subtype=10200, control=1);
 	fib3_ctdc  = fib_ctdc0_subev(type=103, subtype=10300, control=2);
@@ -520,7 +516,6 @@ EVENT
 	//pspx = febex_subev(type=101, subtype=10100, control=6);
 	//pspx2 = febex_subev(type=101, subtype=10100, control=16);
 	//pspx3 = febex_subev(type=101, subtype=10100, control=17);
-	//los_sampler = los_sampler_subev(type=39, subtype=3900, control=1);
 	//los_scalers = los_scalers_subev(type=38, subtype=3800, control=1);
 	//los_vme = los_vme_subev(type=88, subtype=8800, control=1);
 	//los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);

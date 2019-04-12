@@ -7,7 +7,7 @@
 #include "gen/mapping_tofd.hh"
 //#include "mapping_pspx_r3broot_filter_splitter_2det.hh"
 //#include "mapping_los.hh"
-//#include "mapping_los_trloii.hh"
+#include "mapping_tofd_trloii.hh"
 //#include "mapping_sst.hh"
 #include "mapping_CALIFA.hh"
 #include "mapping_neuland.h"

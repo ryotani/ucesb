@@ -65,6 +65,7 @@ std::list<Range> g_range_list;
 
 int g_error_delay = 0;
 bool g_do_stat = false;
+bool g_do_ca;
 struct {
   bool yes;
   uint64_t wr;
@@ -538,7 +539,7 @@ int unpack_user_function(unpack_event *event)
       ((uint64_t)ts100.t2.value << 16) |
       ((uint64_t)ts100.t1.value);
 
-  if (g_ics.yes || g_web.yes) {
+  if (g_ics.yes || g_web.yes || g_do_ca) {
     uint32_t mask = 0x03ffffff;
     if (10 == event->trigger || 11 == event->trigger ||
         12 == event->trigger || 13 == event->trigger) {
@@ -553,6 +554,31 @@ int unpack_user_function(unpack_event *event)
         if (g_ics.yes) {
           printf(" %u = %u (%.1f Hz)\n", i, g_ics.diff[i], g_ics.rate[i]);
         }
+      }
+      if (g_do_ca) {
+		const char *caput = "/u/land/opt/epics/opt_x86_64-linux-gnu_4.9.2/base-3.14.12.5/bin/linux-x86_64/caput";
+		char cmd[2048];
+		printf(" Sending values to EPICS...");
+		if (event->trigger == 13) {
+			/* do the system calls for caput */
+			//setenv("EPICS_CA_ADDR_LIST", "landgw01", 1);
+			//setenv("EPICS_CA_AUTO_ADDR_LIST", "NO", 1);
+			sprintf(cmd, "%s %s %lf", caput, "r3b:scaler:ic_off",
+					g_ics.rate[0]);
+			printf("  %s\n", cmd);
+			system(cmd);
+			sprintf(cmd, "%s %s %d", caput,
+					"r3b:scaler:seetram_off",
+					g_ics.diff[1]);
+			printf("  %s\n", cmd);
+			system(cmd);
+			sprintf(cmd, "%s %s %lf", caput,
+					"r3b:scaler:seetram_hz_off",
+					g_ics.rate[1]);
+			printf("  %s\n", cmd);
+			system(cmd);
+		}
+		printf("done\n");
       }
       g_ics.wr = wr;
       memcpy(g_ics.ch[0], g_ics.ch[1], sizeof g_ics.ch[0]);
@@ -1030,6 +1056,10 @@ bool handle_command_line_option(const char *arg)
     g_ics.yes = true;
     return true;
   }
+  if (0 == strcmp(arg, "--ca")) {
+    g_do_ca = true;
+    return true;
+  }
   if (0 == strcmp(arg, "--web-publish")) {
     g_web.yes = true;
     return true;
@@ -1041,5 +1071,6 @@ void usage_command_line_options()
 {
   printf("  --ct-stat           Print coarse counter tracking stats.\n");
   printf("  --ics               Print IC beam monitors.\n");
+  printf("  --ca                Send (some) values via caput to EPICS.\n");
   printf("  --web-publish       Put stuff on land beam monitor page.\n");
 }
