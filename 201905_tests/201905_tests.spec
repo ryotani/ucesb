@@ -4,6 +4,7 @@
 #include "../land_common/gsi_tamex3.spec"
 #include "../land_common/land_vme.spec"
 #include "../land_common/vme_gsi_vftx2.spec"
+#include "spec/vme_mesytec_mtdc32.spec"
 
 los_tamex_data()
 {
@@ -31,6 +32,7 @@ los_vme_subev_data()
 	}
 	select several {
 		vftx2 = VME_GSI_VFTX2_7PS(id=1);
+		mtdc32 = VME_MESYTEC_MTDC32(geom=2);
 	}
 }
 

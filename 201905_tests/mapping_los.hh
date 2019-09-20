@@ -20,6 +20,17 @@ SIGNAL(LOS1_VTC6, los_vme.data.vftx2.time_coarse[5], DATA16);
 SIGNAL(LOS1_VTC7, los_vme.data.vftx2.time_coarse[6], DATA16);
 SIGNAL(LOS1_VTC8, los_vme.data.vftx2.time_coarse[7], DATA16);
 
+// LOS MTDC32.
+SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS1_MT1);
+SIGNAL(LOS1_MT1, los_vme.data.mtdc32.data[0], DATA16);
+SIGNAL(LOS1_MT2, los_vme.data.mtdc32.data[1], DATA16);
+SIGNAL(LOS1_MT3, los_vme.data.mtdc32.data[2], DATA16);
+SIGNAL(LOS1_MT4, los_vme.data.mtdc32.data[3], DATA16);
+SIGNAL(LOS1_MT5, los_vme.data.mtdc32.data[4], DATA16);
+SIGNAL(LOS1_MT6, los_vme.data.mtdc32.data[5], DATA16);
+SIGNAL(LOS1_MT7, los_vme.data.mtdc32.data[6], DATA16);
+SIGNAL(LOS1_MT8, los_vme.data.mtdc32.data[7], DATA16);
+
 // LOS FQT/TAMEX3 fine (TDC) values.
 SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS1_TTFL1);
 SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS1_TTFT1);
