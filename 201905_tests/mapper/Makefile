@@ -1,2 +1,2 @@
 all:
-	gcc -o run fib3.c
+	gcc -Wall -Wextra -Wshadow -o mapper main.c
