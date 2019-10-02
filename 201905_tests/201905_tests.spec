@@ -47,10 +47,10 @@ fib1a_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		ctdc[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
-		ctdc[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
-		ctdc[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
-		ctdc[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
+		ctdc[0] = GSI_CLOCKTDC_16PH_ITEM(sfp=0, tdc=0);
+		ctdc[1] = GSI_CLOCKTDC_16PH_ITEM(sfp=0, tdc=1);
+		ctdc[2] = GSI_CLOCKTDC_16PH_ITEM(sfp=0, tdc=2);
+		ctdc[3] = GSI_CLOCKTDC_16PH_ITEM(sfp=0, tdc=3);
 	}
 	barrier = BARRIER();
 	select several {
