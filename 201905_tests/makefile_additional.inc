@@ -8,6 +8,6 @@ $(GENDIR)/mapping_fiber.hh: $(GENDIR)/mapper
 	@echo " MAPPING $@"
 	@./$(GENDIR)/mapper > $@ 2> /dev/null
 
-$(GENDIR)/mapper: mapper/fib1.c
+$(GENDIR)/mapper: mapper/main.c
 	@echo " MAPPER  $@"
 	@gcc -Wshadow -o $@ $<
