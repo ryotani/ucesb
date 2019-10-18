@@ -8,6 +8,7 @@ static char edge_array[2] = {'L', 'T'};
 static char prec_array[2] = {'C', 'F'};
 static char const *prec_name_array[2] = {"coarse", "fine  "};
 
+/* Fanout beard between MAPMT and PADI boards. */
 void
 ctdc_from_mapmt(int a_mapmt_ch, int *a_ctdc_i, int *a_ctdc_ch)
 {
@@ -19,35 +20,36 @@ ctdc_from_mapmt(int a_mapmt_ch, int *a_ctdc_i, int *a_ctdc_ch)
 	/* Figure out the channel within one slot. */
 	int ch = ((2 * (ch2 / 8)) & 15) + (1 & a_mapmt_ch);
 	/* Figure out the CTDC card and channel from the slot and its channel. */
-	*a_ctdc_i = slot < 8;
+	*a_ctdc_i = slot >= 8;
 	*a_ctdc_ch = (15 - ch) + 16 * (slot & 7);
 	if (0)
 		printf("%u = row=%u col=%u slot=%u ch=%u i=%u ch=%u\n", a_mapmt_ch, row, col,
 		    slot, ch, *a_ctdc_i, *a_ctdc_ch);
 }
 
+/* Fiber sorting into mask. */
 int
 bunch_from_mapmt(int a_mapmt_ch)
 {
 	int row = a_mapmt_ch / 16;
 	int col = 15 & a_mapmt_ch;
 	switch (col) {
-	case  0: col = 16; break;
-	case  1: col = 12; break;
-	case  2: col =  8; break;
-	case  3: col =  4; break;
-	case  4: col = 15; break;
-	case  5: col = 11; break;
-	case  6: col =  7; break;
-	case  7: col =  3; break;
-	case  8: col = 14; break;
-	case  9: col = 10; break;
-	case 10: col =  6; break;
-	case 11: col =  2; break;
-	case 12: col = 13; break;
-	case 13: col =  9; break;
-	case 14: col =  5; break;
 	case 15: col =  1; break;
+	case 14: col =  5; break;
+	case 13: col =  9; break;
+	case 12: col = 13; break;
+	case 11: col =  2; break;
+	case 10: col =  6; break;
+	case  9: col = 10; break;
+	case  8: col = 14; break;
+	case  7: col =  3; break;
+	case  6: col =  7; break;
+	case  5: col = 11; break;
+	case  4: col = 15; break;
+	case  3: col =  4; break;
+	case  2: col =  8; break;
+	case  1: col = 12; break;
+	case  0: col = 16; break;
 	}
 	return 16 * row + col;
 }
@@ -122,11 +124,18 @@ main()
 		for (i = 0; i < 256; ++i) {
 			int j, k;
 			ctdc_from_mapmt(i, &j, &k);
-			printf("%u = %u %u\n", i, j, k);
+			printf("P:%u = Card:%u Ch:%u\n", i, j, k);
 		}
-		exit(0);
+	} else if (0) {
+		int i;
+		for (i = 0; i < 256; ++i) {
+			int j;
+			j = bunch_from_mapmt(i);
+			printf("P:%u = Bunch:%u\n", i, j);
+		}
+	} else {
+		map("FIBONEA", 256, 0, 1, 0, 0);
+		map("FIBONEB", 256, 2, 1, 0, 8);
 	}
-	map("FIBONEA", 256, 0, 1, 0, 0);
-	map("FIBONEB", 256, 2, 1, 0, 8);
 	return 0;
 }

@@ -44,13 +44,17 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 		}
 	}
 
+	for (j = 0; j < 256; ++j) {
+		printf("%3u: %3u\n", j, ch[j]);
+	}
+
 	for(i=0;i<256;i++) {
 		fprintf(stderr, "PMT ch: %d, electronic ch: %d \n",i,ch[i]);
 	}
 
 	
 	// fiber mapping in the PMT mask
-	unsigned fib0[256],fib1[256],fib1b[256],fib2[256],fib3[256],fib4[256],fib5[256],fib6[256],fib7[256],fib10[256]; // fiber number of mask
+	unsigned fib0[256],fib1[256],fib1b[256],fib2[256],fib3[256],fib4[256],fib5[256],fib6[256],fib7[256],fib10[256],fib_s[256]; // fiber number of mask
 	for(j=0;j<256;j++){
 		fib0[j]=0;
 		fib1[j]=0;
@@ -263,6 +267,23 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 		fib10[i+13]=j*16+8;
 		fib10[i+14]=j*16+12;
 		fib10[i+15]=j*16+16;
+		// Stupid.
+		fib_s[i +  0] = i +  1;
+		fib_s[i +  1] = i +  2;
+		fib_s[i +  2] = i +  3;
+		fib_s[i +  3] = i +  4;
+		fib_s[i +  4] = i +  5;
+		fib_s[i +  5] = i +  6;
+		fib_s[i +  6] = i +  7;
+		fib_s[i +  7] = i +  8;
+		fib_s[i +  8] = i +  9;
+		fib_s[i +  9] = i + 10;
+		fib_s[i + 10] = i + 11;
+		fib_s[i + 11] = i + 12;
+		fib_s[i + 12] = i + 13;
+		fib_s[i + 13] = i + 14;
+		fib_s[i + 14] = i + 15;
+		fib_s[i + 15] = i + 16;
 	}
 
 	for(i=0;i<256;i++) {
@@ -320,10 +341,10 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 				}
 			}
 			else if(0 == strcmp("1a", a_name)){
-				bunch_i=fib3[i];
+				bunch_i=fib0[i];
 			}
 			else if(0 == strcmp("1b", a_name)){
-				bunch_i=fib3[i];
+				bunch_i=fib0[i];
 			}
 			else if(0 == strcmp("3a", a_name)){
 				bunch_i=fib3[i];
@@ -374,12 +395,14 @@ map(char const *a_dst, char const *a_name, unsigned a_subs, unsigned a_mapmt,
 				}
 			} else if (0 == strcmp("1a", a_name)) {
 				card_i = 0;
+				channel_i = i;
 				if (channel_i > 127) {
 					++card_i;
 					channel_i = channel_i - 128;
 				}
 			} else if (0 == strcmp("1b", a_name)) {
 				card_i = 2;
+				channel_i = i;
 				if (channel_i > 127) {
 					++card_i;
 					channel_i = channel_i - 128;
