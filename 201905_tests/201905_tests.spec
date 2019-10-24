@@ -11,6 +11,7 @@
 SUBEVENT(wr_300)
 {
 	ts = TIMESTAMP_WHITERABBIT(id=0x300);
+	wr_multi = WR_MULTI();
 }
 
 los_tamex_data()
