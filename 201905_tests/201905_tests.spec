@@ -5,6 +5,7 @@
 #include "../land_common/gsi_tamex3_flexheader.spec"
 #include "../land_common/land_vme.spec"
 #include "../land_common/vme_gsi_vftx2.spec"
+#include "../land_common/whiterabbit.spec"
 #include "spec/vme_mesytec_mtdc32.spec"
 
 SUBEVENT(wr_300)
