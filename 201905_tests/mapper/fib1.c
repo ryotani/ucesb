@@ -29,10 +29,38 @@ ctdc_from_mapmt(int a_mapmt_ch, int *a_ctdc_i, int *a_ctdc_ch)
 
 /* Fiber sorting into mask. */
 int
-bunch_from_mapmt(int a_mapmt_ch)
+bunch_from_mapmt_fi1a(int a_mapmt_ch)
 {
 	int row = a_mapmt_ch / 16;
 	int col = 15 & a_mapmt_ch;
+	switch (col) {
+	case 15: col =  1; break;
+	case 14: col =  5; break;
+	case 13: col =  9; break;
+	case 12: col = 13; break;
+	case 11: col =  2; break;
+	case 10: col =  6; break;
+	case  9: col = 10; break;
+	case  8: col = 14; break;
+	case  7: col =  3; break;
+	case  6: col =  7; break;
+	case  5: col = 11; break;
+	case  4: col = 15; break;
+	case  3: col =  4; break;
+	case  2: col =  8; break;
+	case  1: col = 12; break;
+	case  0: col = 16; break;
+	}
+	return 16 * row + col;
+}
+
+/* Fiber sorting into mask. */
+int
+bunch_from_mapmt_fi1b(int a_mapmt_ch)
+{
+	int row = a_mapmt_ch / 16;
+	int col = 15 & a_mapmt_ch;
+	row = 15 - row;
 	switch (col) {
 	case 15: col =  1; break;
 	case 14: col =  5; break;
@@ -83,7 +111,11 @@ map(char const *a_dst, unsigned a_mapmt, unsigned a_ctdc_i, unsigned a_spmt,
 		int bunch_i;
 		int ctdc_i, ctdc_ch;
 
-		bunch_i = bunch_from_mapmt(i);
+		if (0 == strcmp(a_dst, "FIBONEA")) {
+			bunch_i = bunch_from_mapmt_fi1a(i);
+		} else if (0 == strcmp(a_dst, "FIBONEB")) {
+			bunch_i = bunch_from_mapmt_fi1b(i);
+		}
 		ctdc_from_mapmt(i, &ctdc_i, &ctdc_ch);
 		/* Duplicate for leading/trailing and coarse/fine. */
 		for (edge_i = 0; edge_i < 2; ++edge_i) {
