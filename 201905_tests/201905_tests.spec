@@ -4,6 +4,7 @@
 #include "../land_common/gsi_tamex3.spec"
 #include "../land_common/gsi_tamex3_flexheader.spec"
 #include "../land_common/land_vme.spec"
+#include "../land_common/trloii.spec"
 #include "../land_common/vme_gsi_vftx2.spec"
 #include "../land_common/whiterabbit.spec"
 #include "spec/vme_mesytec_mtdc32.spec"
@@ -11,7 +12,9 @@
 SUBEVENT(wr_300)
 {
 	ts = TIMESTAMP_WHITERABBIT(id=0x300);
-	wr_multi = WR_MULTI();
+	select several {
+		wr_multi = WR_MULTI();
+	}
 }
 
 los_tamex_data()
@@ -35,9 +38,8 @@ SUBEVENT(los_tamex_subev)
 los_vme_subev_data()
 {
 	land_vme = LAND_STD_VME();
-	select several {
-		barrier = BARRIER();
-	}
+	wr_multi = WR_MULTI();
+	barrier = BARRIER();
 	select several {
 		vftx2 = VME_GSI_VFTX2_7PS(id=1);
 		mtdc32 = VME_MESYTEC_MTDC32(geom=2);
@@ -131,9 +133,18 @@ SUBEVENT(neuland_tamex_subev)
 	}
 }
 
+SUBEVENT(sampler_subev)
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		los = TRLOII_SAMPLER(mark=0x1050);
+		ms = TRLOII_SAMPLER(mark=0x1060);
+	}
+}
+
 EVENT
 {
-	los_ts = wr_300(type=10, subtype=1, control=0);
+	los_ts = wr_300(type=10, subtype=1, control=1);
 	los_vme = los_vme_subev(type=88, subtype=8800, control=1);
 	los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);
 	fib1ab = fib1ab_subev(type=102, subtype=10200, control=3);
@@ -141,6 +152,7 @@ EVENT
 	neuland_tamex_2 = neuland_tamex_subev(type = 102, subtype = 10200, control = 22);
 	neuland_tamex_3 = neuland_tamex_subev(type = 102, subtype = 10200, control = 23);
 	neuland_tamex_4 = neuland_tamex_subev(type = 102, subtype = 10200, control = 24);
+	sampler = sampler_subev(type=39, subtype=3900, control=1);
 	ignore_unknown_subevent;
 }
 

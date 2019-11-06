@@ -6,7 +6,7 @@ SIGNAL(TIMESTAMP_LOS_WR_T3, los_ts.ts.t3, DATA16);
 SIGNAL(TIMESTAMP_LOS_WR_T4, los_ts.ts.t4, DATA16);
 
 // LOS VFTX2 fine (TDC) values.
-SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS1_VTF1);
+SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS1_VTF1);
 SIGNAL(LOS1_VTF1, los_vme.data.vftx2.time_fine[0], DATA12);
 SIGNAL(LOS1_VTF2, los_vme.data.vftx2.time_fine[1], DATA12);
 SIGNAL(LOS1_VTF3, los_vme.data.vftx2.time_fine[2], DATA12);
@@ -17,7 +17,7 @@ SIGNAL(LOS1_VTF7, los_vme.data.vftx2.time_fine[6], DATA12);
 SIGNAL(LOS1_VTF8, los_vme.data.vftx2.time_fine[7], DATA12);
 
 // LOS VFTX2 coarse (clock) values.
-SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS1_VTC1);
+SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS1_VTC1);
 SIGNAL(LOS1_VTC1, los_vme.data.vftx2.time_coarse[0], DATA16);
 SIGNAL(LOS1_VTC2, los_vme.data.vftx2.time_coarse[1], DATA16);
 SIGNAL(LOS1_VTC3, los_vme.data.vftx2.time_coarse[2], DATA16);
@@ -28,7 +28,7 @@ SIGNAL(LOS1_VTC7, los_vme.data.vftx2.time_coarse[6], DATA16);
 SIGNAL(LOS1_VTC8, los_vme.data.vftx2.time_coarse[7], DATA16);
 
 // LOS MTDC32.
-SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS1_MT1);
+SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS1_MT1);
 SIGNAL(LOS1_MT1, los_vme.data.mtdc32.data[0], DATA16);
 SIGNAL(LOS1_MT2, los_vme.data.mtdc32.data[1], DATA16);
 SIGNAL(LOS1_MT3, los_vme.data.mtdc32.data[2], DATA16);
@@ -39,8 +39,8 @@ SIGNAL(LOS1_MT7, los_vme.data.mtdc32.data[6], DATA16);
 SIGNAL(LOS1_MT8, los_vme.data.mtdc32.data[7], DATA16);
 
 // LOS FQT/TAMEX3 fine (TDC) values.
-SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS1_TTFL1);
-SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS1_TTFT1);
+SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS1_TTFL1);
+SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS1_TTFT1);
 SIGNAL(LOS1_TTFL1, los_tamex.data.tamex.time_fine[1], DATA12);
 SIGNAL(LOS1_TTFT1, los_tamex.data.tamex.time_fine[2], DATA12);
 SIGNAL(LOS1_TTFL2, los_tamex.data.tamex.time_fine[3], DATA12);
@@ -59,8 +59,8 @@ SIGNAL(LOS1_TTFL8, los_tamex.data.tamex.time_fine[15], DATA12);
 SIGNAL(LOS1_TTFT8, los_tamex.data.tamex.time_fine[16], DATA12);
 
 // LOS FQT/TAMEX3 coarse (clock) values.
-SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS1_TTCL1);
-SIGNAL(ZERO_SUPPRESS_MULTI(10): LOS1_TTCT1);
+SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS1_TTCL1);
+SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS1_TTCT1);
 SIGNAL(LOS1_TTCL1, los_tamex.data.tamex.time_coarse[1], DATA12);
 SIGNAL(LOS1_TTCT1, los_tamex.data.tamex.time_coarse[2], DATA12);
 SIGNAL(LOS1_TTCL2, los_tamex.data.tamex.time_coarse[3], DATA12);
