@@ -41,30 +41,30 @@ if(lenTabCh==64):
 
         #MWPC1X
         index = TabCh[pad]+64*MWPC1_X_bus
-        outMWPC1X.write('SIGNAL(SOFMWPC1_Plane1_Q'+str(pad+1)+',sofia_trim.vmmr8.data['+str(index)+'],DATA12);\n')
+        outMWPC1X.write('SIGNAL(SOFMWPC1_Plane1_Q'+str(pad+1)+',sofia_trim.data.vmmr8.data['+str(index)+'],DATA12);\n')
 
         #MWPC1Y
         index = TabCh[pad]+64*MWPC1_Y_bus
-        outMWPC1Y.write('SIGNAL(SOFMWPC1_Plane3_Q'+str(pad+1)+',sofia_trim.vmmr8.data['+str(index)+'],DATA12);\n')
+        outMWPC1Y.write('SIGNAL(SOFMWPC1_Plane3_Q'+str(pad+1)+',sofia_trim.data.vmmr8.data['+str(index)+'],DATA12);\n')
 
         #MWPC2Xup
         index = TabCh[pad]+64*MWPC2_Xup_bus
-        outMWPC2Xup.write('SIGNAL(SOFMWPC2_Plane1_Q'+str(pad+1)+',sofia_trim.vmmr8.data['+str(index)+'],DATA12);\n')
+        outMWPC2Xup.write('SIGNAL(SOFMWPC2_Plane1_Q'+str(pad+1)+',sofia_trim.data.vmmr8.data['+str(index)+'],DATA12);\n')
         #MWPC2Xdown
         index = TabCh[pad]+64*MWPC2_Xdown_bus
-        outMWPC2Xdown.write('SIGNAL(SOFMWPC2_Plane2_Q'+str(pad+1)+',sofia_trim.vmmr8.data['+str(index)+'],DATA12);\n')
+        outMWPC2Xdown.write('SIGNAL(SOFMWPC2_Plane2_Q'+str(pad+1)+',sofia_trim.data.vmmr8.data['+str(index)+'],DATA12);\n')
 
         #MWPC3Xdown
         index = TabCh[pad]+64*MWPC3_Xdown_bus
-        outMWPC3Xdown.write('SIGNAL(SOFMWPC3_Plane2_Q'+str(pad+1)+',sofia_trim.vmmr8.data['+str(index)+'],DATA12);\n')
+        outMWPC3Xdown.write('SIGNAL(SOFMWPC3_Plane2_Q'+str(pad+1)+',sofia_trim.data.vmmr8.data['+str(index)+'],DATA12);\n')
         #MWPC3Xup
         index = TabCh[pad]+64*MWPC3_Xup_bus
-        outMWPC3Xup.write('SIGNAL(SOFMWPC3_Plane1_Q'+str(pad+1)+',sofia_trim.vmmr8.data['+str(index)+'],DATA12);\n')
+        outMWPC3Xup.write('SIGNAL(SOFMWPC3_Plane1_Q'+str(pad+1)+',sofia_trim.data.vmmr8.data['+str(index)+'],DATA12);\n')
 
     for pad in range (0,40):
         #MWPC2Y
         index = TabCh[pad]+64*MWPC2_Y_bus
-        outMWPC2Y.write('SIGNAL(SOFMWPC2_Plane3_Q'+str(pad+1)+',sofia_trim.vmmr8.data['+str(index)+'],DATA12);\n')
+        outMWPC2Y.write('SIGNAL(SOFMWPC2_Plane3_Q'+str(pad+1)+',sofia_trim.data.vmmr8.data['+str(index)+'],DATA12);\n')
         #MWPC3Y
         index = TabCh[pad]+64*MWPC3_Y_bus
-        outMWPC3Y.write('SIGNAL(SOFMWPC3_Plane3_Q'+str(pad+1)+',sofia_trim.vmmr8.data['+str(index)+'],DATA12);\n')
+        outMWPC3Y.write('SIGNAL(SOFMWPC3_Plane3_Q'+str(pad+1)+',sofia_trim.data.vmmr8.data['+str(index)+'],DATA12);\n')

@@ -18,15 +18,15 @@ SIGNAL(ZERO_SUPPRESS_MULTI(10):SOFSCI_TF1_SCI1);
 SIGNAL(ZERO_SUPPRESS_MULTI(10):SOFSCI_TC1_SCI1);
 
 // PMT LEFT
-SIGNAL(SOFSCI_TF1_SCI1,sofia_tof.vftx2[0].time_fine[15],DATA12);
-SIGNAL(SOFSCI_TC1_SCI1,sofia_tof.vftx2[0].time_coarse[15],DATA16);
+SIGNAL(SOFSCI_TF1_SCI1,sofia_tof.data.vftx2[0].time_fine[15],DATA12);
+SIGNAL(SOFSCI_TC1_SCI1,sofia_tof.data.vftx2[0].time_coarse[15],DATA16);
 
 // PMT RIGH
-SIGNAL(SOFSCI_TF2_SCI1,sofia_tof.vftx2[1].time_fine[15],DATA12);
-SIGNAL(SOFSCI_TC2_SCI1,sofia_tof.vftx2[1].time_coarse[15],DATA16);
+SIGNAL(SOFSCI_TF2_SCI1,sofia_tof.data.vftx2[1].time_fine[15],DATA12);
+SIGNAL(SOFSCI_TC2_SCI1,sofia_tof.data.vftx2[1].time_coarse[15],DATA16);
 
 // REFERENCE SIGNAL
-SIGNAL(SOFSCI_TF3_SCI1,sofia_tof.vftx2[3].time_fine[15],DATA12);
-SIGNAL(SOFSCI_TC3_SCI1,sofia_tof.vftx2[3].time_coarse[15],DATA16);
+SIGNAL(SOFSCI_TF3_SCI1,sofia_tof.data.vftx2[3].time_fine[15],DATA12);
+SIGNAL(SOFSCI_TC3_SCI1,sofia_tof.data.vftx2[3].time_coarse[15],DATA16);
 
 

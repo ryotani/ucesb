@@ -18,6 +18,7 @@ LAND_COMMON_DIR = ./../land_common
 #SRC_DIRS += $(LAND_COMMON_DIR)
 #
 #CXXFLAGS += -DCONTROL_INCLUDE -I$(LAND_COMMON_DIR)
+CXXFLAGS += -I$(LAND_COMMON_DIR)
 ## above copied from s444
 
 DEPENDENCIES+=$(GENDIR)/mapping_fiber.hh

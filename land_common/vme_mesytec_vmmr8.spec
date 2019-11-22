@@ -29,48 +29,51 @@
 
 VME_MESYTEC_VMMR8(geom)
 {
-  MEMBER(DATA12 data[8*64] ZERO_SUPPRESS_MULTI(20));
+	MEMBER(DATA12 data[8*64] ZERO_SUPPRESS_MULTI(20));
+	MEMBER(DATA16 time_diff[16] ZERO_SUPPRESS);
 
-  MARK_COUNT(start);
-  UINT32 header NOENCODE
-  {
-    0_11:   word_number; // includes end_of_event
-    12_15: 0b0000;
-    16_23: geom = MATCH(geom);
-    24: trig; 
-    25_29: 0b00000;
-    30_31: 0b01;
-  }
+	MARK_COUNT(start);
+	UINT32 header NOENCODE
+	{
+		 0_11: word_number; // includes end_of_event
+		12_15: 0b0000;
+		16_23: geom = MATCH(geom);
+		   24: trig; 
+		25_29: 0b00000;
+		30_31: 0b01;
+	}
 
-  several UINT32 time_data NOENCODE
-  {
-    0_15:  time;
-    16_23: 0b00000000;
-    24_27: bus;
-    28_31: 0b0011;
-  }
-  
-  several UINT32 ch_data NOENCODE
-  {
-    0_11:  value;
-    12_23: channel;
-    24_27: bus;
-    28_31: 0b0001;
+	list(0 <= index < header.word_number - 1) {
+		UINT32 event NOENCODE {
+			 0_11: part0;
+			12_15: part1;
+			16_23: part2;
+			24_27: part3;
+			28_29: type;
+			30_31: 0b00;
+		}
 
-    ENCODE(data[channel+64*bus], (value = value));
-  }
+		if (1 == event.type) {
+			// ADC.
+			ENCODE(data[
+			    (event.part2 << 4 | event.part1) + // Channel.
+			    64 * event.part3 // Bus.
+				], (value = event.part0));
+		}
+		if (3 == event.type) {
+			// Time difference.
+			ENCODE(time_diff[
+			    event.part3 // Bus.
+				], (value = event.part1 << 12 | event.part0));
+		}
+	}
 
-  several UINT32 fill_word NOENCODE
-  {
-    0_31: 0x0;
-  }
+	UINT32 end_of_event
+	{
+		 0_29: counter;
+		30_31: 0b11;
+	}
 
-  UINT32 end_of_event
-  {
-    0_29:  counter;
-    30_31: 0b11;
-  }
-
-  MARK_COUNT(end);
-  CHECK_COUNT(header.word_number,start,end,-4,4);
+	MARK_COUNT(end);
+	CHECK_COUNT(header.word_number, start, end, -4, 4);
 }

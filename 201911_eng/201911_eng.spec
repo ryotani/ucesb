@@ -158,7 +158,7 @@ SUBEVENT(los_sampler_subev)
 	}
 }
 
-SUBEVENT(sofia_tof_subev)
+sofia_tof_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
@@ -168,15 +168,27 @@ SUBEVENT(sofia_tof_subev)
 		vftx2[3] = VME_GSI_VFTX2_7PS(id=3);
 	}
 }
-SUBEVENT(sofia_mwpc_subev)
+SUBEVENT(sofia_tof_subev)
+{
+	select several {
+		data = sofia_tof_subev_data();
+	}
+}
+sofia_mwpc_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
 		madc32[0] = VME_MESYTEC_MADC32(geom=0);
 		madc32[1] = VME_MESYTEC_MADC32(geom=1);
-	    }
+	}
 }
-SUBEVENT(sofia_twim_subev)
+SUBEVENT(sofia_mwpc_subev)
+{
+	select several {
+		data = sofia_mwpc_subev_data();
+	}
+}
+sofia_twim_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
@@ -184,12 +196,24 @@ SUBEVENT(sofia_twim_subev)
 		mdpp16[1] = VME_MESYTEC_MDPP16(geom=1);
 	}
 }
-SUBEVENT(sofia_trim_subev)
+SUBEVENT(sofia_twim_subev)
+{
+	select several {
+		data = sofia_twim_subev_data();
+	}
+}
+sofia_trim_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
 		mdpp = VME_MESYTEC_MDPP16(geom=0);
 		vmmr8  = VME_MESYTEC_VMMR8(geom=1);
+	}
+}
+SUBEVENT(sofia_trim_subev)
+{
+	select several {
+		data = sofia_trim_subev_data();
 	}
 }
 
