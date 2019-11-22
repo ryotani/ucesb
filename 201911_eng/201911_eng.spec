@@ -1,4 +1,6 @@
 #include "spec/spec.spec"
+/*#define EXT_SST_HAS_BRANCH 1
+#include "sst_ext.spec"*/
 #include "../land_common/barrier.spec"
 #include "../land_common/gsi_clocktdc.spec"
 #include "../land_common/gsi_tamex3.spec"
@@ -8,6 +10,20 @@
 #include "../land_common/vme_gsi_vftx2.spec"
 #include "../land_common/whiterabbit.spec"
 #include "spec/vme_mesytec_mtdc32.spec"
+#include "../land_common/vme_mesytec_vmmr8.spec"
+
+/*SUBEVENT(ams_siderem_subev)
+{
+	ts300 = TIMESTAMP_WHITERABBIT(id=0x300);
+	select several {
+		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=4, branch=0);
+		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=4, branch=0);
+		external sst[2] = EXT_SST(siderem=1, gtb=1, sam=4, branch=0);
+		external sst[3] = EXT_SST(siderem=2, gtb=1, sam=4, branch=0);
+		external sst[4] = EXT_SST(siderem=1, gtb=1, sam=4, branch=0);
+		external sst[5] = EXT_SST(siderem=2, gtb=1, sam=4, branch=0);
+	}
+}*/
 
 SUBEVENT(wr_los)
 {
@@ -145,12 +161,35 @@ SUBEVENT(los_sampler_subev)
 SUBEVENT(sofia_tof_subev)
 {
 	land_vme = LAND_STD_VME();
-	barrier = BARRIER();
 	select several {
-		vftx2[0] = VME_GSI_VFTX2_7PS(id=1);
-		vftx2[1] = VME_GSI_VFTX2_7PS(id=2);
-		vftx2[2] = VME_GSI_VFTX2_7PS(id=3);
-		vftx2[3] = VME_GSI_VFTX2_7PS(id=4);
+		vftx2[0] = VME_GSI_VFTX2_7PS(id=0);
+		vftx2[1] = VME_GSI_VFTX2_7PS(id=1);
+		vftx2[2] = VME_GSI_VFTX2_7PS(id=2);
+		vftx2[3] = VME_GSI_VFTX2_7PS(id=3);
+	}
+}
+SUBEVENT(sofia_mwpc_subev)
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		madc32[0] = VME_MESYTEC_MADC32(geom=0);
+		madc32[1] = VME_MESYTEC_MADC32(geom=1);
+	    }
+}
+SUBEVENT(sofia_twim_subev)
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		mdpp16[0] = VME_MESYTEC_MDPP16(geom=0);
+		mdpp16[1] = VME_MESYTEC_MDPP16(geom=1);
+	}
+}
+SUBEVENT(sofia_trim_subev)
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		mdpp = VME_MESYTEC_MDPP16(geom=0);
+		vmmr8  = VME_MESYTEC_VMMR8(geom=1);
 	}
 }
 
@@ -167,6 +206,11 @@ EVENT
 	neuland_tamex_4 = neuland_tamex_subev(type = 102, subtype = 10200, control = 24);
 
 	sofia_tof = sofia_tof_subev(type = 88, subtype = 8800, control = 101);
+	sofia_mwpc = sofia_mwpc_subev(type = 88, subtype = 8800, control = 102);
+	sofia_twim = sofia_twim_subev(type = 88, subtype = 8800, control = 103);
+	sofia_trim = sofia_trim_subev(type = 88, subtype = 8800, control = 104);
+
+/*	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);*/
 
 	ignore_unknown_subevent;
 }

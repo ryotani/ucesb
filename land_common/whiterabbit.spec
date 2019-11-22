@@ -8,7 +8,9 @@ TIMESTAMP_WHITERABBIT(id)
 
 	UINT32 header NOENCODE {
 		0_11:  id = MATCH(id);
-		12_31: 0;
+		12_15: 0;
+		   16: error_bit;
+		17_31: 0;
 		ENCODE(subsystem_id, (value=id));
 	};
 	UINT32 d1 NOENCODE {
