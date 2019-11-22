@@ -27,10 +27,11 @@
  * 8 OPTICAL FIBER INPUTS ARE PRESENT ON THE VME MODULE
  */
 
+// TODO: time_diff requires uint16_t casting to value, not supported.
 VME_MESYTEC_VMMR8(geom)
 {
 	MEMBER(DATA12 data[8*64] ZERO_SUPPRESS_MULTI(20));
-	MEMBER(DATA16 time_diff[16] ZERO_SUPPRESS);
+//	MEMBER(DATA16 time_diff[16] ZERO_SUPPRESS);
 
 	MARK_COUNT(start);
 	UINT32 header NOENCODE
@@ -60,12 +61,12 @@ VME_MESYTEC_VMMR8(geom)
 			    64 * event.part3 // Bus.
 				], (value = event.part0));
 		}
-		if (3 == event.type) {
-			// Time difference.
-			ENCODE(time_diff[
-			    event.part3 // Bus.
-				], (value = event.part1 << 12 | event.part0));
-		}
+//		if (3 == event.type) {
+//			// Time difference.
+//			ENCODE(time_diff[
+//			    event.part3 // Bus.
+//				], (value = event.part1 << 12 | event.part0));
+//		}
 	}
 
 	UINT32 end_of_event
