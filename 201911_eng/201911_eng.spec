@@ -14,7 +14,7 @@
 #include "spec/vme_mesytec_mtdc32.spec"
 #include "../land_common/vme_mesytec_vmmr8.spec"
 
-/*SUBEVENT(ams_siderem_subev)
+SUBEVENT(ams_siderem_subev)
 {
 	ts300 = TIMESTAMP_WHITERABBIT(id=0x300);
 	select several {
@@ -25,7 +25,7 @@
 		external sst[4] = EXT_SST(siderem=1, gtb=1, sam=4, branch=0);
 		external sst[5] = EXT_SST(siderem=2, gtb=1, sam=4, branch=0);
 	}
-}*/
+}
 
 #define NUM_SFP_MODULES 8
 #define CHANNELS_PER_FEBEX 16
@@ -363,7 +363,7 @@ EVENT
 	neuland_tamex_4 = neuland_tamex_subev(type = 102, subtype = 10200, control = 24);
 
 	revisit califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
-/*	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);*/
+	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);
 
 	sofia_tof = sofia_tof_subev(type = 88, subtype = 8800, control = 101);
 	sofia_mwpc = sofia_mwpc_subev(type = 88, subtype = 8800, control = 102);
