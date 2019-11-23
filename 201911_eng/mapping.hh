@@ -4,3 +4,4 @@
 #include "mapping_samp.hh"
 #include "mapping_sofia.hh"
 #include "mapping_sst.hh"
+#include "mapping_CALIFA.hh"
