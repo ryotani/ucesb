@@ -1,16 +1,4 @@
 #include "structures.hh"
-#include <sys/file.h>
-#include <cstdint>
-#include <iomanip>
-#include <iostream>
-#include <list>
-#include <sstream>
-
-namespace {
-#define CT_SINGLE(dst) CoarseTracker g_##dst##_ct
-#define CT_VECTOR(dst, src) \
-  std::vector<CoarseTracker> g_##dst##_ct(countof(unpack_event::src))
-}
 
 void map_unpack_raw_sst(EXT_SST &unpack,
     raw_array_zero_suppress<raw_event_SST,raw_event_SST,1024> &raw)
@@ -36,19 +24,18 @@ void map_unpack_raw_sst(EXT_SST &unpack,
      */
 }
 
-
 void raw_user_function(unpack_event *event, raw_event *raw_event)
 {
   // Do the mapping of the unpack->raw SST data
 
   unsigned int dest_det = 0;
 
-  for (unsigned int det = 0; det < countof(event->ams_siderem.sst); det++)
-    map_unpack_raw_sst(event->ams_siderem.sst[det],raw_event->SST[dest_det++]);
+#define UNPACK_RAW_SST(id) \
+  for (unsigned int det = 0; det < countof(event->ams_siderem_##id.sst##id); det++) \
+    map_unpack_raw_sst(event->ams_siderem_##id.sst##id[det],raw_event->SST[dest_det++])
+  UNPACK_RAW_SST(1);
+  UNPACK_RAW_SST(2);
 
   assert (dest_det <= countof(raw_event->SST));
 
 }
-
-
-

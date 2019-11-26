@@ -14,16 +14,21 @@
 #include "spec/vme_mesytec_mtdc32.spec"
 #include "../land_common/vme_mesytec_vmmr8.spec"
 
+//SUBEVENT(ams_wr)
+//{
+//	ts = TIMESTAMP_WHITERABBIT(id=0x600);
+//}
+
 SUBEVENT(ams_siderem_subev)
 {
-	ts300 = TIMESTAMP_WHITERABBIT(id=0x300);
+	land_vme = LAND_STD_VME();
 	select several {
-		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=4, branch=0);
-		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=4, branch=0);
-		external sst[2] = EXT_SST(siderem=1, gtb=1, sam=4, branch=0);
-		external sst[3] = EXT_SST(siderem=2, gtb=1, sam=4, branch=0);
-		external sst[4] = EXT_SST(siderem=1, gtb=1, sam=4, branch=0);
-		external sst[5] = EXT_SST(siderem=2, gtb=1, sam=4, branch=0);
+		external sst1[0] = EXT_SST(siderem=1, gtb=0, sam=4, branch=0);
+		external sst1[1] = EXT_SST(siderem=2, gtb=0, sam=4, branch=0);
+		external sst1[2] = EXT_SST(siderem=1, gtb=1, sam=4, branch=0);
+		external sst2[0] = EXT_SST(siderem=1, gtb=0, sam=5, branch=0);
+		external sst2[1] = EXT_SST(siderem=2, gtb=0, sam=5, branch=0);
+		external sst2[2] = EXT_SST(siderem=1, gtb=1, sam=5, branch=0);
 	}
 }
 
@@ -190,8 +195,9 @@ los_vme_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		vftx2 = VME_GSI_VFTX2_7PS(id=0);
-		mtdc32 = VME_MESYTEC_MTDC32(geom=1);
+		vftx21 = VME_GSI_VFTX2_7PS(id=0);
+		vftx22 = VME_GSI_VFTX2_7PS(id=1);
+		mtdc32 = VME_MESYTEC_MTDC32(geom=2);
 	}
 }
 
@@ -363,7 +369,9 @@ EVENT
 	neuland_tamex_4 = neuland_tamex_subev(type = 102, subtype = 10200, control = 24);
 
 	revisit califa = CALIFA(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
-	ams_siderem = ams_siderem_subev(type=82, subtype=8200, control=7);
+//	ams_ts = ams_wr(type=10, subtype=1, control=40);
+	ams_siderem_1 = ams_siderem_subev(type=82, subtype=8200, control=40);
+	ams_siderem_2 = ams_siderem_subev(type=82, subtype=8200, control=41);
 
 	sofia_tof = sofia_tof_subev(type = 88, subtype = 8800, control = 101);
 	sofia_mwpc = sofia_mwpc_subev(type = 88, subtype = 8800, control = 102);

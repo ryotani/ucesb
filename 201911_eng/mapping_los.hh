@@ -7,25 +7,25 @@ SIGNAL(TIMESTAMP_LOS_WR_T4, los_ts.ts.t4, DATA16);
 
 // LOS VFTX2 fine (TDC) values.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS1_VTF1);
-SIGNAL(LOS1_VTF1, los_vme.data.vftx2.time_fine[0], DATA12);
-SIGNAL(LOS1_VTF2, los_vme.data.vftx2.time_fine[1], DATA12);
-SIGNAL(LOS1_VTF3, los_vme.data.vftx2.time_fine[2], DATA12);
-SIGNAL(LOS1_VTF4, los_vme.data.vftx2.time_fine[3], DATA12);
-SIGNAL(LOS1_VTF5, los_vme.data.vftx2.time_fine[4], DATA12);
-SIGNAL(LOS1_VTF6, los_vme.data.vftx2.time_fine[5], DATA12);
-SIGNAL(LOS1_VTF7, los_vme.data.vftx2.time_fine[6], DATA12);
-SIGNAL(LOS1_VTF8, los_vme.data.vftx2.time_fine[7], DATA12);
+SIGNAL(LOS1_VTF1, los_vme.data.vftx21.time_fine[0], DATA12);
+SIGNAL(LOS1_VTF2, los_vme.data.vftx21.time_fine[1], DATA12);
+SIGNAL(LOS1_VTF3, los_vme.data.vftx21.time_fine[2], DATA12);
+SIGNAL(LOS1_VTF4, los_vme.data.vftx21.time_fine[3], DATA12);
+SIGNAL(LOS1_VTF5, los_vme.data.vftx21.time_fine[4], DATA12);
+SIGNAL(LOS1_VTF6, los_vme.data.vftx21.time_fine[5], DATA12);
+SIGNAL(LOS1_VTF7, los_vme.data.vftx21.time_fine[6], DATA12);
+SIGNAL(LOS1_VTF8, los_vme.data.vftx21.time_fine[7], DATA12);
 
 // LOS VFTX2 coarse (clock) values.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS1_VTC1);
-SIGNAL(LOS1_VTC1, los_vme.data.vftx2.time_coarse[0], DATA16);
-SIGNAL(LOS1_VTC2, los_vme.data.vftx2.time_coarse[1], DATA16);
-SIGNAL(LOS1_VTC3, los_vme.data.vftx2.time_coarse[2], DATA16);
-SIGNAL(LOS1_VTC4, los_vme.data.vftx2.time_coarse[3], DATA16);
-SIGNAL(LOS1_VTC5, los_vme.data.vftx2.time_coarse[4], DATA16);
-SIGNAL(LOS1_VTC6, los_vme.data.vftx2.time_coarse[5], DATA16);
-SIGNAL(LOS1_VTC7, los_vme.data.vftx2.time_coarse[6], DATA16);
-SIGNAL(LOS1_VTC8, los_vme.data.vftx2.time_coarse[7], DATA16);
+SIGNAL(LOS1_VTC1, los_vme.data.vftx21.time_coarse[0], DATA16);
+SIGNAL(LOS1_VTC2, los_vme.data.vftx21.time_coarse[1], DATA16);
+SIGNAL(LOS1_VTC3, los_vme.data.vftx21.time_coarse[2], DATA16);
+SIGNAL(LOS1_VTC4, los_vme.data.vftx21.time_coarse[3], DATA16);
+SIGNAL(LOS1_VTC5, los_vme.data.vftx21.time_coarse[4], DATA16);
+SIGNAL(LOS1_VTC6, los_vme.data.vftx21.time_coarse[5], DATA16);
+SIGNAL(LOS1_VTC7, los_vme.data.vftx21.time_coarse[6], DATA16);
+SIGNAL(LOS1_VTC8, los_vme.data.vftx21.time_coarse[7], DATA16);
 
 // LOS MTDC32.
 SIGNAL(ZERO_SUPPRESS_MULTI(32): LOS1_MT1);
