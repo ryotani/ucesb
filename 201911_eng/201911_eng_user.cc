@@ -28,14 +28,13 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 {
   // Do the mapping of the unpack->raw SST data
 
-  unsigned int dest_det = 0;
-
-#define UNPACK_RAW_SST(id) \
-  for (unsigned int det = 0; det < countof(event->ams_siderem_##id.sst##id); det++) \
-    map_unpack_raw_sst(event->ams_siderem_##id.sst##id[det],raw_event->SST[dest_det++])
-  UNPACK_RAW_SST(1);
-  UNPACK_RAW_SST(2);
-
-  assert (dest_det <= countof(raw_event->SST));
-
+#define UNPACK_RAW_SST(dest_idx, branch, sst_idx) \
+  assert(dest_idx < countof(raw_event->SST)); \
+  map_unpack_raw_sst(event->ams_siderem_##branch.sst[sst_idx],raw_event->SST[dest_idx])
+  UNPACK_RAW_SST(0, 2, 2);
+  UNPACK_RAW_SST(1, 2, 0);
+  UNPACK_RAW_SST(2, 2, 1);
+  UNPACK_RAW_SST(3, 1, 2);
+  UNPACK_RAW_SST(4, 1, 0);
+  UNPACK_RAW_SST(5, 1, 1);
 }
