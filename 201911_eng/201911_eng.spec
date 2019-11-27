@@ -202,9 +202,8 @@ los_vme_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		vftx21 = VME_GSI_VFTX2_7PS(id=0);
-		vftx22 = VME_GSI_VFTX2_7PS(id=1);
-		mtdc32 = VME_MESYTEC_MTDC32(geom=2);
+		vftx2 = VME_GSI_VFTX2_7PS(id=0);
+		mtdc32 = VME_MESYTEC_MTDC32(geom=1);
 	}
 }
 
