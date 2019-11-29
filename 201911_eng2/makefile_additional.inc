@@ -23,10 +23,15 @@ CXXFLAGS += -DCONTROL_INCLUDE -I$(LAND_COMMON_DIR)
 
 DEPENDENCIES+=$(GENDIR)/mapping_fiber.hh
 
-$(GENDIR)/mapping_fiber.hh: $(GENDIR)/mapper
+$(GENDIR)/mapping_fiber.hh: $(GENDIR)/mapper_fib1 $(GENDIR)/mapper_main
 	@echo " MAPPING $@"
-	@./$(GENDIR)/mapper > $@ 2> /dev/null
+	@./$(GENDIR)/mapper_fib1 > $@ 2> /dev/null
+	@./$(GENDIR)/mapper_main >> $@ 2> /dev/null
 
-$(GENDIR)/mapper: mapper/fib1.c
+$(GENDIR)/mapper_fib1: mapper/fib1.c
+	@echo " MAPPER  $@"
+	@gcc -Wshadow -o $@ $<
+
+$(GENDIR)/mapper_main: mapper/main.c
 	@echo " MAPPER  $@"
 	@gcc -Wshadow -o $@ $<

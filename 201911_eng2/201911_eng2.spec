@@ -19,10 +19,18 @@ SUBEVENT(ams_wr)
 	ts = TIMESTAMP_WHITERABBIT(id=0x600);
 }
 
+GSI_SAM_PADDING()
+{
+	UINT32 padding NOENCODE {
+		0_31: 0x5a5a5a5a;
+	}
+}
+
 SUBEVENT(ams_siderem1_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
+		padd = GSI_SAM_PADDING();
 		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=4, branch=0);
 		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=4, branch=0);
 		external sst[2] = EXT_SST(siderem=1, gtb=1, sam=4, branch=0);
@@ -33,6 +41,7 @@ SUBEVENT(ams_siderem2_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
+		padd = GSI_SAM_PADDING();
 		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=5, branch=0);
 		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=5, branch=0);
 		external sst[2] = EXT_SST(siderem=1, gtb=1, sam=5, branch=0);
@@ -363,6 +372,24 @@ SUBEVENT(sofia_trim_subev)
 	}
 }
 
+fibsipm_data()
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		ctdc[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
+		ctdc[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
+		ctdc[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
+		ctdc[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
+	}
+}
+
+SUBEVENT(fibsipm_subev)
+{
+	select several {
+		data = fibsipm_data();
+	}
+}
+
 EVENT
 {
 	los_ts = wr_los(type=10, subtype=1, control=1);
@@ -384,6 +411,8 @@ EVENT
 	sofia_mwpc = sofia_mwpc_subev(type = 88, subtype = 8800, control = 102);
 	sofia_twim = sofia_twim_subev(type = 88, subtype = 8800, control = 103);
 	sofia_trim = sofia_trim_subev(type = 88, subtype = 8800, control = 104);
+
+	fibsipm = fibsipm_subev(type = 103, subtype = 10300, control = 50);
 
 	ignore_unknown_subevent;
 }
