@@ -1,3 +1,10 @@
+// Timestamps.
+SIGNAL(NN_WR_ID, neuland_ts.ts.subsystem_id, DATA12);
+SIGNAL(NN_WR_T1, neuland_ts.ts.t1, DATA16);
+SIGNAL(NN_WR_T2, neuland_ts.ts.t2, DATA16);
+SIGNAL(NN_WR_T3, neuland_ts.ts.t3, DATA16);
+SIGNAL(NN_WR_T4, neuland_ts.ts.t4, DATA16);
+
 SIGNAL(ZERO_SUPPRESS_MULTI(200): NN_P1tcl_T1_B1);
 SIGNAL(ZERO_SUPPRESS_MULTI(200): NN_P1tfl_T1_B1);
 SIGNAL(ZERO_SUPPRESS_MULTI(200): NN_P1tct_T1_B1);

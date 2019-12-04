@@ -12,3 +12,6 @@ SIGNAL(ZERO_SUPPRESS: SOFMWPC1_Plane1_Q1);
 #include "mapping_mwpc/mapping_MWPC3_Xup.h"
 #include "mapping_mwpc/mapping_MWPC3_Xdown.h"
 #include "mapping_mwpc/mapping_MWPC3_Y.h"
+// MWÃPC3 after GLAD
+#include "mapping_mwpc/mapping_MWPC4_X.h"
+#include "mapping_mwpc/mapping_MWPC4_Y.h"

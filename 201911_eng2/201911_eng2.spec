@@ -189,6 +189,11 @@ SUBEVENT(wr_sofia)
 	ts = TIMESTAMP_WHITERABBIT(id=0x500);
 }
 
+SUBEVENT(wr_neuland)
+{
+	ts = TIMESTAMP_WHITERABBIT(id=0x900);
+}
+
 los_tamex_data()
 {
 	land_vme = LAND_STD_VME();
@@ -333,8 +338,9 @@ sofia_mwpc_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		madc32[0] = VME_MESYTEC_MADC32(geom=0);
-		madc32[1] = VME_MESYTEC_MADC32(geom=1);
+		vmmr8     = VME_MESYTEC_VMMR8(geom=0);
+		madc32[0] = VME_MESYTEC_MADC32(geom=1);
+		madc32[1] = VME_MESYTEC_MADC32(geom=2);
 	}
 }
 SUBEVENT(sofia_mwpc_subev)
@@ -396,7 +402,10 @@ EVENT
 	los_vme = los_vme_subev(type=88, subtype=8800, control=1);
 	los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);
 	los_sampler = los_sampler_subev(type=39, subtype=3900, control=1);
-	fib1ab = fib1ab_subev(type=102, subtype=10200, control=3);
+
+	fib1ab = fib1ab_subev(type=103, subtype=10300, control=3);
+
+	neuland_ts = wr_neuland(type=10, subtype=1, control=21);
 	neuland_tamex_1 = neuland_tamex_subev(type = 102, subtype = 10200, control = 21);
 	neuland_tamex_2 = neuland_tamex_subev(type = 102, subtype = 10200, control = 22);
 	neuland_tamex_3 = neuland_tamex_subev(type = 102, subtype = 10200, control = 23);

@@ -323,8 +323,9 @@ sofia_mwpc_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		madc32[0] = VME_MESYTEC_MADC32(geom=0);
-		madc32[1] = VME_MESYTEC_MADC32(geom=1);
+		vmmr8     = VME_MESYTEC_VMMR8(geom=0);
+		madc32[0] = VME_MESYTEC_MADC32(geom=1);
+		madc32[1] = VME_MESYTEC_MADC32(geom=2);
 	}
 }
 SUBEVENT(sofia_mwpc_subev)
