@@ -151,23 +151,23 @@ map(char const *a_dst, unsigned a_mapmt, unsigned a_ctdc_i, unsigned a_spmt,
 int
 main()
 {
-	if (0) {
-		int i;
-		for (i = 0; i < 256; ++i) {
-			int j, k;
-			ctdc_from_mapmt(i, &j, &k);
-			printf("P:%u = Card:%u Ch:%u\n", i, j, k);
-		}
-	} else if (0) {
-		int i;
-		for (i = 0; i < 256; ++i) {
-			int j;
-			j = bunch_from_mapmt(i);
-			printf("P:%u = Bunch:%u\n", i, j);
-		}
-	} else {
-		map("FIBONEA", 256, 0, 1, 0, 0);
-		map("FIBONEB", 256, 2, 1, 0, 8);
+#if 0
+	int i;
+	for (i = 0; i < 256; ++i) {
+		int j, k;
+		ctdc_from_mapmt(i, &j, &k);
+		printf("P:%u = Card:%u Ch:%u\n", i, j, k);
 	}
+#endif
+#if 0
+	int i;
+	for (i = 0; i < 256; ++i) {
+		int j;
+		j = bunch_from_mapmt(i);
+		printf("P:%u = Bunch:%u\n", i, j);
+	}
+#endif
+	map("FIBONEA", 256, 0, 1, 0, 0);
+	map("FIBONEB", 256, 2, 1, 0, 8);
 	return 0;
 }
