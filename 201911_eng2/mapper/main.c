@@ -8,7 +8,7 @@ static char const *prec_name_array[2] = {"coarse", "fine  "};
 void
 sipm_map()
 {
-	unsigned ch, edge_i, prec_i;
+	unsigned ch_, edge_i, prec_i;
 
 	for (edge_i = 0; edge_i < 2; ++edge_i) {
 		for (prec_i = 0; prec_i < 2; ++prec_i) {
@@ -24,8 +24,11 @@ sipm_map()
 				prec_array[prec_i]);
 		}
 	}
-	for (ch = 0; ch < 256; ++ch) {
+	for (ch_ = 0; ch_ < 256; ++ch_) {
 		unsigned top_ctdc, padi, pch, bottom_ctdc;
+
+		/* Mapping of each pair of PADI flipped from s473. */
+		unsigned ch = (7 - (ch_ / 32)) * 32 + (ch_ & 31);
 
 		/* Top side electronics mapping. */
 		top_ctdc = ch / 128;
@@ -42,13 +45,13 @@ sipm_map()
 				    "fibsipm.data.ctdc[%u].time_%s[%u], "
 				    "DATA12);\n",
 				    edge_array[edge_i], prec_array[prec_i],
-				    ch + 1, top_ctdc, prec_name_array[prec_i],
+				    ch_ + 1, top_ctdc, prec_name_array[prec_i],
 				    2 * (padi * 16 + pch) + edge_i);
 				printf("SIGNAL(SFIB_BT%c%c%u, "
 				    "fibsipm.data.ctdc[%u].time_%s[%u], "
 				    "DATA12);\n",
 				    edge_array[edge_i], prec_array[prec_i],
-				    ch + 1, bottom_ctdc,
+				    ch_ + 1, bottom_ctdc,
 				    prec_name_array[prec_i],
 				    2 * (padi * 16 + pch) + edge_i);
 			}
