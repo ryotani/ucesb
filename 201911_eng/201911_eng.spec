@@ -12,6 +12,7 @@
 #include "../land_common/vme_gsi_vftx2.spec"
 #include "../land_common/whiterabbit.spec"
 #include "spec/vme_mesytec_mtdc32.spec"
+#include "spec/vme_mesytec_mqdc32.spec"
 #include "../land_common/vme_mesytec_vmmr8.spec"
 
 SUBEVENT(ams_wr)
@@ -19,10 +20,18 @@ SUBEVENT(ams_wr)
 	ts = TIMESTAMP_WHITERABBIT(id=0x600);
 }
 
+GSI_SAM_PADDING()
+{
+	UINT32 padding NOENCODE {
+		0_31: 0x5a5a5a5a;
+	}
+}
+
 SUBEVENT(ams_siderem1_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
+		padd = GSI_SAM_PADDING();
 		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=4, branch=0);
 		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=4, branch=0);
 		external sst[2] = EXT_SST(siderem=1, gtb=1, sam=4, branch=0);
@@ -33,6 +42,7 @@ SUBEVENT(ams_siderem2_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
+		padd = GSI_SAM_PADDING();
 		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=5, branch=0);
 		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=5, branch=0);
 		external sst[2] = EXT_SST(siderem=1, gtb=1, sam=5, branch=0);
@@ -164,20 +174,46 @@ FEBEX3_CALIFA_BASE(){
 SUBEVENT(CALIFA)
 {
 	// Extract White Rabbit Timestamp after CALIFA_SYSTEM_ID identifier
+	// TODO: Change WR ID!
 	ts400 = TIMESTAMP_WHITERABBIT(id=0x400);
 	select several{
 		febex3 = FEBEX3_CALIFA_BASE();
 	}
 }
 
-SUBEVENT(wr_los)
+SUBEVENT(PSPX)
+{
+	// Extract White Rabbit Timestamp after CALIFA_SYSTEM_ID identifier
+	ts400 = TIMESTAMP_WHITERABBIT(id=0x400);
+	select several{
+		febex3 = FEBEX3_CALIFA_BASE();
+	}
+}
+
+SUBEVENT(los_wr)
 {
 	ts = TIMESTAMP_WHITERABBIT(id=0x300);
+}
+
+MEGA_PULSER()
+{
+	UINT32 mega;
+}
+
+SUBEVENT(lmu_subev)
+{
+	scalers = TRLOII_LMU_SCALERS(id=0xc7);
+	pulser = MEGA_PULSER();
 }
 
 SUBEVENT(wr_sofia)
 {
 	ts = TIMESTAMP_WHITERABBIT(id=0x500);
+}
+
+SUBEVENT(wr_neuland)
+{
+	ts = TIMESTAMP_WHITERABBIT(id=0x900);
 }
 
 los_tamex_data()
@@ -202,8 +238,15 @@ los_vme_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		vftx2 = VME_GSI_VFTX2_7PS(id=0);
+#if defined(UNPACKER_IS_201911_eng)
+		vftx21 = VME_GSI_VFTX2_7PS(id=0);
 		mtdc32 = VME_MESYTEC_MTDC32(geom=1);
+#endif
+#if defined(UNPACKER_IS_201911_eng2)
+		vftx21 = VME_GSI_VFTX2_7PS(id=0);
+		vftx22 = VME_GSI_VFTX2_7PS(id=1);
+		mtdc32 = VME_MESYTEC_MTDC32(geom=2);
+#endif
 	}
 }
 
@@ -363,13 +406,83 @@ SUBEVENT(sofia_trim_subev)
 	}
 }
 
+fibsipm_data()
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		ctdc[0] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=0);
+		ctdc[1] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=1);
+		ctdc[2] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=2);
+		ctdc[3] = GSI_CLOCKTDC_ITEM(sfp=0, tdc=3);
+	}
+}
+
+SUBEVENT(fibsipm_subev)
+{
+	select several {
+		data = fibsipm_data();
+	}
+}
+
+SUBEVENT(wr_s2)
+{
+	ts = TIMESTAMP_WHITERABBIT(id=0x200);
+}
+
+s2_vme_subev_data()
+{
+	land_vme = LAND_STD_VME();
+	b1 = BARRIER();
+	ts = WR_MULTI();
+	b2 = BARRIER();
+	vftx21 = VME_GSI_VFTX2_7PS(id=2);
+	mqdc = VME_MESYTEC_MQDC32(geom=3);
+}
+
+SUBEVENT(s2_vme_subev)
+{
+	select several {
+		data = s2_vme_subev_data();
+	}
+}
+
+SUBEVENT(s8_wr)
+{
+	ts = TIMESTAMP_WHITERABBIT(id=0x800);
+}
+
+SUBEVENT(s8_tpat_subev)
+{
+	land_vme = LAND_STD_VME();
+	tpat = TRLOII_TPAT(id=0xcf);
+}
+
+s8_vme_subev_data()
+{
+	land_vme = LAND_STD_VME();
+	select several {
+		vftx21 = VME_GSI_VFTX2_7PS(id=0);
+	}
+}
+
+SUBEVENT(s8_vme_subev)
+{
+	select several {
+		data = s8_vme_subev_data();
+	}
+}
+
 EVENT
 {
-	los_ts = wr_los(type=10, subtype=1, control=1);
+	los_ts = los_wr(type=10, subtype=1, control=1);
+	los_lmu = lmu_subev(type=37, subtype=3700, control=1);
 	los_vme = los_vme_subev(type=88, subtype=8800, control=1);
 	los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);
 	los_sampler = los_sampler_subev(type=39, subtype=3900, control=1);
+
 	fib1ab = fib1ab_subev(type=102, subtype=10200, control=3);
+
+	neuland_ts = wr_neuland(type=10, subtype=1, control=21);
 	neuland_tamex_1 = neuland_tamex_subev(type = 102, subtype = 10200, control = 21);
 	neuland_tamex_2 = neuland_tamex_subev(type = 102, subtype = 10200, control = 22);
 	neuland_tamex_3 = neuland_tamex_subev(type = 102, subtype = 10200, control = 23);
@@ -384,6 +497,17 @@ EVENT
 	sofia_mwpc = sofia_mwpc_subev(type = 88, subtype = 8800, control = 102);
 	sofia_twim = sofia_twim_subev(type = 88, subtype = 8800, control = 103);
 	sofia_trim = sofia_trim_subev(type = 88, subtype = 8800, control = 104);
+
+	fibsipm = fibsipm_subev(type = 103, subtype = 10300, control = 50);
+
+	s2_ts = wr_s2(type = 10, subtype = 1, control = 20, procid = 35);
+	s2_vme = s2_vme_subev(type = 12, subtype = 1, control = 20, procid = 35);
+
+	s8_ts = s8_wr(type = 10, subtype = 1, control = 80);
+	s8_tpat = s8_tpat_subev(type = 36, subtype = 3600, control = 80);
+	s8_vme = s8_vme_subev(type = 88, subtype = 8800, control = 80);
+
+	revisit pspx = PSPX(type = 10, subtype = 1, control = 51, procid = 13);
 
 	ignore_unknown_subevent;
 }
