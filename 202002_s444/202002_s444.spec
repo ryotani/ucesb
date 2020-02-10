@@ -175,7 +175,7 @@ FEBEX3_CALIFA_BASE(){
 SUBEVENT(CALIFA_MESSEL)
 {
 	// Extract White Rabbit Timestamp after CALIFA_SYSTEM_ID identifier
-	ts400 = TIMESTAMP_WHITERABBIT(id=0x400);
+	ts400 = TIMESTAMP_WHITERABBIT(id=0xa00);
 	select several{
 		febex3 = FEBEX3_CALIFA_BASE();
 	}
@@ -184,7 +184,7 @@ SUBEVENT(CALIFA_MESSEL)
 SUBEVENT(CALIFA_WIXHAUSEN)
 {
 	// Extract White Rabbit Timestamp after CALIFA_SYSTEM_ID identifier
-	ts500 = TIMESTAMP_WHITERABBIT(id=0x500);
+	ts500 = TIMESTAMP_WHITERABBIT(id=0xb00);
 	select several{
 		febex3 = FEBEX3_CALIFA_BASE();
 	}
