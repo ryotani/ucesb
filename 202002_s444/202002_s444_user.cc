@@ -44,14 +44,22 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 	// Do the mapping of the unpack->raw SST data
 
 #define UNPACK_RAW_SST(dest_idx, branch, sst_idx) \
-	assert(dest_idx < countof(raw_event->SST)); \
-	map_unpack_raw_sst(event->ams_siderem_##branch.sst[sst_idx],raw_event->SST[dest_idx])
-	UNPACK_RAW_SST(0, 2, 2);
-	UNPACK_RAW_SST(1, 2, 0);
-	UNPACK_RAW_SST(2, 2, 1);
-	UNPACK_RAW_SST(3, 1, 2);
-	UNPACK_RAW_SST(4, 1, 0);
-	UNPACK_RAW_SST(5, 1, 1);
+  assert(dest_idx < countof(raw_event->SST)); \
+  map_unpack_raw_sst(event->ams_siderem_##branch.sst[sst_idx],raw_event->SST[dest_idx])
+  UNPACK_RAW_SST(0, 2, 2);
+  UNPACK_RAW_SST(1, 2, 1);
+  UNPACK_RAW_SST(2, 2, 0);
+  UNPACK_RAW_SST(3, 1, 2);
+  UNPACK_RAW_SST(4, 1, 1);
+  UNPACK_RAW_SST(5, 1, 0);
+/*
+  UNPACK_RAW_SST(0, 1, 0);
+  UNPACK_RAW_SST(1, 1, 1);
+  UNPACK_RAW_SST(2, 1, 2);
+  UNPACK_RAW_SST(3, 2, 0);
+  UNPACK_RAW_SST(4, 2, 1);
+  UNPACK_RAW_SST(5, 2, 2);
+*/
 
 	if (g_web.yes) {
 		// Fill SofToF.
