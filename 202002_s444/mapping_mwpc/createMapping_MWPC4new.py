@@ -60,8 +60,10 @@ if(lenTabCh==64):
         #MWPC4Y-1
         index = TabCh[pad]+64*MWPC4_Y2_bus
         outMWPC4Y.write('SIGNAL(SOFMWPC4_Plane3_Q'+str(120 - pad)+',sofia_mwpc.data.vmmr8.data['+str(index)+'],DATA12);\n')
+        #outMWPC4Y.write('SIGNAL(SOFMWPC4_Plane3_Q'+str(pad+1)+',sofia_mwpc.data.vmmr8.data['+str(index)+'],DATA12);\n')
 
     for pad in range (0,56):
         #MWPC4Y-2
         index = TabCh[pad]+64*MWPC4_Y1_bus
         outMWPC4Y.write('SIGNAL(SOFMWPC4_Plane3_Q'+str(56 - pad)+',sofia_mwpc.data.vmmr8.data['+str(index)+'],DATA12);\n')
+        #outMWPC4Y.write('SIGNAL(SOFMWPC4_Plane3_Q'+str(65+pad)+',sofia_mwpc.data.vmmr8.data['+str(index)+'],DATA12);\n')
