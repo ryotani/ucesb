@@ -3,3 +3,4 @@
 #include "mapping_softwim.hh"
 #include "mapping_softofw.hh"
 #include "mapping_sofmwpc.hh"
+#include "mapping_sofscalers.hh"

@@ -11,6 +11,7 @@
 #include "../land_common/trloii.spec"
 #include "../land_common/vme_gsi_vftx2.spec"
 #include "../land_common/whiterabbit.spec"
+#include "../land_common/vme_struck_sis3820scaler.spec"
 #include "spec/vme_mesytec_mtdc32.spec"
 #include "spec/vme_mesytec_mqdc32.spec"
 #include "../land_common/vme_mesytec_vmmr8.spec"
@@ -347,6 +348,9 @@ sofia_tof_subev_data()
 		vftx2[1] = VME_GSI_VFTX2_7PS(id=1);
 		vftx2[2] = VME_GSI_VFTX2_7PS(id=2);
 		vftx2[3] = VME_GSI_VFTX2_7PS(id=3);
+		sis3820scaler[0] = VME_SIS_3820_SCALER(geom=4);
+		b = BARRIER();
+		sis3820scaler[1] = VME_SIS_3820_SCALER(geom=5);
 	}
 }
 SUBEVENT(sofia_tof_subev)
@@ -374,8 +378,9 @@ sofia_twim_subev_data()
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		mdpp16[0] = VME_MESYTEC_MDPP16(geom=0);
-		mdpp16[1] = VME_MESYTEC_MDPP16(geom=1);
+		mdpp16[0]     = VME_MESYTEC_MDPP16(geom=0);
+		mdpp16[1]     = VME_MESYTEC_MDPP16(geom=1);
+		sis3820scaler = VME_SIS_3820_SCALER(geom=2);
 	}
 }
 SUBEVENT(sofia_twim_subev)
@@ -425,11 +430,9 @@ SUBEVENT(wr_s2)
 s2_vme_subev_data()
 {
 	land_vme = LAND_STD_VME();
-	b1 = BARRIER();
-	ts = WR_MULTI();
-	b2 = BARRIER();
-	vftx21 = VME_GSI_VFTX2_7PS(id=2);
-	mqdc = VME_MESYTEC_MQDC32(geom=3);
+	vftx21 = VME_GSI_VFTX2_7PS(id=0);
+	mqdc = VME_MESYTEC_MQDC32(geom=1);
+	barrier = BARRIER();
 }
 
 SUBEVENT(s2_vme_subev)

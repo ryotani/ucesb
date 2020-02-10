@@ -33,6 +33,8 @@ TRLOII_LMU_SCALERS(id)
 			ENCODE(before_lmu_aux[i], (value=value));
 		}
 	}
+#if 0
+	/* BL: this is not correct for 202002_s444 data */
 	list(0 <= i < header.after_lmu) {
 		UINT32 scaler NOENCODE {
 			0_31: value;
@@ -51,6 +53,22 @@ TRLOII_LMU_SCALERS(id)
 			ENCODE(after_reduction[i], (value = value));
 		}
 	}
+#else
+	list(0 <= i < header.after_lmu) {
+		UINT32 scaler_bdt NOENCODE {
+			0_31: value;
+			ENCODE(before_dt[i], (value=value));
+		}
+		UINT32 scaler_adt NOENCODE {
+			0_31: value;
+			ENCODE(after_dt[i], (value=value));
+		}
+		UINT32 scaler_ard NOENCODE {
+			0_31: value;
+			ENCODE(after_reduction[i], (value = value));
+		}
+	}
+#endif
 }
 
 TRLOII_SAMPLER(mark)
