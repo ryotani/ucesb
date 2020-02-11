@@ -60,7 +60,7 @@ if(lenTabCh==64):
 
         #MWPC1Y
         index = TabCh[pad]+64*MWPC1_Y_bus
-        outMWPC1Y.write('SIGNAL(SOFMWPC1_Plane3_Q'+str(pad+1)+',sofia_trim.data.vmmr8.data['+str(index)+'],DATA12);\n')
+        outMWPC1Y.write('SIGNAL(SOFMWPC1_Plane3_Q'+str(64-pad)+',sofia_trim.data.vmmr8.data['+str(index)+'],DATA12);\n')
 
         #MWPC2Xp
         index = TabCh[pad]+64*MWPC2_Xup_bus
