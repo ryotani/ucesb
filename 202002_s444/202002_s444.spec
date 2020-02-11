@@ -1,7 +1,6 @@
 #define EXT_SST_HAS_BRANCH 1
 
 #include "spec/spec.spec"
-#include "sst_ext.spec"
 #include "../land_common/barrier.spec"
 #include "../land_common/gsi_clocktdc.spec"
 #include "../land_common/gsi_tamex3.spec"
@@ -15,40 +14,6 @@
 #include "spec/vme_mesytec_mtdc32.spec"
 #include "spec/vme_mesytec_mqdc32.spec"
 #include "../land_common/vme_mesytec_vmmr8.spec"
-
-SUBEVENT(ams_wr)
-{
-	ts = TIMESTAMP_WHITERABBIT(id=0x600);
-}
-
-GSI_SAM_PADDING()
-{
-	UINT32 padding NOENCODE {
-		0_31: 0x5a5a5a5a;
-	}
-}
-
-SUBEVENT(ams_siderem1_subev)
-{
-	land_vme = LAND_STD_VME();
-	select several {
-		padd = GSI_SAM_PADDING();
-		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=4, branch=0);
-		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=4, branch=0);
-		external sst[2] = EXT_SST(siderem=1, gtb=1, sam=4, branch=0);
-	}
-}
-
-SUBEVENT(ams_siderem2_subev)
-{
-	land_vme = LAND_STD_VME();
-	select several {
-		padd = GSI_SAM_PADDING();
-		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=5, branch=0);
-		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=5, branch=0);
-		external sst[2] = EXT_SST(siderem=1, gtb=1, sam=5, branch=0);
-	}
-}
 
 #define NUM_SFP_MODULES 8
 #define CHANNELS_PER_FEBEX 16
@@ -177,7 +142,7 @@ FEBEX3_CALIFA_BASE(){
 SUBEVENT(CALIFA_MESSEL)
 {
 	// Extract White Rabbit Timestamp after CALIFA_SYSTEM_ID identifier
-	ts400 = TIMESTAMP_WHITERABBIT(id=0xa00);
+	ts = TIMESTAMP_WHITERABBIT(id=0xa00);
 	select several{
 		febex3 = FEBEX3_CALIFA_BASE();
 	}
@@ -186,13 +151,13 @@ SUBEVENT(CALIFA_MESSEL)
 SUBEVENT(CALIFA_WIXHAUSEN)
 {
 	// Extract White Rabbit Timestamp after CALIFA_SYSTEM_ID identifier
-	ts500 = TIMESTAMP_WHITERABBIT(id=0xb00);
+	ts = TIMESTAMP_WHITERABBIT(id=0xb00);
 	select several{
 		febex3 = FEBEX3_CALIFA_BASE();
 	}
 }
 
-SUBEVENT(los_wr)
+SUBEVENT(main_wr)
 {
 	ts = TIMESTAMP_WHITERABBIT(id=0x300);
 }
@@ -208,7 +173,7 @@ SUBEVENT(lmu_subev)
 	pulser = MEGA_PULSER();
 }
 
-SUBEVENT(wr_sofia)
+SUBEVENT(sofia_wr)
 {
 	ts = TIMESTAMP_WHITERABBIT(id=0x500);
 }
@@ -216,64 +181,6 @@ SUBEVENT(wr_sofia)
 SUBEVENT(wr_neuland)
 {
 	ts = TIMESTAMP_WHITERABBIT(id=0x900);
-}
-
-los_tamex_data()
-{
-	land_vme = LAND_STD_VME();
-	select several {
-		padding = TAMEX3_PADDING();
-	}
-	select several {
-		tamex = TAMEX3_SFP(sfp=0, card=0);
-	}
-}
-
-SUBEVENT(los_tamex_subev)
-{
-	select several {
-		data = los_tamex_data();
-	}
-}
-
-los_vme_subev_data()
-{
-	land_vme = LAND_STD_VME();
-	select several {
-		vftx21 = VME_GSI_VFTX2_7PS(id=0);
-		vftx22 = VME_GSI_VFTX2_7PS(id=1);
-		mtdc32 = VME_MESYTEC_MTDC32(geom=2);
-	}
-}
-
-SUBEVENT(los_vme_subev)
-{
-	select several {
-		data = los_vme_subev_data();
-	}
-}
-
-fib1a_data()
-{
-	land_vme = LAND_STD_VME();
-	select several {
-		ctdc[0] = GSI_CLOCKTDC_16PH_ITEM(sfp=0, tdc=0);
-		ctdc[1] = GSI_CLOCKTDC_16PH_ITEM(sfp=0, tdc=1);
-		ctdc[2] = GSI_CLOCKTDC_16PH_ITEM(sfp=0, tdc=2);
-		ctdc[3] = GSI_CLOCKTDC_16PH_ITEM(sfp=0, tdc=3);
-	}
-	barrier = BARRIER();
-	select several {
-		tamex[0] = TAMEX3_SFP(sfp=1, card=0);
-		tamex[1] = TAMEX3_SFP(sfp=1, card=1);
-	}
-}
-
-SUBEVENT(fib1ab_subev)
-{
-	select several {
-		data = fib1a_data();
-	}
 }
 
 neuland_sfp(sfp)
@@ -333,11 +240,11 @@ SUBEVENT(neuland_tamex_subev)
 	}
 }
 
-SUBEVENT(los_sampler_subev)
+SUBEVENT(sofia_sampler_subev)
 {
 	land_vme = LAND_STD_VME();
 	select several {
-		los = TRLOII_SAMPLER(mark=0x1050);
+		sofstart = TRLOII_SAMPLER(mark=0x1050);
 		ms = TRLOII_SAMPLER(mark=0x1060);
 	}
 }
@@ -472,13 +379,8 @@ SUBEVENT(s8_vme_subev)
 
 EVENT
 {
-	los_ts = los_wr(type=10, subtype=1, control=1);
-	los_lmu = lmu_subev(type=37, subtype=3700, control=1);
-	los_vme = los_vme_subev(type=88, subtype=8800, control=1);
-	los_tamex = los_tamex_subev(type=102, subtype=10200, control=2);
-	los_sampler = los_sampler_subev(type=39, subtype=3900, control=1);
-
-	fib1ab = fib1ab_subev(type=102, subtype=10200, control=3);
+	main_ts = main_wr(type=10, subtype=1, control=30);
+	sofia_sampler = sofia_sampler_subev(type = 39, subtype = 3900, control = 30);
 
 	neuland_ts = wr_neuland(type=10, subtype=1, control=21);
 	neuland_tamex_1 = neuland_tamex_subev(type = 102, subtype = 10200, control = 21);
@@ -488,10 +390,8 @@ EVENT
 
 	revisit califa_messel = CALIFA_MESSEL(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 9);
 	revisit califa_wixhausen = CALIFA_WIXHAUSEN(type = 100, subtype = 10000, subcrate = 2, procid = 2, control = 10);
-	ams_ts = ams_wr(type=10, subtype=1, control=40);
-	ams_siderem_1 = ams_siderem1_subev(type=82, subtype=8200, control=40);
-	ams_siderem_2 = ams_siderem2_subev(type=82, subtype=8200, control=41);
 
+	sofia_ts = sofia_wr(type=10, subtype=1, control=101);
 	sofia_tof = sofia_tof_subev(type = 88, subtype = 8800, control = 101);
 	sofia_mwpc = sofia_mwpc_subev(type = 88, subtype = 8800, control = 102);
 	sofia_twim = sofia_twim_subev(type = 88, subtype = 8800, control = 103);
