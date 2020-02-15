@@ -67,3 +67,4 @@ if(lenTabCh==64):
         index = TabCh[pad]+64*MWPC4_Y1_bus
         #outMWPC4Y.write('SIGNAL(SOFMWPC4_Plane3_Q'+str(56 - pad)+',sofia_mwpc.data.vmmr8.data['+str(index)+'],DATA12);\n')
         outMWPC4Y.write('SIGNAL(SOFMWPC4_Plane3_Q'+str(65+pad)+',sofia_mwpc.data.vmmr8.data['+str(index)+'],DATA12);\n')
+        #outMWPC4Y.write('SIGNAL(SOFMWPC4_Plane3_Q'+str(61+pad)+',sofia_mwpc.data.vmmr8.data['+str(index)+'],DATA12);\n')
