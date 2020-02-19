@@ -33,11 +33,15 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 			}
 		}
 
+		if (12 == event->trigger) {
+			memset(g_web.softofw, 0, sizeof g_web.softofw);
+		}
+
 		// Some keep-alives are way too noisy, just send periodically
 		// and def. on end-of-spill.
 		static time_t t_prev = 0;
 		auto t_cur = time(NULL);
-		if (t_cur > t_prev + 1 /* 1/2 Hz */ ||
+		if (t_cur > t_prev ||
 		    13 == event->trigger) {
 			std::string msg = "{\"key\":\"softofw\",\"value\":{\"hist\":[";
 			for (unsigned paddle = 0; paddle <
@@ -52,8 +56,6 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 			msg += "]}}\n";
 			zmq_send(g_web.sock, msg.c_str(), msg.length(), 0);
 
-			memset(g_web.softofw, 0, sizeof
-			    g_web.softofw);
 			t_prev = t_cur;
 		}
 	}
