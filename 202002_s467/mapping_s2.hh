@@ -16,6 +16,9 @@ SIGNAL(TIMESTAMP_SCITWO_WR_T4, s2_ts.ts.t4, DATA16);
 //SIGNAL(SCITWO_VTF7, s2_vme.data.vftx21.time_fine[6], DATA12); // SC11
 //SIGNAL(SCITWO_VTF8, s2_vme.data.vftx21.time_fine[7], DATA12);
 
+SIGNAL(SCITWO_VTF10, s2_vme.data.vftx21.time_fine[9], DATA12); // CaveC MS
+SIGNAL(SCITWO_VTF11, s2_vme.data.vftx21.time_fine[10], DATA12); // CaveC MS
+
 // SCITWO VFTX2 coarse (clock) values.
 //SIGNAL(ZERO_SUPPRESS_MULTI(32): SCITWO_VTC1);
 //SIGNAL(SCITWO_VTC1, s2_vme.data.vftx21.time_coarse[0], DATA16);
@@ -27,3 +30,5 @@ SIGNAL(TIMESTAMP_SCITWO_WR_T4, s2_ts.ts.t4, DATA16);
 //SIGNAL(SCITWO_VTC7, s2_vme.data.vftx21.time_coarse[6], DATA16);
 //SIGNAL(SCITWO_VTC8, s2_vme.data.vftx21.time_coarse[7], DATA16);
 
+SIGNAL(SCITWO_VTC10, s2_vme.data.vftx21.time_coarse[9], DATA16);
+SIGNAL(SCITWO_VTC11, s2_vme.data.vftx21.time_coarse[10], DATA16);

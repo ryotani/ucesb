@@ -339,9 +339,9 @@ SUBEVENT(wr_s2)
 s2_vme_subev_data()
 {
 	land_vme = LAND_STD_VME();
-	vftx21 = VME_GSI_VFTX2_7PS(id=0);
-	mqdc = VME_MESYTEC_MQDC32(geom=1);
 	barrier = BARRIER();
+	vftx21 = VME_GSI_VFTX2(id=1);
+	mqdc = VME_MESYTEC_MQDC32(geom=2);
 }
 
 SUBEVENT(s2_vme_subev)
