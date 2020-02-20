@@ -6,3 +6,4 @@
 #include "mapping_sofia.hh"
 #include "mapping_CALIFA.hh"
 #include "mapping_timestamp.hh"
+#include "mapping_trloii.hh"

@@ -356,6 +356,12 @@ SUBEVENT(s8_wr)
 	ts = TIMESTAMP_WHITERABBIT(id=0x800);
 }
 
+SUBEVENT(main_tpat_subev)
+{
+	land_vme = LAND_STD_VME();
+	tpat = TRLOII_TPAT(id=0xcf);
+}
+
 SUBEVENT(s8_tpat_subev)
 {
 	land_vme = LAND_STD_VME();
@@ -380,6 +386,7 @@ SUBEVENT(s8_vme_subev)
 EVENT
 {
 	main_ts = main_wr(type=10, subtype=1, control=30);
+	main_tpat = main_tpat_subev(type = 36, subtype = 3600, control = 30);
 	sofia_sampler = sofia_sampler_subev(type = 39, subtype = 3900, control = 30);
 
 	neuland_ts = wr_neuland(type=10, subtype=1, control=21);
