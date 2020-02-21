@@ -1,13 +1,13 @@
-// FRS scintillator
-// LEFT ch1/16
-// RIGHT ch2/16
-// TREF ch11/16
+// FRS scintillator (uses 10 ps Leading & trailing)
+// LEFT ch0,1/31 
+// RIGHT ch2,3/31
+// TREF ch20,21/31
 
 
 // sofia scintillator at S2 :  sofsci2
-// TF1 : PMT RIGHT - FINE TIME ch14/16
-// TF2 : PMT LEFT - FINE TIME ch13/16
-// TF3 : REFERENCE SIGNAL - FINE TIME ch 10/16
+// TF1 : PMT RIGHT - FINE TIME ch26,27/31
+// TF2 : PMT LEFT - FINE TIME ch24,25/31
+// TF3 : REFERENCE SIGNAL - FINE TIME ch 18,19/31
 // TC1 : PMT RIGHT - CLOCK COUNT
 // TC2 : PMT LEFT - CLOCK COUNT
 // TC3 : REFERENCE SIGNAL - CLOCK COUNT
@@ -28,30 +28,30 @@
 // TC2 : PMT LEFT - CLOCK COUNT
 // TC3 : REFERENCE SIGNAL - CLOCK COUNT
 
-SIGNAL(ZERO_SUPPRESS_MULTI(50):SOFSCI1_TF1);
-SIGNAL(ZERO_SUPPRESS_MULTI(50):SOFSCI1_TC1);
+SIGNAL(ZERO_SUPPRESS_MULTI(100):SOFSCI1_TF1);
+SIGNAL(ZERO_SUPPRESS_MULTI(100):SOFSCI1_TC1);
 
 // FRS scintillator at S2
 // PMT RIGHT
-SIGNAL(SOFSCI1_TF1,s2_vme.data.vftx21.time_fine[1],DATA12);
-SIGNAL(SOFSCI1_TC1,s2_vme.data.vftx21.time_coarse[1],DATA16);
+SIGNAL(SOFSCI1_TF1,s2_vme.data.vftx21.time_fine[2],DATA12);
+SIGNAL(SOFSCI1_TC1,s2_vme.data.vftx21.time_coarse[2],DATA16);
 // PMT LEFT
 SIGNAL(SOFSCI1_TF2,s2_vme.data.vftx21.time_fine[0],DATA12);
 SIGNAL(SOFSCI1_TC2,s2_vme.data.vftx21.time_coarse[0],DATA16);
 // REFERENCE SIGNAL
-SIGNAL(SOFSCI1_TF3,s2_vme.data.vftx21.time_fine[10],DATA12);
-SIGNAL(SOFSCI1_TC3,s2_vme.data.vftx21.time_coarse[10],DATA16);
+SIGNAL(SOFSCI1_TF3,s2_vme.data.vftx21.time_fine[20],DATA12);
+SIGNAL(SOFSCI1_TC3,s2_vme.data.vftx21.time_coarse[20],DATA16);
 
 // SOFIA scintillator at S2
 // PMT RIGHT
-SIGNAL(SOFSCI2_TF1,s2_vme.data.vftx21.time_fine[13],DATA12);
-SIGNAL(SOFSCI2_TC1,s2_vme.data.vftx21.time_coarse[13],DATA16);
+SIGNAL(SOFSCI2_TF1,s2_vme.data.vftx21.time_fine[26],DATA12);
+SIGNAL(SOFSCI2_TC1,s2_vme.data.vftx21.time_coarse[26],DATA16);
 // PMT LEFT
-SIGNAL(SOFSCI2_TF2,s2_vme.data.vftx21.time_fine[12],DATA12);
-SIGNAL(SOFSCI2_TC2,s2_vme.data.vftx21.time_coarse[12],DATA16);
+SIGNAL(SOFSCI2_TF2,s2_vme.data.vftx21.time_fine[24],DATA12);
+SIGNAL(SOFSCI2_TC2,s2_vme.data.vftx21.time_coarse[24],DATA16);
 // REFERENCE SIGNAL
-SIGNAL(SOFSCI2_TF3,s2_vme.data.vftx21.time_fine[9],DATA12);
-SIGNAL(SOFSCI2_TC3,s2_vme.data.vftx21.time_coarse[9],DATA16);
+SIGNAL(SOFSCI2_TF3,s2_vme.data.vftx21.time_fine[18],DATA12);
+SIGNAL(SOFSCI2_TC3,s2_vme.data.vftx21.time_coarse[18],DATA16);
 
 // scintillator at S8
 // S8 PMT RIGHT
