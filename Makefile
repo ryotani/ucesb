@@ -15,11 +15,11 @@ include $(UCESB_BASE_DIR)/makefile_direxist.inc
 
 #########################################################
 
-LAND_COMMON=land jun16 \
+#LAND_COMMON=land jun16 \
 	s232 s287 s295 \
 	s438 s438b
-OTHERS= e062 \
-	frs_s341 \
+#OTHERS= #e062 
+#OTHERS=	frs_s341 \
 	fzd_jan_2010 \
 	gamma3_2015 \
 	kvi2018 \
@@ -61,7 +61,7 @@ ifneq (,$(LANDDAQ_DIR))
 NEED_LANDDAQ_AND_CCDAQLIB=s223 s296 s306 s318 s327 s393 s406
 endif
 #$(info CCDAQLIB_DIR=$(CCDAQLIB_DIR))
-NEED_CCDAQLIB=dec2006
+#NEED_CCDAQLIB=dec2006
 endif
 
 NEED_LANDDAQ_= $(NEED_LANDDAQ) $(NEED_CCDAQLIB) $(NEED_LANDDAQ_AND_CCDAQLIB)

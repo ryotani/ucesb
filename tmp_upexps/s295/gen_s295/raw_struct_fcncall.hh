@@ -1,0 +1,408 @@
+/** BEGIN_FUNCTION_CALL_PER_MEMBER *************************************
+ *
+ * Recursive function calls per member.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_fcncall_define.hh"
+
+#ifndef USER_DEF_raw_event_CS
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_CS)::FCNCALL_NAME(raw_event_CS)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_CS
+
+#ifndef USER_DEF_raw_event_CV
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_CV)::FCNCALL_NAME(raw_event_CV)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_CV
+
+#ifndef USER_DEF_raw_event_GFI
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_GFI)::FCNCALL_NAME(raw_event_GFI)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_GFI
+
+#ifndef USER_DEF_raw_event_N
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_N)::FCNCALL_NAME(raw_event_N)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_N
+
+#ifndef USER_DEF_raw_event_NTF
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_NTF)::FCNCALL_NAME(raw_event_NTF)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_NTF
+
+#ifndef USER_DEF_raw_event_POS
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_POS)::FCNCALL_NAME(raw_event_POS)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_POS
+
+#ifndef USER_DEF_raw_event_PSP
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_PSP)::FCNCALL_NAME(raw_event_PSP)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_PSP
+
+#ifndef USER_DEF_raw_event_ROL
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_ROL)::FCNCALL_NAME(raw_event_ROL)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_ROL
+
+#ifndef USER_DEF_raw_event_PIX
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_PIX)::FCNCALL_NAME(raw_event_PIX)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_PIX
+
+#ifndef USER_DEF_raw_event_TFW
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_TFW)::FCNCALL_NAME(raw_event_TFW)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_TFW
+
+#ifndef USER_DEF_raw_event_V
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_V)::FCNCALL_NAME(raw_event_V)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_V
+
+#ifndef USER_DEF_raw_event_ZST
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_ZST)::FCNCALL_NAME(raw_event_ZST)
+{
+  FCNCALL_INIT;
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_ZST
+
+#ifndef USER_DEF_raw_event
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event)::FCNCALL_NAME(raw_event)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(raw_event_base,FCNCALL_CLASS_NAME(raw_event_base)::FCNCALL_CALL_BASE());
+  // raw_array_zero_suppress<raw_event_CS,raw_event_CS,144> CS[1];
+  {
+  FCNCALL_SUBNAME("CS");
+  FCNCALL_FOR(__i0,1)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(CS__i0,,__i0,CS[__i0].FCNCALL_CALL(CS[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress<raw_event_CV,raw_event_CV,12> CV[1];
+  {
+  FCNCALL_SUBNAME("CV");
+  FCNCALL_FOR(__i0,1)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(CV__i0,,__i0,CV[__i0].FCNCALL_CALL(CV[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress<raw_event_GFI,raw_event_GFI,34> GFI[3];
+  {
+  FCNCALL_SUBNAME("GFI");
+  FCNCALL_FOR(__i0,3)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(GFI__i0,,__i0,GFI[__i0].FCNCALL_CALL(GFI[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress_1<raw_event_N,raw_event_N[2],20,2> N[10];
+  {
+  FCNCALL_SUBNAME("N");
+  FCNCALL_FOR(__i0,10)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(N__i0,,__i0,N[__i0].FCNCALL_CALL(N[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress_1<raw_event_NTF,raw_event_NTF[2],8,2> NTF;
+  {
+  FCNCALL_SUBNAME("NTF");
+  { FCNCALL_CALL_CTRL_WRAP(NTF,NTF.FCNCALL_CALL(NTF)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_POS POS[1][4];
+  {
+  FCNCALL_SUBNAME("POS");
+  FCNCALL_FOR(__i0,1)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,4)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(POS__i0__i1,[__i0],__i1,POS[__i0][__i1].FCNCALL_CALL(POS[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_PSP PSP[3][5];
+  {
+  FCNCALL_SUBNAME("PSP");
+  FCNCALL_FOR(__i0,3)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,5)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(PSP__i0__i1,[__i0],__i1,PSP[__i0][__i1].FCNCALL_CALL(PSP[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_ROL ROL[1][4];
+  {
+  FCNCALL_SUBNAME("ROL");
+  FCNCALL_FOR(__i0,1)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,4)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(ROL__i0__i1,[__i0],__i1,ROL[__i0][__i1].FCNCALL_CALL(ROL[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_PIX PIX[3][1];
+  {
+  FCNCALL_SUBNAME("PIX");
+  FCNCALL_FOR(__i0,3)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,1)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(PIX__i0__i1,[__i0],__i1,PIX[__i0][__i1].FCNCALL_CALL(PIX[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress_1<raw_event_TFW,raw_event_TFW[2],32,2> TFW;
+  {
+  FCNCALL_SUBNAME("TFW");
+  { FCNCALL_CALL_CTRL_WRAP(TFW,TFW.FCNCALL_CALL(TFW)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress_1<raw_event_V,raw_event_V[2],20,2> V[1];
+  {
+  FCNCALL_SUBNAME("V");
+  FCNCALL_FOR(__i0,1)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(V__i0,,__i0,V[__i0].FCNCALL_CALL(V[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_ZST ZST[4][5];
+  {
+  FCNCALL_SUBNAME("ZST");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,5)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(ZST__i0__i1,[__i0],__i1,ZST[__i0][__i1].FCNCALL_CALL(ZST[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event
+
+#ifndef USER_DEF_raw_sticky
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_sticky)::FCNCALL_NAME(raw_sticky)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(raw_sticky_base,FCNCALL_CLASS_NAME(raw_sticky_base)::FCNCALL_CALL_BASE());
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_sticky
+
+#include "gen/default_fcncall_undef.hh"
+
+
+/** END_FUNCTION_CALL_PER_MEMBER **************************************/

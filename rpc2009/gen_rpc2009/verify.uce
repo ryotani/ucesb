@@ -1,0 +1,744 @@
+
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+VME_FZR()
+{
+  MEMBER(DATA32 data[32]);
+  list(0<=index<32)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_31: value;
+      ENCODE(data[index],(value=value));
+    }
+  }
+}
+
+SUBEVENT(CRATE)
+{
+  block = VME_FZR();
+}
+
+/**********************************************************
+ * The event definition:
+ */
+
+EVENT
+{
+  vme0 = CRATE(type=10,subtype=1);
+}
+
+/**********************************************************
+ * The sticky_event definition:
+ */
+
+/**********************************************************
+ * Signal name mappings:
+ */
+
+SIGNAL(D01,vme0.block.data[0],DATA32);
+SIGNAL(D02,vme0.block.data[1],DATA32);
+SIGNAL(D03,vme0.block.data[2],DATA32);
+SIGNAL(D04,vme0.block.data[3],DATA32);
+SIGNAL(D05,vme0.block.data[4],DATA32);
+SIGNAL(D06,vme0.block.data[5],DATA32);
+SIGNAL(D07,vme0.block.data[6],DATA32);
+SIGNAL(D08,vme0.block.data[7],DATA32);
+SIGNAL(D09,vme0.block.data[8],DATA32);
+SIGNAL(D10,vme0.block.data[9],DATA32);
+SIGNAL(D11,vme0.block.data[10],DATA32);
+SIGNAL(D12,vme0.block.data[11],DATA32);
+SIGNAL(D13,vme0.block.data[12],DATA32);
+SIGNAL(D14,vme0.block.data[13],DATA32);
+SIGNAL(D15,vme0.block.data[14],DATA32);
+SIGNAL(D16,vme0.block.data[15],DATA32);
+SIGNAL(D17,vme0.block.data[16],DATA32);
+SIGNAL(D18,vme0.block.data[17],DATA32);
+SIGNAL(D19,vme0.block.data[18],DATA32);
+SIGNAL(D20,vme0.block.data[19],DATA32);
+SIGNAL(D21,vme0.block.data[20],DATA32);
+SIGNAL(D22,vme0.block.data[21],DATA32);
+SIGNAL(D23,vme0.block.data[22],DATA32);
+SIGNAL(D24,vme0.block.data[23],DATA32);
+SIGNAL(D25,vme0.block.data[24],DATA32);
+SIGNAL(D26,vme0.block.data[25],DATA32);
+SIGNAL(D27,vme0.block.data[26],DATA32);
+SIGNAL(D28,vme0.block.data[27],DATA32);
+SIGNAL(D29,vme0.block.data[28],DATA32);
+SIGNAL(D30,vme0.block.data[29],DATA32);
+SIGNAL(D31,vme0.block.data[30],DATA32);
+SIGNAL(D32,vme0.block.data[31],DATA32);
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/
+
+/**********************************************************
+ * Generating unpacking code...
+ */
+
+//
+// Generating code for: VME_FZR
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for VME_FZR.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_FZR()
+#if !PACKER_CODE
+# define DECLARED_UNPACK_VME_FZR
+class VME_FZR
+#else//PACKER_CODE
+# define DECLARED_PACKER_VME_FZR
+class PACKER_VME_FZR
+#endif//PACKER_CODE
+
+{
+public:
+  // MEMBER(DATA32 data[32]);
+  raw_array<DATA32,DATA32,32> data;
+  // list(0<=index<32)
+
+    // UINT32 ch_data NOENCODE
+    // {
+      //  0_31: value;
+      // ENCODE(data[index],(value=value));
+    // }
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(VME_FZR);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for VME_FZR.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_FZR()
+template<typename __data_src_t>
+void VME_FZR::__unpack(__data_src_t &__buffer)
+{
+  // MEMBER(DATA32 data[32]);
+  // list(0<=index<32)
+
+  for (uint32 index = 0; index < (uint32) (32); ++index)
+  {
+    // UINT32 ch_data NOENCODE
+    // {
+      //  0_31: value;
+      // ENCODE(data[index],(value=value));
+    // }
+    union
+    {
+      struct
+      {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+        uint32 value : 32; // 0..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+        uint32 value : 32; // 0..31
+#endif
+      };
+      uint32  u32;
+    } ch_data;
+    READ_FROM_BUFFER_FULL(17,uint32 ,ch_data,ch_data.u32);
+    {
+      typedef __typeof__(*(&(data))) __array_t;
+      typedef typename __array_t::item_t __item_t;
+      __item_t &__item = data.insert_index(16,index);
+      __item.value = ch_data.value;
+    }
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,VME_FZR::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for VME_FZR.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_FZR()
+template<typename __data_src_t>
+bool VME_FZR::__match(__data_src_t &__buffer)
+{
+  // MEMBER(DATA32 data[32]);
+  // list(0<=index<32)
+
+  for (uint32 index = 0; index < (uint32) (32); ++index)
+  {
+    // UINT32 ch_data NOENCODE
+    // {
+      //  0_31: value;
+      // ENCODE(data[index],(value=value));
+    // }
+    union
+    {
+      struct
+      {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+        uint32 value : 32; // 0..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+        uint32 value : 32; // 0..31
+#endif
+      };
+      uint32  u32;
+    } ch_data;
+    READ_FROM_BUFFER_FULL(17,uint32 ,ch_data,ch_data.u32);
+    return true;
+    return false;
+  }
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN(bool,VME_FZR::__match);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for VME_FZR.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_FZR()
+template<typename __data_dest_t>
+void PACKER_VME_FZR::__packer(__data_dest_t &__buffer)
+{
+  // MEMBER(DATA32 data[32]);
+  // list(0<=index<32)
+
+  {
+    // UINT32 ch_data NOENCODE
+    // {
+      //  0_31: value;
+      // ENCODE(data[index],(value=value));
+    // }
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,VME_FZR::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: CRATE
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(CRATE)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_CRATE
+class CRATE
+#else//PACKER_CODE
+# define DECLARED_PACKER_CRATE
+class PACKER_CRATE
+#endif//PACKER_CODE
+ : public unpack_subevent_base
+{
+public:
+  // block = VME_FZR();
+  SINGLE(VME_FZR,block);
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(CRATE);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(CRATE)
+template<typename __data_src_t>
+void CRATE::__unpack(__data_src_t &__buffer)
+{
+  // block = VME_FZR();
+  UNPACK_DECL(23,VME_FZR,block);
+}
+FORCE_IMPL_DATA_SRC_FCN(void,CRATE::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(CRATE)
+// No __match function for subevents.
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(CRATE)
+template<typename __data_dest_t>
+void PACKER_CRATE::__packer(__data_dest_t &__buffer)
+{
+  // block = VME_FZR();
+  PACK_DECL(23,VME_FZR,block);
+}
+FORCE_IMPL_DATA_SRC_FCN(void,CRATE::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for EVENT
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+class unpack_event : public unpack_event_base
+{
+public:
+  // vme0 = CRATE(type=10,subtype=1);
+SINGLE(CRATE,vme0);
+public:
+#ifndef __PSDC__
+  bitsone<1> __visited;
+  void __clear_visited() { __visited.clear(); }
+  bool ignore_unknown_subevent() { return false; }
+#endif//!__PSDC__
+
+public:
+#ifndef __PSDC__
+template<typename __data_src_t>
+  int __unpack_subevent(subevent_header *__header,__data_src_t &__buffer);
+  int __revoke_subevent(subevent_header *__header);
+  // void __clean_event();
+
+  STRUCT_FCNS_DECL(unpack_event);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+template<typename __data_src_t>
+int unpack_event::__unpack_subevent(subevent_header *__header,__data_src_t &__buffer)
+  // vme0 = CRATE(type=10,subtype=1);
+{
+  int __match_no = 0;
+  MATCH_SUBEVENT_DECL(32,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)),vme0);
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+    case 1:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(32,CRATE,vme0,0);
+      UNPACK_SUBEVENT_DECL(32,0,CRATE,vme0);
+      break;
+  }
+  return 0;
+}
+FORCE_IMPL_DATA_SRC_FCN_HDR(int,unpack_event::__unpack_subevent);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+  // vme0 = CRATE(type=10,subtype=1);
+{
+}
+
+/** END_PACKER ********************************************************/
+
+
+/** BEGIN_REVOKE *******************************************************
+ *
+ * Event revoker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+int unpack_event::__revoke_subevent(subevent_header *__header)
+  // vme0 = CRATE(type=10,subtype=1);
+{
+  int __match_no = 0;
+  MATCH_SUBEVENT_DECL(32,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)),vme0);
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+    case 1:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(32,CRATE,vme0,0);
+      REVOKE_SUBEVENT_DECL(32,0,CRATE,vme0);
+      break;
+  }
+  return 0;
+}
+
+/** END_REVOKE ********************************************************/
+
+
+/** BEGIN_SUBEVENT_NAMES ***********************************************
+ *
+ * Mappings of names for [incl|excl] name lookup.
+ *
+ * Do not edit - automatically generated.
+ */
+
+{ "vme0", "type=10:subtype=1" },
+
+/** END_SUBEVENT_NAMES ************************************************/
+
+//
+// Generating code for EVENT
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+class unpack_sticky_event : public unpack_sticky_event_base
+{
+public:
+public:
+#ifndef __PSDC__
+  void __clear_visited() { }
+  bool ignore_unknown_subevent() { return false; }
+#endif//!__PSDC__
+
+public:
+#ifndef __PSDC__
+template<typename __data_src_t>
+  int __unpack_subevent(subevent_header *__header,__data_src_t &__buffer);
+  int __revoke_subevent(subevent_header *__header);
+  // void __clean_event();
+
+  STRUCT_FCNS_DECL(unpack_sticky_event);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+template<typename __data_src_t>
+int unpack_sticky_event::__unpack_subevent(subevent_header *__header,__data_src_t &__buffer)
+{
+  int __match_no = 0;
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+  }
+  return 0;
+}
+FORCE_IMPL_DATA_SRC_FCN_HDR(int,unpack_sticky_event::__unpack_subevent);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+{
+}
+
+/** END_PACKER ********************************************************/
+
+
+/** BEGIN_REVOKE *******************************************************
+ *
+ * Event revoker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+int unpack_sticky_event::__revoke_subevent(subevent_header *__header)
+{
+  int __match_no = 0;
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+  }
+  return 0;
+}
+
+/** END_REVOKE ********************************************************/
+
+
+/** BEGIN_SUBEVENT_NAMES ***********************************************
+ *
+ * Mappings of names for [incl|excl] name lookup.
+ *
+ * Do not edit - automatically generated.
+ */
+
+
+/** END_SUBEVENT_NAMES ************************************************/
+
+
+/** BEGIN_UNPACKER_DEFINES *********************************************
+ *
+ * Control
+ *
+ * Do not edit - automatically generated.
+ */
+
+#define STICKY_EVENT_IS_NONTRIVIAL  0
+
+
+/** END_UNPACKER_DEFINES **********************************************/
+
+/**********************************************************/
+/**********************************************************
+ * Generating event structure...
+ */
+
+
+/** BEGIN_EVENT_RAW_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+class raw_event : public raw_event_base
+{
+public:
+//DUMPY: 32 0
+  DATA32 D[32];
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_event);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_RAW_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_CAL_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+class cal_event : public cal_event_base
+{
+public:
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(cal_event);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_CAL_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_RAW_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+class raw_sticky : public raw_sticky_base
+{
+public:
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_sticky);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_RAW_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_DATA_MAPPING *******************************************
+ *
+ * Event data mapping.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// The order in this file does not matter.
+// This information parsed once and not treated eventwise,
+// it is used to initialize a structure.
+
+SIGNAL_MAPPING(DATA32,D01,vme0.block.data[0],D[0]);
+SIGNAL_MAPPING(DATA32,D02,vme0.block.data[1],D[1]);
+SIGNAL_MAPPING(DATA32,D03,vme0.block.data[2],D[2]);
+SIGNAL_MAPPING(DATA32,D04,vme0.block.data[3],D[3]);
+SIGNAL_MAPPING(DATA32,D05,vme0.block.data[4],D[4]);
+SIGNAL_MAPPING(DATA32,D06,vme0.block.data[5],D[5]);
+SIGNAL_MAPPING(DATA32,D07,vme0.block.data[6],D[6]);
+SIGNAL_MAPPING(DATA32,D08,vme0.block.data[7],D[7]);
+SIGNAL_MAPPING(DATA32,D09,vme0.block.data[8],D[8]);
+SIGNAL_MAPPING(DATA32,D10,vme0.block.data[9],D[9]);
+SIGNAL_MAPPING(DATA32,D11,vme0.block.data[10],D[10]);
+SIGNAL_MAPPING(DATA32,D12,vme0.block.data[11],D[11]);
+SIGNAL_MAPPING(DATA32,D13,vme0.block.data[12],D[12]);
+SIGNAL_MAPPING(DATA32,D14,vme0.block.data[13],D[13]);
+SIGNAL_MAPPING(DATA32,D15,vme0.block.data[14],D[14]);
+SIGNAL_MAPPING(DATA32,D16,vme0.block.data[15],D[15]);
+SIGNAL_MAPPING(DATA32,D17,vme0.block.data[16],D[16]);
+SIGNAL_MAPPING(DATA32,D18,vme0.block.data[17],D[17]);
+SIGNAL_MAPPING(DATA32,D19,vme0.block.data[18],D[18]);
+SIGNAL_MAPPING(DATA32,D20,vme0.block.data[19],D[19]);
+SIGNAL_MAPPING(DATA32,D21,vme0.block.data[20],D[20]);
+SIGNAL_MAPPING(DATA32,D22,vme0.block.data[21],D[21]);
+SIGNAL_MAPPING(DATA32,D23,vme0.block.data[22],D[22]);
+SIGNAL_MAPPING(DATA32,D24,vme0.block.data[23],D[23]);
+SIGNAL_MAPPING(DATA32,D25,vme0.block.data[24],D[24]);
+SIGNAL_MAPPING(DATA32,D26,vme0.block.data[25],D[25]);
+SIGNAL_MAPPING(DATA32,D27,vme0.block.data[26],D[26]);
+SIGNAL_MAPPING(DATA32,D28,vme0.block.data[27],D[27]);
+SIGNAL_MAPPING(DATA32,D29,vme0.block.data[28],D[28]);
+SIGNAL_MAPPING(DATA32,D30,vme0.block.data[29],D[29]);
+SIGNAL_MAPPING(DATA32,D31,vme0.block.data[30],D[30]);
+SIGNAL_MAPPING(DATA32,D32,vme0.block.data[31],D[31]);
+
+/** END_EVENT_DATA_MAPPING ********************************************/
+
+
+/** BEGIN_EVENT_DATA_MAPPING *******************************************
+ *
+ * Event data mapping.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// The order in this file does not matter.
+// This information parsed once and not treated eventwise,
+// it is used to initialize a structure.
+
+
+/** END_EVENT_DATA_MAPPING ********************************************/
+
+/**********************************************************/
+
+/** BEGIN_LOCATIONS ****************************************************
+ *
+ * File and line locations from the parsed specification files.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// It's left to the compiler to only store one copy of each
+// unique string.
+
+location spec_locations[] =
+{ 
+  { 2, 1, "gen_rpc2009/reparse.uce" },
+  { 3, 1, "<built-in>" },
+  { 4, 1, "<command-line>" },
+  { 5, 1, "/usr/include/stdc-predef.h" },
+  { 6, 1, "<command-line>" },
+  { 7, 1, "gen_rpc2009/reparse.uce" },
+  { 8, 12, "gen_rpc2009/reparse.uce" },
+  { 35, 47, "gen_rpc2009/reparse.uce" },
+};
+
+/** END_LOCATIONS *****************************************************/
+

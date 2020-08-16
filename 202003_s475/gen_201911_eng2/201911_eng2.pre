@@ -1,0 +1,1935 @@
+# 1 "201911_eng2.spec"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "201911_eng2.spec"
+
+
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/spec.spec" 1
+# 23 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/spec.spec"
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/camac_lecroy_4434.spec" 1
+# 23 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/camac_lecroy_4434.spec"
+CAMAC_LECROY_4434(channels)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS);
+
+  list(0<=index<channels)
+    {
+      UINT32 ch_data NOENCODE
+ {
+   0_23: value;
+   24_31: 0;
+
+   ENCODE(data[index],(value=value));
+ }
+    }
+}
+# 24 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/spec.spec" 2
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/camac_silena_4418.spec" 1
+# 28 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/camac_silena_4418.spec"
+CAMAC_SILENA_4418(channels,mark_channel_no)
+{
+  MEMBER(DATA12_OVERFLOW data[8] ZERO_SUPPRESS);
+
+  list(0<=index<channels)
+    {
+      if (mark_channel_no) {
+ UINT16 ch_data NOENCODE
+   {
+     0_11: value;
+     12_14: channel = CHECK(index);
+     15: overflow;
+
+     ENCODE(data[index],(value=value,overflow=overflow));
+   }
+      } else {
+ UINT16 ch_data NOENCODE
+   {
+     0_11: value;
+     15: overflow;
+
+     ENCODE(data[index],(value=value,overflow=overflow));
+   }
+      }
+    }
+}
+# 25 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/spec.spec" 2
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/camac_phillips_7164.spec" 1
+# 26 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/camac_phillips_7164.spec"
+CAMAC_PHILLIPS_7164(channels,mark_channel_no)
+{
+  MEMBER(DATA12 data[16] ZERO_SUPPRESS);
+
+  list(0<=index<channels)
+    {
+      if (mark_channel_no) {
+ UINT16 ch_data NOENCODE
+   {
+     0_11: value;
+     12_15: channel = CHECK(index);
+
+     ENCODE(data[index],(value=value));
+   }
+      } else {
+ UINT16 ch_data NOENCODE
+   {
+     0_11: value;
+
+     ENCODE(data[index],(value=value));
+   }
+      }
+    }
+}
+# 26 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/spec.spec" 2
+
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/fastbus.spec" 1
+# 23 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/fastbus.spec"
+FASTBUS_LECROY_1875(geom,channels)
+{
+  MEMBER(DATA12_RANGE data[64] ZERO_SUPPRESS);
+
+  UINT32 ch_data NOENCODE
+    {
+      0_11: value;
+
+      16_21: channel = RANGE(0,channels-1);
+
+      23: range;
+      24_26: n = 0;
+      27_31: geom = MATCH(geom);
+
+      ENCODE(data[channel],(value=value,range=range));
+    }
+}
+
+FASTBUS_LECROY_1885(geom,channels)
+{
+  MEMBER(DATA12_RANGE data[96] ZERO_SUPPRESS);
+
+  UINT32 ch_data NOENCODE
+    {
+      0_11: value;
+
+      16_22: channel = RANGE(0,channels-1);
+      23: range;
+      24_26: n = 0;
+      27_31: geom = MATCH(geom);
+
+      ENCODE(data[channel],(value=value,range=range));
+    }
+}
+# 28 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/spec.spec" 2
+
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v775.spec" 1
+# 26 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v775.spec"
+VME_CAEN_V775(geom,
+       crate)
+{
+  MEMBER(DATA12_OVERFLOW data[32] ZERO_SUPPRESS);
+
+  UINT32 header NOENCODE
+    {
+
+      8_13: count;
+      16_23: crate = MATCH(crate);
+      24_26: 0b010;
+      27_31: geom = MATCH(geom);
+    }
+
+  list(0<=index<header.count)
+    {
+      UINT32 ch_data NOENCODE
+ {
+   0_11: value;
+
+   12: overflow;
+   13: underflow;
+   14: valid;
+
+
+
+   16_20: channel;
+
+   24_26: 0b000;
+   27_31: geom = CHECK(geom);
+
+   ENCODE(data[channel],(value=value,overflow=overflow));
+ }
+    }
+
+  UINT32 eob
+    {
+      0_23: event_number;
+      24_26: 0b100;
+      27_31: geom = CHECK(geom);
+
+    }
+}
+# 30 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/spec.spec" 2
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v830.spec" 1
+# 23 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v830.spec"
+VME_CAEN_V830(geom)
+{
+  MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+
+  UINT32 header
+    {
+      0_15: event_number;
+      16_17: ts;
+      18_23: count;
+
+
+
+      26: 1;
+      27_31: geom = MATCH(geom);
+    }
+
+  list(0<=index<header.count)
+    {
+      UINT32 ch_data NOENCODE
+ {
+   0_25: value;
+   26: 0;
+   27_31: channel;
+
+   ENCODE(data[channel],(value=value));
+ }
+    }
+}
+# 31 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/spec.spec" 2
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v1290.spec" 1
+# 27 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v1290.spec"
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v1290.spec" 1
+# 39 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v1290.spec"
+VME_CAEN_V1290_SUBTDC(tdc,event_id,data )
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(tdc_start);
+
+  UINT32 header
+    {
+      0_11: bunch_id;
+      12_23: event_id = CHECK(event_id);
+
+      24_25: tdc = MATCH(tdc);
+      27_31: 0b00001;
+    }
+
+  several UINT32 ch_data NOENCODE
+    {
+
+      0_20: value;
+      21_23: channel_low;
+      24_25: tdc = CHECK(tdc);
+
+
+
+
+
+
+
+      26: trailing;
+
+      27_31: 0b00000;
+
+
+      ENCODE(data[(tdc << 3) | channel_low],
+      (value=value ));
+
+
+
+
+
+    }
+
+  optional UINT32 error_flags
+    {
+      0_14: flags;
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00100;
+    }
+
+  MARK_COUNT(tdc_end);
+
+  UINT32 trailer
+    {
+      0_11: word_count = CHECK_COUNT(tdc_start,tdc_end,4,4);
+      12_23: event_id = CHECK(header.event_id);
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00011;
+    }
+}
+
+VME_CAEN_V1290(geom)
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(v1190_start);
+
+  UINT32 header
+    {
+      0_4: geom = MATCH(geom);
+      5_26: event_number;
+      27_31: 0b01000;
+    }
+
+  select several
+    {
+      tdc[0] = VME_CAEN_V1290_SUBTDC(tdc=0,event_id=(header.event_number&0xfff),data=data);
+      tdc[1] = VME_CAEN_V1290_SUBTDC(tdc=1,event_id=(header.event_number&0xfff),data=data);
+      tdc[2] = VME_CAEN_V1290_SUBTDC(tdc=2,event_id=(header.event_number&0xfff),data=data);
+      tdc[3] = VME_CAEN_V1290_SUBTDC(tdc=3,event_id=(header.event_number&0xfff),data=data);
+    }
+
+  UINT32 trigger
+    {
+      0_26: time_tag;
+      27_31: 0b10001;
+    }
+
+  MARK_COUNT(v1190_end);
+
+  UINT32 trailer
+    {
+      0_4: geom = CHECK(geom);
+      5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+      24: tdc_error;
+      25: buffer_overflow;
+      26: trigger_lost;
+      27_31: 0b10000;
+    }
+}
+
+
+
+
+
+VME_CAEN_V1290_SHORT_SUBTDC(tdc,event_id,data )
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  UINT32 ch_data NOENCODE
+    {
+
+      0_20: value;
+      21_23: channel_low;
+      24_25: tdc = CHECK(tdc);
+
+
+
+
+
+
+
+      26: trailing;
+
+      27_31: 0b00000;
+
+
+      ENCODE(data[(tdc << 3) | channel_low],
+      (value=value ));
+
+
+
+
+
+    }
+}
+
+VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc)
+{
+  UINT32 error_flags
+    {
+      0_14: flags;
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00100;
+    }
+}
+
+VME_CAEN_V1290_SHORT(geom)
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(v1190_start);
+
+  UINT32 header
+    {
+      0_4: geom = MATCH(geom);
+      5_26: event_number;
+      27_31: 0b01000;
+    }
+
+  select several
+    {
+      tdc[0] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=0,event_id=(header.event_number&0xfff),data=data);
+      tdc[1] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=1,event_id=(header.event_number&0xfff),data=data);
+      tdc[2] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=2,event_id=(header.event_number&0xfff),data=data);
+      tdc[3] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=3,event_id=(header.event_number&0xfff),data=data);
+
+      norevisit err[0] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=0);
+      norevisit err[1] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=1);
+      norevisit err[2] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=2);
+      norevisit err[3] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=3);
+    }
+
+  UINT32 trigger
+    {
+      0_26: time_tag;
+      27_31: 0b10001;
+    }
+
+  MARK_COUNT(v1190_end);
+
+  UINT32 trailer
+    {
+      0_4: geom = CHECK(geom);
+      5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+      24: tdc_error;
+      25: buffer_overflow;
+      26: trigger_lost;
+      27_31: 0b10000;
+    }
+}
+# 28 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v1290.spec" 2
+
+
+
+
+
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v1290.spec" 1
+# 39 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v1290.spec"
+VME_CAEN_V1190_SUBTDC(tdc,event_id,data )
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(tdc_start);
+
+  UINT32 header
+    {
+      0_11: bunch_id;
+      12_23: event_id = CHECK(event_id);
+
+      24_25: tdc = MATCH(tdc);
+      27_31: 0b00001;
+    }
+
+  several UINT32 ch_data NOENCODE
+    {
+
+
+
+
+
+
+      0_18: value;
+      19_23: channel_low;
+      24_25: tdc = CHECK(tdc);
+
+
+      26: trailing;
+
+      27_31: 0b00000;
+
+
+
+
+
+
+      ENCODE(data[(tdc << 5) | channel_low],
+      (value=value ));
+
+    }
+
+  optional UINT32 error_flags
+    {
+      0_14: flags;
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00100;
+    }
+
+  MARK_COUNT(tdc_end);
+
+  UINT32 trailer
+    {
+      0_11: word_count = CHECK_COUNT(tdc_start,tdc_end,4,4);
+      12_23: event_id = CHECK(header.event_id);
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00011;
+    }
+}
+
+VME_CAEN_V1190(geom)
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(v1190_start);
+
+  UINT32 header
+    {
+      0_4: geom = MATCH(geom);
+      5_26: event_number;
+      27_31: 0b01000;
+    }
+
+  select several
+    {
+      tdc[0] = VME_CAEN_V1190_SUBTDC(tdc=0,event_id=(header.event_number&0xfff),data=data);
+      tdc[1] = VME_CAEN_V1190_SUBTDC(tdc=1,event_id=(header.event_number&0xfff),data=data);
+      tdc[2] = VME_CAEN_V1190_SUBTDC(tdc=2,event_id=(header.event_number&0xfff),data=data);
+      tdc[3] = VME_CAEN_V1190_SUBTDC(tdc=3,event_id=(header.event_number&0xfff),data=data);
+    }
+
+  UINT32 trigger
+    {
+      0_26: time_tag;
+      27_31: 0b10001;
+    }
+
+  MARK_COUNT(v1190_end);
+
+  UINT32 trailer
+    {
+      0_4: geom = CHECK(geom);
+      5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+      24: tdc_error;
+      25: buffer_overflow;
+      26: trigger_lost;
+      27_31: 0b10000;
+    }
+}
+
+
+
+
+
+VME_CAEN_V1190_SHORT_SUBTDC(tdc,event_id,data )
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  UINT32 ch_data NOENCODE
+    {
+
+
+
+
+
+
+      0_18: value;
+      19_23: channel_low;
+      24_25: tdc = CHECK(tdc);
+
+
+      26: trailing;
+
+      27_31: 0b00000;
+
+
+
+
+
+
+      ENCODE(data[(tdc << 5) | channel_low],
+      (value=value ));
+
+    }
+}
+
+VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc)
+{
+  UINT32 error_flags
+    {
+      0_14: flags;
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00100;
+    }
+}
+
+VME_CAEN_V1190_SHORT(geom)
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(v1190_start);
+
+  UINT32 header
+    {
+      0_4: geom = MATCH(geom);
+      5_26: event_number;
+      27_31: 0b01000;
+    }
+
+  select several
+    {
+      tdc[0] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=0,event_id=(header.event_number&0xfff),data=data);
+      tdc[1] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=1,event_id=(header.event_number&0xfff),data=data);
+      tdc[2] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=2,event_id=(header.event_number&0xfff),data=data);
+      tdc[3] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=3,event_id=(header.event_number&0xfff),data=data);
+
+      norevisit err[0] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=0);
+      norevisit err[1] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=1);
+      norevisit err[2] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=2);
+      norevisit err[3] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=3);
+    }
+
+  UINT32 trigger
+    {
+      0_26: time_tag;
+      27_31: 0b10001;
+    }
+
+  MARK_COUNT(v1190_end);
+
+  UINT32 trailer
+    {
+      0_4: geom = CHECK(geom);
+      5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+      24: tdc_error;
+      25: buffer_overflow;
+      26: trigger_lost;
+      27_31: 0b10000;
+    }
+}
+# 34 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_caen_v1290.spec" 2
+# 32 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/spec.spec" 2
+
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_mesytec_madc32.spec" 1
+# 23 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_mesytec_madc32.spec"
+VME_MESYTEC_MADC32(geom)
+{
+  MEMBER(DATA14_OVERFLOW data[32] ZERO_SUPPRESS);
+
+  MARK_COUNT(start);
+  UINT32 header NOENCODE
+  {
+    0_11: word_number;
+    12_14: adc_resol;
+    15: out_form;
+    16_23: geom = MATCH(geom);
+    24_29: 0b000000;
+    30_31: 0b01;
+  }
+
+  several UINT32 ch_data NOENCODE
+  {
+    0_12: value;
+    14: outofrange;
+    16_20: channel;
+    21_29: 0b000100000;
+    30_31: 0b00;
+
+    ENCODE(data[channel], (value = value, overflow = outofrange));
+  }
+
+
+  optional UINT32 filler NOENCODE
+  {
+    0_31: 0x00000000;
+  }
+
+  UINT32 end_of_event
+  {
+    0_29: counter;
+    30_31: 0b11;
+  }
+
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_number,start,end,-4,4);
+}
+# 34 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/spec.spec" 2
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_mesytec_mdpp16.spec" 1
+# 35 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/vme_mesytec_mdpp16.spec"
+VME_MESYTEC_MDPP16(geom)
+{
+  MEMBER(DATA16_OVERFLOW data[34] ZERO_SUPPRESS_MULTI(100));
+
+  MARK_COUNT(start);
+  UINT32 header NOENCODE
+  {
+    0_9: word_number;
+    10_12: adc_res;
+    13_15: tdc_res;
+    16_23: geom = MATCH(geom);
+    24_29: 0b000000;
+    30_31: 0b01;
+  }
+
+  several UINT32 ch_data NOENCODE
+  {
+    0_15: value;
+    16_21: channel;
+    22: overflow;
+    23: pileup;
+    24_27: 0b0000;
+    28_31: 0b0001;
+
+    ENCODE(data[channel], (value = value, overflow = overflow, pileup = pileup));
+  }
+
+  several UINT32 fill_word NOENCODE
+  {
+    0_31: 0x0;
+  }
+
+  UINT32 end_of_event
+  {
+    0_29: counter;
+    30_31: 0b11;
+  }
+
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_number,start,end,-4,4);
+}
+# 35 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/spec/spec.spec" 2
+# 4 "201911_eng2.spec" 2
+# 1 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/dets/sst/sst_ext.spec" 1
+# 24 "/u/land/fake_cvmfs/upexps/202003_s475/../../ucesb/dets/sst/sst_ext.spec"
+external EXT_SST(sam,gtb,siderem,branch);
+# 5 "201911_eng2.spec" 2
+# 1 "../land_common/barrier.spec" 1
+BARRIER()
+{
+ UINT32 barrier {
+  0_31: 0xbabababa;
+ }
+}
+# 6 "201911_eng2.spec" 2
+# 1 "../land_common/gsi_clocktdc.spec" 1
+GSI_CLOCKTDC_BAD00BAD()
+{
+ UINT32 bad00bad NOENCODE {
+  0_31: bad00bad = MATCH(0xbad00bad);
+ }
+}
+
+GSI_CLOCKTDC_FUSER(a_sfp0_num, a_sfp1_num, a_sfp2_num, a_sfp3_num, ch_per_ctdc)
+{
+ UINT32 slave_num {
+    0_7: sfp0_num = MATCH(a_sfp0_num);
+   8_15: sfp1_num = MATCH(a_sfp1_num);
+  16_23: sfp2_num = MATCH(a_sfp2_num);
+  24_31: sfp3_num = MATCH(a_sfp3_num);
+ }
+ UINT32 trig_window;
+ UINT32 channel_num {
+  0_31: num = MATCH(ch_per_ctdc);
+ }
+}
+
+GSI_CLOCKTDC_PADDING()
+{
+ UINT32 padding NOENCODE {
+   0_19: whatever;
+  20_31: 0xadd;
+ }
+}
+
+GSI_CLOCKTDC_ITEM(sfp, tdc)
+{
+ MEMBER(DATA32 event_counter_lo32);
+ MEMBER(DATA32 event_counter_hi16);
+ MEMBER(DATA32 trigger_coarse_lo22);
+ MEMBER(DATA32 trigger_coarse_hi24);
+
+
+
+
+
+
+ MEMBER(DATA12 time_coarse[258] ZERO_SUPPRESS_MULTI(80));
+ MEMBER(DATA12 time_fine[258] ZERO_SUPPRESS_MULTI(80));
+
+ UINT32 header {
+    0_7: _0x34 = MATCH(0x34);
+   8_11: trigger_type;
+  12_15: sfp_id = MATCH(sfp);
+  16_23: tdc_id = MATCH(tdc);
+  24_31: channel_id;
+ }
+
+ MATCH_END;
+
+ UINT32 channel_num;
+ UINT32 event_counter_lo_ NOENCODE {
+  0_31: value;
+  ENCODE(event_counter_lo32, (value = value));
+ }
+ UINT32 event_counter_hi_ NOENCODE {
+  0_15: value;
+  ENCODE(event_counter_hi16, (value = value));
+ }
+ UINT32 trigger_coarse_lo_ NOENCODE {
+    0_9: ignore;
+  10_31: value;
+  ENCODE(trigger_coarse_lo22, (value = value));
+ }
+ UINT32 trigger_coarse_hi_ NOENCODE {
+   0_23: value;
+  24_31: ignore;
+  ENCODE(trigger_coarse_hi24, (value = value));
+ }
+ UINT32 channel_header {
+    0_7: _0x34 = MATCH(0x34);
+   8_11: trigger_type;
+  12_15: sfp_id = MATCH(sfp);
+  16_23: tdc_id = MATCH(tdc);
+  24_31: channel_id = RANGE(0, 128);
+ }
+ UINT32 data_byte_num;
+ list (0 <= i < data_byte_num / 4) {
+  UINT32 data {
+     0_3: time_fine;
+    4_15: time_coarse;
+      16: time_coarse_ext;
+      17: edge;
+
+      18: ws;
+
+      19: time_coarse_overflow;
+
+      20: rb_overflow;
+
+   21_23: status;
+
+
+   24_31: channel;
+
+   ENCODE(time_coarse[
+       (((128 > channel) || (128 == channel && 0 ==
+        edge)) && (4 == status)) *
+       (channel * 2 + edge) +
+       !(((128 > channel) || (128 == channel && 0 ==
+          edge)) && (4 == status)) *
+       257], (value = time_coarse));
+   ENCODE(time_fine[
+       (((128 > channel) || (128 == channel && 0 ==
+        edge)) && (4 == status)) *
+       (channel * 2 + edge) +
+       !(((128 > channel) || (128 == channel && 0 ==
+          edge)) && (4 == status)) *
+       257], (value = time_fine));
+  }
+ }
+}
+
+GSI_CLOCKTDC_16PH_ITEM(sfp, tdc)
+{
+ MEMBER(DATA32 event_counter_lo32);
+ MEMBER(DATA32 event_counter_hi16);
+ MEMBER(DATA32 trigger_coarse_lo22);
+ MEMBER(DATA32 trigger_coarse_hi24);
+
+
+
+
+
+
+ MEMBER(DATA12 time_coarse[258] ZERO_SUPPRESS_MULTI(80));
+ MEMBER(DATA12 time_fine[258] ZERO_SUPPRESS_MULTI(80));
+
+ UINT32 header {
+    0_7: _0x34 = MATCH(0x34);
+   8_11: trigger_type;
+  12_15: sfp_id = MATCH(sfp);
+  16_23: tdc_id = MATCH(tdc);
+  24_31: channel_id;
+ }
+
+ MATCH_END;
+
+ UINT32 channel_num;
+ UINT32 event_counter_lo_ NOENCODE {
+  0_31: value;
+  ENCODE(event_counter_lo32, (value = value));
+ }
+ UINT32 event_counter_hi_ NOENCODE {
+  0_15: value;
+  ENCODE(event_counter_hi16, (value = value));
+ }
+ UINT32 trigger_coarse_lo_ NOENCODE {
+    0_9: ignore;
+  10_31: value;
+  ENCODE(trigger_coarse_lo22, (value = value));
+ }
+ UINT32 trigger_coarse_hi_ NOENCODE {
+   0_23: value;
+  24_31: ignore;
+  ENCODE(trigger_coarse_hi24, (value = value));
+ }
+ UINT32 channel_header {
+    0_7: _0x34 = MATCH(0x34);
+   8_11: trigger_type;
+  12_15: sfp_id = MATCH(sfp);
+  16_23: tdc_id = MATCH(tdc);
+  24_31: channel_id = RANGE(0, 128);
+ }
+ UINT32 data_byte_num;
+ list (0 <= i < data_byte_num / 4) {
+  UINT32 data {
+     0_4: time_fine;
+    5_16: time_coarse;
+      17: time_coarse_ext;
+      18: edge;
+
+      19: ws;
+
+      20: time_coarse_overflow;
+
+      21: rb_overflow;
+
+      22: dummy;
+
+      23: is_data;
+
+
+   24_31: channel;
+
+   ENCODE(time_coarse[
+       (((128 > channel) || (128 == channel && 0 ==
+        edge)) && is_data) *
+       (channel * 2 + edge) +
+       !(((128 > channel) || (128 == channel && 0 ==
+          edge)) && is_data) *
+       257], (value = time_coarse));
+   ENCODE(time_fine[
+       (((128 > channel) || (128 == channel && 0 ==
+        edge)) && is_data) *
+       (channel * 2 + edge) +
+       !(((128 > channel) || (128 == channel && 0 ==
+          edge)) && is_data) *
+       257], (value = time_fine));
+  }
+ }
+}
+# 7 "201911_eng2.spec" 2
+# 1 "../land_common/gsi_tamex3.spec" 1
+TAMEX3_WINDOW()
+{
+ UINT32 trigger_window {
+   0_15: post_trig_ns;
+  16_31: pre_trig_ns;
+ }
+}
+
+TAMEX3_PADDING()
+{
+ UINT32 padding NOENCODE {
+   0_11: counter;
+  12_19: index;
+  20_31: 0xadd;
+ }
+}
+
+TAMEX3_SFP(sfp, card)
+{
+# 28 "../land_common/gsi_tamex3.spec"
+ MEMBER(DATA12 time_coarse[34] ZERO_SUPPRESS_MULTI(256));
+ MEMBER(DATA12 time_fine[34] ZERO_SUPPRESS_MULTI(256));
+
+ UINT32 indicator NOENCODE {
+    0_7: 0x34;
+   8_11: trigger_type;
+  12_15: sfp = MATCH(sfp);
+  16_23: card = MATCH(card);
+  24_31: 0;
+ }
+
+ MATCH_END;
+
+ UINT32 data_size NOENCODE {
+
+  0_31: bytes;
+ }
+
+ UINT32 tdc_header NOENCODE {
+   0_15: lec;
+     16: buf_no;
+  17_19: reserved;
+  20_23: trigger_type;
+  24_31: 0xaa;
+ }
+
+ list (0 <= i < data_size.bytes / 4 - 3) {
+  UINT32 data NOENCODE {
+    0_10: coarse;
+      11: is_leading;
+
+   12_21: fine;
+   22_28: channel_index;
+   29_31: type;
+
+   ENCODE(time_coarse[
+       (0x4 == type) * channel_index +
+       (0x4 != type) * 33
+       ], (value = coarse));
+   ENCODE(time_fine[
+       (0x4 == type) * channel_index +
+       (0x4 != type) * 33
+       ], (value = fine));
+  }
+ }
+
+ UINT32 error_bits NOENCODE {
+   0_23: bits;
+  24_31: 0xee;
+ }
+
+ UINT32 trailer NOENCODE {
+   0_23: unused;
+  24_31: 0xbb;
+ }
+}
+# 8 "201911_eng2.spec" 2
+# 1 "../land_common/gsi_tamex3_flexheader.spec" 1
+TAMEX3_FH_DATA()
+{
+# 11 "../land_common/gsi_tamex3_flexheader.spec"
+ MEMBER(DATA12 time_coarse[34] ZERO_SUPPRESS_MULTI(256));
+ MEMBER(DATA12 time_fine[34] ZERO_SUPPRESS_MULTI(256));
+
+ UINT32 data_size NOENCODE {
+
+  0_31: bytes;
+ }
+
+ UINT32 tdc_header NOENCODE {
+   0_15: lec;
+     16: buf_no;
+  17_19: reserved;
+  20_23: trigger_type;
+  24_31: 0xaa;
+ }
+
+ list (0 <= i < data_size.bytes / 4 - 3) {
+  UINT32 data NOENCODE {
+    0_10: coarse;
+      11: is_leading;
+
+   12_21: fine;
+   22_28: channel_index;
+   29_31: type;
+
+   ENCODE(time_coarse[
+       (0x4 == type) * channel_index +
+       (0x4 != type) * 33
+       ], (value = coarse));
+   ENCODE(time_fine[
+       (0x4 == type) * channel_index +
+       (0x4 != type) * 33
+       ], (value = fine));
+  }
+ }
+
+ UINT32 error_bits NOENCODE {
+   0_23: bits;
+  24_31: 0xee;
+ }
+
+ UINT32 trailer NOENCODE {
+   0_23: unused;
+  24_31: 0xbb;
+ }
+}
+
+TAMEX3_FH_SFP(sfp, card)
+{
+ UINT32 indicator NOENCODE {
+    0_7: 0x34;
+   8_11: trigger_type;
+  12_15: sfp = MATCH(sfp);
+  16_23: card = MATCH(card);
+  24_31: 0;
+ }
+
+ select optional {
+  data = TAMEX3_FH_DATA();
+ }
+}
+# 9 "201911_eng2.spec" 2
+# 1 "../land_common/gsi_febex_v2.spec" 1
+FEBEX_EVENTHEADER()
+{
+ select {
+  good = FEBEX_GOOD_EVENTHEADER();
+  bad = FEBEX_BAD_EVENTHEADER();
+ }
+}
+
+FEBEX_BAD_EVENTHEADER()
+{
+ UINT32 badbad {
+  0_31: 0xbad00bad;
+ }
+}
+
+FEBEX_GOOD_EVENTHEADER()
+{
+ UINT32 febexcards {
+  0_7: n_febex_sfp0 = RANGE(0, 64);
+  8_15: n_febex_sfp1 = RANGE(0, 64);
+  16_23: n_febex_sfp2 = RANGE(0, 64);
+  24_31: n_febex_sfp3 = RANGE(0, 64);
+ }
+ UINT32 trig_length {
+  0_15: trace_length;
+  16_31: trigger_delay;
+ }
+ UINT32 energy_filter {
+  0_10: sum_b;
+  11_20: gap;
+  21_31: sum_a;
+ }
+ UINT32 polarity1 {
+  0_31: pola;
+ }
+ UINT32 polarity2 {
+  0_31: pola;
+ }
+ UINT32 polarity3 {
+  0_31: pola;
+ }
+ UINT32 polarity4 {
+  0_31: pola;
+ }
+}
+
+FEBEX_PADDING()
+{
+ UINT32 pads_data NOENCODE {
+  0_11: counter;
+  12_19: index;
+  20_31: 0xadd;
+ }
+}
+
+FEBEX_NOTRACE(sfp, card)
+{
+ MEMBER(DATA8 n_hit[16]);
+ MEMBER(DATA12 t[16] ZERO_SUPPRESS_MULTI(32));
+ MEMBER(DATA32 e[16] ZERO_SUPPRESS_MULTI(32));
+
+ UINT32 indicator NOENCODE {
+  0_7: 0x34;
+  8_11: trigger_type;
+  12_15: sfp = MATCH(sfp);
+  16_23: card = MATCH(card);
+  24_31: 0xff;
+ }
+
+ UINT32 data_size NOENCODE {
+  0_31: size;
+ }
+
+ UINT32 head NOENCODE {
+  0_23: unused;
+  24_31: 0xaf;
+ }
+
+ UINT32 triggertime NOENCODE {
+  0_31: trigger_time;
+ }
+
+ UINT32 time NOENCODE {
+  0_31: time;
+ }
+
+ list (0 <= i < ((data_size.size - 16) >> 3)) {
+  UINT32 time NOENCODE {
+           0_10: time;
+   11_14: unused1;
+   15: sign;
+   16_19: unused2;
+   20_23: multi_hit;
+   24_27: n_hit;
+   28_31: channel_id;
+   ENCODE(t[channel_id], (value = (sign * -time + (sign - 1) * -time) & 0xfff) );
+   ENCODE(n_hit[channel_id], (value = n_hit));
+  }
+
+  UINT32 energy NOENCODE {
+   0_21: energy;
+   22: unused1;
+   23: sign;
+   24_27: unused2;
+   28_31: channel_id;
+   ENCODE(e[channel_id], (value = sign * -energy + (sign - 1) * -energy ));
+  }
+ }
+
+ UINT32 trailer NOENCODE {
+  0_23: unused;
+  24_31: 0xbf;
+ }
+}
+
+FEBEX_TRACE(sfp, card)
+{
+ MEMBER(DATA32 trace_length[16] ZERO_SUPPRESS);
+ MEMBER(DATA16 trace[16][1000] ZERO_SUPPRESS);
+        MEMBER(DATA32 filter[16][1000] ZERO_SUPPRESS);
+
+ UINT32 header NOENCODE {
+    0_7: 0x34;
+   8_11: trigger_type;
+  12_15: sfp = MATCH(sfp);
+  16_23: card = MATCH(card);
+  24_31: channel_id = RANGE(0, 0xfe);
+ }
+
+ UINT32 trace_size NOENCODE {
+  0_31: size;
+  ENCODE(trace_length[header.channel_id], (value = size / 2 - 4));
+ }
+
+ UINT32 trace_header NOENCODE {
+   0_17: notused1;
+     18: filter_mode;
+     19: filter_onoff;
+  20_22: notused2;
+     23: adc_type;
+  24_31: 0xaa;
+ }
+
+ if (trace_header.filter_onoff == 0) {
+  list (0 <= i < (trace_size.size / 4) - 2) {
+   UINT32 channel_trace NOENCODE {
+     0_13: data1;
+    14_15: nik_knows;
+    16_29: data2;
+    30_31: nik_knows2;
+
+    ENCODE(trace[header.channel_id][2*i+0], (value = data1));
+    ENCODE(trace[header.channel_id][2*i+1], (value = data2));
+   }
+  }
+ } else {
+  list (0 <= i < (trace_size.size / 8) - 1) {
+   UINT32 channel_trace NOENCODE {
+     0_13: data1;
+    14_31: nik_knows;
+
+    ENCODE(trace[header.channel_id][i], (value = data1));
+   }
+   UINT32 channel_filter NOENCODE {
+     0_22: data1;
+       23: sign;
+    24_31: nik_knows2;
+
+    ENCODE(filter[header.channel_id][i], (value = data1*(1-2*sign)));
+   }
+  }
+ }
+
+ UINT32 trace_trailer NOENCODE {
+   0_23: notused;
+  24_31: 0xbb;
+ }
+}
+# 10 "201911_eng2.spec" 2
+# 1 "../land_common/land_vme.spec" 1
+
+
+LAND_STD_VME()
+{
+
+  UINT32 failure
+    {
+      0: fail_general;
+      1: fail_data_corrupt;
+      2: fail_data_missing;
+      3: fail_data_too_much;
+      4: fail_event_counter_mismatch;
+      5: fail_readout_error_driver;
+      6: fail_unexpected_trigger;
+      7: fail_firmware_mismatch;
+
+      22: has_multi_trlo_ii_counter0;
+      23: has_clock_counter_stamp;
+      24: has_continous_event_counter;
+      25: has_update_qdc_iped_value;
+      26: spurious_start_before_tcal;
+      27: has_no_zero_suppression;
+      28: has_multi_adctdc_counter0;
+      29: has_multi_scaler_counter0;
+      30: has_multi_event;
+      31: has_time_stamp;
+    }
+
+  if (failure.has_continous_event_counter) {
+    UINT32 continous_event_counter;
+  }
+
+  if (failure.has_time_stamp) {
+    UINT32 time_stamp;
+  }
+
+  if (failure.has_clock_counter_stamp) {
+    UINT32 clock_counter_stamp;
+  }
+
+  if (failure.has_update_qdc_iped_value) {
+    UINT32 iped;
+  }
+
+  if (failure.has_multi_event) {
+    UINT32 multi_events;
+  }
+
+  if (failure.has_multi_trlo_ii_counter0) {
+    UINT32 multi_trlo_ii_counter0;
+  }
+
+  if (failure.has_multi_scaler_counter0) {
+    UINT32 multi_scaler_counter0;
+  }
+
+  if (failure.has_multi_adctdc_counter0) {
+    UINT32 multi_adctdc_counter0;
+  }
+}
+# 11 "201911_eng2.spec" 2
+# 1 "../land_common/trloii.spec" 1
+TRLOII_LMU_SCALERS(id)
+{
+ MEMBER(DATA32 before_lmu[63] ZERO_SUPPRESS);
+ MEMBER(DATA32 before_lmu_mux[31] ZERO_SUPPRESS);
+ MEMBER(DATA32 before_lmu_aux[31] ZERO_SUPPRESS);
+ MEMBER(DATA32 before_dt[127] ZERO_SUPPRESS);
+ MEMBER(DATA32 after_dt[127] ZERO_SUPPRESS);
+ MEMBER(DATA32 after_reduction[127] ZERO_SUPPRESS);
+
+ UINT32 header {
+  0_5: before_lmu;
+  6_10: before_lmu_mux;
+  11_15: before_lmu_aux;
+  16_23: after_lmu;
+  24_31: id = MATCH(id);
+ }
+
+ list(0 <= i < header.before_lmu) {
+  UINT32 scaler NOENCODE {
+   0_31: value;
+   ENCODE(before_lmu[i], (value=value));
+  }
+ }
+ list(0 <= i < header.before_lmu_mux) {
+  UINT32 scaler NOENCODE {
+   0_31: value;
+   ENCODE(before_lmu_mux[i], (value=value));
+  }
+ }
+ list(0 <= i < header.before_lmu_aux) {
+  UINT32 scaler NOENCODE {
+   0_31: value;
+   ENCODE(before_lmu_aux[i], (value=value));
+  }
+ }
+# 57 "../land_common/trloii.spec"
+ list(0 <= i < header.after_lmu) {
+  UINT32 scaler_bdt NOENCODE {
+   0_31: value;
+   ENCODE(before_dt[i], (value=value));
+  }
+  UINT32 scaler_adt NOENCODE {
+   0_31: value;
+   ENCODE(after_dt[i], (value=value));
+  }
+  UINT32 scaler_ard NOENCODE {
+   0_31: value;
+   ENCODE(after_reduction[i], (value = value));
+  }
+ }
+
+}
+
+TRLOII_SAMPLER(mark)
+{
+ MEMBER(DATA32 sampler[512] ZERO_SUPPRESS);
+
+ UINT32 header {
+  0_9: word_num;
+  10: overflow;
+  16_31: mark = MATCH(mark);
+ }
+
+ list(0 <= index < header.word_num) {
+  UINT32 time_lo NOENCODE {
+   0_29: time;
+   30: dunno;
+   31: overflow;
+   ENCODE(sampler[index], (value = time));
+  }
+ }
+}
+
+TRLOII_SAMPLER_TWO(mark)
+{
+ MEMBER(DATA32 sampler_hi[512] ZERO_SUPPRESS);
+ MEMBER(DATA32 sampler_lo[512] ZERO_SUPPRESS);
+
+ UINT32 header {
+  0_9: word_num;
+  10: overflow;
+  16_31: mark = MATCH(mark);
+ }
+
+ list(0 <= index < (header.word_num) / 2) {
+  UINT32 time_lo NOENCODE {
+   0_29: time;
+   30: dunno;
+   31: overflow;
+   ENCODE(sampler_lo[index], (value = time));
+  }
+  UINT32 time_hi NOENCODE {
+   0_29: time;
+   30: dunno;
+   31: overflow;
+   ENCODE(sampler_hi[index], (value = time));
+  }
+ }
+
+ if ((header.word_num % 2) == 1) {
+  UINT32 last_word NOENCODE;
+ }
+
+}
+
+TRLOII_TPAT(id)
+{
+ MEMBER(DATA32 n);
+ MEMBER(DATA16 tpat[170] NO_INDEX_LIST);
+ MEMBER(DATA8 trig[170] NO_INDEX_LIST);
+ MEMBER(DATA32 ts_lo[170] NO_INDEX_LIST);
+ MEMBER(DATA32 ts_hi[170] NO_INDEX_LIST);
+
+ UINT32 header NOENCODE {
+  0_11: uint32_num;
+  12_23: event_num;
+  24_31: id = MATCH(id);
+  ENCODE(n, (value=uint32_num / 3));
+ }
+
+ list(0 <= index < header.uint32_num / 3) {
+  UINT32 time_lo NOENCODE {
+   0_31: t;
+   ENCODE(ts_lo APPEND_LIST, (value=t));
+  }
+  UINT32 time_hi NOENCODE {
+   0_30: t;
+   31: overflow;
+   ENCODE(ts_hi APPEND_LIST, (value=t));
+  }
+  UINT32 trigger NOENCODE {
+    0_15: tpat;
+   16_23: dunno;
+   24_27: encoded;
+   28_31: lec;
+   ENCODE(tpat APPEND_LIST, (value=tpat));
+   ENCODE(trig APPEND_LIST, (value=encoded));
+  }
+ }
+}
+# 12 "201911_eng2.spec" 2
+# 1 "../land_common/vme_gsi_vftx2.spec" 1
+VME_GSI_VFTX2(id)
+{
+ MEMBER(DATA12 time_fine[32] ZERO_SUPPRESS_MULTI(100));
+ MEMBER(DATA16 time_coarse[32] ZERO_SUPPRESS_MULTI(100));
+ MEMBER(DATA16 time_trigger);
+
+ UINT32 custom_header {
+  0_4: id = MATCH(id);
+  5_8: internal_status;
+  9_17: count;
+  24_31: 0xab;
+ }
+
+ if (0 < custom_header.count) {
+  UINT32 event_header {
+   0_7: 0xaa;
+   11_23: trigger_timestamp;
+   29_30: 0b01;
+   31: 0b1;
+
+   ENCODE(time_trigger, (value = trigger_timestamp));
+  }
+ }
+
+ list(1 <= index < custom_header.count) {
+  UINT32 event NOENCODE {
+   0_10: time_fine;
+   11_23: time_coarse;
+   24: future;
+
+   25_29: channel;
+
+   ENCODE(time_fine[channel], (value = time_fine));
+   ENCODE(time_coarse[channel], (value = time_coarse));
+  }
+ }
+}
+
+VME_GSI_VFTX2_LT(id)
+{
+ MEMBER(DATA12 time_fine[64] ZERO_SUPPRESS_MULTI(100));
+ MEMBER(DATA16 time_coarse[64] ZERO_SUPPRESS_MULTI(100));
+ MEMBER(DATA16 time_trigger);
+
+ UINT32 custom_header {
+  0_4: id = MATCH(id);
+  5_8: internal_status;
+  9_17: count;
+  24_31: 0xab;
+ }
+
+ if (0 < custom_header.count) {
+  UINT32 event_header {
+   0_7: 0xaa;
+   11_23: trigger_timestamp;
+   29_30: 0b01;
+   31: 0b1;
+
+   ENCODE(time_trigger, (value = trigger_timestamp));
+  }
+ }
+
+ list(1 <= index < custom_header.count) {
+  UINT32 event NOENCODE {
+   0_10: time_fine;
+   11_23: time_coarse;
+   24: future;
+   25_30: channel;
+
+   ENCODE(time_fine[channel], (value = time_fine));
+   ENCODE(time_coarse[channel], (value = time_coarse));
+  }
+ }
+}
+
+VME_GSI_VFTX2_7PS(id)
+{
+ MEMBER(DATA12 time_fine[32] ZERO_SUPPRESS_MULTI(100));
+ MEMBER(DATA16 time_coarse[32] ZERO_SUPPRESS_MULTI(100));
+ MEMBER(DATA16 time_trigger);
+
+ UINT32 custom_header {
+  0_4: id = MATCH(id);
+  5_8: internal_status;
+  9_17: count;
+  24_31: 0xab;
+ }
+
+ if (0 < custom_header.count) {
+  UINT32 event_header NOENCODE {
+   0_7: 0xaa;
+   11_23: trigger_timestamp;
+   29_30: 0b01;
+   31: 0b1;
+
+   ENCODE(time_trigger, (value = trigger_timestamp));
+  }
+ }
+
+ list(1 <= index < custom_header.count) {
+  UINT32 event NOENCODE {
+   0_10: time_fine;
+   11_23: time_coarse;
+   24: future;
+   25_29: channel;
+
+   ENCODE(time_fine[channel], (value = time_fine));
+   ENCODE(time_coarse[channel], (value = time_coarse));
+  }
+ }
+}
+# 13 "201911_eng2.spec" 2
+# 1 "../land_common/whiterabbit.spec" 1
+TIMESTAMP_WHITERABBIT(id)
+{
+ MEMBER(DATA12 subsystem_id);
+ MEMBER(DATA16 t1);
+ MEMBER(DATA16 t2);
+ MEMBER(DATA16 t3);
+ MEMBER(DATA16 t4);
+
+ UINT32 header NOENCODE {
+  0_11: id = MATCH(id);
+  12_15: 0;
+     16: error_bit;
+  17_31: 0;
+  ENCODE(subsystem_id, (value=id));
+ };
+ UINT32 d1 NOENCODE {
+  0_15: t1;
+  16_31: 0x03e1;
+  ENCODE(t1, (value=t1));
+ };
+ UINT32 d2 NOENCODE {
+  0_15: t2;
+  16_31: 0x04e1;
+  ENCODE(t2, (value=t2));
+ };
+ UINT32 d3 NOENCODE {
+  0_15: t3;
+  16_31: 0x05e1;
+  ENCODE(t3, (value=t3));
+ };
+ UINT32 d4 NOENCODE {
+  0_15: t4;
+  16_31: 0x06e1;
+  ENCODE(t4, (value=t4));
+ };
+}
+
+WR_MULTI()
+{
+ MEMBER(DATA32 time_hi);
+ MEMBER(DATA32 time_lo);
+
+ UINT32 hi NOENCODE {
+  0_31: time;
+  ENCODE(time_hi, (value = time));
+ }
+ UINT32 lo NOENCODE {
+  0_31: time;
+  ENCODE(time_lo, (value = time));
+ }
+}
+# 14 "201911_eng2.spec" 2
+
+
+# 1 "spec/frs_vme_caen_v830.spec" 1
+
+
+
+VME_CAEN_V830_FRS(geom)
+{
+  MEMBER(DATA32 data[32]);
+
+  UINT32 header NOENCODE
+    {
+       0_15: trigger_number;
+      16_17: 0;
+      18_23: count;
+      24_25: reserved;
+         26: 1;
+      27_31: geom = MATCH(geom);
+    }
+
+    list(0<=index<header.count)
+    {
+   UINT32 ch_data NOENCODE
+        {
+          0_31: value;
+          ENCODE(data[index],(value=value));
+ }
+     }
+}
+# 17 "201911_eng2.spec" 2
+# 1 "spec/frs_vme_caen_v775.spec" 1
+
+
+
+
+
+VME_CAEN_V775_FRS(geom)
+{
+
+  MEMBER(DATA12 data[32] ZERO_SUPPRESS);
+
+  UINT32 header NOENCODE
+    {
+
+        8_13: count;
+       14_15: 0;
+       16_23: crate;
+       24_26: 0b010;
+       27_31: geom = MATCH(geom);
+    }
+
+    list(0<=index<header.count)
+    {
+      UINT32 ch_data NOENCODE
+ {
+   0_11: value;
+
+          12: overflow;
+          13: underflow;
+          14: valid;
+
+
+
+          16_20: channel;
+
+          24_26: 0b000;
+          27_31: geom = MATCH(geom);
+
+
+          ENCODE(data[channel],(value=value));
+ }
+    }
+
+
+
+
+  UINT32 eob
+    {
+
+
+
+
+
+      0_23: event_number;
+      24_26: 0b100;
+      27_31: geom = MATCH(geom);
+
+
+      }
+}
+# 18 "201911_eng2.spec" 2
+
+GSI_SAM_PADDING()
+{
+ UINT32 padding NOENCODE {
+  0_31: 0xadadadad;
+ }
+}
+
+
+SUBEVENT(ams_siderem_subev)
+{
+
+
+        select several {
+         padd = GSI_SAM_PADDING();
+  external sst[0] = EXT_SST(siderem=1, gtb=0, sam=4, branch=0);
+  external sst[1] = EXT_SST(siderem=2, gtb=0, sam=4, branch=0);
+  external sst[2] = EXT_SST(siderem=1, gtb=1, sam=4, branch=0);
+ }
+}
+
+
+SUBEVENT(frs_tpcs2_subev)
+{
+  land_vme = LAND_STD_VME();
+  select several
+    {
+      tdc0 = VME_CAEN_V775_FRS(geom=8);
+      adc0 = VME_CAEN_V775_FRS(geom=12);
+    }
+}
+
+SUBEVENT(frs_tpcs4_subev)
+{
+  land_vme = LAND_STD_VME();
+  select several
+    {
+      tdc0 = VME_CAEN_V775_FRS(geom=0);
+      adc0 = VME_CAEN_V775_FRS(geom=1);
+    }
+}
+
+SUBEVENT(frs_subev)
+{
+  land_vme = LAND_STD_VME();
+  select several {
+      scaler_0 = VME_CAEN_V830_FRS(geom=0);
+      tdc0 = VME_CAEN_V775_FRS(geom=8);
+      tdc1 = VME_CAEN_V775_FRS(geom=9);
+      adc0 = VME_CAEN_V775_FRS(geom=3);
+      adc1 = VME_CAEN_V775_FRS(geom=12);
+    }
+}
+
+SUBEVENT(frs_master_subev)
+{
+  land_vme = LAND_STD_VME();
+  barrier = BARRIER();
+  select several {
+      tdc0 = VME_CAEN_V1290(geom=1);
+  }
+  barrier = BARRIER();
+  select several {
+      scaler0 = VME_CAEN_V830_FRS(geom=8);
+      qdc0 = VME_CAEN_V775_FRS(geom=11);
+  }
+
+}
+
+EVENT
+{
+        frsmaster = frs_master_subev(type=12,subtype=1,procid=10);
+        frs = frs_subev(type=12,subtype=1,procid=30);
+        tpc_s2 = frs_tpcs2_subev(type=12,subtype=1,procid=25);
+        tpc_s4 = frs_tpcs4_subev(type=12,subtype=1,procid=20);
+
+ ams_siderem = ams_siderem_subev(procid=100, type=12, subtype=1, control=20);
+
+ ignore_unknown_subevent;
+}
+
+# 1 "mapping.hh" 1
+
+# 1 "mapping_tpc.hh" 1
+
+
+
+
+
+
+
+SIGNAL(TPC_1_DT_1, tpc_s2.tdc0.data[0],DATA12);
+SIGNAL(TPC_1_DT_2, tpc_s2.tdc0.data[1],DATA12);
+SIGNAL(TPC_1_DT_3, tpc_s2.tdc0.data[2],DATA12);
+SIGNAL(TPC_1_DT_4, tpc_s2.tdc0.data[3],DATA12);
+SIGNAL(TPC_1_LT_1, tpc_s2.tdc0.data[4],DATA12);
+SIGNAL(TPC_1_RT_1, tpc_s2.tdc0.data[5],DATA12);
+SIGNAL(TPC_1_LT_2, tpc_s2.tdc0.data[6],DATA12);
+SIGNAL(TPC_1_RT_2, tpc_s2.tdc0.data[7],DATA12);
+
+SIGNAL(TPC_2_DT_1, tpc_s2.tdc0.data[8],DATA12);
+SIGNAL(TPC_2_DT_2, tpc_s2.tdc0.data[9],DATA12);
+SIGNAL(TPC_2_DT_3, tpc_s2.tdc0.data[10],DATA12);
+SIGNAL(TPC_2_DT_4, tpc_s2.tdc0.data[11],DATA12);
+SIGNAL(TPC_2_LT_1, tpc_s2.tdc0.data[12],DATA12);
+SIGNAL(TPC_2_RT_1, tpc_s2.tdc0.data[13],DATA12);
+SIGNAL(TPC_2_LT_2, tpc_s2.tdc0.data[14],DATA12);
+SIGNAL(TPC_2_RT_2, tpc_s2.tdc0.data[15],DATA12);
+
+SIGNAL(TPC_3_DT_1, tpc_s2.tdc0.data[16],DATA12);
+SIGNAL(TPC_3_DT_2, tpc_s2.tdc0.data[17],DATA12);
+SIGNAL(TPC_3_DT_3, tpc_s2.tdc0.data[18],DATA12);
+SIGNAL(TPC_3_DT_4, tpc_s2.tdc0.data[19],DATA12);
+SIGNAL(TPC_3_LT_1, tpc_s2.tdc0.data[20],DATA12);
+SIGNAL(TPC_3_RT_1, tpc_s2.tdc0.data[21],DATA12);
+SIGNAL(TPC_3_LT_2, tpc_s2.tdc0.data[22],DATA12);
+SIGNAL(TPC_3_RT_2, tpc_s2.tdc0.data[23],DATA12);
+
+SIGNAL(TPC_4_DT_1, tpc_s2.tdc0.data[24],DATA12);
+SIGNAL(TPC_4_DT_2, tpc_s2.tdc0.data[25],DATA12);
+SIGNAL(TPC_4_DT_3, tpc_s2.tdc0.data[26],DATA12);
+SIGNAL(TPC_4_DT_4, tpc_s2.tdc0.data[27],DATA12);
+SIGNAL(TPC_4_LT_1, tpc_s2.tdc0.data[28],DATA12);
+SIGNAL(TPC_4_RT_1, tpc_s2.tdc0.data[29],DATA12);
+SIGNAL(TPC_4_LT_2, tpc_s2.tdc0.data[30],DATA12);
+SIGNAL(TPC_4_RT_2, tpc_s2.tdc0.data[31],DATA12);
+
+SIGNAL(TPC_5_DT_1, tpc_s4.tdc0.data[0],DATA12);
+SIGNAL(TPC_5_DT_2, tpc_s4.tdc0.data[1],DATA12);
+SIGNAL(TPC_5_DT_3, tpc_s4.tdc0.data[2],DATA12);
+SIGNAL(TPC_5_DT_4, tpc_s4.tdc0.data[3],DATA12);
+SIGNAL(TPC_5_LT_1, tpc_s4.tdc0.data[4],DATA12);
+SIGNAL(TPC_5_RT_1, tpc_s4.tdc0.data[5],DATA12);
+SIGNAL(TPC_5_LT_2, tpc_s4.tdc0.data[6],DATA12);
+SIGNAL(TPC_5_RT_2, tpc_s4.tdc0.data[7],DATA12);
+
+SIGNAL(TPC_6_DT_1, tpc_s4.tdc0.data[8],DATA12);
+SIGNAL(TPC_6_DT_2, tpc_s4.tdc0.data[9],DATA12);
+SIGNAL(TPC_6_DT_3, tpc_s4.tdc0.data[10],DATA12);
+SIGNAL(TPC_6_DT_4, tpc_s4.tdc0.data[11],DATA12);
+SIGNAL(TPC_6_LT_1, tpc_s4.tdc0.data[12],DATA12);
+SIGNAL(TPC_6_RT_1, tpc_s4.tdc0.data[13],DATA12);
+SIGNAL(TPC_6_LT_2, tpc_s4.tdc0.data[14],DATA12);
+SIGNAL(TPC_6_RT_2, tpc_s4.tdc0.data[15],DATA12);
+
+
+SIGNAL(TPC_1_A_1, tpc_s2.adc0.data[0],DATA12);
+SIGNAL(TPC_1_A_2, tpc_s2.adc0.data[1],DATA12);
+SIGNAL(TPC_1_A_3, tpc_s2.adc0.data[2],DATA12);
+SIGNAL(TPC_1_A_4, tpc_s2.adc0.data[3],DATA12);
+SIGNAL(TPC_1_AL_1, tpc_s2.adc0.data[4],DATA12);
+SIGNAL(TPC_1_AR_1, tpc_s2.adc0.data[5],DATA12);
+SIGNAL(TPC_1_AL_2, tpc_s2.adc0.data[6],DATA12);
+SIGNAL(TPC_1_AR_2, tpc_s2.adc0.data[7],DATA12);
+
+SIGNAL(TPC_2_A_1, tpc_s2.adc0.data[8],DATA12);
+SIGNAL(TPC_2_A_2, tpc_s2.adc0.data[9],DATA12);
+SIGNAL(TPC_2_A_3, tpc_s2.adc0.data[10],DATA12);
+SIGNAL(TPC_2_A_4, tpc_s2.adc0.data[11],DATA12);
+SIGNAL(TPC_2_AL_1, tpc_s2.adc0.data[12],DATA12);
+SIGNAL(TPC_2_AR_1, tpc_s2.adc0.data[13],DATA12);
+SIGNAL(TPC_2_AL_2, tpc_s2.adc0.data[14],DATA12);
+SIGNAL(TPC_2_AR_2, tpc_s2.adc0.data[15],DATA12);
+
+SIGNAL(TPC_3_A_1, tpc_s2.adc0.data[16],DATA12);
+SIGNAL(TPC_3_A_2, tpc_s2.adc0.data[17],DATA12);
+SIGNAL(TPC_3_A_3, tpc_s2.adc0.data[18],DATA12);
+SIGNAL(TPC_3_A_4, tpc_s2.adc0.data[19],DATA12);
+SIGNAL(TPC_3_AL_1, tpc_s2.adc0.data[20],DATA12);
+SIGNAL(TPC_3_AR_1, tpc_s2.adc0.data[21],DATA12);
+SIGNAL(TPC_3_AL_2, tpc_s2.adc0.data[22],DATA12);
+SIGNAL(TPC_3_AR_2, tpc_s2.adc0.data[23],DATA12);
+
+SIGNAL(TPC_4_A_1, tpc_s2.adc0.data[24],DATA12);
+SIGNAL(TPC_4_A_2, tpc_s2.adc0.data[25],DATA12);
+SIGNAL(TPC_4_A_3, tpc_s2.adc0.data[26],DATA12);
+SIGNAL(TPC_4_A_4, tpc_s2.adc0.data[27],DATA12);
+SIGNAL(TPC_4_AL_1, tpc_s2.adc0.data[28],DATA12);
+SIGNAL(TPC_4_AR_1, tpc_s2.adc0.data[29],DATA12);
+SIGNAL(TPC_4_AL_2, tpc_s2.adc0.data[30],DATA12);
+SIGNAL(TPC_4_AR_2, tpc_s2.adc0.data[31],DATA12);
+
+SIGNAL(TPC_5_A_1, tpc_s4.adc0.data[0],DATA12);
+SIGNAL(TPC_5_A_2, tpc_s4.adc0.data[1],DATA12);
+SIGNAL(TPC_5_A_3, tpc_s4.adc0.data[2],DATA12);
+SIGNAL(TPC_5_A_4, tpc_s4.adc0.data[3],DATA12);
+SIGNAL(TPC_5_AL_1, tpc_s4.adc0.data[4],DATA12);
+SIGNAL(TPC_5_AR_1, tpc_s4.adc0.data[5],DATA12);
+SIGNAL(TPC_5_AL_2, tpc_s4.adc0.data[6],DATA12);
+SIGNAL(TPC_5_AR_2, tpc_s4.adc0.data[7],DATA12);
+
+SIGNAL(TPC_6_A_1, tpc_s4.adc0.data[8],DATA12);
+SIGNAL(TPC_6_A_2, tpc_s4.adc0.data[9],DATA12);
+SIGNAL(TPC_6_A_3, tpc_s4.adc0.data[10],DATA12);
+SIGNAL(TPC_6_A_4, tpc_s4.adc0.data[11],DATA12);
+SIGNAL(TPC_6_AL_1, tpc_s4.adc0.data[12],DATA12);
+SIGNAL(TPC_6_AR_1, tpc_s4.adc0.data[13],DATA12);
+SIGNAL(TPC_6_AL_2, tpc_s4.adc0.data[14],DATA12);
+SIGNAL(TPC_6_AR_2, tpc_s4.adc0.data[15],DATA12);
+# 3 "mapping.hh" 2
+# 1 "mapping_music.hh" 1
+
+
+
+SIGNAL(MUS_1_A_1, frs.adc0.data[0],DATA12);
+SIGNAL(MUS_1_A_2, frs.adc0.data[1],DATA12);
+SIGNAL(MUS_1_A_3, frs.adc0.data[2],DATA12);
+SIGNAL(MUS_1_A_4, frs.adc0.data[3],DATA12);
+SIGNAL(MUS_1_A_5, frs.adc0.data[4],DATA12);
+SIGNAL(MUS_1_A_6, frs.adc0.data[5],DATA12);
+SIGNAL(MUS_1_A_7, frs.adc0.data[6],DATA12);
+SIGNAL(MUS_1_A_8, frs.adc0.data[7],DATA12);
+
+
+SIGNAL(MUS_3_A_1, frs.adc0.data[8],DATA12);
+SIGNAL(MUS_3_A_2, frs.adc0.data[9],DATA12);
+SIGNAL(MUS_3_A_3, frs.adc0.data[10],DATA12);
+SIGNAL(MUS_3_A_4, frs.adc0.data[11],DATA12);
+SIGNAL(MUS_3_A_5, frs.adc0.data[12],DATA12);
+SIGNAL(MUS_3_A_6, frs.adc0.data[13],DATA12);
+SIGNAL(MUS_3_A_7, frs.adc0.data[14],DATA12);
+SIGNAL(MUS_3_A_8, frs.adc0.data[15],DATA12);
+# 4 "mapping.hh" 2
+# 1 "mapping_sst.hh" 1
+SIGNAL(SST1_1024_E, , DATA12);
+SIGNAL(SST2_1024_E, , DATA12);
+SIGNAL(SST3_1024_E, , DATA12);
+SIGNAL(ZERO_SUPPRESS: SST1_1024);
+SIGNAL(ZERO_SUPPRESS: SST2_1024);
+SIGNAL(ZERO_SUPPRESS: SST3_1024);
+# 5 "mapping.hh" 2
+# 99 "201911_eng2.spec" 2

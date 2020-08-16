@@ -1,0 +1,2511 @@
+
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+EMPTY_32BIT_WORD_V775_FRS(geom)
+{
+  MEMBER(DATA32 data[32]);
+  UINT32 header NOENCODE
+  {
+     0_23: 0;
+    24_26: 6;
+    27_31: geom = MATCH(geom);
+  }
+}
+
+EMPTY_32BIT_WORD_V830_FRS(geom)
+{
+  MEMBER(DATA32 data[32]);
+  UINT32 header NOENCODE
+  {
+     0_26: 0x06000000;
+    27_31: geom = MATCH(geom);
+  }
+}
+
+VME_CAEN_V259_FRS(geom)
+{
+  MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  UINT32 header NOENCODE
+  {
+     0_05: count;
+    24_26: 2;
+    27_31: geom = MATCH(geom);
+  }
+  list(0<=index<2)
+  {
+    UINT32 ch_data_pattern NOENCODE
+    {
+       0_26: value;
+      27_31: geom = MATCH(geom);
+      ENCODE(data[index],(value=value));
+    }
+  }
+  UINT32 eob
+  {
+    24_26: 4;
+    27_31: geom = MATCH(geom);
+  }
+}
+
+VME_CAEN_V775_FRS(geom)
+{
+  MEMBER(DATA12_OVERFLOW data[32] ZERO_SUPPRESS);
+  UINT32 header NOENCODE
+  {
+     0_05: count;
+    16_23: crate;
+    24_26: 2;
+    27_31: geom = MATCH(geom);
+  }
+  list(0<=index<header.count)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_11: value;
+         12: overflow;
+         13: underflow;
+         14: valid;
+      16_20: channel;
+      24_26: 0;
+      27_31: geom = MATCH(geom);
+      ENCODE(data[channel],(value=value,overflow=overflow));
+    }
+  }
+  UINT32 eob
+  {
+     0_23: event_number;
+    24_26: 4;
+    27_31: geom = MATCH(geom);
+  }
+}
+
+VME_CAEN_V830_FRS(geom)
+{
+  MEMBER(DATA32 data[32]);
+  UINT32 header NOENCODE
+  {
+     0_04: count;
+     5_26: 0x00100000;
+    27_31: geom = MATCH(geom);
+  }
+  list(0<=index<header.count)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_31: value;
+      ENCODE(data[index],(value=value));
+    }
+  }
+  UINT32 eob
+  {
+     0_26: 0x04000000;
+    27_31: geom = MATCH(geom);
+  }
+}
+
+SUBEVENT(FRS_CRATE)
+{
+  select several
+  {
+    scaler0 = VME_CAEN_V830_FRS(geom=6);
+    pattern = VME_CAEN_V259_FRS(geom=5);
+    tdc0 = VME_CAEN_V775_FRS(geom=8);
+    tdc1 = VME_CAEN_V775_FRS(geom=9);
+    qdc0 = VME_CAEN_V775_FRS(geom=11);
+    adc0 = VME_CAEN_V775_FRS(geom=13);
+    dummy0 = EMPTY_32BIT_WORD_V830_FRS(geom=6);
+    dummy1 = EMPTY_32BIT_WORD_V775_FRS(geom=8);
+    dummy2 = EMPTY_32BIT_WORD_V775_FRS(geom=9);
+    dummy3 = EMPTY_32BIT_WORD_V775_FRS(geom=11);
+    dummy4 = EMPTY_32BIT_WORD_V775_FRS(geom=13);
+  }
+}
+
+SUBEVENT(TPC_CRATE)
+{
+  select several
+  {
+    tdc0 = VME_CAEN_V775_FRS(geom=8);
+    tdc1 = VME_CAEN_V775_FRS(geom=9);
+    adc0 = VME_CAEN_V775_FRS(geom=16);
+    adc1 = VME_CAEN_V775_FRS(geom=17);
+    scaler0 = VME_CAEN_V830_FRS(geom=5);
+    dummy0 = EMPTY_32BIT_WORD_V830_FRS(geom=5);
+    dummy1 = EMPTY_32BIT_WORD_V775_FRS(geom=8);
+    dummy2 = EMPTY_32BIT_WORD_V775_FRS(geom=9);
+    dummy3 = EMPTY_32BIT_WORD_V775_FRS(geom=16);
+    dummy4 = EMPTY_32BIT_WORD_V775_FRS(geom=17);
+  }
+}
+
+/**********************************************************
+ * The event definition:
+ */
+
+EVENT
+{
+  vme0 = FRS_CRATE(type=10,subtype=1,procid=10);
+  vme1 = TPC_CRATE(type=10,subtype=1,procid=20);
+}
+
+/**********************************************************
+ * The sticky_event definition:
+ */
+
+/**********************************************************
+ * Signal name mappings:
+ */
+
+SIGNAL(MULTIP,vme0.pattern.data[1],DATA32);
+SIGNAL(MW_1_AN,vme0.tdc0.data[1],(DATA12_OVERFLOW,float));
+SIGNAL(MW_1_XL,vme0.tdc0.data[25],(DATA12_OVERFLOW,float));
+SIGNAL(MW_1_XR,vme0.tdc0.data[24],(DATA12_OVERFLOW,float));
+SIGNAL(MW_1_YD,vme0.tdc0.data[27],(DATA12_OVERFLOW,float));
+SIGNAL(MW_1_YU,vme0.tdc0.data[26],(DATA12_OVERFLOW,float));
+SIGNAL(MW_2_AN,vme0.tdc0.data[2],(DATA12_OVERFLOW,float));
+SIGNAL(MW_2_XL,vme0.tdc0.data[29],(DATA12_OVERFLOW,float));
+SIGNAL(MW_2_XR,vme0.tdc0.data[28],(DATA12_OVERFLOW,float));
+SIGNAL(MW_2_YD,vme0.tdc0.data[31],(DATA12_OVERFLOW,float));
+SIGNAL(MW_2_YU,vme0.tdc0.data[30],(DATA12_OVERFLOW,float));
+SIGNAL(PATTERN,vme0.pattern.data[0],DATA32);
+SIGNAL(SCALER_1_1,vme0.scaler0.data[0],DATA32);
+SIGNAL(SCALER_1_10,vme0.scaler0.data[9],DATA32);
+SIGNAL(SCALER_1_11,vme0.scaler0.data[10],DATA32);
+SIGNAL(SCALER_1_12,vme0.scaler0.data[11],DATA32);
+SIGNAL(SCALER_1_13,vme0.scaler0.data[12],DATA32);
+SIGNAL(SCALER_1_14,vme0.scaler0.data[13],DATA32);
+SIGNAL(SCALER_1_15,vme0.scaler0.data[14],DATA32);
+SIGNAL(SCALER_1_16,vme0.scaler0.data[15],DATA32);
+SIGNAL(SCALER_1_17,vme0.scaler0.data[16],DATA32);
+SIGNAL(SCALER_1_18,vme0.scaler0.data[17],DATA32);
+SIGNAL(SCALER_1_2,vme0.scaler0.data[1],DATA32);
+SIGNAL(SCALER_1_3,vme0.scaler0.data[2],DATA32);
+SIGNAL(SCALER_1_4,vme0.scaler0.data[3],DATA32);
+SIGNAL(SCALER_1_5,vme0.scaler0.data[4],DATA32);
+SIGNAL(SCALER_1_6,vme0.scaler0.data[5],DATA32);
+SIGNAL(SCALER_1_7,vme0.scaler0.data[6],DATA32);
+SIGNAL(SCALER_1_8,vme0.scaler0.data[7],DATA32);
+SIGNAL(SCALER_1_9,vme0.scaler0.data[8],DATA32);
+SIGNAL(SCALER_2_1,vme1.scaler0.data[0],DATA32);
+SIGNAL(SCALER_2_2,vme1.scaler0.data[1],DATA32);
+SIGNAL(SCALER_2_3,vme1.scaler0.data[2],DATA32);
+SIGNAL(SCALER_2_4,vme1.scaler0.data[3],DATA32);
+SIGNAL(SCALER_2_5,vme1.scaler0.data[4],DATA32);
+SIGNAL(SCALER_2_6,vme1.scaler0.data[5],DATA32);
+SIGNAL(SCALER_2_7,vme1.scaler0.data[6],DATA32);
+SIGNAL(SCALER_2_8,vme1.scaler0.data[7],DATA32);
+SIGNAL(SC_1_DEL,vme0.qdc0.data[0],(DATA12_OVERFLOW,float));
+SIGNAL(SC_1_DER,vme0.qdc0.data[1],(DATA12_OVERFLOW,float));
+SIGNAL(SC_1_DT,vme0.adc0.data[0],(DATA12_OVERFLOW,float));
+SIGNAL(SC_2_DEL,vme0.qdc0.data[4],(DATA12_OVERFLOW,float));
+SIGNAL(SC_2_DER,vme0.qdc0.data[5],(DATA12_OVERFLOW,float));
+SIGNAL(SC_2_DT,vme0.adc0.data[4],(DATA12_OVERFLOW,float));
+SIGNAL(SC_3_DEL,vme0.qdc0.data[2],(DATA12_OVERFLOW,float));
+SIGNAL(SC_3_DER,vme0.qdc0.data[3],(DATA12_OVERFLOW,float));
+SIGNAL(SC_3_DT,vme0.adc0.data[7],(DATA12_OVERFLOW,float));
+SIGNAL(TOF_L,vme0.adc0.data[5],(DATA12_OVERFLOW,float));
+SIGNAL(TOF_R,vme0.adc0.data[6],(DATA12_OVERFLOW,float));
+SIGNAL(TPC2_AL_1,vme1.adc0.data[28],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_AL_1,vme1.adc0.data[20],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_AL_2,vme1.adc0.data[22],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_AR_1,vme1.adc0.data[21],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_AR_2,vme1.adc0.data[23],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_A_1,vme1.adc0.data[16],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_A_2,vme1.adc0.data[17],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_A_3,vme1.adc0.data[18],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_A_4,vme1.adc0.data[19],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_DT_1,vme1.tdc0.data[16],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_DT_2,vme1.tdc0.data[17],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_DT_3,vme1.tdc0.data[18],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_DT_4,vme1.tdc0.data[19],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_LT_1,vme1.tdc0.data[20],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_LT_2,vme1.tdc0.data[22],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_RT_1,vme1.tdc0.data[21],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_1_RT_2,vme1.tdc0.data[23],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_AL_2,vme1.adc0.data[30],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_AR_1,vme1.adc0.data[29],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_AR_2,vme1.adc0.data[31],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_A_1,vme1.adc0.data[24],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_A_2,vme1.adc0.data[25],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_A_3,vme1.adc0.data[26],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_A_4,vme1.adc0.data[27],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_DT_1,vme1.tdc0.data[24],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_DT_2,vme1.tdc0.data[25],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_DT_3,vme1.tdc0.data[26],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_DT_4,vme1.tdc0.data[27],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_LT_1,vme1.tdc0.data[28],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_LT_2,vme1.tdc0.data[30],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_RT_1,vme1.tdc0.data[29],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_2_RT_2,vme1.tdc0.data[31],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_AL_1,vme1.adc0.data[12],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_AL_2,vme1.adc0.data[14],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_AR_1,vme1.adc0.data[13],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_AR_2,vme1.adc0.data[15],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_A_1,vme1.adc0.data[8],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_A_2,vme1.adc0.data[9],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_A_3,vme1.adc0.data[10],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_A_4,vme1.adc0.data[11],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_DT_1,vme1.tdc0.data[8],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_DT_2,vme1.tdc0.data[9],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_DT_3,vme1.tdc0.data[10],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_DT_4,vme1.tdc0.data[11],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_LT_1,vme1.tdc0.data[12],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_LT_2,vme1.tdc0.data[14],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_RT_1,vme1.tdc0.data[13],(DATA12_OVERFLOW,float));
+SIGNAL(TPC_3_RT_2,vme1.tdc0.data[15],(DATA12_OVERFLOW,float));
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/
+
+/**********************************************************
+ * Generating unpacking code...
+ */
+
+//
+// Generating code for: EMPTY_32BIT_WORD_V775_FRS
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for EMPTY_32BIT_WORD_V775_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EMPTY_32BIT_WORD_V775_FRS(geom)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_EMPTY_32BIT_WORD_V775_FRS
+class EMPTY_32BIT_WORD_V775_FRS
+#else//PACKER_CODE
+# define DECLARED_PACKER_EMPTY_32BIT_WORD_V775_FRS
+class PACKER_EMPTY_32BIT_WORD_V775_FRS
+#endif//PACKER_CODE
+
+{
+public:
+  // MEMBER(DATA32 data[32]);
+  raw_array<DATA32,DATA32,32> data;
+  // UINT32 header NOENCODE
+  // {
+    //  0_23: 0;
+    // 24_26: 6;
+    // 27_31: geom = MATCH(geom);
+  // }
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer,uint32 geom);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer,uint32 geom);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer,uint32 geom);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(EMPTY_32BIT_WORD_V775_FRS);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for EMPTY_32BIT_WORD_V775_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EMPTY_32BIT_WORD_V775_FRS(geom)
+template<typename __data_src_t>
+void EMPTY_32BIT_WORD_V775_FRS::__unpack(__data_src_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32]);
+  // UINT32 header NOENCODE
+  // {
+    //  0_23: 0;
+    // 24_26: 6;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 unnamed_0_23 : 24; // 0..23
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 unnamed_0_23 : 24; // 0..23
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(178,uint32 ,header,header.u32);
+  CHECK_BITS_EQUAL(175,header.unnamed_0_23,0);
+  CHECK_BITS_EQUAL(176,header.unnamed_24_26,6);
+  CHECK_BITS_EQUAL(177,header.geom,geom);
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,EMPTY_32BIT_WORD_V775_FRS::__unpack,uint32 geom);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for EMPTY_32BIT_WORD_V775_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EMPTY_32BIT_WORD_V775_FRS(geom)
+template<typename __data_src_t>
+bool EMPTY_32BIT_WORD_V775_FRS::__match(__data_src_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32]);
+  // UINT32 header NOENCODE
+  // {
+    //  0_23: 0;
+    // 24_26: 6;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 unnamed_0_23 : 24; // 0..23
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 unnamed_0_23 : 24; // 0..23
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(178,uint32 ,header,header.u32);
+  MATCH_BITS_EQUAL(175,header.unnamed_0_23,0);
+  MATCH_BITS_EQUAL(176,header.unnamed_24_26,6);
+  MATCH_BITS_EQUAL(177,header.geom,geom);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(bool,EMPTY_32BIT_WORD_V775_FRS::__match,uint32 geom);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for EMPTY_32BIT_WORD_V775_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EMPTY_32BIT_WORD_V775_FRS(geom)
+template<typename __data_dest_t>
+void PACKER_EMPTY_32BIT_WORD_V775_FRS::__packer(__data_dest_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32]);
+  // UINT32 header NOENCODE
+  // {
+    //  0_23: 0;
+    // 24_26: 6;
+    // 27_31: geom = MATCH(geom);
+  // }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,EMPTY_32BIT_WORD_V775_FRS::__packer,uint32 geom);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: EMPTY_32BIT_WORD_V830_FRS
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for EMPTY_32BIT_WORD_V830_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EMPTY_32BIT_WORD_V830_FRS(geom)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_EMPTY_32BIT_WORD_V830_FRS
+class EMPTY_32BIT_WORD_V830_FRS
+#else//PACKER_CODE
+# define DECLARED_PACKER_EMPTY_32BIT_WORD_V830_FRS
+class PACKER_EMPTY_32BIT_WORD_V830_FRS
+#endif//PACKER_CODE
+
+{
+public:
+  // MEMBER(DATA32 data[32]);
+  raw_array<DATA32,DATA32,32> data;
+  // UINT32 header NOENCODE
+  // {
+    //  0_26: 0x06000000;
+    // 27_31: geom = MATCH(geom);
+  // }
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer,uint32 geom);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer,uint32 geom);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer,uint32 geom);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(EMPTY_32BIT_WORD_V830_FRS);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for EMPTY_32BIT_WORD_V830_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EMPTY_32BIT_WORD_V830_FRS(geom)
+template<typename __data_src_t>
+void EMPTY_32BIT_WORD_V830_FRS::__unpack(__data_src_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32]);
+  // UINT32 header NOENCODE
+  // {
+    //  0_26: 0x06000000;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 unnamed_0_26 : 27; // 0..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_0_26 : 27; // 0..26
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(161,uint32 ,header,header.u32);
+  CHECK_BITS_EQUAL(159,header.unnamed_0_26,0x06000000);
+  CHECK_BITS_EQUAL(160,header.geom,geom);
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,EMPTY_32BIT_WORD_V830_FRS::__unpack,uint32 geom);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for EMPTY_32BIT_WORD_V830_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EMPTY_32BIT_WORD_V830_FRS(geom)
+template<typename __data_src_t>
+bool EMPTY_32BIT_WORD_V830_FRS::__match(__data_src_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32]);
+  // UINT32 header NOENCODE
+  // {
+    //  0_26: 0x06000000;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 unnamed_0_26 : 27; // 0..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_0_26 : 27; // 0..26
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(161,uint32 ,header,header.u32);
+  MATCH_BITS_EQUAL(159,header.unnamed_0_26,0x06000000);
+  MATCH_BITS_EQUAL(160,header.geom,geom);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(bool,EMPTY_32BIT_WORD_V830_FRS::__match,uint32 geom);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for EMPTY_32BIT_WORD_V830_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EMPTY_32BIT_WORD_V830_FRS(geom)
+template<typename __data_dest_t>
+void PACKER_EMPTY_32BIT_WORD_V830_FRS::__packer(__data_dest_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32]);
+  // UINT32 header NOENCODE
+  // {
+    //  0_26: 0x06000000;
+    // 27_31: geom = MATCH(geom);
+  // }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,EMPTY_32BIT_WORD_V830_FRS::__packer,uint32 geom);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: VME_CAEN_V259_FRS
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for VME_CAEN_V259_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V259_FRS(geom)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_VME_CAEN_V259_FRS
+class VME_CAEN_V259_FRS
+#else//PACKER_CODE
+# define DECLARED_PACKER_VME_CAEN_V259_FRS
+class PACKER_VME_CAEN_V259_FRS
+#endif//PACKER_CODE
+
+{
+public:
+  // MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  raw_array_zero_suppress<DATA32,DATA32,32> data;
+  // UINT32 header NOENCODE
+  // {
+    //  0_05: count;
+    // 24_26: 2;
+    // 27_31: geom = MATCH(geom);
+  // }
+  // list(0<=index<2)
+
+    // UINT32 ch_data_pattern NOENCODE
+    // {
+      //  0_26: value;
+      // 27_31: geom = MATCH(geom);
+      // ENCODE(data[index],(value=value));
+    // }
+  // UINT32 eob
+  // {
+    // 24_26: 4;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 dummy_0_23 : 24;
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 dummy_0_23 : 24;
+#endif
+    };
+    uint32  u32;
+  } eob;
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer,uint32 geom);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer,uint32 geom);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer,uint32 geom);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(VME_CAEN_V259_FRS);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for VME_CAEN_V259_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V259_FRS(geom)
+template<typename __data_src_t>
+void VME_CAEN_V259_FRS::__unpack(__data_src_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  // UINT32 header NOENCODE
+  // {
+    //  0_05: count;
+    // 24_26: 2;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 count : 6; // 0..5
+      uint32 dummy_6_23 : 18;
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 dummy_6_23 : 18;
+      uint32 count : 6; // 0..5
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(23,uint32 ,header,header.u32);
+  CHECK_BITS_EQUAL(20,header.unnamed_24_26,2);
+  CHECK_BITS_EQUAL(21,header.geom,geom);
+  CHECK_UNNAMED_BITS_ZERO(23,header.u32,0x00ffffc0);
+  // list(0<=index<2)
+
+  for (uint32 index = 0; index < (uint32) (2); ++index)
+  {
+    // UINT32 ch_data_pattern NOENCODE
+    // {
+      //  0_26: value;
+      // 27_31: geom = MATCH(geom);
+      // ENCODE(data[index],(value=value));
+    // }
+    union
+    {
+      struct
+      {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+        uint32 value : 27; // 0..26
+        uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+        uint32 geom : 5; // 27..31
+        uint32 value : 27; // 0..26
+#endif
+      };
+      uint32  u32;
+    } ch_data_pattern;
+    READ_FROM_BUFFER_FULL(35,uint32 ,ch_data_pattern,ch_data_pattern.u32);
+    CHECK_BITS_EQUAL(32,ch_data_pattern.geom,geom);
+    {
+      typedef __typeof__(*(&(data))) __array_t;
+      typedef typename __array_t::item_t __item_t;
+      __item_t &__item = data.insert_index(34,index);
+      __item.value = ch_data_pattern.value;
+    }
+  }
+  // UINT32 eob
+  // {
+    // 24_26: 4;
+    // 27_31: geom = MATCH(geom);
+  // }
+  READ_FROM_BUFFER_FULL(48,uint32 ,eob,eob.u32);
+  CHECK_BITS_EQUAL(43,eob.unnamed_24_26,4);
+  CHECK_BITS_EQUAL(44,eob.geom,geom);
+  CHECK_UNNAMED_BITS_ZERO(48,eob.u32,0x00ffffff);
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,VME_CAEN_V259_FRS::__unpack,uint32 geom);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for VME_CAEN_V259_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V259_FRS(geom)
+template<typename __data_src_t>
+bool VME_CAEN_V259_FRS::__match(__data_src_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  // UINT32 header NOENCODE
+  // {
+    //  0_05: count;
+    // 24_26: 2;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 count : 6; // 0..5
+      uint32 dummy_6_23 : 18;
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 dummy_6_23 : 18;
+      uint32 count : 6; // 0..5
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(23,uint32 ,header,header.u32);
+  MATCH_BITS_EQUAL(20,header.unnamed_24_26,2);
+  MATCH_BITS_EQUAL(21,header.geom,geom);
+  MATCH_UNNAMED_BITS_ZERO(23,header.u32,0x00ffffc0);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(bool,VME_CAEN_V259_FRS::__match,uint32 geom);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for VME_CAEN_V259_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V259_FRS(geom)
+template<typename __data_dest_t>
+void PACKER_VME_CAEN_V259_FRS::__packer(__data_dest_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  // UINT32 header NOENCODE
+  // {
+    //  0_05: count;
+    // 24_26: 2;
+    // 27_31: geom = MATCH(geom);
+  // }
+  // list(0<=index<2)
+
+  {
+    // UINT32 ch_data_pattern NOENCODE
+    // {
+      //  0_26: value;
+      // 27_31: geom = MATCH(geom);
+      // ENCODE(data[index],(value=value));
+    // }
+  }
+  // UINT32 eob
+  // {
+    // 24_26: 4;
+    // 27_31: geom = MATCH(geom);
+  // }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,VME_CAEN_V259_FRS::__packer,uint32 geom);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: VME_CAEN_V775_FRS
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for VME_CAEN_V775_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V775_FRS(geom)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_VME_CAEN_V775_FRS
+class VME_CAEN_V775_FRS
+#else//PACKER_CODE
+# define DECLARED_PACKER_VME_CAEN_V775_FRS
+class PACKER_VME_CAEN_V775_FRS
+#endif//PACKER_CODE
+
+{
+public:
+  // MEMBER(DATA12_OVERFLOW data[32] ZERO_SUPPRESS);
+  raw_array_zero_suppress<DATA12_OVERFLOW,DATA12_OVERFLOW,32> data;
+  // UINT32 header NOENCODE
+  // {
+    //  0_05: count;
+    // 16_23: crate;
+    // 24_26: 2;
+    // 27_31: geom = MATCH(geom);
+  // }
+  // list(0<=index<header.count)
+
+    // UINT32 ch_data NOENCODE
+    // {
+      //  0_11: value;
+      //    12: overflow;
+      //    13: underflow;
+      //    14: valid;
+      // 16_20: channel;
+      // 24_26: 0;
+      // 27_31: geom = MATCH(geom);
+      // ENCODE(data[channel],(value=value,overflow=overflow));
+    // }
+  // UINT32 eob
+  // {
+    //  0_23: event_number;
+    // 24_26: 4;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 event_number : 24; // 0..23
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 event_number : 24; // 0..23
+#endif
+    };
+    uint32  u32;
+  } eob;
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer,uint32 geom);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer,uint32 geom);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer,uint32 geom);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(VME_CAEN_V775_FRS);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for VME_CAEN_V775_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V775_FRS(geom)
+template<typename __data_src_t>
+void VME_CAEN_V775_FRS::__unpack(__data_src_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA12_OVERFLOW data[32] ZERO_SUPPRESS);
+  // UINT32 header NOENCODE
+  // {
+    //  0_05: count;
+    // 16_23: crate;
+    // 24_26: 2;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 count : 6; // 0..5
+      uint32 dummy_6_15 : 10;
+      uint32 crate : 8; // 16..23
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 crate : 8; // 16..23
+      uint32 dummy_6_15 : 10;
+      uint32 count : 6; // 0..5
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(105,uint32 ,header,header.u32);
+  CHECK_BITS_EQUAL(101,header.unnamed_24_26,2);
+  CHECK_BITS_EQUAL(102,header.geom,geom);
+  CHECK_UNNAMED_BITS_ZERO(105,header.u32,0x0000ffc0);
+  // list(0<=index<header.count)
+
+  for (uint32 index = 0; index < (uint32) (header.count); ++index)
+  {
+    // UINT32 ch_data NOENCODE
+    // {
+      //  0_11: value;
+      //    12: overflow;
+      //    13: underflow;
+      //    14: valid;
+      // 16_20: channel;
+      // 24_26: 0;
+      // 27_31: geom = MATCH(geom);
+      // ENCODE(data[channel],(value=value,overflow=overflow));
+    // }
+    union
+    {
+      struct
+      {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+        uint32 value : 12; // 0..11
+        uint32 overflow : 1; // 12
+        uint32 underflow : 1; // 13
+        uint32 valid : 1; // 14
+        uint32 dummy_15 : 1;
+        uint32 channel : 5; // 16..20
+        uint32 dummy_21_23 : 3;
+        uint32 unnamed_24_26 : 3; // 24..26
+        uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+        uint32 geom : 5; // 27..31
+        uint32 unnamed_24_26 : 3; // 24..26
+        uint32 dummy_21_23 : 3;
+        uint32 channel : 5; // 16..20
+        uint32 dummy_15 : 1;
+        uint32 valid : 1; // 14
+        uint32 underflow : 1; // 13
+        uint32 overflow : 1; // 12
+        uint32 value : 12; // 0..11
+#endif
+      };
+      uint32  u32;
+    } ch_data;
+    READ_FROM_BUFFER_FULL(125,uint32 ,ch_data,ch_data.u32);
+    CHECK_BITS_EQUAL(121,ch_data.unnamed_24_26,0);
+    CHECK_BITS_EQUAL(122,ch_data.geom,geom);
+    CHECK_UNNAMED_BITS_ZERO(125,ch_data.u32,0x00e08000);
+    {
+      typedef __typeof__(*(&(data))) __array_t;
+      typedef typename __array_t::item_t __item_t;
+      __item_t &__item = data.insert_index(124,ch_data.channel);
+      __item.value = ch_data.value;
+      __item.overflow = ch_data.overflow;
+    }
+  }
+  // UINT32 eob
+  // {
+    //  0_23: event_number;
+    // 24_26: 4;
+    // 27_31: geom = MATCH(geom);
+  // }
+  READ_FROM_BUFFER_FULL(143,uint32 ,eob,eob.u32);
+  CHECK_BITS_EQUAL(139,eob.unnamed_24_26,4);
+  CHECK_BITS_EQUAL(140,eob.geom,geom);
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,VME_CAEN_V775_FRS::__unpack,uint32 geom);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for VME_CAEN_V775_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V775_FRS(geom)
+template<typename __data_src_t>
+bool VME_CAEN_V775_FRS::__match(__data_src_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA12_OVERFLOW data[32] ZERO_SUPPRESS);
+  // UINT32 header NOENCODE
+  // {
+    //  0_05: count;
+    // 16_23: crate;
+    // 24_26: 2;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 count : 6; // 0..5
+      uint32 dummy_6_15 : 10;
+      uint32 crate : 8; // 16..23
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_24_26 : 3; // 24..26
+      uint32 crate : 8; // 16..23
+      uint32 dummy_6_15 : 10;
+      uint32 count : 6; // 0..5
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(105,uint32 ,header,header.u32);
+  MATCH_BITS_EQUAL(101,header.unnamed_24_26,2);
+  MATCH_BITS_EQUAL(102,header.geom,geom);
+  MATCH_UNNAMED_BITS_ZERO(105,header.u32,0x0000ffc0);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(bool,VME_CAEN_V775_FRS::__match,uint32 geom);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for VME_CAEN_V775_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V775_FRS(geom)
+template<typename __data_dest_t>
+void PACKER_VME_CAEN_V775_FRS::__packer(__data_dest_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA12_OVERFLOW data[32] ZERO_SUPPRESS);
+  // UINT32 header NOENCODE
+  // {
+    //  0_05: count;
+    // 16_23: crate;
+    // 24_26: 2;
+    // 27_31: geom = MATCH(geom);
+  // }
+  // list(0<=index<header.count)
+
+  {
+    // UINT32 ch_data NOENCODE
+    // {
+      //  0_11: value;
+      //    12: overflow;
+      //    13: underflow;
+      //    14: valid;
+      // 16_20: channel;
+      // 24_26: 0;
+      // 27_31: geom = MATCH(geom);
+      // ENCODE(data[channel],(value=value,overflow=overflow));
+    // }
+  }
+  // UINT32 eob
+  // {
+    //  0_23: event_number;
+    // 24_26: 4;
+    // 27_31: geom = MATCH(geom);
+  // }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,VME_CAEN_V775_FRS::__packer,uint32 geom);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: VME_CAEN_V830_FRS
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for VME_CAEN_V830_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V830_FRS(geom)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_VME_CAEN_V830_FRS
+class VME_CAEN_V830_FRS
+#else//PACKER_CODE
+# define DECLARED_PACKER_VME_CAEN_V830_FRS
+class PACKER_VME_CAEN_V830_FRS
+#endif//PACKER_CODE
+
+{
+public:
+  // MEMBER(DATA32 data[32]);
+  raw_array<DATA32,DATA32,32> data;
+  // UINT32 header NOENCODE
+  // {
+    //  0_04: count;
+    //  5_26: 0x00100000;
+    // 27_31: geom = MATCH(geom);
+  // }
+  // list(0<=index<header.count)
+
+    // UINT32 ch_data NOENCODE
+    // {
+      //  0_31: value;
+      // ENCODE(data[index],(value=value));
+    // }
+  // UINT32 eob
+  // {
+    //  0_26: 0x04000000;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 unnamed_0_26 : 27; // 0..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_0_26 : 27; // 0..26
+#endif
+    };
+    uint32  u32;
+  } eob;
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer,uint32 geom);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer,uint32 geom);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer,uint32 geom);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(VME_CAEN_V830_FRS);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for VME_CAEN_V830_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V830_FRS(geom)
+template<typename __data_src_t>
+void VME_CAEN_V830_FRS::__unpack(__data_src_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32]);
+  // UINT32 header NOENCODE
+  // {
+    //  0_04: count;
+    //  5_26: 0x00100000;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 count : 5; // 0..4
+      uint32 unnamed_5_26 : 22; // 5..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_5_26 : 22; // 5..26
+      uint32 count : 5; // 0..4
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(65,uint32 ,header,header.u32);
+  CHECK_BITS_EQUAL(63,header.unnamed_5_26,0x00100000);
+  CHECK_BITS_EQUAL(64,header.geom,geom);
+  // list(0<=index<header.count)
+
+  for (uint32 index = 0; index < (uint32) (header.count); ++index)
+  {
+    // UINT32 ch_data NOENCODE
+    // {
+      //  0_31: value;
+      // ENCODE(data[index],(value=value));
+    // }
+    union
+    {
+      struct
+      {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+        uint32 value : 32; // 0..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+        uint32 value : 32; // 0..31
+#endif
+      };
+      uint32  u32;
+    } ch_data;
+    READ_FROM_BUFFER_FULL(73,uint32 ,ch_data,ch_data.u32);
+    {
+      typedef __typeof__(*(&(data))) __array_t;
+      typedef typename __array_t::item_t __item_t;
+      __item_t &__item = data.insert_index(72,index);
+      __item.value = ch_data.value;
+    }
+  }
+  // UINT32 eob
+  // {
+    //  0_26: 0x04000000;
+    // 27_31: geom = MATCH(geom);
+  // }
+  READ_FROM_BUFFER_FULL(80,uint32 ,eob,eob.u32);
+  CHECK_BITS_EQUAL(78,eob.unnamed_0_26,0x04000000);
+  CHECK_BITS_EQUAL(79,eob.geom,geom);
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,VME_CAEN_V830_FRS::__unpack,uint32 geom);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for VME_CAEN_V830_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V830_FRS(geom)
+template<typename __data_src_t>
+bool VME_CAEN_V830_FRS::__match(__data_src_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32]);
+  // UINT32 header NOENCODE
+  // {
+    //  0_04: count;
+    //  5_26: 0x00100000;
+    // 27_31: geom = MATCH(geom);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 count : 5; // 0..4
+      uint32 unnamed_5_26 : 22; // 5..26
+      uint32 geom : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 geom : 5; // 27..31
+      uint32 unnamed_5_26 : 22; // 5..26
+      uint32 count : 5; // 0..4
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(65,uint32 ,header,header.u32);
+  MATCH_BITS_EQUAL(63,header.unnamed_5_26,0x00100000);
+  MATCH_BITS_EQUAL(64,header.geom,geom);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(bool,VME_CAEN_V830_FRS::__match,uint32 geom);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for VME_CAEN_V830_FRS.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// VME_CAEN_V830_FRS(geom)
+template<typename __data_dest_t>
+void PACKER_VME_CAEN_V830_FRS::__packer(__data_dest_t &__buffer,uint32 geom)
+{
+  // MEMBER(DATA32 data[32]);
+  // UINT32 header NOENCODE
+  // {
+    //  0_04: count;
+    //  5_26: 0x00100000;
+    // 27_31: geom = MATCH(geom);
+  // }
+  // list(0<=index<header.count)
+
+  {
+    // UINT32 ch_data NOENCODE
+    // {
+      //  0_31: value;
+      // ENCODE(data[index],(value=value));
+    // }
+  }
+  // UINT32 eob
+  // {
+    //  0_26: 0x04000000;
+    // 27_31: geom = MATCH(geom);
+  // }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,VME_CAEN_V830_FRS::__packer,uint32 geom);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: FRS_CRATE
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for FRS_CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(FRS_CRATE)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_FRS_CRATE
+class FRS_CRATE
+#else//PACKER_CODE
+# define DECLARED_PACKER_FRS_CRATE
+class PACKER_FRS_CRATE
+#endif//PACKER_CODE
+ : public unpack_subevent_base
+{
+public:
+  // select several
+
+    // scaler0 = VME_CAEN_V830_FRS(geom=6);
+    // pattern = VME_CAEN_V259_FRS(geom=5);
+    // tdc0 = VME_CAEN_V775_FRS(geom=8);
+    // tdc1 = VME_CAEN_V775_FRS(geom=9);
+    // qdc0 = VME_CAEN_V775_FRS(geom=11);
+    // adc0 = VME_CAEN_V775_FRS(geom=13);
+    // dummy0 = EMPTY_32BIT_WORD_V830_FRS(geom=6);
+    // dummy1 = EMPTY_32BIT_WORD_V775_FRS(geom=8);
+    // dummy2 = EMPTY_32BIT_WORD_V775_FRS(geom=9);
+    // dummy3 = EMPTY_32BIT_WORD_V775_FRS(geom=11);
+    // dummy4 = EMPTY_32BIT_WORD_V775_FRS(geom=13);
+  SINGLE(VME_CAEN_V830_FRS,scaler0);
+  SINGLE(VME_CAEN_V775_FRS,tdc0);
+  SINGLE(VME_CAEN_V259_FRS,pattern);
+  SINGLE(VME_CAEN_V775_FRS,tdc1);
+  SINGLE(VME_CAEN_V775_FRS,qdc0);
+  SINGLE(VME_CAEN_V775_FRS,adc0);
+  SINGLE(EMPTY_32BIT_WORD_V830_FRS,dummy0);
+  SINGLE(EMPTY_32BIT_WORD_V775_FRS,dummy1);
+  SINGLE(EMPTY_32BIT_WORD_V775_FRS,dummy2);
+  SINGLE(EMPTY_32BIT_WORD_V775_FRS,dummy3);
+  SINGLE(EMPTY_32BIT_WORD_V775_FRS,dummy4);
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(FRS_CRATE);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for FRS_CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(FRS_CRATE)
+template<typename __data_src_t>
+void FRS_CRATE::__unpack(__data_src_t &__buffer)
+{
+  // select several
+
+    // scaler0 = VME_CAEN_V830_FRS(geom=6);
+    // pattern = VME_CAEN_V259_FRS(geom=5);
+    // tdc0 = VME_CAEN_V775_FRS(geom=8);
+    // tdc1 = VME_CAEN_V775_FRS(geom=9);
+    // qdc0 = VME_CAEN_V775_FRS(geom=11);
+    // adc0 = VME_CAEN_V775_FRS(geom=13);
+    // dummy0 = EMPTY_32BIT_WORD_V830_FRS(geom=6);
+    // dummy1 = EMPTY_32BIT_WORD_V775_FRS(geom=8);
+    // dummy2 = EMPTY_32BIT_WORD_V775_FRS(geom=9);
+    // dummy3 = EMPTY_32BIT_WORD_V775_FRS(geom=11);
+    // dummy4 = EMPTY_32BIT_WORD_V775_FRS(geom=13);
+  for ( ; ; )
+  {
+    if (__buffer.empty()) break;
+    int __match_no = 0;
+    // optimized match 1: VME_CAEN_V830_FRS scaler0: (s32) => (0xffffffe0,0x32000000)
+    // optimized match 2: VME_CAEN_V259_FRS pattern: (s32) => (0xffffffc0,0x2a000000)
+    // optimized match 3: VME_CAEN_V775_FRS tdc0: (s32) => (0xff00ffc0,0x42000000)
+    // optimized match 4: VME_CAEN_V775_FRS tdc1: (s32) => (0xff00ffc0,0x4a000000)
+    // optimized match 5: VME_CAEN_V775_FRS qdc0: (s32) => (0xff00ffc0,0x5a000000)
+    // optimized match 6: VME_CAEN_V775_FRS adc0: (s32) => (0xff00ffc0,0x6a000000)
+    // optimized match 7: EMPTY_32BIT_WORD_V830_FRS dummy0: (s32) => (0xffffffff,0x36000000)
+    // optimized match 8: EMPTY_32BIT_WORD_V775_FRS dummy1: (s32) => (0xffffffff,0x46000000)
+    // optimized match 9: EMPTY_32BIT_WORD_V775_FRS dummy2: (s32) => (0xffffffff,0x4e000000)
+    // optimized match 10: EMPTY_32BIT_WORD_V775_FRS dummy3: (s32) => (0xffffffff,0x5e000000)
+    // optimized match 11: EMPTY_32BIT_WORD_V775_FRS dummy4: (s32) => (0xffffffff,0x6e000000)
+    {
+    uint32 __match_peek;
+    PEEK_FROM_BUFFER(213,uint32,__match_peek);
+    // differ = 7c000000 : 26 27 28 29 30
+    uint32 __match_index = 0 | /* 26,30 */ ((__match_peek >> 26) & 0x0000001f);
+    static const sint8 __match_index_array[32] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 7, 0, 0, 3, 8, 4, 9, 0, 0, 5, 10, 0, 0, 6, 11, 0, 0, 0, 0, };
+    __match_no = __match_index_array[__match_index];
+    // last_subevent_item = 1
+    }
+    if (!__match_no) break;
+    switch (__match_no)
+    {
+      case 1:
+        UNPACK_DECL(198,VME_CAEN_V830_FRS,scaler0,/*geom*/6);
+        break;
+      case 2:
+        UNPACK_DECL(199,VME_CAEN_V259_FRS,pattern,/*geom*/5);
+        break;
+      case 3:
+        UNPACK_DECL(200,VME_CAEN_V775_FRS,tdc0,/*geom*/8);
+        break;
+      case 4:
+        UNPACK_DECL(201,VME_CAEN_V775_FRS,tdc1,/*geom*/9);
+        break;
+      case 5:
+        UNPACK_DECL(202,VME_CAEN_V775_FRS,qdc0,/*geom*/11);
+        break;
+      case 6:
+        UNPACK_DECL(203,VME_CAEN_V775_FRS,adc0,/*geom*/13);
+        break;
+      case 7:
+        UNPACK_DECL(208,EMPTY_32BIT_WORD_V830_FRS,dummy0,/*geom*/6);
+        break;
+      case 8:
+        UNPACK_DECL(209,EMPTY_32BIT_WORD_V775_FRS,dummy1,/*geom*/8);
+        break;
+      case 9:
+        UNPACK_DECL(210,EMPTY_32BIT_WORD_V775_FRS,dummy2,/*geom*/9);
+        break;
+      case 10:
+        UNPACK_DECL(211,EMPTY_32BIT_WORD_V775_FRS,dummy3,/*geom*/11);
+        break;
+      case 11:
+        UNPACK_DECL(212,EMPTY_32BIT_WORD_V775_FRS,dummy4,/*geom*/13);
+        break;
+    }
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,FRS_CRATE::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for FRS_CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(FRS_CRATE)
+// No __match function for subevents.
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for FRS_CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(FRS_CRATE)
+template<typename __data_dest_t>
+void PACKER_FRS_CRATE::__packer(__data_dest_t &__buffer)
+{
+  // select several
+
+    // scaler0 = VME_CAEN_V830_FRS(geom=6);
+    // pattern = VME_CAEN_V259_FRS(geom=5);
+    // tdc0 = VME_CAEN_V775_FRS(geom=8);
+    // tdc1 = VME_CAEN_V775_FRS(geom=9);
+    // qdc0 = VME_CAEN_V775_FRS(geom=11);
+    // adc0 = VME_CAEN_V775_FRS(geom=13);
+    // dummy0 = EMPTY_32BIT_WORD_V830_FRS(geom=6);
+    // dummy1 = EMPTY_32BIT_WORD_V775_FRS(geom=8);
+    // dummy2 = EMPTY_32BIT_WORD_V775_FRS(geom=9);
+    // dummy3 = EMPTY_32BIT_WORD_V775_FRS(geom=11);
+    // dummy4 = EMPTY_32BIT_WORD_V775_FRS(geom=13);
+  {
+    PACK_DECL(198,VME_CAEN_V830_FRS,scaler0,/*geom*/6);
+    PACK_DECL(199,VME_CAEN_V259_FRS,pattern,/*geom*/5);
+    PACK_DECL(200,VME_CAEN_V775_FRS,tdc0,/*geom*/8);
+    PACK_DECL(201,VME_CAEN_V775_FRS,tdc1,/*geom*/9);
+    PACK_DECL(202,VME_CAEN_V775_FRS,qdc0,/*geom*/11);
+    PACK_DECL(203,VME_CAEN_V775_FRS,adc0,/*geom*/13);
+    PACK_DECL(208,EMPTY_32BIT_WORD_V830_FRS,dummy0,/*geom*/6);
+    PACK_DECL(209,EMPTY_32BIT_WORD_V775_FRS,dummy1,/*geom*/8);
+    PACK_DECL(210,EMPTY_32BIT_WORD_V775_FRS,dummy2,/*geom*/9);
+    PACK_DECL(211,EMPTY_32BIT_WORD_V775_FRS,dummy3,/*geom*/11);
+    PACK_DECL(212,EMPTY_32BIT_WORD_V775_FRS,dummy4,/*geom*/13);
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,FRS_CRATE::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: TPC_CRATE
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for TPC_CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(TPC_CRATE)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_TPC_CRATE
+class TPC_CRATE
+#else//PACKER_CODE
+# define DECLARED_PACKER_TPC_CRATE
+class PACKER_TPC_CRATE
+#endif//PACKER_CODE
+ : public unpack_subevent_base
+{
+public:
+  // select several
+
+    // tdc0 = VME_CAEN_V775_FRS(geom=8);
+    // tdc1 = VME_CAEN_V775_FRS(geom=9);
+    // adc0 = VME_CAEN_V775_FRS(geom=16);
+    // adc1 = VME_CAEN_V775_FRS(geom=17);
+    // scaler0 = VME_CAEN_V830_FRS(geom=5);
+    // dummy0 = EMPTY_32BIT_WORD_V830_FRS(geom=5);
+    // dummy1 = EMPTY_32BIT_WORD_V775_FRS(geom=8);
+    // dummy2 = EMPTY_32BIT_WORD_V775_FRS(geom=9);
+    // dummy3 = EMPTY_32BIT_WORD_V775_FRS(geom=16);
+    // dummy4 = EMPTY_32BIT_WORD_V775_FRS(geom=17);
+  SINGLE(VME_CAEN_V830_FRS,scaler0);
+  SINGLE(VME_CAEN_V775_FRS,tdc0);
+  SINGLE(VME_CAEN_V775_FRS,tdc1);
+  SINGLE(VME_CAEN_V775_FRS,adc0);
+  SINGLE(EMPTY_32BIT_WORD_V830_FRS,dummy0);
+  SINGLE(EMPTY_32BIT_WORD_V775_FRS,dummy1);
+  SINGLE(EMPTY_32BIT_WORD_V775_FRS,dummy2);
+  SINGLE(EMPTY_32BIT_WORD_V775_FRS,dummy3);
+  SINGLE(EMPTY_32BIT_WORD_V775_FRS,dummy4);
+  SINGLE(VME_CAEN_V775_FRS,adc1);
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(TPC_CRATE);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for TPC_CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(TPC_CRATE)
+template<typename __data_src_t>
+void TPC_CRATE::__unpack(__data_src_t &__buffer)
+{
+  // select several
+
+    // tdc0 = VME_CAEN_V775_FRS(geom=8);
+    // tdc1 = VME_CAEN_V775_FRS(geom=9);
+    // adc0 = VME_CAEN_V775_FRS(geom=16);
+    // adc1 = VME_CAEN_V775_FRS(geom=17);
+    // scaler0 = VME_CAEN_V830_FRS(geom=5);
+    // dummy0 = EMPTY_32BIT_WORD_V830_FRS(geom=5);
+    // dummy1 = EMPTY_32BIT_WORD_V775_FRS(geom=8);
+    // dummy2 = EMPTY_32BIT_WORD_V775_FRS(geom=9);
+    // dummy3 = EMPTY_32BIT_WORD_V775_FRS(geom=16);
+    // dummy4 = EMPTY_32BIT_WORD_V775_FRS(geom=17);
+  for ( ; ; )
+  {
+    if (__buffer.empty()) break;
+    int __match_no = 0;
+    // optimized match 1: VME_CAEN_V775_FRS tdc0: (s32) => (0xff00ffc0,0x42000000)
+    // optimized match 2: VME_CAEN_V775_FRS tdc1: (s32) => (0xff00ffc0,0x4a000000)
+    // optimized match 3: VME_CAEN_V775_FRS adc0: (s32) => (0xff00ffc0,0x82000000)
+    // optimized match 4: VME_CAEN_V775_FRS adc1: (s32) => (0xff00ffc0,0x8a000000)
+    // optimized match 5: VME_CAEN_V830_FRS scaler0: (s32) => (0xffffffe0,0x2a000000)
+    // optimized match 6: EMPTY_32BIT_WORD_V830_FRS dummy0: (s32) => (0xffffffff,0x2e000000)
+    // optimized match 7: EMPTY_32BIT_WORD_V775_FRS dummy1: (s32) => (0xffffffff,0x46000000)
+    // optimized match 8: EMPTY_32BIT_WORD_V775_FRS dummy2: (s32) => (0xffffffff,0x4e000000)
+    // optimized match 9: EMPTY_32BIT_WORD_V775_FRS dummy3: (s32) => (0xffffffff,0x86000000)
+    // optimized match 10: EMPTY_32BIT_WORD_V775_FRS dummy4: (s32) => (0xffffffff,0x8e000000)
+    {
+    uint32 __match_peek;
+    PEEK_FROM_BUFFER(234,uint32,__match_peek);
+    // differ = ec000000 : 26 27 29 30 31
+    uint32 __match_index = 0 | /* 26,27 */ ((__match_peek >> 26) & 0x00000003) | /* 29,31 */ ((__match_peek >> 27) & 0x0000001c);
+    static const sint8 __match_index_array[32] = { 0, 0, 0, 0, 0, 0, 5, 6, 1, 7, 2, 8, 0, 0, 0, 0, 3, 9, 4, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, };
+    __match_no = __match_index_array[__match_index];
+    // last_subevent_item = 1
+    }
+    if (!__match_no) break;
+    switch (__match_no)
+    {
+      case 1:
+        UNPACK_DECL(223,VME_CAEN_V775_FRS,tdc0,/*geom*/8);
+        break;
+      case 2:
+        UNPACK_DECL(224,VME_CAEN_V775_FRS,tdc1,/*geom*/9);
+        break;
+      case 3:
+        UNPACK_DECL(225,VME_CAEN_V775_FRS,adc0,/*geom*/16);
+        break;
+      case 4:
+        UNPACK_DECL(226,VME_CAEN_V775_FRS,adc1,/*geom*/17);
+        break;
+      case 5:
+        UNPACK_DECL(227,VME_CAEN_V830_FRS,scaler0,/*geom*/5);
+        break;
+      case 6:
+        UNPACK_DECL(228,EMPTY_32BIT_WORD_V830_FRS,dummy0,/*geom*/5);
+        break;
+      case 7:
+        UNPACK_DECL(229,EMPTY_32BIT_WORD_V775_FRS,dummy1,/*geom*/8);
+        break;
+      case 8:
+        UNPACK_DECL(230,EMPTY_32BIT_WORD_V775_FRS,dummy2,/*geom*/9);
+        break;
+      case 9:
+        UNPACK_DECL(231,EMPTY_32BIT_WORD_V775_FRS,dummy3,/*geom*/16);
+        break;
+      case 10:
+        UNPACK_DECL(232,EMPTY_32BIT_WORD_V775_FRS,dummy4,/*geom*/17);
+        break;
+    }
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,TPC_CRATE::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for TPC_CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(TPC_CRATE)
+// No __match function for subevents.
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for TPC_CRATE.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(TPC_CRATE)
+template<typename __data_dest_t>
+void PACKER_TPC_CRATE::__packer(__data_dest_t &__buffer)
+{
+  // select several
+
+    // tdc0 = VME_CAEN_V775_FRS(geom=8);
+    // tdc1 = VME_CAEN_V775_FRS(geom=9);
+    // adc0 = VME_CAEN_V775_FRS(geom=16);
+    // adc1 = VME_CAEN_V775_FRS(geom=17);
+    // scaler0 = VME_CAEN_V830_FRS(geom=5);
+    // dummy0 = EMPTY_32BIT_WORD_V830_FRS(geom=5);
+    // dummy1 = EMPTY_32BIT_WORD_V775_FRS(geom=8);
+    // dummy2 = EMPTY_32BIT_WORD_V775_FRS(geom=9);
+    // dummy3 = EMPTY_32BIT_WORD_V775_FRS(geom=16);
+    // dummy4 = EMPTY_32BIT_WORD_V775_FRS(geom=17);
+  {
+    PACK_DECL(223,VME_CAEN_V775_FRS,tdc0,/*geom*/8);
+    PACK_DECL(224,VME_CAEN_V775_FRS,tdc1,/*geom*/9);
+    PACK_DECL(225,VME_CAEN_V775_FRS,adc0,/*geom*/16);
+    PACK_DECL(226,VME_CAEN_V775_FRS,adc1,/*geom*/17);
+    PACK_DECL(227,VME_CAEN_V830_FRS,scaler0,/*geom*/5);
+    PACK_DECL(228,EMPTY_32BIT_WORD_V830_FRS,dummy0,/*geom*/5);
+    PACK_DECL(229,EMPTY_32BIT_WORD_V775_FRS,dummy1,/*geom*/8);
+    PACK_DECL(230,EMPTY_32BIT_WORD_V775_FRS,dummy2,/*geom*/9);
+    PACK_DECL(231,EMPTY_32BIT_WORD_V775_FRS,dummy3,/*geom*/16);
+    PACK_DECL(232,EMPTY_32BIT_WORD_V775_FRS,dummy4,/*geom*/17);
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,TPC_CRATE::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for EVENT
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+class unpack_event : public unpack_event_base
+{
+public:
+  // vme0 = FRS_CRATE(type=10,subtype=1,procid=10);
+  // vme1 = TPC_CRATE(type=10,subtype=1,procid=20);
+SINGLE(FRS_CRATE,vme0);
+SINGLE(TPC_CRATE,vme1);
+public:
+#ifndef __PSDC__
+  bitsone<2> __visited;
+  void __clear_visited() { __visited.clear(); }
+  bool ignore_unknown_subevent() { return false; }
+#endif//!__PSDC__
+
+public:
+#ifndef __PSDC__
+template<typename __data_src_t>
+  int __unpack_subevent(subevent_header *__header,__data_src_t &__buffer);
+  int __revoke_subevent(subevent_header *__header);
+  // void __clean_event();
+
+  STRUCT_FCNS_DECL(unpack_event);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+template<typename __data_src_t>
+int unpack_event::__unpack_subevent(subevent_header *__header,__data_src_t &__buffer)
+  // vme0 = FRS_CRATE(type=10,subtype=1,procid=10);
+  // vme1 = TPC_CRATE(type=10,subtype=1,procid=20);
+{
+  int __match_no = 0;
+  MATCH_SUBEVENT_DECL(188,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)&&(VES10_1_procid==10)),vme0);
+  MATCH_SUBEVENT_DECL(189,__match_no,2,((VES10_1_type==10)&&(VES10_1_subtype==1)&&(VES10_1_procid==20)),vme1);
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+    case 1:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(188,FRS_CRATE,vme0,0);
+      UNPACK_SUBEVENT_DECL(188,0,FRS_CRATE,vme0);
+      break;
+    case 2:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(189,TPC_CRATE,vme1,1);
+      UNPACK_SUBEVENT_DECL(189,0,TPC_CRATE,vme1);
+      break;
+  }
+  return 0;
+}
+FORCE_IMPL_DATA_SRC_FCN_HDR(int,unpack_event::__unpack_subevent);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+  // vme0 = FRS_CRATE(type=10,subtype=1,procid=10);
+  // vme1 = TPC_CRATE(type=10,subtype=1,procid=20);
+{
+}
+
+/** END_PACKER ********************************************************/
+
+
+/** BEGIN_REVOKE *******************************************************
+ *
+ * Event revoker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+int unpack_event::__revoke_subevent(subevent_header *__header)
+  // vme0 = FRS_CRATE(type=10,subtype=1,procid=10);
+  // vme1 = TPC_CRATE(type=10,subtype=1,procid=20);
+{
+  int __match_no = 0;
+  MATCH_SUBEVENT_DECL(188,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)&&(VES10_1_procid==10)),vme0);
+  MATCH_SUBEVENT_DECL(189,__match_no,2,((VES10_1_type==10)&&(VES10_1_subtype==1)&&(VES10_1_procid==20)),vme1);
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+    case 1:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(188,FRS_CRATE,vme0,0);
+      REVOKE_SUBEVENT_DECL(188,0,FRS_CRATE,vme0);
+      break;
+    case 2:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(189,TPC_CRATE,vme1,1);
+      REVOKE_SUBEVENT_DECL(189,0,TPC_CRATE,vme1);
+      break;
+  }
+  return 0;
+}
+
+/** END_REVOKE ********************************************************/
+
+
+/** BEGIN_SUBEVENT_NAMES ***********************************************
+ *
+ * Mappings of names for [incl|excl] name lookup.
+ *
+ * Do not edit - automatically generated.
+ */
+
+{ "vme0", "type=10:subtype=1:procid=10" },
+{ "vme1", "type=10:subtype=1:procid=20" },
+
+/** END_SUBEVENT_NAMES ************************************************/
+
+//
+// Generating code for EVENT
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+class unpack_sticky_event : public unpack_sticky_event_base
+{
+public:
+public:
+#ifndef __PSDC__
+  void __clear_visited() { }
+  bool ignore_unknown_subevent() { return false; }
+#endif//!__PSDC__
+
+public:
+#ifndef __PSDC__
+template<typename __data_src_t>
+  int __unpack_subevent(subevent_header *__header,__data_src_t &__buffer);
+  int __revoke_subevent(subevent_header *__header);
+  // void __clean_event();
+
+  STRUCT_FCNS_DECL(unpack_sticky_event);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+template<typename __data_src_t>
+int unpack_sticky_event::__unpack_subevent(subevent_header *__header,__data_src_t &__buffer)
+{
+  int __match_no = 0;
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+  }
+  return 0;
+}
+FORCE_IMPL_DATA_SRC_FCN_HDR(int,unpack_sticky_event::__unpack_subevent);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+{
+}
+
+/** END_PACKER ********************************************************/
+
+
+/** BEGIN_REVOKE *******************************************************
+ *
+ * Event revoker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+int unpack_sticky_event::__revoke_subevent(subevent_header *__header)
+{
+  int __match_no = 0;
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+  }
+  return 0;
+}
+
+/** END_REVOKE ********************************************************/
+
+
+/** BEGIN_SUBEVENT_NAMES ***********************************************
+ *
+ * Mappings of names for [incl|excl] name lookup.
+ *
+ * Do not edit - automatically generated.
+ */
+
+
+/** END_SUBEVENT_NAMES ************************************************/
+
+
+/** BEGIN_UNPACKER_DEFINES *********************************************
+ *
+ * Control
+ *
+ * Do not edit - automatically generated.
+ */
+
+#define STICKY_EVENT_IS_NONTRIVIAL  0
+
+
+/** END_UNPACKER_DEFINES **********************************************/
+
+/**********************************************************/
+/**********************************************************
+ * Generating event structure...
+ */
+
+
+/** BEGIN_EVENT_RAW_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+//DUMPY: 2 0
+class raw_event_MW
+{
+public:
+  DATA12_OVERFLOW AN;
+  DATA12_OVERFLOW XR;
+  DATA12_OVERFLOW XL;
+  DATA12_OVERFLOW YU;
+  DATA12_OVERFLOW YD;
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_event_MW);
+#endif//!__PSDC__
+} ;
+
+class raw_event_TOF
+{
+public:
+  DATA12_OVERFLOW L;
+  DATA12_OVERFLOW R;
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_event_TOF);
+#endif//!__PSDC__
+} ;
+
+//DUMPY: 3 0
+class raw_event_TPC
+{
+public:
+//DUMPY: 4 0
+  DATA12_OVERFLOW A[4];
+//DUMPY: 2 0
+  DATA12_OVERFLOW AR[2];
+//DUMPY: 2 0
+  DATA12_OVERFLOW AL[2];
+//DUMPY: 4 0
+  DATA12_OVERFLOW DT[4];
+//DUMPY: 2 0
+  DATA12_OVERFLOW LT[2];
+//DUMPY: 2 0
+  DATA12_OVERFLOW RT[2];
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_event_TPC);
+#endif//!__PSDC__
+} ;
+
+//DUMPY: 3 0
+class raw_event_SC
+{
+public:
+  DATA12_OVERFLOW DT;
+  DATA12_OVERFLOW DEL;
+  DATA12_OVERFLOW DER;
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_event_SC);
+#endif//!__PSDC__
+} ;
+
+class raw_event : public raw_event_base
+{
+public:
+//DUMPY: 2 0
+  raw_event_MW
+  /* {
+  public:
+    DATA12_OVERFLOW AN;
+    DATA12_OVERFLOW XR;
+    DATA12_OVERFLOW XL;
+    DATA12_OVERFLOW YU;
+    DATA12_OVERFLOW YD;
+  } */ MW[2];
+  DATA32 PATTERN;
+  DATA32 MULTIP;
+//DUMPY: 2 0
+//DUMPY: 18 0
+  DATA32 SCALER[2][18];
+  raw_event_TOF
+  /* {
+  public:
+    DATA12_OVERFLOW L;
+    DATA12_OVERFLOW R;
+  } */ TOF;
+//DUMPY: 3 0
+  raw_event_TPC
+  /* {
+  public:
+//DUMPY: 4 0
+    DATA12_OVERFLOW A[4];
+//DUMPY: 2 0
+    DATA12_OVERFLOW AR[2];
+//DUMPY: 2 0
+    DATA12_OVERFLOW AL[2];
+//DUMPY: 4 0
+    DATA12_OVERFLOW DT[4];
+//DUMPY: 2 0
+    DATA12_OVERFLOW LT[2];
+//DUMPY: 2 0
+    DATA12_OVERFLOW RT[2];
+  } */ TPC[3];
+//DUMPY: 3 0
+  raw_event_SC
+  /* {
+  public:
+    DATA12_OVERFLOW DT;
+    DATA12_OVERFLOW DEL;
+    DATA12_OVERFLOW DER;
+  } */ SC[3];
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_event);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_RAW_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_CAL_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+//DUMPY: 2 0
+class cal_event_MW
+{
+public:
+  float AN;
+  float XR;
+  float XL;
+  float YU;
+  float YD;
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(cal_event_MW);
+#endif//!__PSDC__
+} ;
+
+class cal_event_TOF
+{
+public:
+  float L;
+  float R;
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(cal_event_TOF);
+#endif//!__PSDC__
+} ;
+
+//DUMPY: 3 0
+class cal_event_TPC
+{
+public:
+//DUMPY: 4 0
+  float A[4];
+//DUMPY: 2 0
+  float AR[2];
+//DUMPY: 2 0
+  float AL[2];
+//DUMPY: 4 0
+  float DT[4];
+//DUMPY: 2 0
+  float LT[2];
+//DUMPY: 2 0
+  float RT[2];
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(cal_event_TPC);
+#endif//!__PSDC__
+} ;
+
+//DUMPY: 3 0
+class cal_event_SC
+{
+public:
+  float DT;
+  float DEL;
+  float DER;
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(cal_event_SC);
+#endif//!__PSDC__
+} ;
+
+class cal_event : public cal_event_base
+{
+public:
+//DUMPY: 2 0
+  cal_event_MW
+  /* {
+  public:
+    float AN;
+    float XR;
+    float XL;
+    float YU;
+    float YD;
+  } */ MW[2];
+  cal_event_TOF
+  /* {
+  public:
+    float L;
+    float R;
+  } */ TOF;
+//DUMPY: 3 0
+  cal_event_TPC
+  /* {
+  public:
+//DUMPY: 4 0
+    float A[4];
+//DUMPY: 2 0
+    float AR[2];
+//DUMPY: 2 0
+    float AL[2];
+//DUMPY: 4 0
+    float DT[4];
+//DUMPY: 2 0
+    float LT[2];
+//DUMPY: 2 0
+    float RT[2];
+  } */ TPC[3];
+//DUMPY: 3 0
+  cal_event_SC
+  /* {
+  public:
+    float DT;
+    float DEL;
+    float DER;
+  } */ SC[3];
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(cal_event);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_CAL_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_RAW_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+class raw_sticky : public raw_sticky_base
+{
+public:
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_sticky);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_RAW_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_DATA_MAPPING *******************************************
+ *
+ * Event data mapping.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// The order in this file does not matter.
+// This information parsed once and not treated eventwise,
+// it is used to initialize a structure.
+
+SIGNAL_MAPPING(DATA32,MULTIP,vme0.pattern.data[1],MULTIP);
+SIGNAL_MAPPING(DATA12_OVERFLOW,MW_1_AN,vme0.tdc0.data[1],MW[0].AN);
+SIGNAL_MAPPING(DATA12_OVERFLOW,MW_1_XL,vme0.tdc0.data[25],MW[0].XL);
+SIGNAL_MAPPING(DATA12_OVERFLOW,MW_1_XR,vme0.tdc0.data[24],MW[0].XR);
+SIGNAL_MAPPING(DATA12_OVERFLOW,MW_1_YD,vme0.tdc0.data[27],MW[0].YD);
+SIGNAL_MAPPING(DATA12_OVERFLOW,MW_1_YU,vme0.tdc0.data[26],MW[0].YU);
+SIGNAL_MAPPING(DATA12_OVERFLOW,MW_2_AN,vme0.tdc0.data[2],MW[1].AN);
+SIGNAL_MAPPING(DATA12_OVERFLOW,MW_2_XL,vme0.tdc0.data[29],MW[1].XL);
+SIGNAL_MAPPING(DATA12_OVERFLOW,MW_2_XR,vme0.tdc0.data[28],MW[1].XR);
+SIGNAL_MAPPING(DATA12_OVERFLOW,MW_2_YD,vme0.tdc0.data[31],MW[1].YD);
+SIGNAL_MAPPING(DATA12_OVERFLOW,MW_2_YU,vme0.tdc0.data[30],MW[1].YU);
+SIGNAL_MAPPING(DATA32,PATTERN,vme0.pattern.data[0],PATTERN);
+SIGNAL_MAPPING(DATA32,SCALER_1_1,vme0.scaler0.data[0],SCALER[0][0]);
+SIGNAL_MAPPING(DATA32,SCALER_1_10,vme0.scaler0.data[9],SCALER[0][9]);
+SIGNAL_MAPPING(DATA32,SCALER_1_11,vme0.scaler0.data[10],SCALER[0][10]);
+SIGNAL_MAPPING(DATA32,SCALER_1_12,vme0.scaler0.data[11],SCALER[0][11]);
+SIGNAL_MAPPING(DATA32,SCALER_1_13,vme0.scaler0.data[12],SCALER[0][12]);
+SIGNAL_MAPPING(DATA32,SCALER_1_14,vme0.scaler0.data[13],SCALER[0][13]);
+SIGNAL_MAPPING(DATA32,SCALER_1_15,vme0.scaler0.data[14],SCALER[0][14]);
+SIGNAL_MAPPING(DATA32,SCALER_1_16,vme0.scaler0.data[15],SCALER[0][15]);
+SIGNAL_MAPPING(DATA32,SCALER_1_17,vme0.scaler0.data[16],SCALER[0][16]);
+SIGNAL_MAPPING(DATA32,SCALER_1_18,vme0.scaler0.data[17],SCALER[0][17]);
+SIGNAL_MAPPING(DATA32,SCALER_1_2,vme0.scaler0.data[1],SCALER[0][1]);
+SIGNAL_MAPPING(DATA32,SCALER_1_3,vme0.scaler0.data[2],SCALER[0][2]);
+SIGNAL_MAPPING(DATA32,SCALER_1_4,vme0.scaler0.data[3],SCALER[0][3]);
+SIGNAL_MAPPING(DATA32,SCALER_1_5,vme0.scaler0.data[4],SCALER[0][4]);
+SIGNAL_MAPPING(DATA32,SCALER_1_6,vme0.scaler0.data[5],SCALER[0][5]);
+SIGNAL_MAPPING(DATA32,SCALER_1_7,vme0.scaler0.data[6],SCALER[0][6]);
+SIGNAL_MAPPING(DATA32,SCALER_1_8,vme0.scaler0.data[7],SCALER[0][7]);
+SIGNAL_MAPPING(DATA32,SCALER_1_9,vme0.scaler0.data[8],SCALER[0][8]);
+SIGNAL_MAPPING(DATA32,SCALER_2_1,vme1.scaler0.data[0],SCALER[1][0]);
+SIGNAL_MAPPING(DATA32,SCALER_2_2,vme1.scaler0.data[1],SCALER[1][1]);
+SIGNAL_MAPPING(DATA32,SCALER_2_3,vme1.scaler0.data[2],SCALER[1][2]);
+SIGNAL_MAPPING(DATA32,SCALER_2_4,vme1.scaler0.data[3],SCALER[1][3]);
+SIGNAL_MAPPING(DATA32,SCALER_2_5,vme1.scaler0.data[4],SCALER[1][4]);
+SIGNAL_MAPPING(DATA32,SCALER_2_6,vme1.scaler0.data[5],SCALER[1][5]);
+SIGNAL_MAPPING(DATA32,SCALER_2_7,vme1.scaler0.data[6],SCALER[1][6]);
+SIGNAL_MAPPING(DATA32,SCALER_2_8,vme1.scaler0.data[7],SCALER[1][7]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,SC_1_DEL,vme0.qdc0.data[0],SC[0].DEL);
+SIGNAL_MAPPING(DATA12_OVERFLOW,SC_1_DER,vme0.qdc0.data[1],SC[0].DER);
+SIGNAL_MAPPING(DATA12_OVERFLOW,SC_1_DT,vme0.adc0.data[0],SC[0].DT);
+SIGNAL_MAPPING(DATA12_OVERFLOW,SC_2_DEL,vme0.qdc0.data[4],SC[1].DEL);
+SIGNAL_MAPPING(DATA12_OVERFLOW,SC_2_DER,vme0.qdc0.data[5],SC[1].DER);
+SIGNAL_MAPPING(DATA12_OVERFLOW,SC_2_DT,vme0.adc0.data[4],SC[1].DT);
+SIGNAL_MAPPING(DATA12_OVERFLOW,SC_3_DEL,vme0.qdc0.data[2],SC[2].DEL);
+SIGNAL_MAPPING(DATA12_OVERFLOW,SC_3_DER,vme0.qdc0.data[3],SC[2].DER);
+SIGNAL_MAPPING(DATA12_OVERFLOW,SC_3_DT,vme0.adc0.data[7],SC[2].DT);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TOF_L,vme0.adc0.data[5],TOF.L);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TOF_R,vme0.adc0.data[6],TOF.R);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC2_AL_1,vme1.adc0.data[28],TPC[1].AL[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_AL_1,vme1.adc0.data[20],TPC[0].AL[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_AL_2,vme1.adc0.data[22],TPC[0].AL[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_AR_1,vme1.adc0.data[21],TPC[0].AR[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_AR_2,vme1.adc0.data[23],TPC[0].AR[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_A_1,vme1.adc0.data[16],TPC[0].A[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_A_2,vme1.adc0.data[17],TPC[0].A[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_A_3,vme1.adc0.data[18],TPC[0].A[2]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_A_4,vme1.adc0.data[19],TPC[0].A[3]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_DT_1,vme1.tdc0.data[16],TPC[0].DT[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_DT_2,vme1.tdc0.data[17],TPC[0].DT[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_DT_3,vme1.tdc0.data[18],TPC[0].DT[2]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_DT_4,vme1.tdc0.data[19],TPC[0].DT[3]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_LT_1,vme1.tdc0.data[20],TPC[0].LT[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_LT_2,vme1.tdc0.data[22],TPC[0].LT[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_RT_1,vme1.tdc0.data[21],TPC[0].RT[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_1_RT_2,vme1.tdc0.data[23],TPC[0].RT[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_AL_2,vme1.adc0.data[30],TPC[1].AL[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_AR_1,vme1.adc0.data[29],TPC[1].AR[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_AR_2,vme1.adc0.data[31],TPC[1].AR[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_A_1,vme1.adc0.data[24],TPC[1].A[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_A_2,vme1.adc0.data[25],TPC[1].A[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_A_3,vme1.adc0.data[26],TPC[1].A[2]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_A_4,vme1.adc0.data[27],TPC[1].A[3]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_DT_1,vme1.tdc0.data[24],TPC[1].DT[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_DT_2,vme1.tdc0.data[25],TPC[1].DT[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_DT_3,vme1.tdc0.data[26],TPC[1].DT[2]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_DT_4,vme1.tdc0.data[27],TPC[1].DT[3]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_LT_1,vme1.tdc0.data[28],TPC[1].LT[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_LT_2,vme1.tdc0.data[30],TPC[1].LT[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_RT_1,vme1.tdc0.data[29],TPC[1].RT[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_2_RT_2,vme1.tdc0.data[31],TPC[1].RT[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_AL_1,vme1.adc0.data[12],TPC[2].AL[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_AL_2,vme1.adc0.data[14],TPC[2].AL[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_AR_1,vme1.adc0.data[13],TPC[2].AR[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_AR_2,vme1.adc0.data[15],TPC[2].AR[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_A_1,vme1.adc0.data[8],TPC[2].A[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_A_2,vme1.adc0.data[9],TPC[2].A[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_A_3,vme1.adc0.data[10],TPC[2].A[2]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_A_4,vme1.adc0.data[11],TPC[2].A[3]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_DT_1,vme1.tdc0.data[8],TPC[2].DT[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_DT_2,vme1.tdc0.data[9],TPC[2].DT[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_DT_3,vme1.tdc0.data[10],TPC[2].DT[2]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_DT_4,vme1.tdc0.data[11],TPC[2].DT[3]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_LT_1,vme1.tdc0.data[12],TPC[2].LT[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_LT_2,vme1.tdc0.data[14],TPC[2].LT[1]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_RT_1,vme1.tdc0.data[13],TPC[2].RT[0]);
+SIGNAL_MAPPING(DATA12_OVERFLOW,TPC_3_RT_2,vme1.tdc0.data[15],TPC[2].RT[1]);
+
+/** END_EVENT_DATA_MAPPING ********************************************/
+
+
+/** BEGIN_EVENT_DATA_MAPPING *******************************************
+ *
+ * Event data mapping.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// The order in this file does not matter.
+// This information parsed once and not treated eventwise,
+// it is used to initialize a structure.
+
+
+/** END_EVENT_DATA_MAPPING ********************************************/
+
+/**********************************************************/
+
+/** BEGIN_LOCATIONS ****************************************************
+ *
+ * File and line locations from the parsed specification files.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// It's left to the compiler to only store one copy of each
+// unique string.
+
+location spec_locations[] =
+{ 
+  { 2, 1, "frs_s341.spec" },
+  { 3, 1, "<built-in>" },
+  { 4, 1, "<command-line>" },
+  { 5, 1, "/usr/include/stdc-predef.h" },
+  { 6, 1, "<command-line>" },
+  { 7, 1, "frs_s341.spec" },
+  { 8, 11, "frs_s341.spec" },
+  { 9, 1, "spec/frs_vme_caen_v259.spec" },
+  { 52, 12, "frs_s341.spec" },
+  { 53, 1, "spec/frs_vme_caen_v830.spec" },
+  { 84, 13, "frs_s341.spec" },
+  { 85, 1, "spec/frs_vme_caen_v775.spec" },
+  { 146, 14, "frs_s341.spec" },
+  { 149, 1, "spec/frs_empty_32bit_word_v830.spec" },
+  { 165, 17, "frs_s341.spec" },
+  { 166, 1, "spec/frs_empty_32bit_word_v775.spec" },
+  { 182, 18, "frs_s341.spec" },
+  { 237, 82, "frs_s341.spec" },
+};
+
+/** END_LOCATIONS *****************************************************/
+

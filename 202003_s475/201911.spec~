@@ -1,0 +1,43 @@
+#define EXT_SST_HAS_BRANCH 1
+
+#include "spec/spec.spec"
+#include "sst_ext.spec"
+#include "../land_common/barrier.spec"
+#include "../land_common/gsi_clocktdc.spec"
+#include "../land_common/gsi_tamex3.spec"
+#include "../land_common/gsi_tamex3_flexheader.spec"
+#include "../land_common/gsi_febex_v2.spec"
+#include "../land_common/land_vme.spec"
+#include "../land_common/trloii.spec"
+#include "../land_common/vme_gsi_vftx2.spec"
+#include "../land_common/whiterabbit.spec"
+
+GSI_SAM_PADDING()
+{
+	UINT32 padding NOENCODE {
+		0_31: 0xadadadad;
+	}
+}
+
+
+SUBEVENT(ams_siderem_subev)
+{
+//	land_vme = LAND_STD_VME();
+        padd = GSI_SAM_PADDING();
+	select several {
+		external sst[0] = EXT_SST(siderem=1, gtb=0, sam=4, branch=0);
+		external sst[1] = EXT_SST(siderem=2, gtb=0, sam=4, branch=0);
+		external sst[2] = EXT_SST(siderem=1, gtb=1, sam=4, branch=0);
+	}
+}
+
+
+EVENT
+{
+
+	ams_siderem = ams_siderem_subev(procid=100, type=12, subtype=1, control=20);
+
+	ignore_unknown_subevent;
+}
+
+#include "mapping.hh"

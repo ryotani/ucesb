@@ -1,0 +1,2299 @@
+
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+DUMMY(id)
+{
+  MEMBER(DATA32 time_lo);
+  MEMBER(DATA32 time_hi);
+  MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  UINT32 header NOENCODE
+  {
+     0_15: wordcount;
+    16_31: id = MATCH(id);
+  }
+  UINT32 timestamp_hi NOENCODE
+  {
+     0_31: value;
+    ENCODE(time_hi,(value=value));
+  }
+  UINT32 timestamp_lo NOENCODE
+  {
+     0_31: value;
+    ENCODE(time_lo,(value=value));
+  }
+  list(0<=ch<32)
+  {
+    UINT32 item NOENCODE
+    {
+       0_23: value;
+      24_31: channel;
+      ENCODE(data[channel],(value=value));
+    }
+  }
+  UINT32 footer NOENCODE
+  {
+     0_31: event_number;
+  }
+}
+
+LAND_STD_VME()
+{
+  UINT32 failure
+  {
+        0: fail_general;
+        1: fail_data_corrupt;
+        2: fail_data_missing;
+        3: fail_data_too_much;
+        4: fail_event_counter_mismatch;
+        5: fail_readout_error_driver;
+        6: fail_unexpected_trigger;
+        7: fail_firmware_mismatch;
+       22: has_multi_trlo_ii_counter0;
+       23: has_clock_counter_stamp;
+       24: has_continous_event_counter;
+       25: has_update_qdc_iped_value;
+       26: spurious_start_before_tcal;
+       27: has_no_zero_suppression;
+       28: has_multi_adctdc_counter0;
+       29: has_multi_scaler_counter0;
+       30: has_multi_event;
+       31: has_time_stamp;
+  }
+  if(failure.has_continous_event_counter)
+  {
+    UINT32 continous_event_counter;
+  }
+  if(failure.has_time_stamp)
+  {
+    UINT32 time_stamp;
+  }
+  if(failure.has_clock_counter_stamp)
+  {
+    UINT32 clock_counter_stamp;
+  }
+  if(failure.has_update_qdc_iped_value)
+  {
+    UINT32 iped;
+  }
+  if(failure.has_multi_event)
+  {
+    UINT32 multi_events;
+  }
+  if(failure.has_multi_trlo_ii_counter0)
+  {
+    UINT32 multi_trlo_ii_counter0;
+  }
+  if(failure.has_multi_scaler_counter0)
+  {
+    UINT32 multi_scaler_counter0;
+  }
+  if(failure.has_multi_adctdc_counter0)
+  {
+    UINT32 multi_adctdc_counter0;
+  }
+}
+
+TIMESTAMP_WHITERABBIT(id)
+{
+  MEMBER(DATA12 subsystem_id);
+  MEMBER(DATA16 t1);
+  MEMBER(DATA16 t2);
+  MEMBER(DATA16 t3);
+  MEMBER(DATA16 t4);
+  UINT32 header NOENCODE
+  {
+     0_11: id = MATCH(id);
+    12_15: 0;
+       16: error_bit;
+    17_31: 0;
+    ENCODE(subsystem_id,(value=id));
+  }
+  UINT32 d1 NOENCODE
+  {
+     0_15: t1;
+    16_31: 0x3e1;
+    ENCODE(t1,(value=t1));
+  }
+  UINT32 d2 NOENCODE
+  {
+     0_15: t2;
+    16_31: 0x4e1;
+    ENCODE(t2,(value=t2));
+  }
+  UINT32 d3 NOENCODE
+  {
+     0_15: t3;
+    16_31: 0x5e1;
+    ENCODE(t3,(value=t3));
+  }
+  UINT32 d4 NOENCODE
+  {
+     0_15: t4;
+    16_31: 0x6e1;
+    ENCODE(t4,(value=t4));
+  }
+}
+
+WR_MULTI()
+{
+  MEMBER(DATA32 time_hi);
+  MEMBER(DATA32 time_lo);
+  UINT32 hi NOENCODE
+  {
+     0_31: time;
+    ENCODE(time_hi,(value=time));
+  }
+  UINT32 lo NOENCODE
+  {
+     0_31: time;
+    ENCODE(time_lo,(value=time));
+  }
+}
+
+SUBEVENT(empty_subevent)
+{
+  ;
+}
+
+SUBEVENT(land_header_only)
+{
+  header = LAND_STD_VME();
+}
+
+SUBEVENT(vme_subevent)
+{
+  header = LAND_STD_VME();
+  select several
+  {
+    multi dummy[0] = DUMMY(id=0x1234);
+  }
+}
+
+SUBEVENT(wr_ts_100)
+{
+  ts = TIMESTAMP_WHITERABBIT(id=0x100);
+}
+
+/**********************************************************
+ * The event definition:
+ */
+
+EVENT
+{
+  ts = wr_ts_100(type=10,subtype=1,control=0,subcrate=0);
+  vme = vme_subevent(type=88,subtype=0x2260,control=0,subcrate=0);
+  vme_drasi = empty_subevent(type=0x4d2,subtype=0x162e,control=9,
+                             subcrate=0);
+  vme_drasi_unknown = empty_subevent(type=0xffff,subtype=0xffff,control=9,
+                                     subcrate=9);
+}
+
+/**********************************************************
+ * The sticky_event definition:
+ */
+
+/**********************************************************
+ * Signal name mappings:
+ */
+
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/
+
+/**********************************************************
+ * Generating unpacking code...
+ */
+
+//
+// Generating code for: DUMMY
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for DUMMY.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// DUMMY(id)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_DUMMY
+class DUMMY
+#else//PACKER_CODE
+# define DECLARED_PACKER_DUMMY
+class PACKER_DUMMY
+#endif//PACKER_CODE
+
+{
+public:
+  // MEMBER(DATA32 time_lo);
+  DATA32 time_lo;
+  // MEMBER(DATA32 time_hi);
+  DATA32 time_hi;
+  // MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  raw_array_zero_suppress<DATA32,DATA32,32> data;
+  // UINT32 header NOENCODE
+  // {
+    //  0_15: wordcount;
+    // 16_31: id = MATCH(id);
+  // }
+  // UINT32 timestamp_hi NOENCODE
+  // {
+    //  0_31: value;
+    // ENCODE(time_hi,(value=value));
+  // }
+  // UINT32 timestamp_lo NOENCODE
+  // {
+    //  0_31: value;
+    // ENCODE(time_lo,(value=value));
+  // }
+  // list(0<=ch<32)
+
+    // UINT32 item NOENCODE
+    // {
+      //  0_23: value;
+      // 24_31: channel;
+      // ENCODE(data[channel],(value=value));
+    // }
+  // UINT32 footer NOENCODE
+  // {
+    //  0_31: event_number;
+  // }
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer,uint32 id);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer,uint32 id);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer,uint32 id);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(DUMMY);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for DUMMY.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// DUMMY(id)
+template<typename __data_src_t>
+void DUMMY::__unpack(__data_src_t &__buffer,uint32 id)
+{
+  // MEMBER(DATA32 time_lo);
+  // MEMBER(DATA32 time_hi);
+  // MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  // UINT32 header NOENCODE
+  // {
+    //  0_15: wordcount;
+    // 16_31: id = MATCH(id);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 wordcount : 16; // 0..15
+      uint32 id : 16; // 16..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 id : 16; // 16..31
+      uint32 wordcount : 16; // 0..15
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(17,uint32 ,header,header.u32);
+  CHECK_BITS_EQUAL(16,header.id,id);
+  // UINT32 timestamp_hi NOENCODE
+  // {
+    //  0_31: value;
+    // ENCODE(time_hi,(value=value));
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 value : 32; // 0..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 value : 32; // 0..31
+#endif
+    };
+    uint32  u32;
+  } timestamp_hi;
+  READ_FROM_BUFFER_FULL(22,uint32 ,timestamp_hi,timestamp_hi.u32);
+  {
+    time_hi.value = timestamp_hi.value;
+  }
+  // UINT32 timestamp_lo NOENCODE
+  // {
+    //  0_31: value;
+    // ENCODE(time_lo,(value=value));
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 value : 32; // 0..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 value : 32; // 0..31
+#endif
+    };
+    uint32  u32;
+  } timestamp_lo;
+  READ_FROM_BUFFER_FULL(27,uint32 ,timestamp_lo,timestamp_lo.u32);
+  {
+    time_lo.value = timestamp_lo.value;
+  }
+  // list(0<=ch<32)
+
+  for (uint32 ch = 0; ch < (uint32) (32); ++ch)
+  {
+    // UINT32 item NOENCODE
+    // {
+      //  0_23: value;
+      // 24_31: channel;
+      // ENCODE(data[channel],(value=value));
+    // }
+    union
+    {
+      struct
+      {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+        uint32 value : 24; // 0..23
+        uint32 channel : 8; // 24..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+        uint32 channel : 8; // 24..31
+        uint32 value : 24; // 0..23
+#endif
+      };
+      uint32  u32;
+    } item;
+    READ_FROM_BUFFER_FULL(35,uint32 ,item,item.u32);
+    {
+      typedef __typeof__(*(&(data))) __array_t;
+      typedef typename __array_t::item_t __item_t;
+      __item_t &__item = data.insert_index(34,item.channel);
+      __item.value = item.value;
+    }
+  }
+  // UINT32 footer NOENCODE
+  // {
+    //  0_31: event_number;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 event_number : 32; // 0..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 event_number : 32; // 0..31
+#endif
+    };
+    uint32  u32;
+  } footer;
+  READ_FROM_BUFFER_FULL(40,uint32 ,footer,footer.u32);
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,DUMMY::__unpack,uint32 id);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for DUMMY.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// DUMMY(id)
+template<typename __data_src_t>
+bool DUMMY::__match(__data_src_t &__buffer,uint32 id)
+{
+  // MEMBER(DATA32 time_lo);
+  // MEMBER(DATA32 time_hi);
+  // MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  // UINT32 header NOENCODE
+  // {
+    //  0_15: wordcount;
+    // 16_31: id = MATCH(id);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 wordcount : 16; // 0..15
+      uint32 id : 16; // 16..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 id : 16; // 16..31
+      uint32 wordcount : 16; // 0..15
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(17,uint32 ,header,header.u32);
+  MATCH_BITS_EQUAL(16,header.id,id);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(bool,DUMMY::__match,uint32 id);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for DUMMY.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// DUMMY(id)
+template<typename __data_dest_t>
+void PACKER_DUMMY::__packer(__data_dest_t &__buffer,uint32 id)
+{
+  // MEMBER(DATA32 time_lo);
+  // MEMBER(DATA32 time_hi);
+  // MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  // UINT32 header NOENCODE
+  // {
+    //  0_15: wordcount;
+    // 16_31: id = MATCH(id);
+  // }
+  // UINT32 timestamp_hi NOENCODE
+  // {
+    //  0_31: value;
+    // ENCODE(time_hi,(value=value));
+  // }
+  // UINT32 timestamp_lo NOENCODE
+  // {
+    //  0_31: value;
+    // ENCODE(time_lo,(value=value));
+  // }
+  // list(0<=ch<32)
+
+  {
+    // UINT32 item NOENCODE
+    // {
+      //  0_23: value;
+      // 24_31: channel;
+      // ENCODE(data[channel],(value=value));
+    // }
+  }
+  // UINT32 footer NOENCODE
+  // {
+    //  0_31: event_number;
+  // }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,DUMMY::__packer,uint32 id);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: LAND_STD_VME
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for LAND_STD_VME.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// LAND_STD_VME()
+#if !PACKER_CODE
+# define DECLARED_UNPACK_LAND_STD_VME
+class LAND_STD_VME
+#else//PACKER_CODE
+# define DECLARED_PACKER_LAND_STD_VME
+class PACKER_LAND_STD_VME
+#endif//PACKER_CODE
+
+{
+public:
+  // UINT32 failure
+  // {
+    //     0: fail_general;
+    //     1: fail_data_corrupt;
+    //     2: fail_data_missing;
+    //     3: fail_data_too_much;
+    //     4: fail_event_counter_mismatch;
+    //     5: fail_readout_error_driver;
+    //     6: fail_unexpected_trigger;
+    //     7: fail_firmware_mismatch;
+    //    22: has_multi_trlo_ii_counter0;
+    //    23: has_clock_counter_stamp;
+    //    24: has_continous_event_counter;
+    //    25: has_update_qdc_iped_value;
+    //    26: spurious_start_before_tcal;
+    //    27: has_no_zero_suppression;
+    //    28: has_multi_adctdc_counter0;
+    //    29: has_multi_scaler_counter0;
+    //    30: has_multi_event;
+    //    31: has_time_stamp;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 fail_general : 1; // 0
+      uint32 fail_data_corrupt : 1; // 1
+      uint32 fail_data_missing : 1; // 2
+      uint32 fail_data_too_much : 1; // 3
+      uint32 fail_event_counter_mismatch : 1; // 4
+      uint32 fail_readout_error_driver : 1; // 5
+      uint32 fail_unexpected_trigger : 1; // 6
+      uint32 fail_firmware_mismatch : 1; // 7
+      uint32 dummy_8_21 : 14;
+      uint32 has_multi_trlo_ii_counter0 : 1; // 22
+      uint32 has_clock_counter_stamp : 1; // 23
+      uint32 has_continous_event_counter : 1; // 24
+      uint32 has_update_qdc_iped_value : 1; // 25
+      uint32 spurious_start_before_tcal : 1; // 26
+      uint32 has_no_zero_suppression : 1; // 27
+      uint32 has_multi_adctdc_counter0 : 1; // 28
+      uint32 has_multi_scaler_counter0 : 1; // 29
+      uint32 has_multi_event : 1; // 30
+      uint32 has_time_stamp : 1; // 31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 has_time_stamp : 1; // 31
+      uint32 has_multi_event : 1; // 30
+      uint32 has_multi_scaler_counter0 : 1; // 29
+      uint32 has_multi_adctdc_counter0 : 1; // 28
+      uint32 has_no_zero_suppression : 1; // 27
+      uint32 spurious_start_before_tcal : 1; // 26
+      uint32 has_update_qdc_iped_value : 1; // 25
+      uint32 has_continous_event_counter : 1; // 24
+      uint32 has_clock_counter_stamp : 1; // 23
+      uint32 has_multi_trlo_ii_counter0 : 1; // 22
+      uint32 dummy_8_21 : 14;
+      uint32 fail_firmware_mismatch : 1; // 7
+      uint32 fail_unexpected_trigger : 1; // 6
+      uint32 fail_readout_error_driver : 1; // 5
+      uint32 fail_event_counter_mismatch : 1; // 4
+      uint32 fail_data_too_much : 1; // 3
+      uint32 fail_data_missing : 1; // 2
+      uint32 fail_data_corrupt : 1; // 1
+      uint32 fail_general : 1; // 0
+#endif
+    };
+    uint32  u32;
+  } failure;
+  // if(failure.has_continous_event_counter)
+
+    // UINT32 continous_event_counter;
+    uint32  continous_event_counter;
+  // if(failure.has_time_stamp)
+
+    // UINT32 time_stamp;
+    uint32  time_stamp;
+  // if(failure.has_clock_counter_stamp)
+
+    // UINT32 clock_counter_stamp;
+    uint32  clock_counter_stamp;
+  // if(failure.has_update_qdc_iped_value)
+
+    // UINT32 iped;
+    uint32  iped;
+  // if(failure.has_multi_event)
+
+    // UINT32 multi_events;
+    uint32  multi_events;
+  // if(failure.has_multi_trlo_ii_counter0)
+
+    // UINT32 multi_trlo_ii_counter0;
+    uint32  multi_trlo_ii_counter0;
+  // if(failure.has_multi_scaler_counter0)
+
+    // UINT32 multi_scaler_counter0;
+    uint32  multi_scaler_counter0;
+  // if(failure.has_multi_adctdc_counter0)
+
+    // UINT32 multi_adctdc_counter0;
+    uint32  multi_adctdc_counter0;
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(LAND_STD_VME);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for LAND_STD_VME.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// LAND_STD_VME()
+template<typename __data_src_t>
+void LAND_STD_VME::__unpack(__data_src_t &__buffer)
+{
+  // UINT32 failure
+  // {
+    //     0: fail_general;
+    //     1: fail_data_corrupt;
+    //     2: fail_data_missing;
+    //     3: fail_data_too_much;
+    //     4: fail_event_counter_mismatch;
+    //     5: fail_readout_error_driver;
+    //     6: fail_unexpected_trigger;
+    //     7: fail_firmware_mismatch;
+    //    22: has_multi_trlo_ii_counter0;
+    //    23: has_clock_counter_stamp;
+    //    24: has_continous_event_counter;
+    //    25: has_update_qdc_iped_value;
+    //    26: spurious_start_before_tcal;
+    //    27: has_no_zero_suppression;
+    //    28: has_multi_adctdc_counter0;
+    //    29: has_multi_scaler_counter0;
+    //    30: has_multi_event;
+    //    31: has_time_stamp;
+  // }
+  READ_FROM_BUFFER_FULL(65,uint32 ,failure,failure.u32);
+  CHECK_UNNAMED_BITS_ZERO(65,failure.u32,0x003fff00);
+  // if(failure.has_continous_event_counter)
+
+  if (failure.has_continous_event_counter)
+  {
+    // UINT32 continous_event_counter;
+    READ_FROM_BUFFER(68,uint32 ,continous_event_counter);
+  }
+  // if(failure.has_time_stamp)
+
+  if (failure.has_time_stamp)
+  {
+    // UINT32 time_stamp;
+    READ_FROM_BUFFER(72,uint32 ,time_stamp);
+  }
+  // if(failure.has_clock_counter_stamp)
+
+  if (failure.has_clock_counter_stamp)
+  {
+    // UINT32 clock_counter_stamp;
+    READ_FROM_BUFFER(76,uint32 ,clock_counter_stamp);
+  }
+  // if(failure.has_update_qdc_iped_value)
+
+  if (failure.has_update_qdc_iped_value)
+  {
+    // UINT32 iped;
+    READ_FROM_BUFFER(80,uint32 ,iped);
+  }
+  // if(failure.has_multi_event)
+
+  if (failure.has_multi_event)
+  {
+    // UINT32 multi_events;
+    READ_FROM_BUFFER(84,uint32 ,multi_events);
+  }
+  // if(failure.has_multi_trlo_ii_counter0)
+
+  if (failure.has_multi_trlo_ii_counter0)
+  {
+    // UINT32 multi_trlo_ii_counter0;
+    READ_FROM_BUFFER(88,uint32 ,multi_trlo_ii_counter0);
+  }
+  // if(failure.has_multi_scaler_counter0)
+
+  if (failure.has_multi_scaler_counter0)
+  {
+    // UINT32 multi_scaler_counter0;
+    READ_FROM_BUFFER(92,uint32 ,multi_scaler_counter0);
+  }
+  // if(failure.has_multi_adctdc_counter0)
+
+  if (failure.has_multi_adctdc_counter0)
+  {
+    // UINT32 multi_adctdc_counter0;
+    READ_FROM_BUFFER(96,uint32 ,multi_adctdc_counter0);
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,LAND_STD_VME::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for LAND_STD_VME.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// LAND_STD_VME()
+template<typename __data_src_t>
+bool LAND_STD_VME::__match(__data_src_t &__buffer)
+{
+  // UINT32 failure
+  // {
+    //     0: fail_general;
+    //     1: fail_data_corrupt;
+    //     2: fail_data_missing;
+    //     3: fail_data_too_much;
+    //     4: fail_event_counter_mismatch;
+    //     5: fail_readout_error_driver;
+    //     6: fail_unexpected_trigger;
+    //     7: fail_firmware_mismatch;
+    //    22: has_multi_trlo_ii_counter0;
+    //    23: has_clock_counter_stamp;
+    //    24: has_continous_event_counter;
+    //    25: has_update_qdc_iped_value;
+    //    26: spurious_start_before_tcal;
+    //    27: has_no_zero_suppression;
+    //    28: has_multi_adctdc_counter0;
+    //    29: has_multi_scaler_counter0;
+    //    30: has_multi_event;
+    //    31: has_time_stamp;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 fail_general : 1; // 0
+      uint32 fail_data_corrupt : 1; // 1
+      uint32 fail_data_missing : 1; // 2
+      uint32 fail_data_too_much : 1; // 3
+      uint32 fail_event_counter_mismatch : 1; // 4
+      uint32 fail_readout_error_driver : 1; // 5
+      uint32 fail_unexpected_trigger : 1; // 6
+      uint32 fail_firmware_mismatch : 1; // 7
+      uint32 dummy_8_21 : 14;
+      uint32 has_multi_trlo_ii_counter0 : 1; // 22
+      uint32 has_clock_counter_stamp : 1; // 23
+      uint32 has_continous_event_counter : 1; // 24
+      uint32 has_update_qdc_iped_value : 1; // 25
+      uint32 spurious_start_before_tcal : 1; // 26
+      uint32 has_no_zero_suppression : 1; // 27
+      uint32 has_multi_adctdc_counter0 : 1; // 28
+      uint32 has_multi_scaler_counter0 : 1; // 29
+      uint32 has_multi_event : 1; // 30
+      uint32 has_time_stamp : 1; // 31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 has_time_stamp : 1; // 31
+      uint32 has_multi_event : 1; // 30
+      uint32 has_multi_scaler_counter0 : 1; // 29
+      uint32 has_multi_adctdc_counter0 : 1; // 28
+      uint32 has_no_zero_suppression : 1; // 27
+      uint32 spurious_start_before_tcal : 1; // 26
+      uint32 has_update_qdc_iped_value : 1; // 25
+      uint32 has_continous_event_counter : 1; // 24
+      uint32 has_clock_counter_stamp : 1; // 23
+      uint32 has_multi_trlo_ii_counter0 : 1; // 22
+      uint32 dummy_8_21 : 14;
+      uint32 fail_firmware_mismatch : 1; // 7
+      uint32 fail_unexpected_trigger : 1; // 6
+      uint32 fail_readout_error_driver : 1; // 5
+      uint32 fail_event_counter_mismatch : 1; // 4
+      uint32 fail_data_too_much : 1; // 3
+      uint32 fail_data_missing : 1; // 2
+      uint32 fail_data_corrupt : 1; // 1
+      uint32 fail_general : 1; // 0
+#endif
+    };
+    uint32  u32;
+  } __failure;
+  READ_FROM_BUFFER_FULL(65,uint32 ,failure,__failure.u32);
+  MATCH_UNNAMED_BITS_ZERO(65,__failure.u32,0x003fff00);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN(bool,LAND_STD_VME::__match);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for LAND_STD_VME.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// LAND_STD_VME()
+template<typename __data_dest_t>
+void PACKER_LAND_STD_VME::__packer(__data_dest_t &__buffer)
+{
+  // UINT32 failure
+  // {
+    //     0: fail_general;
+    //     1: fail_data_corrupt;
+    //     2: fail_data_missing;
+    //     3: fail_data_too_much;
+    //     4: fail_event_counter_mismatch;
+    //     5: fail_readout_error_driver;
+    //     6: fail_unexpected_trigger;
+    //     7: fail_firmware_mismatch;
+    //    22: has_multi_trlo_ii_counter0;
+    //    23: has_clock_counter_stamp;
+    //    24: has_continous_event_counter;
+    //    25: has_update_qdc_iped_value;
+    //    26: spurious_start_before_tcal;
+    //    27: has_no_zero_suppression;
+    //    28: has_multi_adctdc_counter0;
+    //    29: has_multi_scaler_counter0;
+    //    30: has_multi_event;
+    //    31: has_time_stamp;
+  // }
+  // if(failure.has_continous_event_counter)
+
+  if (failure.has_continous_event_counter)
+  {
+    // UINT32 continous_event_counter;
+  }
+  // if(failure.has_time_stamp)
+
+  if (failure.has_time_stamp)
+  {
+    // UINT32 time_stamp;
+  }
+  // if(failure.has_clock_counter_stamp)
+
+  if (failure.has_clock_counter_stamp)
+  {
+    // UINT32 clock_counter_stamp;
+  }
+  // if(failure.has_update_qdc_iped_value)
+
+  if (failure.has_update_qdc_iped_value)
+  {
+    // UINT32 iped;
+  }
+  // if(failure.has_multi_event)
+
+  if (failure.has_multi_event)
+  {
+    // UINT32 multi_events;
+  }
+  // if(failure.has_multi_trlo_ii_counter0)
+
+  if (failure.has_multi_trlo_ii_counter0)
+  {
+    // UINT32 multi_trlo_ii_counter0;
+  }
+  // if(failure.has_multi_scaler_counter0)
+
+  if (failure.has_multi_scaler_counter0)
+  {
+    // UINT32 multi_scaler_counter0;
+  }
+  // if(failure.has_multi_adctdc_counter0)
+
+  if (failure.has_multi_adctdc_counter0)
+  {
+    // UINT32 multi_adctdc_counter0;
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,LAND_STD_VME::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: TIMESTAMP_WHITERABBIT
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for TIMESTAMP_WHITERABBIT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TIMESTAMP_WHITERABBIT(id)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_TIMESTAMP_WHITERABBIT
+class TIMESTAMP_WHITERABBIT
+#else//PACKER_CODE
+# define DECLARED_PACKER_TIMESTAMP_WHITERABBIT
+class PACKER_TIMESTAMP_WHITERABBIT
+#endif//PACKER_CODE
+
+{
+public:
+  // MEMBER(DATA12 subsystem_id);
+  DATA12 subsystem_id;
+  // MEMBER(DATA16 t1);
+  DATA16 t1;
+  // MEMBER(DATA16 t2);
+  DATA16 t2;
+  // MEMBER(DATA16 t3);
+  DATA16 t3;
+  // MEMBER(DATA16 t4);
+  DATA16 t4;
+  // UINT32 header NOENCODE
+  // {
+    //  0_11: id = MATCH(id);
+    // 12_15: 0;
+    //    16: error_bit;
+    // 17_31: 0;
+    // ENCODE(subsystem_id,(value=id));
+  // }
+  // UINT32 d1 NOENCODE
+  // {
+    //  0_15: t1;
+    // 16_31: 0x3e1;
+    // ENCODE(t1,(value=t1));
+  // }
+  // UINT32 d2 NOENCODE
+  // {
+    //  0_15: t2;
+    // 16_31: 0x4e1;
+    // ENCODE(t2,(value=t2));
+  // }
+  // UINT32 d3 NOENCODE
+  // {
+    //  0_15: t3;
+    // 16_31: 0x5e1;
+    // ENCODE(t3,(value=t3));
+  // }
+  // UINT32 d4 NOENCODE
+  // {
+    //  0_15: t4;
+    // 16_31: 0x6e1;
+    // ENCODE(t4,(value=t4));
+  // }
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer,uint32 id);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer,uint32 id);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer,uint32 id);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(TIMESTAMP_WHITERABBIT);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for TIMESTAMP_WHITERABBIT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TIMESTAMP_WHITERABBIT(id)
+template<typename __data_src_t>
+void TIMESTAMP_WHITERABBIT::__unpack(__data_src_t &__buffer,uint32 id)
+{
+  // MEMBER(DATA12 subsystem_id);
+  // MEMBER(DATA16 t1);
+  // MEMBER(DATA16 t2);
+  // MEMBER(DATA16 t3);
+  // MEMBER(DATA16 t4);
+  // UINT32 header NOENCODE
+  // {
+    //  0_11: id = MATCH(id);
+    // 12_15: 0;
+    //    16: error_bit;
+    // 17_31: 0;
+    // ENCODE(subsystem_id,(value=id));
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 id : 12; // 0..11
+      uint32 unnamed_12_15 : 4; // 12..15
+      uint32 error_bit : 1; // 16
+      uint32 unnamed_17_31 : 15; // 17..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_17_31 : 15; // 17..31
+      uint32 error_bit : 1; // 16
+      uint32 unnamed_12_15 : 4; // 12..15
+      uint32 id : 12; // 0..11
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(114,uint32 ,header,header.u32);
+  CHECK_BITS_EQUAL(109,header.id,id);
+  CHECK_BITS_EQUAL(110,header.unnamed_12_15,0);
+  CHECK_BITS_EQUAL(112,header.unnamed_17_31,0);
+  {
+    subsystem_id.value = header.id;
+  }
+  // UINT32 d1 NOENCODE
+  // {
+    //  0_15: t1;
+    // 16_31: 0x3e1;
+    // ENCODE(t1,(value=t1));
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 t1 : 16; // 0..15
+      uint32 unnamed_16_31 : 16; // 16..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_16_31 : 16; // 16..31
+      uint32 t1 : 16; // 0..15
+#endif
+    };
+    uint32  u32;
+  } d1;
+  READ_FROM_BUFFER_FULL(120,uint32 ,d1,d1.u32);
+  CHECK_BITS_EQUAL(118,d1.unnamed_16_31,0x3e1);
+  {
+    t1.value = d1.t1;
+  }
+  // UINT32 d2 NOENCODE
+  // {
+    //  0_15: t2;
+    // 16_31: 0x4e1;
+    // ENCODE(t2,(value=t2));
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 t2 : 16; // 0..15
+      uint32 unnamed_16_31 : 16; // 16..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_16_31 : 16; // 16..31
+      uint32 t2 : 16; // 0..15
+#endif
+    };
+    uint32  u32;
+  } d2;
+  READ_FROM_BUFFER_FULL(126,uint32 ,d2,d2.u32);
+  CHECK_BITS_EQUAL(124,d2.unnamed_16_31,0x4e1);
+  {
+    t2.value = d2.t2;
+  }
+  // UINT32 d3 NOENCODE
+  // {
+    //  0_15: t3;
+    // 16_31: 0x5e1;
+    // ENCODE(t3,(value=t3));
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 t3 : 16; // 0..15
+      uint32 unnamed_16_31 : 16; // 16..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_16_31 : 16; // 16..31
+      uint32 t3 : 16; // 0..15
+#endif
+    };
+    uint32  u32;
+  } d3;
+  READ_FROM_BUFFER_FULL(132,uint32 ,d3,d3.u32);
+  CHECK_BITS_EQUAL(130,d3.unnamed_16_31,0x5e1);
+  {
+    t3.value = d3.t3;
+  }
+  // UINT32 d4 NOENCODE
+  // {
+    //  0_15: t4;
+    // 16_31: 0x6e1;
+    // ENCODE(t4,(value=t4));
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 t4 : 16; // 0..15
+      uint32 unnamed_16_31 : 16; // 16..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_16_31 : 16; // 16..31
+      uint32 t4 : 16; // 0..15
+#endif
+    };
+    uint32  u32;
+  } d4;
+  READ_FROM_BUFFER_FULL(138,uint32 ,d4,d4.u32);
+  CHECK_BITS_EQUAL(136,d4.unnamed_16_31,0x6e1);
+  {
+    t4.value = d4.t4;
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,TIMESTAMP_WHITERABBIT::__unpack,uint32 id);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for TIMESTAMP_WHITERABBIT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TIMESTAMP_WHITERABBIT(id)
+template<typename __data_src_t>
+bool TIMESTAMP_WHITERABBIT::__match(__data_src_t &__buffer,uint32 id)
+{
+  // MEMBER(DATA12 subsystem_id);
+  // MEMBER(DATA16 t1);
+  // MEMBER(DATA16 t2);
+  // MEMBER(DATA16 t3);
+  // MEMBER(DATA16 t4);
+  // UINT32 header NOENCODE
+  // {
+    //  0_11: id = MATCH(id);
+    // 12_15: 0;
+    //    16: error_bit;
+    // 17_31: 0;
+    // ENCODE(subsystem_id,(value=id));
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 id : 12; // 0..11
+      uint32 unnamed_12_15 : 4; // 12..15
+      uint32 error_bit : 1; // 16
+      uint32 unnamed_17_31 : 15; // 17..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_17_31 : 15; // 17..31
+      uint32 error_bit : 1; // 16
+      uint32 unnamed_12_15 : 4; // 12..15
+      uint32 id : 12; // 0..11
+#endif
+    };
+    uint32  u32;
+  } header;
+  READ_FROM_BUFFER_FULL(114,uint32 ,header,header.u32);
+  MATCH_BITS_EQUAL(109,header.id,id);
+  MATCH_BITS_EQUAL(110,header.unnamed_12_15,0);
+  MATCH_BITS_EQUAL(112,header.unnamed_17_31,0);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(bool,TIMESTAMP_WHITERABBIT::__match,uint32 id);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for TIMESTAMP_WHITERABBIT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TIMESTAMP_WHITERABBIT(id)
+template<typename __data_dest_t>
+void PACKER_TIMESTAMP_WHITERABBIT::__packer(__data_dest_t &__buffer,uint32 id)
+{
+  // MEMBER(DATA12 subsystem_id);
+  // MEMBER(DATA16 t1);
+  // MEMBER(DATA16 t2);
+  // MEMBER(DATA16 t3);
+  // MEMBER(DATA16 t4);
+  // UINT32 header NOENCODE
+  // {
+    //  0_11: id = MATCH(id);
+    // 12_15: 0;
+    //    16: error_bit;
+    // 17_31: 0;
+    // ENCODE(subsystem_id,(value=id));
+  // }
+  // UINT32 d1 NOENCODE
+  // {
+    //  0_15: t1;
+    // 16_31: 0x3e1;
+    // ENCODE(t1,(value=t1));
+  // }
+  // UINT32 d2 NOENCODE
+  // {
+    //  0_15: t2;
+    // 16_31: 0x4e1;
+    // ENCODE(t2,(value=t2));
+  // }
+  // UINT32 d3 NOENCODE
+  // {
+    //  0_15: t3;
+    // 16_31: 0x5e1;
+    // ENCODE(t3,(value=t3));
+  // }
+  // UINT32 d4 NOENCODE
+  // {
+    //  0_15: t4;
+    // 16_31: 0x6e1;
+    // ENCODE(t4,(value=t4));
+  // }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,TIMESTAMP_WHITERABBIT::__packer,uint32 id);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: WR_MULTI
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for WR_MULTI.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// WR_MULTI()
+#if !PACKER_CODE
+# define DECLARED_UNPACK_WR_MULTI
+class WR_MULTI
+#else//PACKER_CODE
+# define DECLARED_PACKER_WR_MULTI
+class PACKER_WR_MULTI
+#endif//PACKER_CODE
+
+{
+public:
+  // MEMBER(DATA32 time_hi);
+  DATA32 time_hi;
+  // MEMBER(DATA32 time_lo);
+  DATA32 time_lo;
+  // UINT32 hi NOENCODE
+  // {
+    //  0_31: time;
+    // ENCODE(time_hi,(value=time));
+  // }
+  // UINT32 lo NOENCODE
+  // {
+    //  0_31: time;
+    // ENCODE(time_lo,(value=time));
+  // }
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(WR_MULTI);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for WR_MULTI.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// WR_MULTI()
+template<typename __data_src_t>
+void WR_MULTI::__unpack(__data_src_t &__buffer)
+{
+  // MEMBER(DATA32 time_hi);
+  // MEMBER(DATA32 time_lo);
+  // UINT32 hi NOENCODE
+  // {
+    //  0_31: time;
+    // ENCODE(time_hi,(value=time));
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 time : 32; // 0..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 time : 32; // 0..31
+#endif
+    };
+    uint32  u32;
+  } hi;
+  READ_FROM_BUFFER_FULL(149,uint32 ,hi,hi.u32);
+  {
+    time_hi.value = hi.time;
+  }
+  // UINT32 lo NOENCODE
+  // {
+    //  0_31: time;
+    // ENCODE(time_lo,(value=time));
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 time : 32; // 0..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 time : 32; // 0..31
+#endif
+    };
+    uint32  u32;
+  } lo;
+  READ_FROM_BUFFER_FULL(154,uint32 ,lo,lo.u32);
+  {
+    time_lo.value = lo.time;
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,WR_MULTI::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for WR_MULTI.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// WR_MULTI()
+template<typename __data_src_t>
+bool WR_MULTI::__match(__data_src_t &__buffer)
+{
+  // MEMBER(DATA32 time_hi);
+  // MEMBER(DATA32 time_lo);
+  // UINT32 hi NOENCODE
+  // {
+    //  0_31: time;
+    // ENCODE(time_hi,(value=time));
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 time : 32; // 0..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 time : 32; // 0..31
+#endif
+    };
+    uint32  u32;
+  } hi;
+  READ_FROM_BUFFER_FULL(149,uint32 ,hi,hi.u32);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN(bool,WR_MULTI::__match);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for WR_MULTI.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// WR_MULTI()
+template<typename __data_dest_t>
+void PACKER_WR_MULTI::__packer(__data_dest_t &__buffer)
+{
+  // MEMBER(DATA32 time_hi);
+  // MEMBER(DATA32 time_lo);
+  // UINT32 hi NOENCODE
+  // {
+    //  0_31: time;
+    // ENCODE(time_hi,(value=time));
+  // }
+  // UINT32 lo NOENCODE
+  // {
+    //  0_31: time;
+    // ENCODE(time_lo,(value=time));
+  // }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,WR_MULTI::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: empty_subevent
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for empty_subevent.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(empty_subevent)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_empty_subevent
+class empty_subevent
+#else//PACKER_CODE
+# define DECLARED_PACKER_empty_subevent
+class PACKER_empty_subevent
+#endif//PACKER_CODE
+ : public unpack_subevent_base
+{
+public:
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(empty_subevent);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for empty_subevent.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(empty_subevent)
+template<typename __data_src_t>
+void empty_subevent::__unpack(__data_src_t &__buffer)
+{
+}
+FORCE_IMPL_DATA_SRC_FCN(void,empty_subevent::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for empty_subevent.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(empty_subevent)
+// No __match function for subevents.
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for empty_subevent.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(empty_subevent)
+template<typename __data_dest_t>
+void PACKER_empty_subevent::__packer(__data_dest_t &__buffer)
+{
+}
+FORCE_IMPL_DATA_SRC_FCN(void,empty_subevent::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: land_header_only
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for land_header_only.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(land_header_only)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_land_header_only
+class land_header_only
+#else//PACKER_CODE
+# define DECLARED_PACKER_land_header_only
+class PACKER_land_header_only
+#endif//PACKER_CODE
+ : public unpack_subevent_base
+{
+public:
+  // header = LAND_STD_VME();
+  SINGLE(LAND_STD_VME,header);
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(land_header_only);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for land_header_only.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(land_header_only)
+template<typename __data_src_t>
+void land_header_only::__unpack(__data_src_t &__buffer)
+{
+  // header = LAND_STD_VME();
+  UNPACK_DECL(164,LAND_STD_VME,header);
+}
+FORCE_IMPL_DATA_SRC_FCN(void,land_header_only::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for land_header_only.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(land_header_only)
+// No __match function for subevents.
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for land_header_only.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(land_header_only)
+template<typename __data_dest_t>
+void PACKER_land_header_only::__packer(__data_dest_t &__buffer)
+{
+  // header = LAND_STD_VME();
+  PACK_DECL(164,LAND_STD_VME,header);
+}
+FORCE_IMPL_DATA_SRC_FCN(void,land_header_only::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: vme_subevent
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for vme_subevent.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(vme_subevent)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_vme_subevent
+class vme_subevent
+#else//PACKER_CODE
+# define DECLARED_PACKER_vme_subevent
+class PACKER_vme_subevent
+#endif//PACKER_CODE
+ : public unpack_subevent_base
+{
+public:
+  // header = LAND_STD_VME();
+  // select several
+
+    // multi dummy[0] = DUMMY(id=0x1234);
+  MULTI(DUMMY,dummy[1]);
+  SINGLE(LAND_STD_VME,header);
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(vme_subevent);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for vme_subevent.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(vme_subevent)
+template<typename __data_src_t>
+void vme_subevent::__unpack(__data_src_t &__buffer)
+{
+  // header = LAND_STD_VME();
+  UNPACK_DECL(169,LAND_STD_VME,header);
+  // select several
+
+    // multi dummy[0] = DUMMY(id=0x1234);
+  for ( ; ; )
+  {
+    if (__buffer.empty()) break;
+    int __match_no = 0;
+    // optimized match 1: DUMMY dummy[0]: (s32) => (0xffff0000,0x12340000)
+    {
+    uint32 __match_peek;
+    PEEK_FROM_BUFFER(173,uint32,__match_peek);
+    // differ = 00000000 :
+    uint32 __match_index = 0;
+    static const sint8 __match_index_array[1] = { 1, };
+    __match_no = __match_index_array[__match_index];
+    // last_subevent_item = 1
+    }
+    if (!__match_no) break;
+    switch (__match_no)
+    {
+      case 1:
+        UNPACK_DECL(172,DUMMY,multi_dummy[0].next_free(),/*id*/0x1234);
+        break;
+    }
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,vme_subevent::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for vme_subevent.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(vme_subevent)
+// No __match function for subevents.
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for vme_subevent.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(vme_subevent)
+template<typename __data_dest_t>
+void PACKER_vme_subevent::__packer(__data_dest_t &__buffer)
+{
+  // header = LAND_STD_VME();
+  PACK_DECL(169,LAND_STD_VME,header);
+  // select several
+
+    // multi dummy[0] = DUMMY(id=0x1234);
+  {
+    PACK_DECL(172,DUMMY,dummy[0],/*id*/0x1234);
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,vme_subevent::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: wr_ts_100
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for wr_ts_100.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(wr_ts_100)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_wr_ts_100
+class wr_ts_100
+#else//PACKER_CODE
+# define DECLARED_PACKER_wr_ts_100
+class PACKER_wr_ts_100
+#endif//PACKER_CODE
+ : public unpack_subevent_base
+{
+public:
+  // ts = TIMESTAMP_WHITERABBIT(id=0x100);
+  SINGLE(TIMESTAMP_WHITERABBIT,ts);
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(wr_ts_100);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for wr_ts_100.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(wr_ts_100)
+template<typename __data_src_t>
+void wr_ts_100::__unpack(__data_src_t &__buffer)
+{
+  // ts = TIMESTAMP_WHITERABBIT(id=0x100);
+  UNPACK_DECL(178,TIMESTAMP_WHITERABBIT,ts,/*id*/0x100);
+}
+FORCE_IMPL_DATA_SRC_FCN(void,wr_ts_100::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for wr_ts_100.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(wr_ts_100)
+// No __match function for subevents.
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for wr_ts_100.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(wr_ts_100)
+template<typename __data_dest_t>
+void PACKER_wr_ts_100::__packer(__data_dest_t &__buffer)
+{
+  // ts = TIMESTAMP_WHITERABBIT(id=0x100);
+  PACK_DECL(178,TIMESTAMP_WHITERABBIT,ts,/*id*/0x100);
+}
+FORCE_IMPL_DATA_SRC_FCN(void,wr_ts_100::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for EVENT
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+class unpack_event : public unpack_event_base
+{
+public:
+  // ts = wr_ts_100(type=10,subtype=1,control=0,subcrate=0);
+  // vme = vme_subevent(type=88,subtype=0x2260,control=0,subcrate=0);
+  // vme_drasi = empty_subevent(type=0x4d2,subtype=0x162e,control=9,
+                             // subcrate=0);
+  // vme_drasi_unknown = empty_subevent(type=0xffff,subtype=0xffff,control=9,
+                                     // subcrate=9);
+SINGLE(wr_ts_100,ts);
+SINGLE(empty_subevent,vme_drasi);
+SINGLE(vme_subevent,vme);
+SINGLE(empty_subevent,vme_drasi_unknown);
+public:
+#ifndef __PSDC__
+  bitsone<4> __visited;
+  void __clear_visited() { __visited.clear(); }
+  bool ignore_unknown_subevent() { return false; }
+#endif//!__PSDC__
+
+public:
+#ifndef __PSDC__
+template<typename __data_src_t>
+  int __unpack_subevent(subevent_header *__header,__data_src_t &__buffer);
+  int __revoke_subevent(subevent_header *__header);
+  // void __clean_event();
+
+  STRUCT_FCNS_DECL(unpack_event);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+template<typename __data_src_t>
+int unpack_event::__unpack_subevent(subevent_header *__header,__data_src_t &__buffer)
+  // ts = wr_ts_100(type=10,subtype=1,control=0,subcrate=0);
+  // vme = vme_subevent(type=88,subtype=0x2260,control=0,subcrate=0);
+  // vme_drasi = empty_subevent(type=0x4d2,subtype=0x162e,control=9,
+                             // subcrate=0);
+  // vme_drasi_unknown = empty_subevent(type=0xffff,subtype=0xffff,control=9,
+                                     // subcrate=9);
+{
+  int __match_no = 0;
+  MATCH_SUBEVENT_DECL(187,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)&&(VES10_1_control==0)&&(VES10_1_subcrate==0)),ts);
+  MATCH_SUBEVENT_DECL(188,__match_no,2,((VES10_1_type==88)&&(VES10_1_subtype==0x2260)&&(VES10_1_control==0)&&(VES10_1_subcrate==0)),vme);
+  MATCH_SUBEVENT_DECL(190,__match_no,3,((VES10_1_type==0x4d2)&&(VES10_1_subtype==0x162e)&&(VES10_1_control==9)&&(VES10_1_subcrate==0)),vme_drasi);
+  MATCH_SUBEVENT_DECL(192,__match_no,4,((VES10_1_type==0xffff)&&(VES10_1_subtype==0xffff)&&(VES10_1_control==9)&&(VES10_1_subcrate==9)),vme_drasi_unknown);
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+    case 1:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(187,wr_ts_100,ts,0);
+      UNPACK_SUBEVENT_DECL(187,0,wr_ts_100,ts);
+      break;
+    case 2:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(188,vme_subevent,vme,1);
+      UNPACK_SUBEVENT_DECL(188,0,vme_subevent,vme);
+      break;
+    case 3:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(190,empty_subevent,vme_drasi,2);
+      UNPACK_SUBEVENT_DECL(190,0,empty_subevent,vme_drasi);
+      break;
+    case 4:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(192,empty_subevent,vme_drasi_unknown,3);
+      UNPACK_SUBEVENT_DECL(192,0,empty_subevent,vme_drasi_unknown);
+      break;
+  }
+  return 0;
+}
+FORCE_IMPL_DATA_SRC_FCN_HDR(int,unpack_event::__unpack_subevent);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+  // ts = wr_ts_100(type=10,subtype=1,control=0,subcrate=0);
+  // vme = vme_subevent(type=88,subtype=0x2260,control=0,subcrate=0);
+  // vme_drasi = empty_subevent(type=0x4d2,subtype=0x162e,control=9,
+                             // subcrate=0);
+  // vme_drasi_unknown = empty_subevent(type=0xffff,subtype=0xffff,control=9,
+                                     // subcrate=9);
+{
+}
+
+/** END_PACKER ********************************************************/
+
+
+/** BEGIN_REVOKE *******************************************************
+ *
+ * Event revoker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+int unpack_event::__revoke_subevent(subevent_header *__header)
+  // ts = wr_ts_100(type=10,subtype=1,control=0,subcrate=0);
+  // vme = vme_subevent(type=88,subtype=0x2260,control=0,subcrate=0);
+  // vme_drasi = empty_subevent(type=0x4d2,subtype=0x162e,control=9,
+                             // subcrate=0);
+  // vme_drasi_unknown = empty_subevent(type=0xffff,subtype=0xffff,control=9,
+                                     // subcrate=9);
+{
+  int __match_no = 0;
+  MATCH_SUBEVENT_DECL(187,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)&&(VES10_1_control==0)&&(VES10_1_subcrate==0)),ts);
+  MATCH_SUBEVENT_DECL(188,__match_no,2,((VES10_1_type==88)&&(VES10_1_subtype==0x2260)&&(VES10_1_control==0)&&(VES10_1_subcrate==0)),vme);
+  MATCH_SUBEVENT_DECL(190,__match_no,3,((VES10_1_type==0x4d2)&&(VES10_1_subtype==0x162e)&&(VES10_1_control==9)&&(VES10_1_subcrate==0)),vme_drasi);
+  MATCH_SUBEVENT_DECL(192,__match_no,4,((VES10_1_type==0xffff)&&(VES10_1_subtype==0xffff)&&(VES10_1_control==9)&&(VES10_1_subcrate==9)),vme_drasi_unknown);
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+    case 1:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(187,wr_ts_100,ts,0);
+      REVOKE_SUBEVENT_DECL(187,0,wr_ts_100,ts);
+      break;
+    case 2:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(188,vme_subevent,vme,1);
+      REVOKE_SUBEVENT_DECL(188,0,vme_subevent,vme);
+      break;
+    case 3:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(190,empty_subevent,vme_drasi,2);
+      REVOKE_SUBEVENT_DECL(190,0,empty_subevent,vme_drasi);
+      break;
+    case 4:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(192,empty_subevent,vme_drasi_unknown,3);
+      REVOKE_SUBEVENT_DECL(192,0,empty_subevent,vme_drasi_unknown);
+      break;
+  }
+  return 0;
+}
+
+/** END_REVOKE ********************************************************/
+
+
+/** BEGIN_SUBEVENT_NAMES ***********************************************
+ *
+ * Mappings of names for [incl|excl] name lookup.
+ *
+ * Do not edit - automatically generated.
+ */
+
+{ "ts", "type=10:subtype=1:control=0:subcrate=0" },
+{ "vme", "type=88:subtype=0x2260:control=0:subcrate=0" },
+{ "vme_drasi", "type=0x4d2:subtype=0x162e:control=9:subcrate=0" },
+{ "vme_drasi_unknown", "type=0xffff:subtype=0xffff:control=9:subcrate=9" },
+
+/** END_SUBEVENT_NAMES ************************************************/
+
+//
+// Generating code for EVENT
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+class unpack_sticky_event : public unpack_sticky_event_base
+{
+public:
+public:
+#ifndef __PSDC__
+  void __clear_visited() { }
+  bool ignore_unknown_subevent() { return false; }
+#endif//!__PSDC__
+
+public:
+#ifndef __PSDC__
+template<typename __data_src_t>
+  int __unpack_subevent(subevent_header *__header,__data_src_t &__buffer);
+  int __revoke_subevent(subevent_header *__header);
+  // void __clean_event();
+
+  STRUCT_FCNS_DECL(unpack_sticky_event);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+template<typename __data_src_t>
+int unpack_sticky_event::__unpack_subevent(subevent_header *__header,__data_src_t &__buffer)
+{
+  int __match_no = 0;
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+  }
+  return 0;
+}
+FORCE_IMPL_DATA_SRC_FCN_HDR(int,unpack_sticky_event::__unpack_subevent);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+{
+}
+
+/** END_PACKER ********************************************************/
+
+
+/** BEGIN_REVOKE *******************************************************
+ *
+ * Event revoker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+int unpack_sticky_event::__revoke_subevent(subevent_header *__header)
+{
+  int __match_no = 0;
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+  }
+  return 0;
+}
+
+/** END_REVOKE ********************************************************/
+
+
+/** BEGIN_SUBEVENT_NAMES ***********************************************
+ *
+ * Mappings of names for [incl|excl] name lookup.
+ *
+ * Do not edit - automatically generated.
+ */
+
+
+/** END_SUBEVENT_NAMES ************************************************/
+
+
+/** BEGIN_UNPACKER_DEFINES *********************************************
+ *
+ * Control
+ *
+ * Do not edit - automatically generated.
+ */
+
+#define STICKY_EVENT_IS_NONTRIVIAL  0
+
+
+/** END_UNPACKER_DEFINES **********************************************/
+
+/**********************************************************/
+/**********************************************************
+ * Generating event structure...
+ */
+
+
+/** BEGIN_EVENT_RAW_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+class raw_event : public raw_event_base
+{
+public:
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_event);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_RAW_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_CAL_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+class cal_event : public cal_event_base
+{
+public:
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(cal_event);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_CAL_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_RAW_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+class raw_sticky : public raw_sticky_base
+{
+public:
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_sticky);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_RAW_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_DATA_MAPPING *******************************************
+ *
+ * Event data mapping.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// The order in this file does not matter.
+// This information parsed once and not treated eventwise,
+// it is used to initialize a structure.
+
+
+/** END_EVENT_DATA_MAPPING ********************************************/
+
+
+/** BEGIN_EVENT_DATA_MAPPING *******************************************
+ *
+ * Event data mapping.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// The order in this file does not matter.
+// This information parsed once and not treated eventwise,
+// it is used to initialize a structure.
+
+
+/** END_EVENT_DATA_MAPPING ********************************************/
+
+/**********************************************************/
+
+/** BEGIN_LOCATIONS ****************************************************
+ *
+ * File and line locations from the parsed specification files.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// It's left to the compiler to only store one copy of each
+// unique string.
+
+location spec_locations[] =
+{ 
+  { 2, 1, "gen_dummy/reparse.uce" },
+  { 3, 1, "<built-in>" },
+  { 4, 1, "<command-line>" },
+  { 5, 1, "/usr/include/stdc-predef.h" },
+  { 6, 1, "<command-line>" },
+  { 7, 1, "gen_dummy/reparse.uce" },
+  { 8, 12, "gen_dummy/reparse.uce" },
+};
+
+/** END_LOCATIONS *****************************************************/
+

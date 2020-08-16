@@ -1,0 +1,6746 @@
+
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+class CAMAC_LECROY_4434
+{
+  raw_array_zero_suppress<DATA24,DATA24,32> data;
+} ;
+class CAMAC_PHILLIPS_7164
+{
+  raw_array_zero_suppress<DATA12,DATA12,16> data;
+} ;
+class CAMAC_SILENA_4418
+{
+  raw_array_zero_suppress<DATA12_OVERFLOW,DATA12_OVERFLOW,8> data;
+} ;
+class FASTBUS_LECROY_1875
+{
+  raw_array_zero_suppress<DATA12_RANGE,DATA12_RANGE,64> data;
+} ;
+class FASTBUS_LECROY_1885
+{
+  raw_array_zero_suppress<DATA12_RANGE,DATA12_RANGE,96> data;
+} ;
+class NTP64_TIME
+{
+  uint32 sec;
+  uint32 frac;
+} ;
+class NTP_MESSAGE
+{
+  union 
+  {
+    struct 
+    {
+      uint32 word_count : 16;
+      uint32 quick_burst : 1;
+      uint32 dummy_17_23 : 7;
+      uint32 id : 8;
+    } ;
+    uint32 u32;
+  } header;
+  uint32 server_id;
+  union 
+  {
+    struct 
+    {
+      uint32 precision : 8;
+      uint32 poll : 8;
+      uint32 stratum : 4;
+      uint32 dummy_20_23 : 4;
+      uint32 mode : 3;
+      uint32 version : 3;
+      uint32 leap : 2;
+    } ;
+    uint32 u32;
+  } sspp;
+  union 
+  {
+    struct 
+    {
+      uint32 frac : 16;
+      uint32 sec : 16;
+    } ;
+    uint32 u32;
+  } root_dly;
+  union 
+  {
+    struct 
+    {
+      uint32 frac : 16;
+      uint32 sec : 16;
+    } ;
+    uint32 u32;
+  } root_disp;
+  uint32 refid;
+  NTP64_TIME orig2time;
+  NTP64_TIME tmit2time;
+  NTP64_TIME rec2time;
+  NTP64_TIME rx2time;
+  NTP64_TIME reftime;
+  NTP64_TIME origtime;
+  NTP64_TIME rectime;
+  NTP64_TIME tmittime;
+  NTP64_TIME rxtime;
+} ;
+class RANDOM_TCAL_TSTAMP_CLOCK
+{
+  uint32 soft_latches;
+  uint32 hard_latches;
+  uint32 clock_ticks;
+  NTP64_TIME before;
+  NTP64_TIME after;
+} ;
+class RANDOM_TCAL
+{
+  union 
+  {
+    struct 
+    {
+      uint32 word_count : 8;
+      uint32 pulses : 4;
+      uint32 clock_bits : 6;
+      uint32 has_tstamp1 : 1;
+      uint32 has_tstamp2 : 1;
+      uint32 dummy_20_23 : 4;
+      uint32 id : 8;
+    } ;
+    uint32 u32;
+  } header;
+  RANDOM_TCAL_TSTAMP_CLOCK tstamp1;
+  RANDOM_TCAL_TSTAMP_CLOCK tstamp2;
+} ;
+class SOFT_SCALER32
+{
+  raw_array_zero_suppress<DATA32,DATA32,32> data;
+} ;
+class VME_CAEN_V1190_SUBTDC
+{
+  union 
+  {
+    struct 
+    {
+      uint32 bunch_id : 12;
+      uint32 event_id : 12;
+      uint32 tdc : 2;
+      uint32 dummy_26 : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } header;
+  union 
+  {
+    struct 
+    {
+      uint32 flags : 15;
+      uint32 dummy_15_23 : 9;
+      uint32 tdc : 2;
+      uint32 dummy_26 : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } error_flags;
+  union 
+  {
+    struct 
+    {
+      uint32 word_count : 12;
+      uint32 event_id : 12;
+      uint32 tdc : 2;
+      uint32 dummy_26 : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } trailer;
+} ;
+class VME_CAEN_V1190
+{
+  raw_array_multi_zero_suppress<DATA24,DATA24,32,128> data;
+  union 
+  {
+    struct 
+    {
+      uint32 geom : 5;
+      uint32 event_number : 22;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } header;
+  VME_CAEN_V1190_SUBTDC tdc[4];
+  union 
+  {
+    struct 
+    {
+      uint32 time_tag : 27;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } trigger;
+  union 
+  {
+    struct 
+    {
+      uint32 geom : 5;
+      uint32 word_count : 15;
+      uint32 dummy_20_23 : 4;
+      uint32 tdc_error : 1;
+      uint32 buffer_overflow : 1;
+      uint32 trigger_lost : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } trailer;
+} ;
+class VME_CAEN_V1190_SHORT_SUBTDC
+{
+  ;
+} ;
+class VME_CAEN_V1190_SHORT_SUBTDC_ERROR
+{
+  union 
+  {
+    struct 
+    {
+      uint32 flags : 15;
+      uint32 dummy_15_23 : 9;
+      uint32 tdc : 2;
+      uint32 dummy_26 : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } error_flags;
+} ;
+class VME_CAEN_V1190_SHORT
+{
+  raw_array_multi_zero_suppress<DATA24,DATA24,32,128> data;
+  union 
+  {
+    struct 
+    {
+      uint32 geom : 5;
+      uint32 event_number : 22;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } header;
+  VME_CAEN_V1190_SHORT_SUBTDC tdc[4];
+  VME_CAEN_V1190_SHORT_SUBTDC_ERROR err[4];
+  union 
+  {
+    struct 
+    {
+      uint32 time_tag : 27;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } trigger;
+  union 
+  {
+    struct 
+    {
+      uint32 geom : 5;
+      uint32 word_count : 15;
+      uint32 dummy_20_23 : 4;
+      uint32 tdc_error : 1;
+      uint32 buffer_overflow : 1;
+      uint32 trigger_lost : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } trailer;
+} ;
+class VME_CAEN_V1290_SUBTDC
+{
+  union 
+  {
+    struct 
+    {
+      uint32 bunch_id : 12;
+      uint32 event_id : 12;
+      uint32 tdc : 2;
+      uint32 dummy_26 : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } header;
+  union 
+  {
+    struct 
+    {
+      uint32 flags : 15;
+      uint32 dummy_15_23 : 9;
+      uint32 tdc : 2;
+      uint32 dummy_26 : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } error_flags;
+  union 
+  {
+    struct 
+    {
+      uint32 word_count : 12;
+      uint32 event_id : 12;
+      uint32 tdc : 2;
+      uint32 dummy_26 : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } trailer;
+} ;
+class VME_CAEN_V1290
+{
+  raw_array_multi_zero_suppress<DATA24,DATA24,32,128> data;
+  union 
+  {
+    struct 
+    {
+      uint32 geom : 5;
+      uint32 event_number : 22;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } header;
+  VME_CAEN_V1290_SUBTDC tdc[4];
+  union 
+  {
+    struct 
+    {
+      uint32 time_tag : 27;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } trigger;
+  union 
+  {
+    struct 
+    {
+      uint32 geom : 5;
+      uint32 word_count : 15;
+      uint32 dummy_20_23 : 4;
+      uint32 tdc_error : 1;
+      uint32 buffer_overflow : 1;
+      uint32 trigger_lost : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } trailer;
+} ;
+class VME_CAEN_V1290_SHORT_SUBTDC
+{
+  ;
+} ;
+class VME_CAEN_V1290_SHORT_SUBTDC_ERROR
+{
+  union 
+  {
+    struct 
+    {
+      uint32 flags : 15;
+      uint32 dummy_15_23 : 9;
+      uint32 tdc : 2;
+      uint32 dummy_26 : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } error_flags;
+} ;
+class VME_CAEN_V1290_SHORT
+{
+  raw_array_multi_zero_suppress<DATA24,DATA24,32,128> data;
+  union 
+  {
+    struct 
+    {
+      uint32 geom : 5;
+      uint32 event_number : 22;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } header;
+  VME_CAEN_V1290_SHORT_SUBTDC tdc[4];
+  VME_CAEN_V1290_SHORT_SUBTDC_ERROR err[4];
+  union 
+  {
+    struct 
+    {
+      uint32 time_tag : 27;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } trigger;
+  union 
+  {
+    struct 
+    {
+      uint32 geom : 5;
+      uint32 word_count : 15;
+      uint32 dummy_20_23 : 4;
+      uint32 tdc_error : 1;
+      uint32 buffer_overflow : 1;
+      uint32 trigger_lost : 1;
+      uint32 unnamed_27_31 : 5;
+    } ;
+    uint32 u32;
+  } trailer;
+} ;
+class VME_CAEN_V775
+{
+  raw_array_zero_suppress<DATA12_OVERFLOW,DATA12_OVERFLOW,32> data;
+  union 
+  {
+    struct 
+    {
+      uint32 event_number : 24;
+      uint32 unnamed_24_26 : 3;
+      uint32 geom : 5;
+    } ;
+    uint32 u32;
+  } eob;
+} ;
+class VME_CAEN_V830
+{
+  raw_array_zero_suppress<DATA32,DATA32,32> data;
+  union 
+  {
+    struct 
+    {
+      uint32 event_number : 16;
+      uint32 ts : 2;
+      uint32 count : 6;
+      uint32 dummy_24_25 : 2;
+      uint32 unnamed_26_26 : 1;
+      uint32 geom : 5;
+    } ;
+    uint32 u32;
+  } header;
+} ;
+class VME_MESYTEC_MADC32
+{
+  raw_array_zero_suppress<DATA14_OVERFLOW,DATA14_OVERFLOW,32> data;
+  union 
+  {
+    struct 
+    {
+      uint32 counter : 30;
+      uint32 unnamed_30_31 : 2;
+    } ;
+    uint32 u32;
+  } end_of_event;
+} ;
+class VME_MESYTEC_MDPP16
+{
+  raw_array_multi_zero_suppress<DATA16_OVERFLOW,DATA16_OVERFLOW,34,100> data;
+  union 
+  {
+    struct 
+    {
+      uint32 counter : 30;
+      uint32 unnamed_30_31 : 2;
+    } ;
+    uint32 u32;
+  } end_of_event;
+} ;
+class LAND_CAMAC_CONVERTER : public unpack_subevent_base
+{
+  uint16 tpat;
+  uint16 tprev;
+  uint16 tnext;
+  uint16 tprev2;
+  CAMAC_SILENA_4418 qSIA0416;
+  CAMAC_SILENA_4418 qSIA0458;
+  CAMAC_PHILLIPS_7164 tPHI10481;
+  CAMAC_PHILLIPS_7164 tPHI18573;
+  CAMAC_PHILLIPS_7164 aPHI12160;
+  CAMAC_SILENA_4418 qSIA0429;
+  CAMAC_SILENA_4418 tSIA8035;
+  CAMAC_SILENA_4418 tSIA0469;
+  CAMAC_SILENA_4418 qSIA0480;
+  CAMAC_SILENA_4418 tFRS120;
+  CAMAC_SILENA_4418 tSIA0426;
+  CAMAC_SILENA_4418 qSIA0495;
+} ;
+class LAND_CAMAC_SCALER : public unpack_subevent_base
+{
+  uint32 timestamp;
+  union 
+  {
+    struct 
+    {
+      uint32 unnamed_0_31 : 32;
+    } ;
+    uint32 u32;
+  } endianess;
+  CAMAC_LECROY_4434 scaler0;
+  CAMAC_LECROY_4434 scaler2;
+  CAMAC_LECROY_4434 scaler1;
+} ;
+class LAND_CAMAC_START_STOP_STAMP : public unpack_subevent_base
+{
+  uint32 timestamp;
+  union 
+  {
+    struct 
+    {
+      uint32 unnamed_0_31 : 32;
+    } ;
+    uint32 u32;
+  } endianess;
+} ;
+class LAND_CAMAC_TCAL_INFO : public unpack_subevent_base
+{
+  uint32 info;
+  RANDOM_TCAL rtcal;
+  NTP_MESSAGE ntp;
+} ;
+class LAND_FASTBUS1 : public unpack_subevent_base
+{
+  FASTBUS_LECROY_1885 Q47342;
+  FASTBUS_LECROY_1885 Q46848;
+  FASTBUS_LECROY_1885 Q11111;
+  FASTBUS_LECROY_1885 Q47315;
+  FASTBUS_LECROY_1885 Q17320;
+  FASTBUS_LECROY_1885 Q15372;
+  FASTBUS_LECROY_1885 Q46962;
+  FASTBUS_LECROY_1885 Q46993;
+  FASTBUS_LECROY_1885 Q15358;
+  FASTBUS_LECROY_1885 Q47264;
+  FASTBUS_LECROY_1875 T81855;
+  FASTBUS_LECROY_1875 T87044;
+  FASTBUS_LECROY_1875 T87024;
+  FASTBUS_LECROY_1875 T81800;
+} ;
+class LAND_FASTBUS2 : public unpack_subevent_base
+{
+  FASTBUS_LECROY_1875 T87047;
+  FASTBUS_LECROY_1875 T81808;
+  FASTBUS_LECROY_1875 T48854;
+  FASTBUS_LECROY_1875 T81859;
+  FASTBUS_LECROY_1875 T81795;
+  FASTBUS_LECROY_1875 T81806;
+  FASTBUS_LECROY_1875 T48834;
+} ;
+class LAND_FASTBUS_ERROR : public unpack_subevent_base
+{
+  union 
+  {
+    struct 
+    {
+      uint32 timeout_waiting_smi : 1;
+      uint32 illegal_block_transfer : 1;
+      uint32 fifa_address_overflow : 1;
+      uint32 fifa_register_error : 1;
+      uint32 dummy_4_15 : 12;
+      uint32 init_error : 1;
+      uint32 dummy_17_31 : 15;
+    } ;
+    uint32 u32;
+  } error_code;
+  uint32 error_num;
+} ;
+class LAND_FASTBUS_ERROR_NGF : public unpack_subevent_base
+{
+  union 
+  {
+    struct 
+    {
+      uint32 unnamed_0_31 : 32;
+    } ;
+    uint32 u32;
+  } magic;
+  union 
+  {
+    struct 
+    {
+      uint32 error : 1;
+      uint32 uninitialized : 1;
+      uint32 ss1 : 1;
+      uint32 wc : 1;
+      uint32 mid : 1;
+      uint32 fifo_empty : 1;
+      uint32 fifo_not_empty : 1;
+      uint32 not_finished : 1;
+      uint32 bad_end_addr : 1;
+      uint32 word_lost : 1;
+      uint32 dummy_10_31 : 22;
+    } ;
+    uint32 u32;
+  } error_code;
+} ;
+class unpack_event : public unpack_event_base
+{
+  LAND_CAMAC_CONVERTER camac;
+  LAND_CAMAC_TCAL_INFO camac_tcal_info;
+  LAND_CAMAC_START_STOP_STAMP camac_start_stop_stamp;
+  LAND_CAMAC_SCALER camac_scalers;
+  LAND_FASTBUS_ERROR fastbus_error;
+  LAND_FASTBUS1 fastbus1;
+  LAND_FASTBUS2 fastbus2;
+} ;
+class unpack_sticky_event : public unpack_sticky_event_base
+{
+  ;
+} ;
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/
+
+
+/** BEGIN_MIRROR_STRUCT ************************************************
+ *
+ * Mirror (1 to 1) structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+#ifndef USER_DEF_CAMAC_LECROY_4434
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(CAMAC_LECROY_4434)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA24),STRUCT_MIRROR_TEMPLATE_ARG(DATA24),32> STRUCT_MIRROR_NAME(data);
+  STRUCT_MIRROR_FCNS_DECL(CAMAC_LECROY_4434);
+};
+#endif//USER_DEF_CAMAC_LECROY_4434
+
+#ifndef USER_DEF_CAMAC_PHILLIPS_7164
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(CAMAC_PHILLIPS_7164)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA12),STRUCT_MIRROR_TEMPLATE_ARG(DATA12),16> STRUCT_MIRROR_NAME(data);
+  STRUCT_MIRROR_FCNS_DECL(CAMAC_PHILLIPS_7164);
+};
+#endif//USER_DEF_CAMAC_PHILLIPS_7164
+
+#ifndef USER_DEF_CAMAC_SILENA_4418
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(CAMAC_SILENA_4418)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA12_OVERFLOW),STRUCT_MIRROR_TEMPLATE_ARG(DATA12_OVERFLOW),8> STRUCT_MIRROR_NAME(data);
+  STRUCT_MIRROR_FCNS_DECL(CAMAC_SILENA_4418);
+};
+#endif//USER_DEF_CAMAC_SILENA_4418
+
+#ifndef USER_DEF_FASTBUS_LECROY_1875
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(FASTBUS_LECROY_1875)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA12_RANGE),STRUCT_MIRROR_TEMPLATE_ARG(DATA12_RANGE),64> STRUCT_MIRROR_NAME(data);
+  STRUCT_MIRROR_FCNS_DECL(FASTBUS_LECROY_1875);
+};
+#endif//USER_DEF_FASTBUS_LECROY_1875
+
+#ifndef USER_DEF_FASTBUS_LECROY_1885
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(FASTBUS_LECROY_1885)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA12_RANGE),STRUCT_MIRROR_TEMPLATE_ARG(DATA12_RANGE),96> STRUCT_MIRROR_NAME(data);
+  STRUCT_MIRROR_FCNS_DECL(FASTBUS_LECROY_1885);
+};
+#endif//USER_DEF_FASTBUS_LECROY_1885
+
+#ifndef USER_DEF_NTP64_TIME
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(NTP64_TIME)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(sec);
+  STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(sec);
+  STRUCT_MIRROR_ITEM_CTRL(frac);
+  STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(frac);
+  STRUCT_MIRROR_FCNS_DECL(NTP64_TIME);
+};
+#endif//USER_DEF_NTP64_TIME
+
+#ifndef USER_DEF_NTP_MESSAGE
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(NTP_MESSAGE)
+{
+public:
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(word_count);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(word_count);
+      STRUCT_MIRROR_ITEM_CTRL(quick_burst);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(quick_burst);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_17_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_17_23);
+      STRUCT_MIRROR_ITEM_CTRL(id);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(id);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(header);
+  STRUCT_MIRROR_ITEM_CTRL(server_id);
+  STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(server_id);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(precision);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(precision);
+      STRUCT_MIRROR_ITEM_CTRL(poll);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(poll);
+      STRUCT_MIRROR_ITEM_CTRL(stratum);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(stratum);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_20_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_20_23);
+      STRUCT_MIRROR_ITEM_CTRL(mode);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(mode);
+      STRUCT_MIRROR_ITEM_CTRL(version);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(version);
+      STRUCT_MIRROR_ITEM_CTRL(leap);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(leap);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(sspp);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(frac);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(frac);
+      STRUCT_MIRROR_ITEM_CTRL(sec);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(sec);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(root_dly);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(frac);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(frac);
+      STRUCT_MIRROR_ITEM_CTRL(sec);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(sec);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(root_disp);
+  STRUCT_MIRROR_ITEM_CTRL(refid);
+  STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(refid);
+  STRUCT_MIRROR_ITEM_CTRL(orig2time);
+  STRUCT_MIRROR_TYPE(NTP64_TIME) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(orig2time);
+  STRUCT_MIRROR_ITEM_CTRL(tmit2time);
+  STRUCT_MIRROR_TYPE(NTP64_TIME) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tmit2time);
+  STRUCT_MIRROR_ITEM_CTRL(rec2time);
+  STRUCT_MIRROR_TYPE(NTP64_TIME) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(rec2time);
+  STRUCT_MIRROR_ITEM_CTRL(rx2time);
+  STRUCT_MIRROR_TYPE(NTP64_TIME) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(rx2time);
+  STRUCT_MIRROR_ITEM_CTRL(reftime);
+  STRUCT_MIRROR_TYPE(NTP64_TIME) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(reftime);
+  STRUCT_MIRROR_ITEM_CTRL(origtime);
+  STRUCT_MIRROR_TYPE(NTP64_TIME) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(origtime);
+  STRUCT_MIRROR_ITEM_CTRL(rectime);
+  STRUCT_MIRROR_TYPE(NTP64_TIME) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(rectime);
+  STRUCT_MIRROR_ITEM_CTRL(tmittime);
+  STRUCT_MIRROR_TYPE(NTP64_TIME) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tmittime);
+  STRUCT_MIRROR_ITEM_CTRL(rxtime);
+  STRUCT_MIRROR_TYPE(NTP64_TIME) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(rxtime);
+  STRUCT_MIRROR_FCNS_DECL(NTP_MESSAGE);
+};
+#endif//USER_DEF_NTP_MESSAGE
+
+#ifndef USER_DEF_RANDOM_TCAL_TSTAMP_CLOCK
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(RANDOM_TCAL_TSTAMP_CLOCK)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(soft_latches);
+  STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(soft_latches);
+  STRUCT_MIRROR_ITEM_CTRL(hard_latches);
+  STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(hard_latches);
+  STRUCT_MIRROR_ITEM_CTRL(clock_ticks);
+  STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(clock_ticks);
+  STRUCT_MIRROR_ITEM_CTRL(before);
+  STRUCT_MIRROR_TYPE(NTP64_TIME) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(before);
+  STRUCT_MIRROR_ITEM_CTRL(after);
+  STRUCT_MIRROR_TYPE(NTP64_TIME) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(after);
+  STRUCT_MIRROR_FCNS_DECL(RANDOM_TCAL_TSTAMP_CLOCK);
+};
+#endif//USER_DEF_RANDOM_TCAL_TSTAMP_CLOCK
+
+#ifndef USER_DEF_RANDOM_TCAL
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(RANDOM_TCAL)
+{
+public:
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(word_count);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(word_count);
+      STRUCT_MIRROR_ITEM_CTRL(pulses);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(pulses);
+      STRUCT_MIRROR_ITEM_CTRL(clock_bits);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(clock_bits);
+      STRUCT_MIRROR_ITEM_CTRL(has_tstamp1);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(has_tstamp1);
+      STRUCT_MIRROR_ITEM_CTRL(has_tstamp2);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(has_tstamp2);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_20_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_20_23);
+      STRUCT_MIRROR_ITEM_CTRL(id);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(id);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(header);
+  STRUCT_MIRROR_ITEM_CTRL(tstamp1);
+  STRUCT_MIRROR_TYPE(RANDOM_TCAL_TSTAMP_CLOCK) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tstamp1);
+  STRUCT_MIRROR_ITEM_CTRL(tstamp2);
+  STRUCT_MIRROR_TYPE(RANDOM_TCAL_TSTAMP_CLOCK) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tstamp2);
+  STRUCT_MIRROR_FCNS_DECL(RANDOM_TCAL);
+};
+#endif//USER_DEF_RANDOM_TCAL
+
+#ifndef USER_DEF_SOFT_SCALER32
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(SOFT_SCALER32)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA32),STRUCT_MIRROR_TEMPLATE_ARG(DATA32),32> STRUCT_MIRROR_NAME(data);
+  STRUCT_MIRROR_FCNS_DECL(SOFT_SCALER32);
+};
+#endif//USER_DEF_SOFT_SCALER32
+
+#ifndef USER_DEF_VME_CAEN_V1190_SUBTDC
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V1190_SUBTDC)
+{
+public:
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(bunch_id);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(bunch_id);
+      STRUCT_MIRROR_ITEM_CTRL(event_id);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(event_id);
+      STRUCT_MIRROR_ITEM_CTRL(tdc);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_26);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(header);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(flags);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(flags);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_15_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_15_23);
+      STRUCT_MIRROR_ITEM_CTRL(tdc);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_26);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(error_flags);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(word_count);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(word_count);
+      STRUCT_MIRROR_ITEM_CTRL(event_id);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(event_id);
+      STRUCT_MIRROR_ITEM_CTRL(tdc);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_26);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(trailer);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V1190_SUBTDC);
+};
+#endif//USER_DEF_VME_CAEN_V1190_SUBTDC
+
+#ifndef USER_DEF_VME_CAEN_V1190
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V1190)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_multi_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA24),STRUCT_MIRROR_TEMPLATE_ARG(DATA24),32,128> STRUCT_MIRROR_NAME(data);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+      STRUCT_MIRROR_ITEM_CTRL(event_number);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(event_number);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(header);
+  STRUCT_MIRROR_ITEM_CTRL(tdc);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(tdc__i0,,4);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V1190_SUBTDC) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc[4]);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(time_tag);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(time_tag);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(trigger);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+      STRUCT_MIRROR_ITEM_CTRL(word_count);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(word_count);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_20_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_20_23);
+      STRUCT_MIRROR_ITEM_CTRL(tdc_error);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc_error);
+      STRUCT_MIRROR_ITEM_CTRL(buffer_overflow);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(buffer_overflow);
+      STRUCT_MIRROR_ITEM_CTRL(trigger_lost);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(trigger_lost);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(trailer);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V1190);
+};
+#endif//USER_DEF_VME_CAEN_V1190
+
+#ifndef USER_DEF_VME_CAEN_V1190_SHORT_SUBTDC
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V1190_SHORT_SUBTDC)
+{
+public:
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V1190_SHORT_SUBTDC);
+};
+#endif//USER_DEF_VME_CAEN_V1190_SHORT_SUBTDC
+
+#ifndef USER_DEF_VME_CAEN_V1190_SHORT_SUBTDC_ERROR
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V1190_SHORT_SUBTDC_ERROR)
+{
+public:
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(flags);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(flags);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_15_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_15_23);
+      STRUCT_MIRROR_ITEM_CTRL(tdc);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_26);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(error_flags);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V1190_SHORT_SUBTDC_ERROR);
+};
+#endif//USER_DEF_VME_CAEN_V1190_SHORT_SUBTDC_ERROR
+
+#ifndef USER_DEF_VME_CAEN_V1190_SHORT
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V1190_SHORT)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_multi_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA24),STRUCT_MIRROR_TEMPLATE_ARG(DATA24),32,128> STRUCT_MIRROR_NAME(data);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+      STRUCT_MIRROR_ITEM_CTRL(event_number);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(event_number);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(header);
+  STRUCT_MIRROR_ITEM_CTRL(tdc);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(tdc__i0,,4);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V1190_SHORT_SUBTDC) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc[4]);
+  STRUCT_MIRROR_ITEM_CTRL(err);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(err__i0,,4);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V1190_SHORT_SUBTDC_ERROR) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(err[4]);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(time_tag);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(time_tag);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(trigger);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+      STRUCT_MIRROR_ITEM_CTRL(word_count);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(word_count);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_20_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_20_23);
+      STRUCT_MIRROR_ITEM_CTRL(tdc_error);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc_error);
+      STRUCT_MIRROR_ITEM_CTRL(buffer_overflow);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(buffer_overflow);
+      STRUCT_MIRROR_ITEM_CTRL(trigger_lost);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(trigger_lost);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(trailer);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V1190_SHORT);
+};
+#endif//USER_DEF_VME_CAEN_V1190_SHORT
+
+#ifndef USER_DEF_VME_CAEN_V1290_SUBTDC
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V1290_SUBTDC)
+{
+public:
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(bunch_id);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(bunch_id);
+      STRUCT_MIRROR_ITEM_CTRL(event_id);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(event_id);
+      STRUCT_MIRROR_ITEM_CTRL(tdc);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_26);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(header);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(flags);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(flags);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_15_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_15_23);
+      STRUCT_MIRROR_ITEM_CTRL(tdc);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_26);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(error_flags);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(word_count);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(word_count);
+      STRUCT_MIRROR_ITEM_CTRL(event_id);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(event_id);
+      STRUCT_MIRROR_ITEM_CTRL(tdc);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_26);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(trailer);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V1290_SUBTDC);
+};
+#endif//USER_DEF_VME_CAEN_V1290_SUBTDC
+
+#ifndef USER_DEF_VME_CAEN_V1290
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V1290)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_multi_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA24),STRUCT_MIRROR_TEMPLATE_ARG(DATA24),32,128> STRUCT_MIRROR_NAME(data);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+      STRUCT_MIRROR_ITEM_CTRL(event_number);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(event_number);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(header);
+  STRUCT_MIRROR_ITEM_CTRL(tdc);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(tdc__i0,,4);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V1290_SUBTDC) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc[4]);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(time_tag);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(time_tag);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(trigger);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+      STRUCT_MIRROR_ITEM_CTRL(word_count);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(word_count);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_20_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_20_23);
+      STRUCT_MIRROR_ITEM_CTRL(tdc_error);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc_error);
+      STRUCT_MIRROR_ITEM_CTRL(buffer_overflow);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(buffer_overflow);
+      STRUCT_MIRROR_ITEM_CTRL(trigger_lost);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(trigger_lost);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(trailer);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V1290);
+};
+#endif//USER_DEF_VME_CAEN_V1290
+
+#ifndef USER_DEF_VME_CAEN_V1290_SHORT_SUBTDC
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V1290_SHORT_SUBTDC)
+{
+public:
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V1290_SHORT_SUBTDC);
+};
+#endif//USER_DEF_VME_CAEN_V1290_SHORT_SUBTDC
+
+#ifndef USER_DEF_VME_CAEN_V1290_SHORT_SUBTDC_ERROR
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V1290_SHORT_SUBTDC_ERROR)
+{
+public:
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(flags);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(flags);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_15_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_15_23);
+      STRUCT_MIRROR_ITEM_CTRL(tdc);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_26);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(error_flags);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V1290_SHORT_SUBTDC_ERROR);
+};
+#endif//USER_DEF_VME_CAEN_V1290_SHORT_SUBTDC_ERROR
+
+#ifndef USER_DEF_VME_CAEN_V1290_SHORT
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V1290_SHORT)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_multi_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA24),STRUCT_MIRROR_TEMPLATE_ARG(DATA24),32,128> STRUCT_MIRROR_NAME(data);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+      STRUCT_MIRROR_ITEM_CTRL(event_number);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(event_number);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(header);
+  STRUCT_MIRROR_ITEM_CTRL(tdc);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(tdc__i0,,4);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V1290_SHORT_SUBTDC) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc[4]);
+  STRUCT_MIRROR_ITEM_CTRL(err);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(err__i0,,4);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V1290_SHORT_SUBTDC_ERROR) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(err[4]);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(time_tag);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(time_tag);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(trigger);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+      STRUCT_MIRROR_ITEM_CTRL(word_count);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(word_count);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_20_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_20_23);
+      STRUCT_MIRROR_ITEM_CTRL(tdc_error);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc_error);
+      STRUCT_MIRROR_ITEM_CTRL(buffer_overflow);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(buffer_overflow);
+      STRUCT_MIRROR_ITEM_CTRL(trigger_lost);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(trigger_lost);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_27_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_27_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(trailer);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V1290_SHORT);
+};
+#endif//USER_DEF_VME_CAEN_V1290_SHORT
+
+#ifndef USER_DEF_VME_CAEN_V775
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V775)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA12_OVERFLOW),STRUCT_MIRROR_TEMPLATE_ARG(DATA12_OVERFLOW),32> STRUCT_MIRROR_NAME(data);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(event_number);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(event_number);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_24_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_24_26);
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(eob);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V775);
+};
+#endif//USER_DEF_VME_CAEN_V775
+
+#ifndef USER_DEF_VME_CAEN_V830
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V830)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA32),STRUCT_MIRROR_TEMPLATE_ARG(DATA32),32> STRUCT_MIRROR_NAME(data);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(event_number);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(event_number);
+      STRUCT_MIRROR_ITEM_CTRL(ts);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(ts);
+      STRUCT_MIRROR_ITEM_CTRL(count);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(count);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_24_25);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_24_25);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_26_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_26_26);
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(header);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V830);
+};
+#endif//USER_DEF_VME_CAEN_V830
+
+#ifndef USER_DEF_VME_MESYTEC_MADC32
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_MESYTEC_MADC32)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA14_OVERFLOW),STRUCT_MIRROR_TEMPLATE_ARG(DATA14_OVERFLOW),32> STRUCT_MIRROR_NAME(data);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(counter);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(counter);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_30_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_30_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(end_of_event);
+  STRUCT_MIRROR_FCNS_DECL(VME_MESYTEC_MADC32);
+};
+#endif//USER_DEF_VME_MESYTEC_MADC32
+
+#ifndef USER_DEF_VME_MESYTEC_MDPP16
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_MESYTEC_MDPP16)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_multi_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA16_OVERFLOW),STRUCT_MIRROR_TEMPLATE_ARG(DATA16_OVERFLOW),34,100> STRUCT_MIRROR_NAME(data);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(counter);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(counter);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_30_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_30_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(end_of_event);
+  STRUCT_MIRROR_FCNS_DECL(VME_MESYTEC_MDPP16);
+};
+#endif//USER_DEF_VME_MESYTEC_MDPP16
+
+#ifndef USER_DEF_LAND_CAMAC_CONVERTER
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(LAND_CAMAC_CONVERTER) : public STRUCT_MIRROR_BASE(unpack_subevent_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_subevent_base);
+  STRUCT_MIRROR_ITEM_CTRL(tpat);
+  STRUCT_MIRROR_TYPE(uint16) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tpat);
+  STRUCT_MIRROR_ITEM_CTRL(tprev);
+  STRUCT_MIRROR_TYPE(uint16) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tprev);
+  STRUCT_MIRROR_ITEM_CTRL(tnext);
+  STRUCT_MIRROR_TYPE(uint16) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tnext);
+  STRUCT_MIRROR_ITEM_CTRL(tprev2);
+  STRUCT_MIRROR_TYPE(uint16) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tprev2);
+  STRUCT_MIRROR_ITEM_CTRL(qSIA0416);
+  STRUCT_MIRROR_TYPE(CAMAC_SILENA_4418) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(qSIA0416);
+  STRUCT_MIRROR_ITEM_CTRL(qSIA0458);
+  STRUCT_MIRROR_TYPE(CAMAC_SILENA_4418) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(qSIA0458);
+  STRUCT_MIRROR_ITEM_CTRL(tPHI10481);
+  STRUCT_MIRROR_TYPE(CAMAC_PHILLIPS_7164) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tPHI10481);
+  STRUCT_MIRROR_ITEM_CTRL(tPHI18573);
+  STRUCT_MIRROR_TYPE(CAMAC_PHILLIPS_7164) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tPHI18573);
+  STRUCT_MIRROR_ITEM_CTRL(aPHI12160);
+  STRUCT_MIRROR_TYPE(CAMAC_PHILLIPS_7164) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(aPHI12160);
+  STRUCT_MIRROR_ITEM_CTRL(qSIA0429);
+  STRUCT_MIRROR_TYPE(CAMAC_SILENA_4418) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(qSIA0429);
+  STRUCT_MIRROR_ITEM_CTRL(tSIA8035);
+  STRUCT_MIRROR_TYPE(CAMAC_SILENA_4418) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tSIA8035);
+  STRUCT_MIRROR_ITEM_CTRL(tSIA0469);
+  STRUCT_MIRROR_TYPE(CAMAC_SILENA_4418) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tSIA0469);
+  STRUCT_MIRROR_ITEM_CTRL(qSIA0480);
+  STRUCT_MIRROR_TYPE(CAMAC_SILENA_4418) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(qSIA0480);
+  STRUCT_MIRROR_ITEM_CTRL(tFRS120);
+  STRUCT_MIRROR_TYPE(CAMAC_SILENA_4418) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tFRS120);
+  STRUCT_MIRROR_ITEM_CTRL(tSIA0426);
+  STRUCT_MIRROR_TYPE(CAMAC_SILENA_4418) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tSIA0426);
+  STRUCT_MIRROR_ITEM_CTRL(qSIA0495);
+  STRUCT_MIRROR_TYPE(CAMAC_SILENA_4418) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(qSIA0495);
+  STRUCT_MIRROR_FCNS_DECL(LAND_CAMAC_CONVERTER);
+};
+#endif//USER_DEF_LAND_CAMAC_CONVERTER
+
+#ifndef USER_DEF_LAND_CAMAC_SCALER
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(LAND_CAMAC_SCALER) : public STRUCT_MIRROR_BASE(unpack_subevent_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_subevent_base);
+  STRUCT_MIRROR_ITEM_CTRL(timestamp);
+  STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(timestamp);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_0_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_0_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(endianess);
+  STRUCT_MIRROR_ITEM_CTRL(scaler0);
+  STRUCT_MIRROR_TYPE(CAMAC_LECROY_4434) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(scaler0);
+  STRUCT_MIRROR_ITEM_CTRL(scaler2);
+  STRUCT_MIRROR_TYPE(CAMAC_LECROY_4434) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(scaler2);
+  STRUCT_MIRROR_ITEM_CTRL(scaler1);
+  STRUCT_MIRROR_TYPE(CAMAC_LECROY_4434) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(scaler1);
+  STRUCT_MIRROR_FCNS_DECL(LAND_CAMAC_SCALER);
+};
+#endif//USER_DEF_LAND_CAMAC_SCALER
+
+#ifndef USER_DEF_LAND_CAMAC_START_STOP_STAMP
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(LAND_CAMAC_START_STOP_STAMP) : public STRUCT_MIRROR_BASE(unpack_subevent_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_subevent_base);
+  STRUCT_MIRROR_ITEM_CTRL(timestamp);
+  STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(timestamp);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_0_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_0_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(endianess);
+  STRUCT_MIRROR_FCNS_DECL(LAND_CAMAC_START_STOP_STAMP);
+};
+#endif//USER_DEF_LAND_CAMAC_START_STOP_STAMP
+
+#ifndef USER_DEF_LAND_CAMAC_TCAL_INFO
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(LAND_CAMAC_TCAL_INFO) : public STRUCT_MIRROR_BASE(unpack_subevent_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_subevent_base);
+  STRUCT_MIRROR_ITEM_CTRL(info);
+  STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(info);
+  STRUCT_MIRROR_ITEM_CTRL(rtcal);
+  STRUCT_MIRROR_TYPE(RANDOM_TCAL) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(rtcal);
+  STRUCT_MIRROR_ITEM_CTRL(ntp);
+  STRUCT_MIRROR_TYPE(NTP_MESSAGE) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(ntp);
+  STRUCT_MIRROR_FCNS_DECL(LAND_CAMAC_TCAL_INFO);
+};
+#endif//USER_DEF_LAND_CAMAC_TCAL_INFO
+
+#ifndef USER_DEF_LAND_FASTBUS1
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(LAND_FASTBUS1) : public STRUCT_MIRROR_BASE(unpack_subevent_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_subevent_base);
+  STRUCT_MIRROR_ITEM_CTRL(Q47342);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1885) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(Q47342);
+  STRUCT_MIRROR_ITEM_CTRL(Q46848);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1885) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(Q46848);
+  STRUCT_MIRROR_ITEM_CTRL(Q11111);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1885) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(Q11111);
+  STRUCT_MIRROR_ITEM_CTRL(Q47315);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1885) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(Q47315);
+  STRUCT_MIRROR_ITEM_CTRL(Q17320);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1885) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(Q17320);
+  STRUCT_MIRROR_ITEM_CTRL(Q15372);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1885) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(Q15372);
+  STRUCT_MIRROR_ITEM_CTRL(Q46962);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1885) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(Q46962);
+  STRUCT_MIRROR_ITEM_CTRL(Q46993);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1885) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(Q46993);
+  STRUCT_MIRROR_ITEM_CTRL(Q15358);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1885) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(Q15358);
+  STRUCT_MIRROR_ITEM_CTRL(Q47264);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1885) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(Q47264);
+  STRUCT_MIRROR_ITEM_CTRL(T81855);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1875) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T81855);
+  STRUCT_MIRROR_ITEM_CTRL(T87044);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1875) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T87044);
+  STRUCT_MIRROR_ITEM_CTRL(T87024);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1875) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T87024);
+  STRUCT_MIRROR_ITEM_CTRL(T81800);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1875) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T81800);
+  STRUCT_MIRROR_FCNS_DECL(LAND_FASTBUS1);
+};
+#endif//USER_DEF_LAND_FASTBUS1
+
+#ifndef USER_DEF_LAND_FASTBUS2
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(LAND_FASTBUS2) : public STRUCT_MIRROR_BASE(unpack_subevent_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_subevent_base);
+  STRUCT_MIRROR_ITEM_CTRL(T87047);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1875) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T87047);
+  STRUCT_MIRROR_ITEM_CTRL(T81808);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1875) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T81808);
+  STRUCT_MIRROR_ITEM_CTRL(T48854);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1875) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T48854);
+  STRUCT_MIRROR_ITEM_CTRL(T81859);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1875) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T81859);
+  STRUCT_MIRROR_ITEM_CTRL(T81795);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1875) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T81795);
+  STRUCT_MIRROR_ITEM_CTRL(T81806);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1875) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T81806);
+  STRUCT_MIRROR_ITEM_CTRL(T48834);
+  STRUCT_MIRROR_TYPE(FASTBUS_LECROY_1875) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T48834);
+  STRUCT_MIRROR_FCNS_DECL(LAND_FASTBUS2);
+};
+#endif//USER_DEF_LAND_FASTBUS2
+
+#ifndef USER_DEF_LAND_FASTBUS_ERROR
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(LAND_FASTBUS_ERROR) : public STRUCT_MIRROR_BASE(unpack_subevent_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_subevent_base);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(timeout_waiting_smi);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(timeout_waiting_smi);
+      STRUCT_MIRROR_ITEM_CTRL(illegal_block_transfer);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(illegal_block_transfer);
+      STRUCT_MIRROR_ITEM_CTRL(fifa_address_overflow);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(fifa_address_overflow);
+      STRUCT_MIRROR_ITEM_CTRL(fifa_register_error);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(fifa_register_error);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_4_15);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_4_15);
+      STRUCT_MIRROR_ITEM_CTRL(init_error);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(init_error);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_17_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_17_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(error_code);
+  STRUCT_MIRROR_ITEM_CTRL(error_num);
+  STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(error_num);
+  STRUCT_MIRROR_FCNS_DECL(LAND_FASTBUS_ERROR);
+};
+#endif//USER_DEF_LAND_FASTBUS_ERROR
+
+#ifndef USER_DEF_LAND_FASTBUS_ERROR_NGF
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(LAND_FASTBUS_ERROR_NGF) : public STRUCT_MIRROR_BASE(unpack_subevent_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_subevent_base);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_0_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_0_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(magic);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(error);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(error);
+      STRUCT_MIRROR_ITEM_CTRL(uninitialized);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(uninitialized);
+      STRUCT_MIRROR_ITEM_CTRL(ss1);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(ss1);
+      STRUCT_MIRROR_ITEM_CTRL(wc);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(wc);
+      STRUCT_MIRROR_ITEM_CTRL(mid);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(mid);
+      STRUCT_MIRROR_ITEM_CTRL(fifo_empty);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(fifo_empty);
+      STRUCT_MIRROR_ITEM_CTRL(fifo_not_empty);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(fifo_not_empty);
+      STRUCT_MIRROR_ITEM_CTRL(not_finished);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(not_finished);
+      STRUCT_MIRROR_ITEM_CTRL(bad_end_addr);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(bad_end_addr);
+      STRUCT_MIRROR_ITEM_CTRL(word_lost);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(word_lost);
+      STRUCT_MIRROR_ITEM_CTRL(dummy_10_31);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_10_31);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(error_code);
+  STRUCT_MIRROR_FCNS_DECL(LAND_FASTBUS_ERROR_NGF);
+};
+#endif//USER_DEF_LAND_FASTBUS_ERROR_NGF
+
+#ifndef USER_DEF_unpack_event
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(unpack_event) : public STRUCT_MIRROR_BASE(unpack_event_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_event_base);
+  STRUCT_MIRROR_ITEM_CTRL(camac);
+  STRUCT_MIRROR_TYPE(LAND_CAMAC_CONVERTER) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(camac);
+  STRUCT_MIRROR_ITEM_CTRL(camac_tcal_info);
+  STRUCT_MIRROR_TYPE(LAND_CAMAC_TCAL_INFO) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(camac_tcal_info);
+  STRUCT_MIRROR_ITEM_CTRL(camac_start_stop_stamp);
+  STRUCT_MIRROR_TYPE(LAND_CAMAC_START_STOP_STAMP) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(camac_start_stop_stamp);
+  STRUCT_MIRROR_ITEM_CTRL(camac_scalers);
+  STRUCT_MIRROR_TYPE(LAND_CAMAC_SCALER) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(camac_scalers);
+  STRUCT_MIRROR_ITEM_CTRL(fastbus_error);
+  STRUCT_MIRROR_TYPE(LAND_FASTBUS_ERROR) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(fastbus_error);
+  STRUCT_MIRROR_ITEM_CTRL(fastbus1);
+  STRUCT_MIRROR_TYPE(LAND_FASTBUS1) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(fastbus1);
+  STRUCT_MIRROR_ITEM_CTRL(fastbus2);
+  STRUCT_MIRROR_TYPE(LAND_FASTBUS2) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(fastbus2);
+  STRUCT_MIRROR_FCNS_DECL(unpack_event);
+};
+#endif//USER_DEF_unpack_event
+
+#ifndef USER_DEF_unpack_sticky_event
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(unpack_sticky_event) : public STRUCT_MIRROR_BASE(unpack_sticky_event_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_sticky_event_base);
+  STRUCT_MIRROR_FCNS_DECL(unpack_sticky_event);
+};
+#endif//USER_DEF_unpack_sticky_event
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_STRUCT *************************************************/
+
+
+/** BEGIN_MIRROR_DECL_STRUCT *******************************************
+ *
+ * Mirror structure names.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(CAMAC_LECROY_4434);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(CAMAC_PHILLIPS_7164);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(CAMAC_SILENA_4418);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(FASTBUS_LECROY_1875);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(FASTBUS_LECROY_1885);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(NTP64_TIME);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(NTP_MESSAGE);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(RANDOM_TCAL_TSTAMP_CLOCK);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(RANDOM_TCAL);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(SOFT_SCALER32);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V1190_SUBTDC);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V1190);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V1190_SHORT_SUBTDC);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V1190_SHORT_SUBTDC_ERROR);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V1190_SHORT);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V1290_SUBTDC);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V1290);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V1290_SHORT_SUBTDC);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V1290_SHORT_SUBTDC_ERROR);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V1290_SHORT);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V775);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V830);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_MESYTEC_MADC32);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_MESYTEC_MDPP16);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(LAND_CAMAC_CONVERTER);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(LAND_CAMAC_SCALER);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(LAND_CAMAC_START_STOP_STAMP);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(LAND_CAMAC_TCAL_INFO);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(LAND_FASTBUS1);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(LAND_FASTBUS2);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(LAND_FASTBUS_ERROR);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(LAND_FASTBUS_ERROR_NGF);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(unpack_event);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(unpack_sticky_event);
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_DECL_STRUCT ********************************************/
+
+
+/** BEGIN_FUNCTION_CALL_PER_MEMBER *************************************
+ *
+ * Recursive function calls per member.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_fcncall_define.hh"
+
+#ifndef USER_DEF_CAMAC_LECROY_4434
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(CAMAC_LECROY_4434)::FCNCALL_NAME(CAMAC_LECROY_4434)
+{
+  FCNCALL_INIT;
+  // raw_array_zero_suppress<DATA24,DATA24,32> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_CAMAC_LECROY_4434
+
+#ifndef USER_DEF_CAMAC_PHILLIPS_7164
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(CAMAC_PHILLIPS_7164)::FCNCALL_NAME(CAMAC_PHILLIPS_7164)
+{
+  FCNCALL_INIT;
+  // raw_array_zero_suppress<DATA12,DATA12,16> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_CAMAC_PHILLIPS_7164
+
+#ifndef USER_DEF_CAMAC_SILENA_4418
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(CAMAC_SILENA_4418)::FCNCALL_NAME(CAMAC_SILENA_4418)
+{
+  FCNCALL_INIT;
+  // raw_array_zero_suppress<DATA12_OVERFLOW,DATA12_OVERFLOW,8> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_CAMAC_SILENA_4418
+
+#ifndef USER_DEF_FASTBUS_LECROY_1875
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FASTBUS_LECROY_1875)::FCNCALL_NAME(FASTBUS_LECROY_1875)
+{
+  FCNCALL_INIT;
+  // raw_array_zero_suppress<DATA12_RANGE,DATA12_RANGE,64> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_FASTBUS_LECROY_1875
+
+#ifndef USER_DEF_FASTBUS_LECROY_1885
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FASTBUS_LECROY_1885)::FCNCALL_NAME(FASTBUS_LECROY_1885)
+{
+  FCNCALL_INIT;
+  // raw_array_zero_suppress<DATA12_RANGE,DATA12_RANGE,96> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_FASTBUS_LECROY_1885
+
+#ifndef USER_DEF_NTP64_TIME
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(NTP64_TIME)::FCNCALL_NAME(NTP64_TIME)
+{
+  FCNCALL_INIT;
+  // uint32 sec;
+  {
+  FCNCALL_SUBNAME("sec");
+  { FCNCALL_CALL_CTRL_WRAP(sec,FCNCALL_CALL_TYPE(uint32,sec)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 frac;
+  {
+  FCNCALL_SUBNAME("frac");
+  { FCNCALL_CALL_CTRL_WRAP(frac,FCNCALL_CALL_TYPE(uint32,frac)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_NTP64_TIME
+
+#ifndef USER_DEF_NTP_MESSAGE
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(NTP_MESSAGE)::FCNCALL_NAME(NTP_MESSAGE)
+{
+  FCNCALL_INIT;
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 word_count : 16;
+      // uint32 quick_burst : 1;
+      // uint32 dummy_17_23 : 7;
+      // uint32 id : 8;
+    // } ;
+    // uint32 u32;
+  // } header;
+  {
+  FCNCALL_SUBNAME("header");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 word_count : 16;
+    // uint32 quick_burst : 1;
+    // uint32 dummy_17_23 : 7;
+    // uint32 id : 8;
+  // } ;
+  // uint32 word_count : 16;
+  {
+  FCNCALL_SUBNAME("word_count");
+  { FCNCALL_CALL_CTRL_WRAP(header.word_count,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.word_count)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 quick_burst : 1;
+  {
+  FCNCALL_SUBNAME("quick_burst");
+  { FCNCALL_CALL_CTRL_WRAP(header.quick_burst,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.quick_burst)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_17_23 : 7;
+  {
+  FCNCALL_SUBNAME("dummy_17_23");
+  { FCNCALL_CALL_CTRL_WRAP(header.dummy_17_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.dummy_17_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 id : 8;
+  {
+  FCNCALL_SUBNAME("id");
+  { FCNCALL_CALL_CTRL_WRAP(header.id,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.id)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(header.u32,FCNCALL_CALL_TYPE(uint32,header.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 server_id;
+  {
+  FCNCALL_SUBNAME("server_id");
+  { FCNCALL_CALL_CTRL_WRAP(server_id,FCNCALL_CALL_TYPE(uint32,server_id)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 precision : 8;
+      // uint32 poll : 8;
+      // uint32 stratum : 4;
+      // uint32 dummy_20_23 : 4;
+      // uint32 mode : 3;
+      // uint32 version : 3;
+      // uint32 leap : 2;
+    // } ;
+    // uint32 u32;
+  // } sspp;
+  {
+  FCNCALL_SUBNAME("sspp");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 precision : 8;
+    // uint32 poll : 8;
+    // uint32 stratum : 4;
+    // uint32 dummy_20_23 : 4;
+    // uint32 mode : 3;
+    // uint32 version : 3;
+    // uint32 leap : 2;
+  // } ;
+  // uint32 precision : 8;
+  {
+  FCNCALL_SUBNAME("precision");
+  { FCNCALL_CALL_CTRL_WRAP(sspp.precision,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,sspp.precision)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 poll : 8;
+  {
+  FCNCALL_SUBNAME("poll");
+  { FCNCALL_CALL_CTRL_WRAP(sspp.poll,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,sspp.poll)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 stratum : 4;
+  {
+  FCNCALL_SUBNAME("stratum");
+  { FCNCALL_CALL_CTRL_WRAP(sspp.stratum,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,sspp.stratum)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_20_23 : 4;
+  {
+  FCNCALL_SUBNAME("dummy_20_23");
+  { FCNCALL_CALL_CTRL_WRAP(sspp.dummy_20_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,sspp.dummy_20_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 mode : 3;
+  {
+  FCNCALL_SUBNAME("mode");
+  { FCNCALL_CALL_CTRL_WRAP(sspp.mode,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,sspp.mode)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 version : 3;
+  {
+  FCNCALL_SUBNAME("version");
+  { FCNCALL_CALL_CTRL_WRAP(sspp.version,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,sspp.version)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 leap : 2;
+  {
+  FCNCALL_SUBNAME("leap");
+  { FCNCALL_CALL_CTRL_WRAP(sspp.leap,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,sspp.leap)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(sspp.u32,FCNCALL_CALL_TYPE(uint32,sspp.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 frac : 16;
+      // uint32 sec : 16;
+    // } ;
+    // uint32 u32;
+  // } root_dly;
+  {
+  FCNCALL_SUBNAME("root_dly");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 frac : 16;
+    // uint32 sec : 16;
+  // } ;
+  // uint32 frac : 16;
+  {
+  FCNCALL_SUBNAME("frac");
+  { FCNCALL_CALL_CTRL_WRAP(root_dly.frac,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,root_dly.frac)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 sec : 16;
+  {
+  FCNCALL_SUBNAME("sec");
+  { FCNCALL_CALL_CTRL_WRAP(root_dly.sec,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,root_dly.sec)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(root_dly.u32,FCNCALL_CALL_TYPE(uint32,root_dly.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 frac : 16;
+      // uint32 sec : 16;
+    // } ;
+    // uint32 u32;
+  // } root_disp;
+  {
+  FCNCALL_SUBNAME("root_disp");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 frac : 16;
+    // uint32 sec : 16;
+  // } ;
+  // uint32 frac : 16;
+  {
+  FCNCALL_SUBNAME("frac");
+  { FCNCALL_CALL_CTRL_WRAP(root_disp.frac,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,root_disp.frac)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 sec : 16;
+  {
+  FCNCALL_SUBNAME("sec");
+  { FCNCALL_CALL_CTRL_WRAP(root_disp.sec,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,root_disp.sec)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(root_disp.u32,FCNCALL_CALL_TYPE(uint32,root_disp.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 refid;
+  {
+  FCNCALL_SUBNAME("refid");
+  { FCNCALL_CALL_CTRL_WRAP(refid,FCNCALL_CALL_TYPE(uint32,refid)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP64_TIME orig2time;
+  {
+  FCNCALL_SUBNAME("orig2time");
+  { FCNCALL_CALL_CTRL_WRAP(orig2time,orig2time.FCNCALL_CALL(orig2time)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP64_TIME tmit2time;
+  {
+  FCNCALL_SUBNAME("tmit2time");
+  { FCNCALL_CALL_CTRL_WRAP(tmit2time,tmit2time.FCNCALL_CALL(tmit2time)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP64_TIME rec2time;
+  {
+  FCNCALL_SUBNAME("rec2time");
+  { FCNCALL_CALL_CTRL_WRAP(rec2time,rec2time.FCNCALL_CALL(rec2time)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP64_TIME rx2time;
+  {
+  FCNCALL_SUBNAME("rx2time");
+  { FCNCALL_CALL_CTRL_WRAP(rx2time,rx2time.FCNCALL_CALL(rx2time)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP64_TIME reftime;
+  {
+  FCNCALL_SUBNAME("reftime");
+  { FCNCALL_CALL_CTRL_WRAP(reftime,reftime.FCNCALL_CALL(reftime)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP64_TIME origtime;
+  {
+  FCNCALL_SUBNAME("origtime");
+  { FCNCALL_CALL_CTRL_WRAP(origtime,origtime.FCNCALL_CALL(origtime)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP64_TIME rectime;
+  {
+  FCNCALL_SUBNAME("rectime");
+  { FCNCALL_CALL_CTRL_WRAP(rectime,rectime.FCNCALL_CALL(rectime)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP64_TIME tmittime;
+  {
+  FCNCALL_SUBNAME("tmittime");
+  { FCNCALL_CALL_CTRL_WRAP(tmittime,tmittime.FCNCALL_CALL(tmittime)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP64_TIME rxtime;
+  {
+  FCNCALL_SUBNAME("rxtime");
+  { FCNCALL_CALL_CTRL_WRAP(rxtime,rxtime.FCNCALL_CALL(rxtime)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_NTP_MESSAGE
+
+#ifndef USER_DEF_RANDOM_TCAL_TSTAMP_CLOCK
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(RANDOM_TCAL_TSTAMP_CLOCK)::FCNCALL_NAME(RANDOM_TCAL_TSTAMP_CLOCK)
+{
+  FCNCALL_INIT;
+  // uint32 soft_latches;
+  {
+  FCNCALL_SUBNAME("soft_latches");
+  { FCNCALL_CALL_CTRL_WRAP(soft_latches,FCNCALL_CALL_TYPE(uint32,soft_latches)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 hard_latches;
+  {
+  FCNCALL_SUBNAME("hard_latches");
+  { FCNCALL_CALL_CTRL_WRAP(hard_latches,FCNCALL_CALL_TYPE(uint32,hard_latches)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 clock_ticks;
+  {
+  FCNCALL_SUBNAME("clock_ticks");
+  { FCNCALL_CALL_CTRL_WRAP(clock_ticks,FCNCALL_CALL_TYPE(uint32,clock_ticks)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP64_TIME before;
+  {
+  FCNCALL_SUBNAME("before");
+  { FCNCALL_CALL_CTRL_WRAP(before,before.FCNCALL_CALL(before)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP64_TIME after;
+  {
+  FCNCALL_SUBNAME("after");
+  { FCNCALL_CALL_CTRL_WRAP(after,after.FCNCALL_CALL(after)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_RANDOM_TCAL_TSTAMP_CLOCK
+
+#ifndef USER_DEF_RANDOM_TCAL
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(RANDOM_TCAL)::FCNCALL_NAME(RANDOM_TCAL)
+{
+  FCNCALL_INIT;
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 word_count : 8;
+      // uint32 pulses : 4;
+      // uint32 clock_bits : 6;
+      // uint32 has_tstamp1 : 1;
+      // uint32 has_tstamp2 : 1;
+      // uint32 dummy_20_23 : 4;
+      // uint32 id : 8;
+    // } ;
+    // uint32 u32;
+  // } header;
+  {
+  FCNCALL_SUBNAME("header");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 word_count : 8;
+    // uint32 pulses : 4;
+    // uint32 clock_bits : 6;
+    // uint32 has_tstamp1 : 1;
+    // uint32 has_tstamp2 : 1;
+    // uint32 dummy_20_23 : 4;
+    // uint32 id : 8;
+  // } ;
+  // uint32 word_count : 8;
+  {
+  FCNCALL_SUBNAME("word_count");
+  { FCNCALL_CALL_CTRL_WRAP(header.word_count,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.word_count)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 pulses : 4;
+  {
+  FCNCALL_SUBNAME("pulses");
+  { FCNCALL_CALL_CTRL_WRAP(header.pulses,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.pulses)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 clock_bits : 6;
+  {
+  FCNCALL_SUBNAME("clock_bits");
+  { FCNCALL_CALL_CTRL_WRAP(header.clock_bits,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.clock_bits)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 has_tstamp1 : 1;
+  {
+  FCNCALL_SUBNAME("has_tstamp1");
+  { FCNCALL_CALL_CTRL_WRAP(header.has_tstamp1,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.has_tstamp1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 has_tstamp2 : 1;
+  {
+  FCNCALL_SUBNAME("has_tstamp2");
+  { FCNCALL_CALL_CTRL_WRAP(header.has_tstamp2,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.has_tstamp2)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_20_23 : 4;
+  {
+  FCNCALL_SUBNAME("dummy_20_23");
+  { FCNCALL_CALL_CTRL_WRAP(header.dummy_20_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.dummy_20_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 id : 8;
+  {
+  FCNCALL_SUBNAME("id");
+  { FCNCALL_CALL_CTRL_WRAP(header.id,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.id)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(header.u32,FCNCALL_CALL_TYPE(uint32,header.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // RANDOM_TCAL_TSTAMP_CLOCK tstamp1;
+  {
+  FCNCALL_SUBNAME("tstamp1");
+  { FCNCALL_CALL_CTRL_WRAP(tstamp1,tstamp1.FCNCALL_CALL(tstamp1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // RANDOM_TCAL_TSTAMP_CLOCK tstamp2;
+  {
+  FCNCALL_SUBNAME("tstamp2");
+  { FCNCALL_CALL_CTRL_WRAP(tstamp2,tstamp2.FCNCALL_CALL(tstamp2)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_RANDOM_TCAL
+
+#ifndef USER_DEF_SOFT_SCALER32
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(SOFT_SCALER32)::FCNCALL_NAME(SOFT_SCALER32)
+{
+  FCNCALL_INIT;
+  // raw_array_zero_suppress<DATA32,DATA32,32> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_SOFT_SCALER32
+
+#ifndef USER_DEF_VME_CAEN_V1190_SUBTDC
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V1190_SUBTDC)::FCNCALL_NAME(VME_CAEN_V1190_SUBTDC)
+{
+  FCNCALL_INIT;
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 bunch_id : 12;
+      // uint32 event_id : 12;
+      // uint32 tdc : 2;
+      // uint32 dummy_26 : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } header;
+  {
+  FCNCALL_SUBNAME("header");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 bunch_id : 12;
+    // uint32 event_id : 12;
+    // uint32 tdc : 2;
+    // uint32 dummy_26 : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 bunch_id : 12;
+  {
+  FCNCALL_SUBNAME("bunch_id");
+  { FCNCALL_CALL_CTRL_WRAP(header.bunch_id,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.bunch_id)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 event_id : 12;
+  {
+  FCNCALL_SUBNAME("event_id");
+  { FCNCALL_CALL_CTRL_WRAP(header.event_id,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.event_id)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc : 2;
+  {
+  FCNCALL_SUBNAME("tdc");
+  { FCNCALL_CALL_CTRL_WRAP(header.tdc,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.tdc)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_26 : 1;
+  {
+  FCNCALL_SUBNAME("dummy_26");
+  { FCNCALL_CALL_CTRL_WRAP(header.dummy_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.dummy_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(header.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(header.u32,FCNCALL_CALL_TYPE(uint32,header.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 flags : 15;
+      // uint32 dummy_15_23 : 9;
+      // uint32 tdc : 2;
+      // uint32 dummy_26 : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } error_flags;
+  {
+  FCNCALL_SUBNAME("error_flags");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 flags : 15;
+    // uint32 dummy_15_23 : 9;
+    // uint32 tdc : 2;
+    // uint32 dummy_26 : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 flags : 15;
+  {
+  FCNCALL_SUBNAME("flags");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.flags,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.flags)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_15_23 : 9;
+  {
+  FCNCALL_SUBNAME("dummy_15_23");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.dummy_15_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.dummy_15_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc : 2;
+  {
+  FCNCALL_SUBNAME("tdc");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.tdc,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.tdc)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_26 : 1;
+  {
+  FCNCALL_SUBNAME("dummy_26");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.dummy_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.dummy_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.u32,FCNCALL_CALL_TYPE(uint32,error_flags.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 word_count : 12;
+      // uint32 event_id : 12;
+      // uint32 tdc : 2;
+      // uint32 dummy_26 : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } trailer;
+  {
+  FCNCALL_SUBNAME("trailer");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 word_count : 12;
+    // uint32 event_id : 12;
+    // uint32 tdc : 2;
+    // uint32 dummy_26 : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 word_count : 12;
+  {
+  FCNCALL_SUBNAME("word_count");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.word_count,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.word_count)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 event_id : 12;
+  {
+  FCNCALL_SUBNAME("event_id");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.event_id,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.event_id)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc : 2;
+  {
+  FCNCALL_SUBNAME("tdc");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.tdc,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.tdc)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_26 : 1;
+  {
+  FCNCALL_SUBNAME("dummy_26");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.dummy_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.dummy_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.u32,FCNCALL_CALL_TYPE(uint32,trailer.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V1190_SUBTDC
+
+#ifndef USER_DEF_VME_CAEN_V1190
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V1190)::FCNCALL_NAME(VME_CAEN_V1190)
+{
+  FCNCALL_INIT;
+  // raw_array_multi_zero_suppress<DATA24,DATA24,32,128> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 geom : 5;
+      // uint32 event_number : 22;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } header;
+  {
+  FCNCALL_SUBNAME("header");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 geom : 5;
+    // uint32 event_number : 22;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(header.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 event_number : 22;
+  {
+  FCNCALL_SUBNAME("event_number");
+  { FCNCALL_CALL_CTRL_WRAP(header.event_number,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.event_number)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(header.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(header.u32,FCNCALL_CALL_TYPE(uint32,header.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V1190_SUBTDC tdc[4];
+  {
+  FCNCALL_SUBNAME("tdc");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(tdc__i0,,__i0,tdc[__i0].FCNCALL_CALL(tdc[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 time_tag : 27;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } trigger;
+  {
+  FCNCALL_SUBNAME("trigger");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 time_tag : 27;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 time_tag : 27;
+  {
+  FCNCALL_SUBNAME("time_tag");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.time_tag,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trigger.time_tag)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trigger.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.u32,FCNCALL_CALL_TYPE(uint32,trigger.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 geom : 5;
+      // uint32 word_count : 15;
+      // uint32 dummy_20_23 : 4;
+      // uint32 tdc_error : 1;
+      // uint32 buffer_overflow : 1;
+      // uint32 trigger_lost : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } trailer;
+  {
+  FCNCALL_SUBNAME("trailer");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 geom : 5;
+    // uint32 word_count : 15;
+    // uint32 dummy_20_23 : 4;
+    // uint32 tdc_error : 1;
+    // uint32 buffer_overflow : 1;
+    // uint32 trigger_lost : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 word_count : 15;
+  {
+  FCNCALL_SUBNAME("word_count");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.word_count,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.word_count)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_20_23 : 4;
+  {
+  FCNCALL_SUBNAME("dummy_20_23");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.dummy_20_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.dummy_20_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc_error : 1;
+  {
+  FCNCALL_SUBNAME("tdc_error");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.tdc_error,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.tdc_error)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 buffer_overflow : 1;
+  {
+  FCNCALL_SUBNAME("buffer_overflow");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.buffer_overflow,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.buffer_overflow)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 trigger_lost : 1;
+  {
+  FCNCALL_SUBNAME("trigger_lost");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.trigger_lost,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.trigger_lost)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.u32,FCNCALL_CALL_TYPE(uint32,trailer.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V1190
+
+#ifndef USER_DEF_VME_CAEN_V1190_SHORT_SUBTDC
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V1190_SHORT_SUBTDC)::FCNCALL_NAME(VME_CAEN_V1190_SHORT_SUBTDC)
+{
+  FCNCALL_INIT;
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V1190_SHORT_SUBTDC
+
+#ifndef USER_DEF_VME_CAEN_V1190_SHORT_SUBTDC_ERROR
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V1190_SHORT_SUBTDC_ERROR)::FCNCALL_NAME(VME_CAEN_V1190_SHORT_SUBTDC_ERROR)
+{
+  FCNCALL_INIT;
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 flags : 15;
+      // uint32 dummy_15_23 : 9;
+      // uint32 tdc : 2;
+      // uint32 dummy_26 : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } error_flags;
+  {
+  FCNCALL_SUBNAME("error_flags");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 flags : 15;
+    // uint32 dummy_15_23 : 9;
+    // uint32 tdc : 2;
+    // uint32 dummy_26 : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 flags : 15;
+  {
+  FCNCALL_SUBNAME("flags");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.flags,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.flags)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_15_23 : 9;
+  {
+  FCNCALL_SUBNAME("dummy_15_23");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.dummy_15_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.dummy_15_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc : 2;
+  {
+  FCNCALL_SUBNAME("tdc");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.tdc,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.tdc)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_26 : 1;
+  {
+  FCNCALL_SUBNAME("dummy_26");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.dummy_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.dummy_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.u32,FCNCALL_CALL_TYPE(uint32,error_flags.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V1190_SHORT_SUBTDC_ERROR
+
+#ifndef USER_DEF_VME_CAEN_V1190_SHORT
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V1190_SHORT)::FCNCALL_NAME(VME_CAEN_V1190_SHORT)
+{
+  FCNCALL_INIT;
+  // raw_array_multi_zero_suppress<DATA24,DATA24,32,128> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 geom : 5;
+      // uint32 event_number : 22;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } header;
+  {
+  FCNCALL_SUBNAME("header");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 geom : 5;
+    // uint32 event_number : 22;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(header.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 event_number : 22;
+  {
+  FCNCALL_SUBNAME("event_number");
+  { FCNCALL_CALL_CTRL_WRAP(header.event_number,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.event_number)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(header.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(header.u32,FCNCALL_CALL_TYPE(uint32,header.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V1190_SHORT_SUBTDC tdc[4];
+  {
+  FCNCALL_SUBNAME("tdc");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(tdc__i0,,__i0,tdc[__i0].FCNCALL_CALL(tdc[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V1190_SHORT_SUBTDC_ERROR err[4];
+  {
+  FCNCALL_SUBNAME("err");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(err__i0,,__i0,err[__i0].FCNCALL_CALL(err[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 time_tag : 27;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } trigger;
+  {
+  FCNCALL_SUBNAME("trigger");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 time_tag : 27;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 time_tag : 27;
+  {
+  FCNCALL_SUBNAME("time_tag");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.time_tag,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trigger.time_tag)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trigger.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.u32,FCNCALL_CALL_TYPE(uint32,trigger.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 geom : 5;
+      // uint32 word_count : 15;
+      // uint32 dummy_20_23 : 4;
+      // uint32 tdc_error : 1;
+      // uint32 buffer_overflow : 1;
+      // uint32 trigger_lost : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } trailer;
+  {
+  FCNCALL_SUBNAME("trailer");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 geom : 5;
+    // uint32 word_count : 15;
+    // uint32 dummy_20_23 : 4;
+    // uint32 tdc_error : 1;
+    // uint32 buffer_overflow : 1;
+    // uint32 trigger_lost : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 word_count : 15;
+  {
+  FCNCALL_SUBNAME("word_count");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.word_count,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.word_count)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_20_23 : 4;
+  {
+  FCNCALL_SUBNAME("dummy_20_23");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.dummy_20_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.dummy_20_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc_error : 1;
+  {
+  FCNCALL_SUBNAME("tdc_error");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.tdc_error,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.tdc_error)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 buffer_overflow : 1;
+  {
+  FCNCALL_SUBNAME("buffer_overflow");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.buffer_overflow,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.buffer_overflow)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 trigger_lost : 1;
+  {
+  FCNCALL_SUBNAME("trigger_lost");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.trigger_lost,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.trigger_lost)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.u32,FCNCALL_CALL_TYPE(uint32,trailer.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V1190_SHORT
+
+#ifndef USER_DEF_VME_CAEN_V1290_SUBTDC
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V1290_SUBTDC)::FCNCALL_NAME(VME_CAEN_V1290_SUBTDC)
+{
+  FCNCALL_INIT;
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 bunch_id : 12;
+      // uint32 event_id : 12;
+      // uint32 tdc : 2;
+      // uint32 dummy_26 : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } header;
+  {
+  FCNCALL_SUBNAME("header");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 bunch_id : 12;
+    // uint32 event_id : 12;
+    // uint32 tdc : 2;
+    // uint32 dummy_26 : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 bunch_id : 12;
+  {
+  FCNCALL_SUBNAME("bunch_id");
+  { FCNCALL_CALL_CTRL_WRAP(header.bunch_id,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.bunch_id)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 event_id : 12;
+  {
+  FCNCALL_SUBNAME("event_id");
+  { FCNCALL_CALL_CTRL_WRAP(header.event_id,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.event_id)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc : 2;
+  {
+  FCNCALL_SUBNAME("tdc");
+  { FCNCALL_CALL_CTRL_WRAP(header.tdc,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.tdc)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_26 : 1;
+  {
+  FCNCALL_SUBNAME("dummy_26");
+  { FCNCALL_CALL_CTRL_WRAP(header.dummy_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.dummy_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(header.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(header.u32,FCNCALL_CALL_TYPE(uint32,header.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 flags : 15;
+      // uint32 dummy_15_23 : 9;
+      // uint32 tdc : 2;
+      // uint32 dummy_26 : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } error_flags;
+  {
+  FCNCALL_SUBNAME("error_flags");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 flags : 15;
+    // uint32 dummy_15_23 : 9;
+    // uint32 tdc : 2;
+    // uint32 dummy_26 : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 flags : 15;
+  {
+  FCNCALL_SUBNAME("flags");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.flags,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.flags)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_15_23 : 9;
+  {
+  FCNCALL_SUBNAME("dummy_15_23");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.dummy_15_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.dummy_15_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc : 2;
+  {
+  FCNCALL_SUBNAME("tdc");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.tdc,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.tdc)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_26 : 1;
+  {
+  FCNCALL_SUBNAME("dummy_26");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.dummy_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.dummy_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.u32,FCNCALL_CALL_TYPE(uint32,error_flags.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 word_count : 12;
+      // uint32 event_id : 12;
+      // uint32 tdc : 2;
+      // uint32 dummy_26 : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } trailer;
+  {
+  FCNCALL_SUBNAME("trailer");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 word_count : 12;
+    // uint32 event_id : 12;
+    // uint32 tdc : 2;
+    // uint32 dummy_26 : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 word_count : 12;
+  {
+  FCNCALL_SUBNAME("word_count");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.word_count,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.word_count)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 event_id : 12;
+  {
+  FCNCALL_SUBNAME("event_id");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.event_id,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.event_id)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc : 2;
+  {
+  FCNCALL_SUBNAME("tdc");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.tdc,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.tdc)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_26 : 1;
+  {
+  FCNCALL_SUBNAME("dummy_26");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.dummy_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.dummy_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.u32,FCNCALL_CALL_TYPE(uint32,trailer.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V1290_SUBTDC
+
+#ifndef USER_DEF_VME_CAEN_V1290
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V1290)::FCNCALL_NAME(VME_CAEN_V1290)
+{
+  FCNCALL_INIT;
+  // raw_array_multi_zero_suppress<DATA24,DATA24,32,128> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 geom : 5;
+      // uint32 event_number : 22;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } header;
+  {
+  FCNCALL_SUBNAME("header");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 geom : 5;
+    // uint32 event_number : 22;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(header.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 event_number : 22;
+  {
+  FCNCALL_SUBNAME("event_number");
+  { FCNCALL_CALL_CTRL_WRAP(header.event_number,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.event_number)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(header.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(header.u32,FCNCALL_CALL_TYPE(uint32,header.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V1290_SUBTDC tdc[4];
+  {
+  FCNCALL_SUBNAME("tdc");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(tdc__i0,,__i0,tdc[__i0].FCNCALL_CALL(tdc[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 time_tag : 27;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } trigger;
+  {
+  FCNCALL_SUBNAME("trigger");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 time_tag : 27;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 time_tag : 27;
+  {
+  FCNCALL_SUBNAME("time_tag");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.time_tag,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trigger.time_tag)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trigger.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.u32,FCNCALL_CALL_TYPE(uint32,trigger.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 geom : 5;
+      // uint32 word_count : 15;
+      // uint32 dummy_20_23 : 4;
+      // uint32 tdc_error : 1;
+      // uint32 buffer_overflow : 1;
+      // uint32 trigger_lost : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } trailer;
+  {
+  FCNCALL_SUBNAME("trailer");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 geom : 5;
+    // uint32 word_count : 15;
+    // uint32 dummy_20_23 : 4;
+    // uint32 tdc_error : 1;
+    // uint32 buffer_overflow : 1;
+    // uint32 trigger_lost : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 word_count : 15;
+  {
+  FCNCALL_SUBNAME("word_count");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.word_count,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.word_count)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_20_23 : 4;
+  {
+  FCNCALL_SUBNAME("dummy_20_23");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.dummy_20_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.dummy_20_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc_error : 1;
+  {
+  FCNCALL_SUBNAME("tdc_error");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.tdc_error,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.tdc_error)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 buffer_overflow : 1;
+  {
+  FCNCALL_SUBNAME("buffer_overflow");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.buffer_overflow,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.buffer_overflow)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 trigger_lost : 1;
+  {
+  FCNCALL_SUBNAME("trigger_lost");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.trigger_lost,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.trigger_lost)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.u32,FCNCALL_CALL_TYPE(uint32,trailer.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V1290
+
+#ifndef USER_DEF_VME_CAEN_V1290_SHORT_SUBTDC
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V1290_SHORT_SUBTDC)::FCNCALL_NAME(VME_CAEN_V1290_SHORT_SUBTDC)
+{
+  FCNCALL_INIT;
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V1290_SHORT_SUBTDC
+
+#ifndef USER_DEF_VME_CAEN_V1290_SHORT_SUBTDC_ERROR
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V1290_SHORT_SUBTDC_ERROR)::FCNCALL_NAME(VME_CAEN_V1290_SHORT_SUBTDC_ERROR)
+{
+  FCNCALL_INIT;
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 flags : 15;
+      // uint32 dummy_15_23 : 9;
+      // uint32 tdc : 2;
+      // uint32 dummy_26 : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } error_flags;
+  {
+  FCNCALL_SUBNAME("error_flags");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 flags : 15;
+    // uint32 dummy_15_23 : 9;
+    // uint32 tdc : 2;
+    // uint32 dummy_26 : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 flags : 15;
+  {
+  FCNCALL_SUBNAME("flags");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.flags,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.flags)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_15_23 : 9;
+  {
+  FCNCALL_SUBNAME("dummy_15_23");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.dummy_15_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.dummy_15_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc : 2;
+  {
+  FCNCALL_SUBNAME("tdc");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.tdc,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.tdc)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_26 : 1;
+  {
+  FCNCALL_SUBNAME("dummy_26");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.dummy_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.dummy_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_flags.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(error_flags.u32,FCNCALL_CALL_TYPE(uint32,error_flags.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V1290_SHORT_SUBTDC_ERROR
+
+#ifndef USER_DEF_VME_CAEN_V1290_SHORT
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V1290_SHORT)::FCNCALL_NAME(VME_CAEN_V1290_SHORT)
+{
+  FCNCALL_INIT;
+  // raw_array_multi_zero_suppress<DATA24,DATA24,32,128> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 geom : 5;
+      // uint32 event_number : 22;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } header;
+  {
+  FCNCALL_SUBNAME("header");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 geom : 5;
+    // uint32 event_number : 22;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(header.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 event_number : 22;
+  {
+  FCNCALL_SUBNAME("event_number");
+  { FCNCALL_CALL_CTRL_WRAP(header.event_number,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.event_number)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(header.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(header.u32,FCNCALL_CALL_TYPE(uint32,header.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V1290_SHORT_SUBTDC tdc[4];
+  {
+  FCNCALL_SUBNAME("tdc");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(tdc__i0,,__i0,tdc[__i0].FCNCALL_CALL(tdc[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V1290_SHORT_SUBTDC_ERROR err[4];
+  {
+  FCNCALL_SUBNAME("err");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(err__i0,,__i0,err[__i0].FCNCALL_CALL(err[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 time_tag : 27;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } trigger;
+  {
+  FCNCALL_SUBNAME("trigger");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 time_tag : 27;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 time_tag : 27;
+  {
+  FCNCALL_SUBNAME("time_tag");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.time_tag,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trigger.time_tag)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trigger.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(trigger.u32,FCNCALL_CALL_TYPE(uint32,trigger.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 geom : 5;
+      // uint32 word_count : 15;
+      // uint32 dummy_20_23 : 4;
+      // uint32 tdc_error : 1;
+      // uint32 buffer_overflow : 1;
+      // uint32 trigger_lost : 1;
+      // uint32 unnamed_27_31 : 5;
+    // } ;
+    // uint32 u32;
+  // } trailer;
+  {
+  FCNCALL_SUBNAME("trailer");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 geom : 5;
+    // uint32 word_count : 15;
+    // uint32 dummy_20_23 : 4;
+    // uint32 tdc_error : 1;
+    // uint32 buffer_overflow : 1;
+    // uint32 trigger_lost : 1;
+    // uint32 unnamed_27_31 : 5;
+  // } ;
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 word_count : 15;
+  {
+  FCNCALL_SUBNAME("word_count");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.word_count,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.word_count)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_20_23 : 4;
+  {
+  FCNCALL_SUBNAME("dummy_20_23");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.dummy_20_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.dummy_20_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 tdc_error : 1;
+  {
+  FCNCALL_SUBNAME("tdc_error");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.tdc_error,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.tdc_error)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 buffer_overflow : 1;
+  {
+  FCNCALL_SUBNAME("buffer_overflow");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.buffer_overflow,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.buffer_overflow)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 trigger_lost : 1;
+  {
+  FCNCALL_SUBNAME("trigger_lost");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.trigger_lost,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.trigger_lost)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_27_31 : 5;
+  {
+  FCNCALL_SUBNAME("unnamed_27_31");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.unnamed_27_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,trailer.unnamed_27_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(trailer.u32,FCNCALL_CALL_TYPE(uint32,trailer.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V1290_SHORT
+
+#ifndef USER_DEF_VME_CAEN_V775
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V775)::FCNCALL_NAME(VME_CAEN_V775)
+{
+  FCNCALL_INIT;
+  // raw_array_zero_suppress<DATA12_OVERFLOW,DATA12_OVERFLOW,32> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 event_number : 24;
+      // uint32 unnamed_24_26 : 3;
+      // uint32 geom : 5;
+    // } ;
+    // uint32 u32;
+  // } eob;
+  {
+  FCNCALL_SUBNAME("eob");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 event_number : 24;
+    // uint32 unnamed_24_26 : 3;
+    // uint32 geom : 5;
+  // } ;
+  // uint32 event_number : 24;
+  {
+  FCNCALL_SUBNAME("event_number");
+  { FCNCALL_CALL_CTRL_WRAP(eob.event_number,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,eob.event_number)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_24_26 : 3;
+  {
+  FCNCALL_SUBNAME("unnamed_24_26");
+  { FCNCALL_CALL_CTRL_WRAP(eob.unnamed_24_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,eob.unnamed_24_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(eob.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,eob.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(eob.u32,FCNCALL_CALL_TYPE(uint32,eob.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V775
+
+#ifndef USER_DEF_VME_CAEN_V830
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V830)::FCNCALL_NAME(VME_CAEN_V830)
+{
+  FCNCALL_INIT;
+  // raw_array_zero_suppress<DATA32,DATA32,32> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 event_number : 16;
+      // uint32 ts : 2;
+      // uint32 count : 6;
+      // uint32 dummy_24_25 : 2;
+      // uint32 unnamed_26_26 : 1;
+      // uint32 geom : 5;
+    // } ;
+    // uint32 u32;
+  // } header;
+  {
+  FCNCALL_SUBNAME("header");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 event_number : 16;
+    // uint32 ts : 2;
+    // uint32 count : 6;
+    // uint32 dummy_24_25 : 2;
+    // uint32 unnamed_26_26 : 1;
+    // uint32 geom : 5;
+  // } ;
+  // uint32 event_number : 16;
+  {
+  FCNCALL_SUBNAME("event_number");
+  { FCNCALL_CALL_CTRL_WRAP(header.event_number,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.event_number)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 ts : 2;
+  {
+  FCNCALL_SUBNAME("ts");
+  { FCNCALL_CALL_CTRL_WRAP(header.ts,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.ts)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 count : 6;
+  {
+  FCNCALL_SUBNAME("count");
+  { FCNCALL_CALL_CTRL_WRAP(header.count,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.count)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_24_25 : 2;
+  {
+  FCNCALL_SUBNAME("dummy_24_25");
+  { FCNCALL_CALL_CTRL_WRAP(header.dummy_24_25,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.dummy_24_25)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_26_26 : 1;
+  {
+  FCNCALL_SUBNAME("unnamed_26_26");
+  { FCNCALL_CALL_CTRL_WRAP(header.unnamed_26_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.unnamed_26_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(header.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,header.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(header.u32,FCNCALL_CALL_TYPE(uint32,header.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V830
+
+#ifndef USER_DEF_VME_MESYTEC_MADC32
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_MESYTEC_MADC32)::FCNCALL_NAME(VME_MESYTEC_MADC32)
+{
+  FCNCALL_INIT;
+  // raw_array_zero_suppress<DATA14_OVERFLOW,DATA14_OVERFLOW,32> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 counter : 30;
+      // uint32 unnamed_30_31 : 2;
+    // } ;
+    // uint32 u32;
+  // } end_of_event;
+  {
+  FCNCALL_SUBNAME("end_of_event");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 counter : 30;
+    // uint32 unnamed_30_31 : 2;
+  // } ;
+  // uint32 counter : 30;
+  {
+  FCNCALL_SUBNAME("counter");
+  { FCNCALL_CALL_CTRL_WRAP(end_of_event.counter,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,end_of_event.counter)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_30_31 : 2;
+  {
+  FCNCALL_SUBNAME("unnamed_30_31");
+  { FCNCALL_CALL_CTRL_WRAP(end_of_event.unnamed_30_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,end_of_event.unnamed_30_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(end_of_event.u32,FCNCALL_CALL_TYPE(uint32,end_of_event.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_MESYTEC_MADC32
+
+#ifndef USER_DEF_VME_MESYTEC_MDPP16
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_MESYTEC_MDPP16)::FCNCALL_NAME(VME_MESYTEC_MDPP16)
+{
+  FCNCALL_INIT;
+  // raw_array_multi_zero_suppress<DATA16_OVERFLOW,DATA16_OVERFLOW,34,100> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 counter : 30;
+      // uint32 unnamed_30_31 : 2;
+    // } ;
+    // uint32 u32;
+  // } end_of_event;
+  {
+  FCNCALL_SUBNAME("end_of_event");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 counter : 30;
+    // uint32 unnamed_30_31 : 2;
+  // } ;
+  // uint32 counter : 30;
+  {
+  FCNCALL_SUBNAME("counter");
+  { FCNCALL_CALL_CTRL_WRAP(end_of_event.counter,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,end_of_event.counter)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_30_31 : 2;
+  {
+  FCNCALL_SUBNAME("unnamed_30_31");
+  { FCNCALL_CALL_CTRL_WRAP(end_of_event.unnamed_30_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,end_of_event.unnamed_30_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(end_of_event.u32,FCNCALL_CALL_TYPE(uint32,end_of_event.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_MESYTEC_MDPP16
+
+#ifndef USER_DEF_LAND_CAMAC_CONVERTER
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(LAND_CAMAC_CONVERTER)::FCNCALL_NAME(LAND_CAMAC_CONVERTER)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // uint16 tpat;
+  {
+  FCNCALL_SUBNAME("tpat");
+  { FCNCALL_CALL_CTRL_WRAP(tpat,FCNCALL_CALL_TYPE(uint16,tpat)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint16 tprev;
+  {
+  FCNCALL_SUBNAME("tprev");
+  { FCNCALL_CALL_CTRL_WRAP(tprev,FCNCALL_CALL_TYPE(uint16,tprev)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint16 tnext;
+  {
+  FCNCALL_SUBNAME("tnext");
+  { FCNCALL_CALL_CTRL_WRAP(tnext,FCNCALL_CALL_TYPE(uint16,tnext)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint16 tprev2;
+  {
+  FCNCALL_SUBNAME("tprev2");
+  { FCNCALL_CALL_CTRL_WRAP(tprev2,FCNCALL_CALL_TYPE(uint16,tprev2)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_SILENA_4418 qSIA0416;
+  {
+  FCNCALL_SUBNAME("qSIA0416");
+  { FCNCALL_CALL_CTRL_WRAP(qSIA0416,qSIA0416.FCNCALL_CALL(qSIA0416)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_SILENA_4418 qSIA0458;
+  {
+  FCNCALL_SUBNAME("qSIA0458");
+  { FCNCALL_CALL_CTRL_WRAP(qSIA0458,qSIA0458.FCNCALL_CALL(qSIA0458)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_PHILLIPS_7164 tPHI10481;
+  {
+  FCNCALL_SUBNAME("tPHI10481");
+  { FCNCALL_CALL_CTRL_WRAP(tPHI10481,tPHI10481.FCNCALL_CALL(tPHI10481)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_PHILLIPS_7164 tPHI18573;
+  {
+  FCNCALL_SUBNAME("tPHI18573");
+  { FCNCALL_CALL_CTRL_WRAP(tPHI18573,tPHI18573.FCNCALL_CALL(tPHI18573)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_PHILLIPS_7164 aPHI12160;
+  {
+  FCNCALL_SUBNAME("aPHI12160");
+  { FCNCALL_CALL_CTRL_WRAP(aPHI12160,aPHI12160.FCNCALL_CALL(aPHI12160)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_SILENA_4418 qSIA0429;
+  {
+  FCNCALL_SUBNAME("qSIA0429");
+  { FCNCALL_CALL_CTRL_WRAP(qSIA0429,qSIA0429.FCNCALL_CALL(qSIA0429)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_SILENA_4418 tSIA8035;
+  {
+  FCNCALL_SUBNAME("tSIA8035");
+  { FCNCALL_CALL_CTRL_WRAP(tSIA8035,tSIA8035.FCNCALL_CALL(tSIA8035)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_SILENA_4418 tSIA0469;
+  {
+  FCNCALL_SUBNAME("tSIA0469");
+  { FCNCALL_CALL_CTRL_WRAP(tSIA0469,tSIA0469.FCNCALL_CALL(tSIA0469)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_SILENA_4418 qSIA0480;
+  {
+  FCNCALL_SUBNAME("qSIA0480");
+  { FCNCALL_CALL_CTRL_WRAP(qSIA0480,qSIA0480.FCNCALL_CALL(qSIA0480)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_SILENA_4418 tFRS120;
+  {
+  FCNCALL_SUBNAME("tFRS120");
+  { FCNCALL_CALL_CTRL_WRAP(tFRS120,tFRS120.FCNCALL_CALL(tFRS120)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_SILENA_4418 tSIA0426;
+  {
+  FCNCALL_SUBNAME("tSIA0426");
+  { FCNCALL_CALL_CTRL_WRAP(tSIA0426,tSIA0426.FCNCALL_CALL(tSIA0426)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_SILENA_4418 qSIA0495;
+  {
+  FCNCALL_SUBNAME("qSIA0495");
+  { FCNCALL_CALL_CTRL_WRAP(qSIA0495,qSIA0495.FCNCALL_CALL(qSIA0495)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_LAND_CAMAC_CONVERTER
+
+#ifndef USER_DEF_LAND_CAMAC_SCALER
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(LAND_CAMAC_SCALER)::FCNCALL_NAME(LAND_CAMAC_SCALER)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // uint32 timestamp;
+  {
+  FCNCALL_SUBNAME("timestamp");
+  { FCNCALL_CALL_CTRL_WRAP(timestamp,FCNCALL_CALL_TYPE(uint32,timestamp)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 unnamed_0_31 : 32;
+    // } ;
+    // uint32 u32;
+  // } endianess;
+  {
+  FCNCALL_SUBNAME("endianess");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 unnamed_0_31 : 32;
+  // } ;
+  // uint32 unnamed_0_31 : 32;
+  {
+  FCNCALL_SUBNAME("unnamed_0_31");
+  { FCNCALL_CALL_CTRL_WRAP(endianess.unnamed_0_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,endianess.unnamed_0_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(endianess.u32,FCNCALL_CALL_TYPE(uint32,endianess.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_LECROY_4434 scaler0;
+  {
+  FCNCALL_SUBNAME("scaler0");
+  { FCNCALL_CALL_CTRL_WRAP(scaler0,scaler0.FCNCALL_CALL(scaler0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_LECROY_4434 scaler2;
+  {
+  FCNCALL_SUBNAME("scaler2");
+  { FCNCALL_CALL_CTRL_WRAP(scaler2,scaler2.FCNCALL_CALL(scaler2)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // CAMAC_LECROY_4434 scaler1;
+  {
+  FCNCALL_SUBNAME("scaler1");
+  { FCNCALL_CALL_CTRL_WRAP(scaler1,scaler1.FCNCALL_CALL(scaler1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_LAND_CAMAC_SCALER
+
+#ifndef USER_DEF_LAND_CAMAC_START_STOP_STAMP
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(LAND_CAMAC_START_STOP_STAMP)::FCNCALL_NAME(LAND_CAMAC_START_STOP_STAMP)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // uint32 timestamp;
+  {
+  FCNCALL_SUBNAME("timestamp");
+  { FCNCALL_CALL_CTRL_WRAP(timestamp,FCNCALL_CALL_TYPE(uint32,timestamp)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 unnamed_0_31 : 32;
+    // } ;
+    // uint32 u32;
+  // } endianess;
+  {
+  FCNCALL_SUBNAME("endianess");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 unnamed_0_31 : 32;
+  // } ;
+  // uint32 unnamed_0_31 : 32;
+  {
+  FCNCALL_SUBNAME("unnamed_0_31");
+  { FCNCALL_CALL_CTRL_WRAP(endianess.unnamed_0_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,endianess.unnamed_0_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(endianess.u32,FCNCALL_CALL_TYPE(uint32,endianess.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_LAND_CAMAC_START_STOP_STAMP
+
+#ifndef USER_DEF_LAND_CAMAC_TCAL_INFO
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(LAND_CAMAC_TCAL_INFO)::FCNCALL_NAME(LAND_CAMAC_TCAL_INFO)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // uint32 info;
+  {
+  FCNCALL_SUBNAME("info");
+  { FCNCALL_CALL_CTRL_WRAP(info,FCNCALL_CALL_TYPE(uint32,info)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // RANDOM_TCAL rtcal;
+  {
+  FCNCALL_SUBNAME("rtcal");
+  { FCNCALL_CALL_CTRL_WRAP(rtcal,rtcal.FCNCALL_CALL(rtcal)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // NTP_MESSAGE ntp;
+  {
+  FCNCALL_SUBNAME("ntp");
+  { FCNCALL_CALL_CTRL_WRAP(ntp,ntp.FCNCALL_CALL(ntp)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_LAND_CAMAC_TCAL_INFO
+
+#ifndef USER_DEF_LAND_FASTBUS1
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(LAND_FASTBUS1)::FCNCALL_NAME(LAND_FASTBUS1)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // FASTBUS_LECROY_1885 Q47342;
+  {
+  FCNCALL_SUBNAME("Q47342");
+  { FCNCALL_CALL_CTRL_WRAP(Q47342,Q47342.FCNCALL_CALL(Q47342)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1885 Q46848;
+  {
+  FCNCALL_SUBNAME("Q46848");
+  { FCNCALL_CALL_CTRL_WRAP(Q46848,Q46848.FCNCALL_CALL(Q46848)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1885 Q11111;
+  {
+  FCNCALL_SUBNAME("Q11111");
+  { FCNCALL_CALL_CTRL_WRAP(Q11111,Q11111.FCNCALL_CALL(Q11111)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1885 Q47315;
+  {
+  FCNCALL_SUBNAME("Q47315");
+  { FCNCALL_CALL_CTRL_WRAP(Q47315,Q47315.FCNCALL_CALL(Q47315)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1885 Q17320;
+  {
+  FCNCALL_SUBNAME("Q17320");
+  { FCNCALL_CALL_CTRL_WRAP(Q17320,Q17320.FCNCALL_CALL(Q17320)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1885 Q15372;
+  {
+  FCNCALL_SUBNAME("Q15372");
+  { FCNCALL_CALL_CTRL_WRAP(Q15372,Q15372.FCNCALL_CALL(Q15372)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1885 Q46962;
+  {
+  FCNCALL_SUBNAME("Q46962");
+  { FCNCALL_CALL_CTRL_WRAP(Q46962,Q46962.FCNCALL_CALL(Q46962)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1885 Q46993;
+  {
+  FCNCALL_SUBNAME("Q46993");
+  { FCNCALL_CALL_CTRL_WRAP(Q46993,Q46993.FCNCALL_CALL(Q46993)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1885 Q15358;
+  {
+  FCNCALL_SUBNAME("Q15358");
+  { FCNCALL_CALL_CTRL_WRAP(Q15358,Q15358.FCNCALL_CALL(Q15358)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1885 Q47264;
+  {
+  FCNCALL_SUBNAME("Q47264");
+  { FCNCALL_CALL_CTRL_WRAP(Q47264,Q47264.FCNCALL_CALL(Q47264)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1875 T81855;
+  {
+  FCNCALL_SUBNAME("T81855");
+  { FCNCALL_CALL_CTRL_WRAP(T81855,T81855.FCNCALL_CALL(T81855)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1875 T87044;
+  {
+  FCNCALL_SUBNAME("T87044");
+  { FCNCALL_CALL_CTRL_WRAP(T87044,T87044.FCNCALL_CALL(T87044)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1875 T87024;
+  {
+  FCNCALL_SUBNAME("T87024");
+  { FCNCALL_CALL_CTRL_WRAP(T87024,T87024.FCNCALL_CALL(T87024)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1875 T81800;
+  {
+  FCNCALL_SUBNAME("T81800");
+  { FCNCALL_CALL_CTRL_WRAP(T81800,T81800.FCNCALL_CALL(T81800)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_LAND_FASTBUS1
+
+#ifndef USER_DEF_LAND_FASTBUS2
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(LAND_FASTBUS2)::FCNCALL_NAME(LAND_FASTBUS2)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // FASTBUS_LECROY_1875 T87047;
+  {
+  FCNCALL_SUBNAME("T87047");
+  { FCNCALL_CALL_CTRL_WRAP(T87047,T87047.FCNCALL_CALL(T87047)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1875 T81808;
+  {
+  FCNCALL_SUBNAME("T81808");
+  { FCNCALL_CALL_CTRL_WRAP(T81808,T81808.FCNCALL_CALL(T81808)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1875 T48854;
+  {
+  FCNCALL_SUBNAME("T48854");
+  { FCNCALL_CALL_CTRL_WRAP(T48854,T48854.FCNCALL_CALL(T48854)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1875 T81859;
+  {
+  FCNCALL_SUBNAME("T81859");
+  { FCNCALL_CALL_CTRL_WRAP(T81859,T81859.FCNCALL_CALL(T81859)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1875 T81795;
+  {
+  FCNCALL_SUBNAME("T81795");
+  { FCNCALL_CALL_CTRL_WRAP(T81795,T81795.FCNCALL_CALL(T81795)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1875 T81806;
+  {
+  FCNCALL_SUBNAME("T81806");
+  { FCNCALL_CALL_CTRL_WRAP(T81806,T81806.FCNCALL_CALL(T81806)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // FASTBUS_LECROY_1875 T48834;
+  {
+  FCNCALL_SUBNAME("T48834");
+  { FCNCALL_CALL_CTRL_WRAP(T48834,T48834.FCNCALL_CALL(T48834)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_LAND_FASTBUS2
+
+#ifndef USER_DEF_LAND_FASTBUS_ERROR
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(LAND_FASTBUS_ERROR)::FCNCALL_NAME(LAND_FASTBUS_ERROR)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 timeout_waiting_smi : 1;
+      // uint32 illegal_block_transfer : 1;
+      // uint32 fifa_address_overflow : 1;
+      // uint32 fifa_register_error : 1;
+      // uint32 dummy_4_15 : 12;
+      // uint32 init_error : 1;
+      // uint32 dummy_17_31 : 15;
+    // } ;
+    // uint32 u32;
+  // } error_code;
+  {
+  FCNCALL_SUBNAME("error_code");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 timeout_waiting_smi : 1;
+    // uint32 illegal_block_transfer : 1;
+    // uint32 fifa_address_overflow : 1;
+    // uint32 fifa_register_error : 1;
+    // uint32 dummy_4_15 : 12;
+    // uint32 init_error : 1;
+    // uint32 dummy_17_31 : 15;
+  // } ;
+  // uint32 timeout_waiting_smi : 1;
+  {
+  FCNCALL_SUBNAME("timeout_waiting_smi");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.timeout_waiting_smi,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.timeout_waiting_smi)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 illegal_block_transfer : 1;
+  {
+  FCNCALL_SUBNAME("illegal_block_transfer");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.illegal_block_transfer,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.illegal_block_transfer)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 fifa_address_overflow : 1;
+  {
+  FCNCALL_SUBNAME("fifa_address_overflow");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.fifa_address_overflow,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.fifa_address_overflow)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 fifa_register_error : 1;
+  {
+  FCNCALL_SUBNAME("fifa_register_error");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.fifa_register_error,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.fifa_register_error)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_4_15 : 12;
+  {
+  FCNCALL_SUBNAME("dummy_4_15");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.dummy_4_15,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.dummy_4_15)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 init_error : 1;
+  {
+  FCNCALL_SUBNAME("init_error");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.init_error,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.init_error)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_17_31 : 15;
+  {
+  FCNCALL_SUBNAME("dummy_17_31");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.dummy_17_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.dummy_17_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.u32,FCNCALL_CALL_TYPE(uint32,error_code.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 error_num;
+  {
+  FCNCALL_SUBNAME("error_num");
+  { FCNCALL_CALL_CTRL_WRAP(error_num,FCNCALL_CALL_TYPE(uint32,error_num)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_LAND_FASTBUS_ERROR
+
+#ifndef USER_DEF_LAND_FASTBUS_ERROR_NGF
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(LAND_FASTBUS_ERROR_NGF)::FCNCALL_NAME(LAND_FASTBUS_ERROR_NGF)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 unnamed_0_31 : 32;
+    // } ;
+    // uint32 u32;
+  // } magic;
+  {
+  FCNCALL_SUBNAME("magic");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 unnamed_0_31 : 32;
+  // } ;
+  // uint32 unnamed_0_31 : 32;
+  {
+  FCNCALL_SUBNAME("unnamed_0_31");
+  { FCNCALL_CALL_CTRL_WRAP(magic.unnamed_0_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,magic.unnamed_0_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(magic.u32,FCNCALL_CALL_TYPE(uint32,magic.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 error : 1;
+      // uint32 uninitialized : 1;
+      // uint32 ss1 : 1;
+      // uint32 wc : 1;
+      // uint32 mid : 1;
+      // uint32 fifo_empty : 1;
+      // uint32 fifo_not_empty : 1;
+      // uint32 not_finished : 1;
+      // uint32 bad_end_addr : 1;
+      // uint32 word_lost : 1;
+      // uint32 dummy_10_31 : 22;
+    // } ;
+    // uint32 u32;
+  // } error_code;
+  {
+  FCNCALL_SUBNAME("error_code");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 error : 1;
+    // uint32 uninitialized : 1;
+    // uint32 ss1 : 1;
+    // uint32 wc : 1;
+    // uint32 mid : 1;
+    // uint32 fifo_empty : 1;
+    // uint32 fifo_not_empty : 1;
+    // uint32 not_finished : 1;
+    // uint32 bad_end_addr : 1;
+    // uint32 word_lost : 1;
+    // uint32 dummy_10_31 : 22;
+  // } ;
+  // uint32 error : 1;
+  {
+  FCNCALL_SUBNAME("error");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.error,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.error)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 uninitialized : 1;
+  {
+  FCNCALL_SUBNAME("uninitialized");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.uninitialized,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.uninitialized)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 ss1 : 1;
+  {
+  FCNCALL_SUBNAME("ss1");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.ss1,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.ss1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 wc : 1;
+  {
+  FCNCALL_SUBNAME("wc");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.wc,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.wc)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 mid : 1;
+  {
+  FCNCALL_SUBNAME("mid");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.mid,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.mid)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 fifo_empty : 1;
+  {
+  FCNCALL_SUBNAME("fifo_empty");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.fifo_empty,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.fifo_empty)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 fifo_not_empty : 1;
+  {
+  FCNCALL_SUBNAME("fifo_not_empty");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.fifo_not_empty,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.fifo_not_empty)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 not_finished : 1;
+  {
+  FCNCALL_SUBNAME("not_finished");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.not_finished,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.not_finished)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 bad_end_addr : 1;
+  {
+  FCNCALL_SUBNAME("bad_end_addr");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.bad_end_addr,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.bad_end_addr)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 word_lost : 1;
+  {
+  FCNCALL_SUBNAME("word_lost");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.word_lost,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.word_lost)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 dummy_10_31 : 22;
+  {
+  FCNCALL_SUBNAME("dummy_10_31");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.dummy_10_31,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,error_code.dummy_10_31)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(error_code.u32,FCNCALL_CALL_TYPE(uint32,error_code.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_LAND_FASTBUS_ERROR_NGF
+
+#ifndef USER_DEF_unpack_event
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(unpack_event)::FCNCALL_NAME(unpack_event)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_event_base,FCNCALL_CLASS_NAME(unpack_event_base)::FCNCALL_CALL_BASE());
+  // LAND_CAMAC_CONVERTER camac;
+  {
+  FCNCALL_SUBNAME("camac");
+  { FCNCALL_CALL_CTRL_WRAP(camac,camac.FCNCALL_CALL(camac)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // LAND_CAMAC_TCAL_INFO camac_tcal_info;
+  {
+  FCNCALL_SUBNAME("camac_tcal_info");
+  { FCNCALL_CALL_CTRL_WRAP(camac_tcal_info,camac_tcal_info.FCNCALL_CALL(camac_tcal_info)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // LAND_CAMAC_START_STOP_STAMP camac_start_stop_stamp;
+  {
+  FCNCALL_SUBNAME("camac_start_stop_stamp");
+  { FCNCALL_CALL_CTRL_WRAP(camac_start_stop_stamp,camac_start_stop_stamp.FCNCALL_CALL(camac_start_stop_stamp)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // LAND_CAMAC_SCALER camac_scalers;
+  {
+  FCNCALL_SUBNAME("camac_scalers");
+  { FCNCALL_CALL_CTRL_WRAP(camac_scalers,camac_scalers.FCNCALL_CALL(camac_scalers)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // LAND_FASTBUS_ERROR fastbus_error;
+  {
+  FCNCALL_SUBNAME("fastbus_error");
+  { FCNCALL_CALL_CTRL_WRAP(fastbus_error,fastbus_error.FCNCALL_CALL(fastbus_error)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // LAND_FASTBUS1 fastbus1;
+  {
+  FCNCALL_SUBNAME("fastbus1");
+  { FCNCALL_CALL_CTRL_WRAP(fastbus1,fastbus1.FCNCALL_CALL(fastbus1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // LAND_FASTBUS2 fastbus2;
+  {
+  FCNCALL_SUBNAME("fastbus2");
+  { FCNCALL_CALL_CTRL_WRAP(fastbus2,fastbus2.FCNCALL_CALL(fastbus2)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_unpack_event
+
+#ifndef USER_DEF_unpack_sticky_event
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(unpack_sticky_event)::FCNCALL_NAME(unpack_sticky_event)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_sticky_event_base,FCNCALL_CLASS_NAME(unpack_sticky_event_base)::FCNCALL_CALL_BASE());
+  FCNCALL_RET;
+}
+#endif//USER_DEF_unpack_sticky_event
+
+#include "gen/default_fcncall_undef.hh"
+
+
+/** END_FUNCTION_CALL_PER_MEMBER **************************************/
+
+
+/** BEGIN_CORR_STRUCT **************************************************
+ *
+ * Correlation structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// Corr struct for: CAMAC_LECROY_4434
+// raw_array_zero_suppress  .data(DATA24)[32]
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: CAMAC_LECROY_4434
+// .CAMAC_LECROY_4434// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: CAMAC_LECROY_4434
+// .CAMAC_LECROY_4434// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: CAMAC_LECROY_4434
+// .CAMAC_LECROY_4434
+// Corr struct for: CAMAC_PHILLIPS_7164
+// raw_array_zero_suppress  .data(DATA12)[16]
+// DATA12 .data[16]
+// 
+// size= 1  chunks= 16  mem=  16  line=32  total=512
+// size=16  chunks=  1  mem=  16  line=17  total=272
+// 
+// corr structure: CAMAC_PHILLIPS_7164
+  // DATA12 .data[16]
+// .CAMAC_PHILLIPS_7164/16/.data/16/[16]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: CAMAC_PHILLIPS_7164
+// .CAMAC_PHILLIPS_7164// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: CAMAC_PHILLIPS_7164
+// .CAMAC_PHILLIPS_7164
+// Corr struct for: CAMAC_SILENA_4418
+// raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+// DATA12_OVERFLOW .data[8]
+// 
+// size= 1  chunks=  8  mem=   8  line=16  total=128
+// size= 8  chunks=  1  mem=   8  line=9  total=72
+// 
+// corr structure: CAMAC_SILENA_4418
+  // DATA12_OVERFLOW .data[8]
+// .CAMAC_SILENA_4418/8/.data/8/[8]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: CAMAC_SILENA_4418
+// .CAMAC_SILENA_4418// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: CAMAC_SILENA_4418
+// .CAMAC_SILENA_4418
+// Corr struct for: FASTBUS_LECROY_1875
+// raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// DATA12_RANGE .data[64]
+// 
+// size= 1  chunks= 64  mem=  64  line=128  total=8192
+// size=64  chunks=  1  mem=  64  line=65  total=4160
+// 
+// corr structure: FASTBUS_LECROY_1875
+  // DATA12_RANGE .data[64]
+// .FASTBUS_LECROY_1875/64/.data/64/[64]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: FASTBUS_LECROY_1875
+// .FASTBUS_LECROY_1875// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: FASTBUS_LECROY_1875
+// .FASTBUS_LECROY_1875
+// Corr struct for: FASTBUS_LECROY_1885
+// raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+// DATA12_RANGE .data[96]
+// 
+// size= 1  chunks= 96  mem=  96  line=192  total=18432
+// size=96  chunks=  1  mem=  96  line=97  total=9312
+// 
+// corr structure: FASTBUS_LECROY_1885
+  // DATA12_RANGE .data[96]
+// .FASTBUS_LECROY_1885/96/.data/96/[96]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: FASTBUS_LECROY_1885
+// .FASTBUS_LECROY_1885// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: FASTBUS_LECROY_1885
+// .FASTBUS_LECROY_1885
+// Corr struct for: NTP64_TIME
+// uint32  .sec
+  // ---
+// uint32  .frac
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: NTP64_TIME
+// .NTP64_TIME// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: NTP64_TIME
+// .NTP64_TIME// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: NTP64_TIME
+// .NTP64_TIME
+// Corr struct for: NTP_MESSAGE
+// uint32  .word_count
+  // ---
+// uint32  .quick_burst
+  // ---
+// uint32  .dummy_17_23
+  // ---
+// uint32  .id
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .server_id
+  // ---
+// uint32  .precision
+  // ---
+// uint32  .poll
+  // ---
+// uint32  .stratum
+  // ---
+// uint32  .dummy_20_23
+  // ---
+// uint32  .mode
+  // ---
+// uint32  .version
+  // ---
+// uint32  .leap
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .frac
+  // ---
+// uint32  .sec
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .frac
+  // ---
+// uint32  .sec
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .refid
+  // ---
+// NTP64_TIME  .orig2time
+  // uint32  .sec
+    // ---
+  // uint32  .frac
+    // ---
+// NTP64_TIME  .tmit2time
+  // uint32  .sec
+    // ---
+  // uint32  .frac
+    // ---
+// NTP64_TIME  .rec2time
+  // uint32  .sec
+    // ---
+  // uint32  .frac
+    // ---
+// NTP64_TIME  .rx2time
+  // uint32  .sec
+    // ---
+  // uint32  .frac
+    // ---
+// NTP64_TIME  .reftime
+  // uint32  .sec
+    // ---
+  // uint32  .frac
+    // ---
+// NTP64_TIME  .origtime
+  // uint32  .sec
+    // ---
+  // uint32  .frac
+    // ---
+// NTP64_TIME  .rectime
+  // uint32  .sec
+    // ---
+  // uint32  .frac
+    // ---
+// NTP64_TIME  .tmittime
+  // uint32  .sec
+    // ---
+  // uint32  .frac
+    // ---
+// NTP64_TIME  .rxtime
+  // uint32  .sec
+    // ---
+  // uint32  .frac
+    // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: NTP_MESSAGE
+// .NTP_MESSAGE// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: NTP_MESSAGE
+// .NTP_MESSAGE// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: NTP_MESSAGE
+// .NTP_MESSAGE
+// Corr struct for: RANDOM_TCAL_TSTAMP_CLOCK
+// uint32  .soft_latches
+  // ---
+// uint32  .hard_latches
+  // ---
+// uint32  .clock_ticks
+  // ---
+// NTP64_TIME  .before
+  // uint32  .sec
+    // ---
+  // uint32  .frac
+    // ---
+// NTP64_TIME  .after
+  // uint32  .sec
+    // ---
+  // uint32  .frac
+    // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: RANDOM_TCAL_TSTAMP_CLOCK
+// .RANDOM_TCAL_TSTAMP_CLOCK// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: RANDOM_TCAL_TSTAMP_CLOCK
+// .RANDOM_TCAL_TSTAMP_CLOCK// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: RANDOM_TCAL_TSTAMP_CLOCK
+// .RANDOM_TCAL_TSTAMP_CLOCK
+// Corr struct for: RANDOM_TCAL
+// uint32  .word_count
+  // ---
+// uint32  .pulses
+  // ---
+// uint32  .clock_bits
+  // ---
+// uint32  .has_tstamp1
+  // ---
+// uint32  .has_tstamp2
+  // ---
+// uint32  .dummy_20_23
+  // ---
+// uint32  .id
+  // ---
+// uint32  .u32
+  // ---
+// RANDOM_TCAL_TSTAMP_CLOCK  .tstamp1
+  // uint32  .soft_latches
+    // ---
+  // uint32  .hard_latches
+    // ---
+  // uint32  .clock_ticks
+    // ---
+  // NTP64_TIME  .before
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+  // NTP64_TIME  .after
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+// RANDOM_TCAL_TSTAMP_CLOCK  .tstamp2
+  // uint32  .soft_latches
+    // ---
+  // uint32  .hard_latches
+    // ---
+  // uint32  .clock_ticks
+    // ---
+  // NTP64_TIME  .before
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+  // NTP64_TIME  .after
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: RANDOM_TCAL
+// .RANDOM_TCAL// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: RANDOM_TCAL
+// .RANDOM_TCAL// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: RANDOM_TCAL
+// .RANDOM_TCAL
+// Corr struct for: SOFT_SCALER32
+// raw_array_zero_suppress  .data(DATA32)[32]
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: SOFT_SCALER32
+// .SOFT_SCALER32// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: SOFT_SCALER32
+// .SOFT_SCALER32// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: SOFT_SCALER32
+// .SOFT_SCALER32
+// Corr struct for: VME_CAEN_V1190_SUBTDC
+// uint32  .bunch_id
+  // ---
+// uint32  .event_id
+  // ---
+// uint32  .tdc
+  // ---
+// uint32  .dummy_26
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .flags
+  // ---
+// uint32  .dummy_15_23
+  // ---
+// uint32  .tdc
+  // ---
+// uint32  .dummy_26
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .word_count
+  // ---
+// uint32  .event_id
+  // ---
+// uint32  .tdc
+  // ---
+// uint32  .dummy_26
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SUBTDC
+// .VME_CAEN_V1190_SUBTDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SUBTDC
+// .VME_CAEN_V1190_SUBTDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SUBTDC
+// .VME_CAEN_V1190_SUBTDC
+// Corr struct for: VME_CAEN_V1190
+// raw_array_multi_zero_suppress  .data(DATA24)[32][128]
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .event_number
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// VME_CAEN_V1190_SUBTDC  .tdc[4]
+  // uint32  .bunch_id
+    // ---
+  // uint32  .event_id
+    // ---
+  // uint32  .tdc
+    // ---
+  // uint32  .dummy_26
+    // ---
+  // uint32  .unnamed_27_31
+    // ---
+  // uint32  .u32
+    // ---
+  // uint32  .flags
+    // ---
+  // uint32  .dummy_15_23
+    // ---
+  // uint32  .tdc
+    // ---
+  // uint32  .dummy_26
+    // ---
+  // uint32  .unnamed_27_31
+    // ---
+  // uint32  .u32
+    // ---
+  // uint32  .word_count
+    // ---
+  // uint32  .event_id
+    // ---
+  // uint32  .tdc
+    // ---
+  // uint32  .dummy_26
+    // ---
+  // uint32  .unnamed_27_31
+    // ---
+  // uint32  .u32
+    // ---
+// uint32  .time_tag
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .word_count
+  // ---
+// uint32  .dummy_20_23
+  // ---
+// uint32  .tdc_error
+  // ---
+// uint32  .buffer_overflow
+  // ---
+// uint32  .trigger_lost
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190
+// .VME_CAEN_V1190// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190
+// .VME_CAEN_V1190// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190
+// .VME_CAEN_V1190
+// Corr struct for: VME_CAEN_V1190_SHORT_SUBTDC
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SHORT_SUBTDC
+// .VME_CAEN_V1190_SHORT_SUBTDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SHORT_SUBTDC
+// .VME_CAEN_V1190_SHORT_SUBTDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SHORT_SUBTDC
+// .VME_CAEN_V1190_SHORT_SUBTDC
+// Corr struct for: VME_CAEN_V1190_SHORT_SUBTDC_ERROR
+// uint32  .flags
+  // ---
+// uint32  .dummy_15_23
+  // ---
+// uint32  .tdc
+  // ---
+// uint32  .dummy_26
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SHORT_SUBTDC_ERROR
+// .VME_CAEN_V1190_SHORT_SUBTDC_ERROR// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SHORT_SUBTDC_ERROR
+// .VME_CAEN_V1190_SHORT_SUBTDC_ERROR// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SHORT_SUBTDC_ERROR
+// .VME_CAEN_V1190_SHORT_SUBTDC_ERROR
+// Corr struct for: VME_CAEN_V1190_SHORT
+// raw_array_multi_zero_suppress  .data(DATA24)[32][128]
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .event_number
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// VME_CAEN_V1190_SHORT_SUBTDC  .tdc[4]
+// VME_CAEN_V1190_SHORT_SUBTDC_ERROR  .err[4]
+  // uint32  .flags
+    // ---
+  // uint32  .dummy_15_23
+    // ---
+  // uint32  .tdc
+    // ---
+  // uint32  .dummy_26
+    // ---
+  // uint32  .unnamed_27_31
+    // ---
+  // uint32  .u32
+    // ---
+// uint32  .time_tag
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .word_count
+  // ---
+// uint32  .dummy_20_23
+  // ---
+// uint32  .tdc_error
+  // ---
+// uint32  .buffer_overflow
+  // ---
+// uint32  .trigger_lost
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SHORT
+// .VME_CAEN_V1190_SHORT// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SHORT
+// .VME_CAEN_V1190_SHORT// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1190_SHORT
+// .VME_CAEN_V1190_SHORT
+// Corr struct for: VME_CAEN_V1290_SUBTDC
+// uint32  .bunch_id
+  // ---
+// uint32  .event_id
+  // ---
+// uint32  .tdc
+  // ---
+// uint32  .dummy_26
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .flags
+  // ---
+// uint32  .dummy_15_23
+  // ---
+// uint32  .tdc
+  // ---
+// uint32  .dummy_26
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .word_count
+  // ---
+// uint32  .event_id
+  // ---
+// uint32  .tdc
+  // ---
+// uint32  .dummy_26
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SUBTDC
+// .VME_CAEN_V1290_SUBTDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SUBTDC
+// .VME_CAEN_V1290_SUBTDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SUBTDC
+// .VME_CAEN_V1290_SUBTDC
+// Corr struct for: VME_CAEN_V1290
+// raw_array_multi_zero_suppress  .data(DATA24)[32][128]
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .event_number
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// VME_CAEN_V1290_SUBTDC  .tdc[4]
+  // uint32  .bunch_id
+    // ---
+  // uint32  .event_id
+    // ---
+  // uint32  .tdc
+    // ---
+  // uint32  .dummy_26
+    // ---
+  // uint32  .unnamed_27_31
+    // ---
+  // uint32  .u32
+    // ---
+  // uint32  .flags
+    // ---
+  // uint32  .dummy_15_23
+    // ---
+  // uint32  .tdc
+    // ---
+  // uint32  .dummy_26
+    // ---
+  // uint32  .unnamed_27_31
+    // ---
+  // uint32  .u32
+    // ---
+  // uint32  .word_count
+    // ---
+  // uint32  .event_id
+    // ---
+  // uint32  .tdc
+    // ---
+  // uint32  .dummy_26
+    // ---
+  // uint32  .unnamed_27_31
+    // ---
+  // uint32  .u32
+    // ---
+// uint32  .time_tag
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .word_count
+  // ---
+// uint32  .dummy_20_23
+  // ---
+// uint32  .tdc_error
+  // ---
+// uint32  .buffer_overflow
+  // ---
+// uint32  .trigger_lost
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290
+// .VME_CAEN_V1290// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290
+// .VME_CAEN_V1290// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290
+// .VME_CAEN_V1290
+// Corr struct for: VME_CAEN_V1290_SHORT_SUBTDC
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SHORT_SUBTDC
+// .VME_CAEN_V1290_SHORT_SUBTDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SHORT_SUBTDC
+// .VME_CAEN_V1290_SHORT_SUBTDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SHORT_SUBTDC
+// .VME_CAEN_V1290_SHORT_SUBTDC
+// Corr struct for: VME_CAEN_V1290_SHORT_SUBTDC_ERROR
+// uint32  .flags
+  // ---
+// uint32  .dummy_15_23
+  // ---
+// uint32  .tdc
+  // ---
+// uint32  .dummy_26
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SHORT_SUBTDC_ERROR
+// .VME_CAEN_V1290_SHORT_SUBTDC_ERROR// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SHORT_SUBTDC_ERROR
+// .VME_CAEN_V1290_SHORT_SUBTDC_ERROR// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SHORT_SUBTDC_ERROR
+// .VME_CAEN_V1290_SHORT_SUBTDC_ERROR
+// Corr struct for: VME_CAEN_V1290_SHORT
+// raw_array_multi_zero_suppress  .data(DATA24)[32][128]
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .event_number
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// VME_CAEN_V1290_SHORT_SUBTDC  .tdc[4]
+// VME_CAEN_V1290_SHORT_SUBTDC_ERROR  .err[4]
+  // uint32  .flags
+    // ---
+  // uint32  .dummy_15_23
+    // ---
+  // uint32  .tdc
+    // ---
+  // uint32  .dummy_26
+    // ---
+  // uint32  .unnamed_27_31
+    // ---
+  // uint32  .u32
+    // ---
+// uint32  .time_tag
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .word_count
+  // ---
+// uint32  .dummy_20_23
+  // ---
+// uint32  .tdc_error
+  // ---
+// uint32  .buffer_overflow
+  // ---
+// uint32  .trigger_lost
+  // ---
+// uint32  .unnamed_27_31
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SHORT
+// .VME_CAEN_V1290_SHORT// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SHORT
+// .VME_CAEN_V1290_SHORT// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V1290_SHORT
+// .VME_CAEN_V1290_SHORT
+// Corr struct for: VME_CAEN_V775
+// raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+// uint32  .event_number
+  // ---
+// uint32  .unnamed_24_26
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .u32
+  // ---
+// DATA12_OVERFLOW .data[32]
+// 
+// size= 1  chunks= 32  mem=  32  line=64  total=2048
+// size=32  chunks=  1  mem=  32  line=33  total=1056
+// 
+// corr structure: VME_CAEN_V775
+  // DATA12_OVERFLOW .data[32]
+// .VME_CAEN_V775/32/.data/32/[32]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V775
+// .VME_CAEN_V775// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V775
+// .VME_CAEN_V775
+// Corr struct for: VME_CAEN_V830
+// raw_array_zero_suppress  .data(DATA32)[32]
+  // ---
+// uint32  .event_number
+  // ---
+// uint32  .ts
+  // ---
+// uint32  .count
+  // ---
+// uint32  .dummy_24_25
+  // ---
+// uint32  .unnamed_26_26
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V830
+// .VME_CAEN_V830// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V830
+// .VME_CAEN_V830// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V830
+// .VME_CAEN_V830
+// Corr struct for: VME_MESYTEC_MADC32
+// raw_array_zero_suppress  .data(DATA14_OVERFLOW)[32]
+// uint32  .counter
+  // ---
+// uint32  .unnamed_30_31
+  // ---
+// uint32  .u32
+  // ---
+// DATA14_OVERFLOW .data[32]
+// 
+// size= 1  chunks= 32  mem=  32  line=64  total=2048
+// size=32  chunks=  1  mem=  32  line=33  total=1056
+// 
+// corr structure: VME_MESYTEC_MADC32
+  // DATA14_OVERFLOW .data[32]
+// .VME_MESYTEC_MADC32/32/.data/32/[32]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_MESYTEC_MADC32
+// .VME_MESYTEC_MADC32// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_MESYTEC_MADC32
+// .VME_MESYTEC_MADC32
+// Corr struct for: VME_MESYTEC_MDPP16
+// raw_array_multi_zero_suppress  .data(DATA16_OVERFLOW)[34][100]
+// uint32  .counter
+  // ---
+// uint32  .unnamed_30_31
+  // ---
+// uint32  .u32
+  // ---
+// DATA16_OVERFLOW .data[34][100]
+// 
+// size= 1  chunks=3400  mem=3400  line=6800  total=23120000
+// size=100  chunks= 34  mem=3400  line=3434  total=11675600
+// size=3400  chunks=  1  mem=3400  line=3401  total=11563400
+// 
+// corr structure: VME_MESYTEC_MDPP16
+  // DATA16_OVERFLOW .data[34][100]
+// .VME_MESYTEC_MDPP16/3400/.data/3400/[34]/100/[100]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_MESYTEC_MDPP16
+// .VME_MESYTEC_MDPP16// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_MESYTEC_MDPP16
+// .VME_MESYTEC_MDPP16
+// Corr struct for: LAND_CAMAC_CONVERTER
+//  : public unpack_subevent_base
+// ---
+// uint16  .tpat
+  // ---
+// uint16  .tprev
+  // ---
+// uint16  .tnext
+  // ---
+// uint16  .tprev2
+  // ---
+// CAMAC_SILENA_4418  .qSIA0416
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+// CAMAC_SILENA_4418  .qSIA0458
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+// CAMAC_PHILLIPS_7164  .tPHI10481
+  // raw_array_zero_suppress  .data(DATA12)[16]
+// CAMAC_PHILLIPS_7164  .tPHI18573
+  // raw_array_zero_suppress  .data(DATA12)[16]
+// CAMAC_PHILLIPS_7164  .aPHI12160
+  // raw_array_zero_suppress  .data(DATA12)[16]
+// CAMAC_SILENA_4418  .qSIA0429
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+// CAMAC_SILENA_4418  .tSIA8035
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+// CAMAC_SILENA_4418  .tSIA0469
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+// CAMAC_SILENA_4418  .qSIA0480
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+// CAMAC_SILENA_4418  .tFRS120
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+// CAMAC_SILENA_4418  .tSIA0426
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+// CAMAC_SILENA_4418  .qSIA0495
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+// DATA12_OVERFLOW .qSIA0416.data[8]
+// DATA12_OVERFLOW .qSIA0458.data[8]
+// DATA12 .tPHI10481.data[16]
+// DATA12 .tPHI18573.data[16]
+// DATA12 .aPHI12160.data[16]
+// DATA12_OVERFLOW .qSIA0429.data[8]
+// DATA12_OVERFLOW .tSIA8035.data[8]
+// DATA12_OVERFLOW .tSIA0469.data[8]
+// DATA12_OVERFLOW .qSIA0480.data[8]
+// DATA12_OVERFLOW .tFRS120.data[8]
+// DATA12_OVERFLOW .tSIA0426.data[8]
+// DATA12_OVERFLOW .qSIA0495.data[8]
+// 
+// size= 1  chunks=120  mem= 120  line=240  total=28800
+// size= 8  chunks= 57  mem= 456  line=513  total=61560
+// size=16  chunks= 12  mem= 192  line=204  total=24480
+// size=120  chunks=  1  mem= 120  line=121  total=14520
+// 
+// corr structure: LAND_CAMAC_CONVERTER
+  // DATA12_OVERFLOW .qSIA0416.data[8]
+  // DATA12_OVERFLOW .qSIA0458.data[8]
+  // DATA12 .tPHI10481.data[16]
+  // DATA12 .tPHI18573.data[16]
+  // DATA12 .aPHI12160.data[16]
+  // DATA12_OVERFLOW .qSIA0429.data[8]
+  // DATA12_OVERFLOW .tSIA8035.data[8]
+  // DATA12_OVERFLOW .tSIA0469.data[8]
+  // DATA12_OVERFLOW .qSIA0480.data[8]
+  // DATA12_OVERFLOW .tFRS120.data[8]
+  // DATA12_OVERFLOW .tSIA0426.data[8]
+  // DATA12_OVERFLOW .qSIA0495.data[8]
+// .LAND_CAMAC_CONVERTER/120/.qSIA0416/8/.data/8/[8]
+                          // .qSIA0458/8/.data/8/[8]
+                          // .tPHI10481/16/.data/16/[16]
+                          // .tPHI18573/16/.data/16/[16]
+                          // .aPHI12160/16/.data/16/[16]
+                          // .qSIA0429/8/.data/8/[8]
+                          // .tSIA8035/8/.data/8/[8]
+                          // .tSIA0469/8/.data/8/[8]
+                          // .qSIA0480/8/.data/8/[8]
+                          // .tFRS120/8/.data/8/[8]
+                          // .tSIA0426/8/.data/8/[8]
+                          // .qSIA0495/8/.data/8/[8]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_CAMAC_CONVERTER
+// .LAND_CAMAC_CONVERTER// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_CAMAC_CONVERTER
+// .LAND_CAMAC_CONVERTER
+// Corr struct for: LAND_CAMAC_SCALER
+//  : public unpack_subevent_base
+// ---
+// uint32  .timestamp
+  // ---
+// uint32  .unnamed_0_31
+  // ---
+// uint32  .u32
+  // ---
+// CAMAC_LECROY_4434  .scaler0
+  // raw_array_zero_suppress  .data(DATA24)[32]
+    // ---
+// CAMAC_LECROY_4434  .scaler2
+  // raw_array_zero_suppress  .data(DATA24)[32]
+    // ---
+// CAMAC_LECROY_4434  .scaler1
+  // raw_array_zero_suppress  .data(DATA24)[32]
+    // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_CAMAC_SCALER
+// .LAND_CAMAC_SCALER// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_CAMAC_SCALER
+// .LAND_CAMAC_SCALER// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_CAMAC_SCALER
+// .LAND_CAMAC_SCALER
+// Corr struct for: LAND_CAMAC_START_STOP_STAMP
+//  : public unpack_subevent_base
+// ---
+// uint32  .timestamp
+  // ---
+// uint32  .unnamed_0_31
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_CAMAC_START_STOP_STAMP
+// .LAND_CAMAC_START_STOP_STAMP// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_CAMAC_START_STOP_STAMP
+// .LAND_CAMAC_START_STOP_STAMP// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_CAMAC_START_STOP_STAMP
+// .LAND_CAMAC_START_STOP_STAMP
+// Corr struct for: LAND_CAMAC_TCAL_INFO
+//  : public unpack_subevent_base
+// ---
+// uint32  .info
+  // ---
+// RANDOM_TCAL  .rtcal
+  // uint32  .word_count
+    // ---
+  // uint32  .pulses
+    // ---
+  // uint32  .clock_bits
+    // ---
+  // uint32  .has_tstamp1
+    // ---
+  // uint32  .has_tstamp2
+    // ---
+  // uint32  .dummy_20_23
+    // ---
+  // uint32  .id
+    // ---
+  // uint32  .u32
+    // ---
+  // RANDOM_TCAL_TSTAMP_CLOCK  .tstamp1
+    // uint32  .soft_latches
+      // ---
+    // uint32  .hard_latches
+      // ---
+    // uint32  .clock_ticks
+      // ---
+    // NTP64_TIME  .before
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+    // NTP64_TIME  .after
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+  // RANDOM_TCAL_TSTAMP_CLOCK  .tstamp2
+    // uint32  .soft_latches
+      // ---
+    // uint32  .hard_latches
+      // ---
+    // uint32  .clock_ticks
+      // ---
+    // NTP64_TIME  .before
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+    // NTP64_TIME  .after
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+// NTP_MESSAGE  .ntp
+  // uint32  .word_count
+    // ---
+  // uint32  .quick_burst
+    // ---
+  // uint32  .dummy_17_23
+    // ---
+  // uint32  .id
+    // ---
+  // uint32  .u32
+    // ---
+  // uint32  .server_id
+    // ---
+  // uint32  .precision
+    // ---
+  // uint32  .poll
+    // ---
+  // uint32  .stratum
+    // ---
+  // uint32  .dummy_20_23
+    // ---
+  // uint32  .mode
+    // ---
+  // uint32  .version
+    // ---
+  // uint32  .leap
+    // ---
+  // uint32  .u32
+    // ---
+  // uint32  .frac
+    // ---
+  // uint32  .sec
+    // ---
+  // uint32  .u32
+    // ---
+  // uint32  .frac
+    // ---
+  // uint32  .sec
+    // ---
+  // uint32  .u32
+    // ---
+  // uint32  .refid
+    // ---
+  // NTP64_TIME  .orig2time
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+  // NTP64_TIME  .tmit2time
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+  // NTP64_TIME  .rec2time
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+  // NTP64_TIME  .rx2time
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+  // NTP64_TIME  .reftime
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+  // NTP64_TIME  .origtime
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+  // NTP64_TIME  .rectime
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+  // NTP64_TIME  .tmittime
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+  // NTP64_TIME  .rxtime
+    // uint32  .sec
+      // ---
+    // uint32  .frac
+      // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_CAMAC_TCAL_INFO
+// .LAND_CAMAC_TCAL_INFO// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_CAMAC_TCAL_INFO
+// .LAND_CAMAC_TCAL_INFO// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_CAMAC_TCAL_INFO
+// .LAND_CAMAC_TCAL_INFO
+// Corr struct for: LAND_FASTBUS1
+//  : public unpack_subevent_base
+// ---
+// FASTBUS_LECROY_1885  .Q47342
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+// FASTBUS_LECROY_1885  .Q46848
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+// FASTBUS_LECROY_1885  .Q11111
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+// FASTBUS_LECROY_1885  .Q47315
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+// FASTBUS_LECROY_1885  .Q17320
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+// FASTBUS_LECROY_1885  .Q15372
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+// FASTBUS_LECROY_1885  .Q46962
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+// FASTBUS_LECROY_1885  .Q46993
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+// FASTBUS_LECROY_1885  .Q15358
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+// FASTBUS_LECROY_1885  .Q47264
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+// FASTBUS_LECROY_1875  .T81855
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// FASTBUS_LECROY_1875  .T87044
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// FASTBUS_LECROY_1875  .T87024
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// FASTBUS_LECROY_1875  .T81800
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// DATA12_RANGE .Q47342.data[96]
+// DATA12_RANGE .Q46848.data[96]
+// DATA12_RANGE .Q11111.data[96]
+// DATA12_RANGE .Q47315.data[96]
+// DATA12_RANGE .Q17320.data[96]
+// DATA12_RANGE .Q15372.data[96]
+// DATA12_RANGE .Q46962.data[96]
+// DATA12_RANGE .Q46993.data[96]
+// DATA12_RANGE .Q15358.data[96]
+// DATA12_RANGE .Q47264.data[96]
+// DATA12_RANGE .T81855.data[64]
+// DATA12_RANGE .T87044.data[64]
+// DATA12_RANGE .T87024.data[64]
+// DATA12_RANGE .T81800.data[64]
+// 
+// size= 1  chunks=1216  mem=1216  line=2432  total=2957312
+// size=64  chunks=964  mem=61696  line=62660  total=76194560
+// size=96  chunks= 14  mem=1344  line=1358  total=1651328
+// size=1216  chunks=  1  mem=1216  line=1217  total=1479872
+// 
+// corr structure: LAND_FASTBUS1
+  // DATA12_RANGE .Q47342.data[96]
+  // DATA12_RANGE .Q46848.data[96]
+  // DATA12_RANGE .Q11111.data[96]
+  // DATA12_RANGE .Q47315.data[96]
+  // DATA12_RANGE .Q17320.data[96]
+  // DATA12_RANGE .Q15372.data[96]
+  // DATA12_RANGE .Q46962.data[96]
+  // DATA12_RANGE .Q46993.data[96]
+  // DATA12_RANGE .Q15358.data[96]
+  // DATA12_RANGE .Q47264.data[96]
+  // DATA12_RANGE .T81855.data[64]
+  // DATA12_RANGE .T87044.data[64]
+  // DATA12_RANGE .T87024.data[64]
+  // DATA12_RANGE .T81800.data[64]
+// .LAND_FASTBUS1/1216/.Q47342/96/.data/96/[96]
+                    // .Q46848/96/.data/96/[96]
+                    // .Q11111/96/.data/96/[96]
+                    // .Q47315/96/.data/96/[96]
+                    // .Q17320/96/.data/96/[96]
+                    // .Q15372/96/.data/96/[96]
+                    // .Q46962/96/.data/96/[96]
+                    // .Q46993/96/.data/96/[96]
+                    // .Q15358/96/.data/96/[96]
+                    // .Q47264/96/.data/96/[96]
+                    // .T81855/64/.data/64/[64]
+                    // .T87044/64/.data/64/[64]
+                    // .T87024/64/.data/64/[64]
+                    // .T81800/64/.data/64/[64]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_FASTBUS1
+// .LAND_FASTBUS1// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_FASTBUS1
+// .LAND_FASTBUS1
+// Corr struct for: LAND_FASTBUS2
+//  : public unpack_subevent_base
+// ---
+// FASTBUS_LECROY_1875  .T87047
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// FASTBUS_LECROY_1875  .T81808
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// FASTBUS_LECROY_1875  .T48854
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// FASTBUS_LECROY_1875  .T81859
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// FASTBUS_LECROY_1875  .T81795
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// FASTBUS_LECROY_1875  .T81806
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// FASTBUS_LECROY_1875  .T48834
+  // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// DATA12_RANGE .T87047.data[64]
+// DATA12_RANGE .T81808.data[64]
+// DATA12_RANGE .T48854.data[64]
+// DATA12_RANGE .T81859.data[64]
+// DATA12_RANGE .T81795.data[64]
+// DATA12_RANGE .T81806.data[64]
+// DATA12_RANGE .T48834.data[64]
+// 
+// size= 1  chunks=448  mem= 448  line=896  total=401408
+// size=64  chunks=  7  mem= 448  line=455  total=203840
+// size=448  chunks=  1  mem= 448  line=449  total=201152
+// 
+// corr structure: LAND_FASTBUS2
+  // DATA12_RANGE .T87047.data[64]
+  // DATA12_RANGE .T81808.data[64]
+  // DATA12_RANGE .T48854.data[64]
+  // DATA12_RANGE .T81859.data[64]
+  // DATA12_RANGE .T81795.data[64]
+  // DATA12_RANGE .T81806.data[64]
+  // DATA12_RANGE .T48834.data[64]
+// .LAND_FASTBUS2/448/.T87047/64/.data/64/[64]
+                   // .T81808/64/.data/64/[64]
+                   // .T48854/64/.data/64/[64]
+                   // .T81859/64/.data/64/[64]
+                   // .T81795/64/.data/64/[64]
+                   // .T81806/64/.data/64/[64]
+                   // .T48834/64/.data/64/[64]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_FASTBUS2
+// .LAND_FASTBUS2// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_FASTBUS2
+// .LAND_FASTBUS2
+// Corr struct for: LAND_FASTBUS_ERROR
+//  : public unpack_subevent_base
+// ---
+// uint32  .timeout_waiting_smi
+  // ---
+// uint32  .illegal_block_transfer
+  // ---
+// uint32  .fifa_address_overflow
+  // ---
+// uint32  .fifa_register_error
+  // ---
+// uint32  .dummy_4_15
+  // ---
+// uint32  .init_error
+  // ---
+// uint32  .dummy_17_31
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .error_num
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_FASTBUS_ERROR
+// .LAND_FASTBUS_ERROR// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_FASTBUS_ERROR
+// .LAND_FASTBUS_ERROR// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_FASTBUS_ERROR
+// .LAND_FASTBUS_ERROR
+// Corr struct for: LAND_FASTBUS_ERROR_NGF
+//  : public unpack_subevent_base
+// ---
+// uint32  .unnamed_0_31
+  // ---
+// uint32  .u32
+  // ---
+// uint32  .error
+  // ---
+// uint32  .uninitialized
+  // ---
+// uint32  .ss1
+  // ---
+// uint32  .wc
+  // ---
+// uint32  .mid
+  // ---
+// uint32  .fifo_empty
+  // ---
+// uint32  .fifo_not_empty
+  // ---
+// uint32  .not_finished
+  // ---
+// uint32  .bad_end_addr
+  // ---
+// uint32  .word_lost
+  // ---
+// uint32  .dummy_10_31
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_FASTBUS_ERROR_NGF
+// .LAND_FASTBUS_ERROR_NGF// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_FASTBUS_ERROR_NGF
+// .LAND_FASTBUS_ERROR_NGF// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: LAND_FASTBUS_ERROR_NGF
+// .LAND_FASTBUS_ERROR_NGF
+// Corr struct for: unpack_event
+//  : public unpack_event_base
+// ---
+// LAND_CAMAC_CONVERTER  .camac
+  //  : public unpack_subevent_base
+  // ---
+  // uint16  .tpat
+    // ---
+  // uint16  .tprev
+    // ---
+  // uint16  .tnext
+    // ---
+  // uint16  .tprev2
+    // ---
+  // CAMAC_SILENA_4418  .qSIA0416
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+  // CAMAC_SILENA_4418  .qSIA0458
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+  // CAMAC_PHILLIPS_7164  .tPHI10481
+    // raw_array_zero_suppress  .data(DATA12)[16]
+  // CAMAC_PHILLIPS_7164  .tPHI18573
+    // raw_array_zero_suppress  .data(DATA12)[16]
+  // CAMAC_PHILLIPS_7164  .aPHI12160
+    // raw_array_zero_suppress  .data(DATA12)[16]
+  // CAMAC_SILENA_4418  .qSIA0429
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+  // CAMAC_SILENA_4418  .tSIA8035
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+  // CAMAC_SILENA_4418  .tSIA0469
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+  // CAMAC_SILENA_4418  .qSIA0480
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+  // CAMAC_SILENA_4418  .tFRS120
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+  // CAMAC_SILENA_4418  .tSIA0426
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+  // CAMAC_SILENA_4418  .qSIA0495
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[8]
+// LAND_CAMAC_TCAL_INFO  .camac_tcal_info
+  //  : public unpack_subevent_base
+  // ---
+  // uint32  .info
+    // ---
+  // RANDOM_TCAL  .rtcal
+    // uint32  .word_count
+      // ---
+    // uint32  .pulses
+      // ---
+    // uint32  .clock_bits
+      // ---
+    // uint32  .has_tstamp1
+      // ---
+    // uint32  .has_tstamp2
+      // ---
+    // uint32  .dummy_20_23
+      // ---
+    // uint32  .id
+      // ---
+    // uint32  .u32
+      // ---
+    // RANDOM_TCAL_TSTAMP_CLOCK  .tstamp1
+      // uint32  .soft_latches
+        // ---
+      // uint32  .hard_latches
+        // ---
+      // uint32  .clock_ticks
+        // ---
+      // NTP64_TIME  .before
+        // uint32  .sec
+          // ---
+        // uint32  .frac
+          // ---
+      // NTP64_TIME  .after
+        // uint32  .sec
+          // ---
+        // uint32  .frac
+          // ---
+    // RANDOM_TCAL_TSTAMP_CLOCK  .tstamp2
+      // uint32  .soft_latches
+        // ---
+      // uint32  .hard_latches
+        // ---
+      // uint32  .clock_ticks
+        // ---
+      // NTP64_TIME  .before
+        // uint32  .sec
+          // ---
+        // uint32  .frac
+          // ---
+      // NTP64_TIME  .after
+        // uint32  .sec
+          // ---
+        // uint32  .frac
+          // ---
+  // NTP_MESSAGE  .ntp
+    // uint32  .word_count
+      // ---
+    // uint32  .quick_burst
+      // ---
+    // uint32  .dummy_17_23
+      // ---
+    // uint32  .id
+      // ---
+    // uint32  .u32
+      // ---
+    // uint32  .server_id
+      // ---
+    // uint32  .precision
+      // ---
+    // uint32  .poll
+      // ---
+    // uint32  .stratum
+      // ---
+    // uint32  .dummy_20_23
+      // ---
+    // uint32  .mode
+      // ---
+    // uint32  .version
+      // ---
+    // uint32  .leap
+      // ---
+    // uint32  .u32
+      // ---
+    // uint32  .frac
+      // ---
+    // uint32  .sec
+      // ---
+    // uint32  .u32
+      // ---
+    // uint32  .frac
+      // ---
+    // uint32  .sec
+      // ---
+    // uint32  .u32
+      // ---
+    // uint32  .refid
+      // ---
+    // NTP64_TIME  .orig2time
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+    // NTP64_TIME  .tmit2time
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+    // NTP64_TIME  .rec2time
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+    // NTP64_TIME  .rx2time
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+    // NTP64_TIME  .reftime
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+    // NTP64_TIME  .origtime
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+    // NTP64_TIME  .rectime
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+    // NTP64_TIME  .tmittime
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+    // NTP64_TIME  .rxtime
+      // uint32  .sec
+        // ---
+      // uint32  .frac
+        // ---
+// LAND_CAMAC_START_STOP_STAMP  .camac_start_stop_stamp
+  //  : public unpack_subevent_base
+  // ---
+  // uint32  .timestamp
+    // ---
+  // uint32  .unnamed_0_31
+    // ---
+  // uint32  .u32
+    // ---
+// LAND_CAMAC_SCALER  .camac_scalers
+  //  : public unpack_subevent_base
+  // ---
+  // uint32  .timestamp
+    // ---
+  // uint32  .unnamed_0_31
+    // ---
+  // uint32  .u32
+    // ---
+  // CAMAC_LECROY_4434  .scaler0
+    // raw_array_zero_suppress  .data(DATA24)[32]
+      // ---
+  // CAMAC_LECROY_4434  .scaler2
+    // raw_array_zero_suppress  .data(DATA24)[32]
+      // ---
+  // CAMAC_LECROY_4434  .scaler1
+    // raw_array_zero_suppress  .data(DATA24)[32]
+      // ---
+// LAND_FASTBUS_ERROR  .fastbus_error
+  //  : public unpack_subevent_base
+  // ---
+  // uint32  .timeout_waiting_smi
+    // ---
+  // uint32  .illegal_block_transfer
+    // ---
+  // uint32  .fifa_address_overflow
+    // ---
+  // uint32  .fifa_register_error
+    // ---
+  // uint32  .dummy_4_15
+    // ---
+  // uint32  .init_error
+    // ---
+  // uint32  .dummy_17_31
+    // ---
+  // uint32  .u32
+    // ---
+  // uint32  .error_num
+    // ---
+// LAND_FASTBUS1  .fastbus1
+  //  : public unpack_subevent_base
+  // ---
+  // FASTBUS_LECROY_1885  .Q47342
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+  // FASTBUS_LECROY_1885  .Q46848
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+  // FASTBUS_LECROY_1885  .Q11111
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+  // FASTBUS_LECROY_1885  .Q47315
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+  // FASTBUS_LECROY_1885  .Q17320
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+  // FASTBUS_LECROY_1885  .Q15372
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+  // FASTBUS_LECROY_1885  .Q46962
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+  // FASTBUS_LECROY_1885  .Q46993
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+  // FASTBUS_LECROY_1885  .Q15358
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+  // FASTBUS_LECROY_1885  .Q47264
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[96]
+  // FASTBUS_LECROY_1875  .T81855
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+  // FASTBUS_LECROY_1875  .T87044
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+  // FASTBUS_LECROY_1875  .T87024
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+  // FASTBUS_LECROY_1875  .T81800
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// LAND_FASTBUS2  .fastbus2
+  //  : public unpack_subevent_base
+  // ---
+  // FASTBUS_LECROY_1875  .T87047
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+  // FASTBUS_LECROY_1875  .T81808
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+  // FASTBUS_LECROY_1875  .T48854
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+  // FASTBUS_LECROY_1875  .T81859
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+  // FASTBUS_LECROY_1875  .T81795
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+  // FASTBUS_LECROY_1875  .T81806
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+  // FASTBUS_LECROY_1875  .T48834
+    // raw_array_zero_suppress  .data(DATA12_RANGE)[64]
+// DATA12_OVERFLOW .camac.qSIA0416.data[8]
+// DATA12_OVERFLOW .camac.qSIA0458.data[8]
+// DATA12 .camac.tPHI10481.data[16]
+// DATA12 .camac.tPHI18573.data[16]
+// DATA12 .camac.aPHI12160.data[16]
+// DATA12_OVERFLOW .camac.qSIA0429.data[8]
+// DATA12_OVERFLOW .camac.tSIA8035.data[8]
+// DATA12_OVERFLOW .camac.tSIA0469.data[8]
+// DATA12_OVERFLOW .camac.qSIA0480.data[8]
+// DATA12_OVERFLOW .camac.tFRS120.data[8]
+// DATA12_OVERFLOW .camac.tSIA0426.data[8]
+// DATA12_OVERFLOW .camac.qSIA0495.data[8]
+// DATA12_RANGE .fastbus1.Q47342.data[96]
+// DATA12_RANGE .fastbus1.Q46848.data[96]
+// DATA12_RANGE .fastbus1.Q11111.data[96]
+// DATA12_RANGE .fastbus1.Q47315.data[96]
+// DATA12_RANGE .fastbus1.Q17320.data[96]
+// DATA12_RANGE .fastbus1.Q15372.data[96]
+// DATA12_RANGE .fastbus1.Q46962.data[96]
+// DATA12_RANGE .fastbus1.Q46993.data[96]
+// DATA12_RANGE .fastbus1.Q15358.data[96]
+// DATA12_RANGE .fastbus1.Q47264.data[96]
+// DATA12_RANGE .fastbus1.T81855.data[64]
+// DATA12_RANGE .fastbus1.T87044.data[64]
+// DATA12_RANGE .fastbus1.T87024.data[64]
+// DATA12_RANGE .fastbus1.T81800.data[64]
+// DATA12_RANGE .fastbus2.T87047.data[64]
+// DATA12_RANGE .fastbus2.T81808.data[64]
+// DATA12_RANGE .fastbus2.T48854.data[64]
+// DATA12_RANGE .fastbus2.T81859.data[64]
+// DATA12_RANGE .fastbus2.T81795.data[64]
+// DATA12_RANGE .fastbus2.T81806.data[64]
+// DATA12_RANGE .fastbus2.T48834.data[64]
+// 
+// size= 1  chunks=1784  mem=1784  line=3568  total=6365312
+// size= 8  chunks=1721  mem=13768  line=15489  total=27632376
+// size=16  chunks=1676  mem=26816  line=28492  total=50829728
+// size=64  chunks=983  mem=62912  line=63895  total=113988680
+// size=96  chunks= 33  mem=3168  line=3201  total=5710584
+// size=120  chunks= 22  mem=2640  line=2662  total=4749008
+// size=448  chunks= 16  mem=7168  line=7184  total=12816256
+// size=1216  chunks=  3  mem=3648  line=3651  total=6513384
+// size=1784  chunks=  1  mem=1784  line=1785  total=3184440
+// 
+// corr structure: unpack_event
+  // DATA12_OVERFLOW .camac.qSIA0416.data[8]
+  // DATA12_OVERFLOW .camac.qSIA0458.data[8]
+  // DATA12 .camac.tPHI10481.data[16]
+  // DATA12 .camac.tPHI18573.data[16]
+  // DATA12 .camac.aPHI12160.data[16]
+  // DATA12_OVERFLOW .camac.qSIA0429.data[8]
+  // DATA12_OVERFLOW .camac.tSIA8035.data[8]
+  // DATA12_OVERFLOW .camac.tSIA0469.data[8]
+  // DATA12_OVERFLOW .camac.qSIA0480.data[8]
+  // DATA12_OVERFLOW .camac.tFRS120.data[8]
+  // DATA12_OVERFLOW .camac.tSIA0426.data[8]
+  // DATA12_OVERFLOW .camac.qSIA0495.data[8]
+  // DATA12_RANGE .fastbus1.Q47342.data[96]
+  // DATA12_RANGE .fastbus1.Q46848.data[96]
+  // DATA12_RANGE .fastbus1.Q11111.data[96]
+  // DATA12_RANGE .fastbus1.Q47315.data[96]
+  // DATA12_RANGE .fastbus1.Q17320.data[96]
+  // DATA12_RANGE .fastbus1.Q15372.data[96]
+  // DATA12_RANGE .fastbus1.Q46962.data[96]
+  // DATA12_RANGE .fastbus1.Q46993.data[96]
+  // DATA12_RANGE .fastbus1.Q15358.data[96]
+  // DATA12_RANGE .fastbus1.Q47264.data[96]
+  // DATA12_RANGE .fastbus1.T81855.data[64]
+  // DATA12_RANGE .fastbus1.T87044.data[64]
+  // DATA12_RANGE .fastbus1.T87024.data[64]
+  // DATA12_RANGE .fastbus1.T81800.data[64]
+  // DATA12_RANGE .fastbus2.T87047.data[64]
+  // DATA12_RANGE .fastbus2.T81808.data[64]
+  // DATA12_RANGE .fastbus2.T48854.data[64]
+  // DATA12_RANGE .fastbus2.T81859.data[64]
+  // DATA12_RANGE .fastbus2.T81795.data[64]
+  // DATA12_RANGE .fastbus2.T81806.data[64]
+  // DATA12_RANGE .fastbus2.T48834.data[64]
+// .unpack_event/1784/.camac/120/.qSIA0416/8/.data/8/[8]
+                              // .qSIA0458/8/.data/8/[8]
+                              // .tPHI10481/16/.data/16/[16]
+                              // .tPHI18573/16/.data/16/[16]
+                              // .aPHI12160/16/.data/16/[16]
+                              // .qSIA0429/8/.data/8/[8]
+                              // .tSIA8035/8/.data/8/[8]
+                              // .tSIA0469/8/.data/8/[8]
+                              // .qSIA0480/8/.data/8/[8]
+                              // .tFRS120/8/.data/8/[8]
+                              // .tSIA0426/8/.data/8/[8]
+                              // .qSIA0495/8/.data/8/[8]
+                   // .fastbus1/1216/.Q47342/96/.data/96/[96]
+                                  // .Q46848/96/.data/96/[96]
+                                  // .Q11111/96/.data/96/[96]
+                                  // .Q47315/96/.data/96/[96]
+                                  // .Q17320/96/.data/96/[96]
+                                  // .Q15372/96/.data/96/[96]
+                                  // .Q46962/96/.data/96/[96]
+                                  // .Q46993/96/.data/96/[96]
+                                  // .Q15358/96/.data/96/[96]
+                                  // .Q47264/96/.data/96/[96]
+                                  // .T81855/64/.data/64/[64]
+                                  // .T87044/64/.data/64/[64]
+                                  // .T87024/64/.data/64/[64]
+                                  // .T81800/64/.data/64/[64]
+                   // .fastbus2/448/.T87047/64/.data/64/[64]
+                                 // .T81808/64/.data/64/[64]
+                                 // .T48854/64/.data/64/[64]
+                                 // .T81859/64/.data/64/[64]
+                                 // .T81795/64/.data/64/[64]
+                                 // .T81806/64/.data/64/[64]
+                                 // .T48834/64/.data/64/[64]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: unpack_event
+// .unpack_event// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: unpack_event
+// .unpack_event
+// Corr struct for: unpack_sticky_event
+//  : public unpack_sticky_event_base
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: unpack_sticky_event
+// .unpack_sticky_event// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: unpack_sticky_event
+// .unpack_sticky_event// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: unpack_sticky_event
+// .unpack_sticky_event
+
+/** END_CORR_STRUCT ***************************************************/
+

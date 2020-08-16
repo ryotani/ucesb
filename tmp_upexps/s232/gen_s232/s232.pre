@@ -1,0 +1,1311 @@
+# 1 "s232.spec"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "s232.spec"
+
+
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/spec.spec" 1
+# 23 "/u/land/fake_cvmfs/upexps/../ucesb/spec/spec.spec"
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/camac_lecroy_4434.spec" 1
+# 23 "/u/land/fake_cvmfs/upexps/../ucesb/spec/camac_lecroy_4434.spec"
+CAMAC_LECROY_4434(channels)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS);
+
+  list(0<=index<channels)
+    {
+      UINT32 ch_data NOENCODE
+ {
+   0_23: value;
+   24_31: 0;
+
+   ENCODE(data[index],(value=value));
+ }
+    }
+}
+# 24 "/u/land/fake_cvmfs/upexps/../ucesb/spec/spec.spec" 2
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/camac_silena_4418.spec" 1
+# 28 "/u/land/fake_cvmfs/upexps/../ucesb/spec/camac_silena_4418.spec"
+CAMAC_SILENA_4418(channels,mark_channel_no)
+{
+  MEMBER(DATA12_OVERFLOW data[8] ZERO_SUPPRESS);
+
+  list(0<=index<channels)
+    {
+      if (mark_channel_no) {
+ UINT16 ch_data NOENCODE
+   {
+     0_11: value;
+     12_14: channel = CHECK(index);
+     15: overflow;
+
+     ENCODE(data[index],(value=value,overflow=overflow));
+   }
+      } else {
+ UINT16 ch_data NOENCODE
+   {
+     0_11: value;
+     15: overflow;
+
+     ENCODE(data[index],(value=value,overflow=overflow));
+   }
+      }
+    }
+}
+# 25 "/u/land/fake_cvmfs/upexps/../ucesb/spec/spec.spec" 2
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/camac_phillips_7164.spec" 1
+# 26 "/u/land/fake_cvmfs/upexps/../ucesb/spec/camac_phillips_7164.spec"
+CAMAC_PHILLIPS_7164(channels,mark_channel_no)
+{
+  MEMBER(DATA12 data[16] ZERO_SUPPRESS);
+
+  list(0<=index<channels)
+    {
+      if (mark_channel_no) {
+ UINT16 ch_data NOENCODE
+   {
+     0_11: value;
+     12_15: channel = CHECK(index);
+
+     ENCODE(data[index],(value=value));
+   }
+      } else {
+ UINT16 ch_data NOENCODE
+   {
+     0_11: value;
+
+     ENCODE(data[index],(value=value));
+   }
+      }
+    }
+}
+# 26 "/u/land/fake_cvmfs/upexps/../ucesb/spec/spec.spec" 2
+
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/fastbus.spec" 1
+# 23 "/u/land/fake_cvmfs/upexps/../ucesb/spec/fastbus.spec"
+FASTBUS_LECROY_1875(geom,channels)
+{
+  MEMBER(DATA12_RANGE data[64] ZERO_SUPPRESS);
+
+  UINT32 ch_data NOENCODE
+    {
+      0_11: value;
+
+      16_21: channel = RANGE(0,channels-1);
+
+      23: range;
+      24_26: n = 0;
+      27_31: geom = MATCH(geom);
+
+      ENCODE(data[channel],(value=value,range=range));
+    }
+}
+
+FASTBUS_LECROY_1885(geom,channels)
+{
+  MEMBER(DATA12_RANGE data[96] ZERO_SUPPRESS);
+
+  UINT32 ch_data NOENCODE
+    {
+      0_11: value;
+
+      16_22: channel = RANGE(0,channels-1);
+      23: range;
+      24_26: n = 0;
+      27_31: geom = MATCH(geom);
+
+      ENCODE(data[channel],(value=value,range=range));
+    }
+}
+# 28 "/u/land/fake_cvmfs/upexps/../ucesb/spec/spec.spec" 2
+
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v775.spec" 1
+# 26 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v775.spec"
+VME_CAEN_V775(geom,
+       crate)
+{
+  MEMBER(DATA12_OVERFLOW data[32] ZERO_SUPPRESS);
+
+  UINT32 header NOENCODE
+    {
+
+      8_13: count;
+      16_23: crate = MATCH(crate);
+      24_26: 0b010;
+      27_31: geom = MATCH(geom);
+    }
+
+  list(0<=index<header.count)
+    {
+      UINT32 ch_data NOENCODE
+ {
+   0_11: value;
+
+   12: overflow;
+   13: underflow;
+   14: valid;
+
+
+
+   16_20: channel;
+
+   24_26: 0b000;
+   27_31: geom = CHECK(geom);
+
+   ENCODE(data[channel],(value=value,overflow=overflow));
+ }
+    }
+
+  UINT32 eob
+    {
+      0_23: event_number;
+      24_26: 0b100;
+      27_31: geom = CHECK(geom);
+
+    }
+}
+# 30 "/u/land/fake_cvmfs/upexps/../ucesb/spec/spec.spec" 2
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v830.spec" 1
+# 23 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v830.spec"
+VME_CAEN_V830(geom)
+{
+  MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+
+  UINT32 header
+    {
+      0_15: event_number;
+      16_17: ts;
+      18_23: count;
+
+
+
+      26: 1;
+      27_31: geom = MATCH(geom);
+    }
+
+  list(0<=index<header.count)
+    {
+      UINT32 ch_data NOENCODE
+ {
+   0_25: value;
+   26: 0;
+   27_31: channel;
+
+   ENCODE(data[channel],(value=value));
+ }
+    }
+}
+# 31 "/u/land/fake_cvmfs/upexps/../ucesb/spec/spec.spec" 2
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v1290.spec" 1
+# 27 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v1290.spec"
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v1290.spec" 1
+# 39 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v1290.spec"
+VME_CAEN_V1290_SUBTDC(tdc,event_id,data )
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(tdc_start);
+
+  UINT32 header
+    {
+      0_11: bunch_id;
+      12_23: event_id = CHECK(event_id);
+
+      24_25: tdc = MATCH(tdc);
+      27_31: 0b00001;
+    }
+
+  several UINT32 ch_data NOENCODE
+    {
+
+      0_20: value;
+      21_23: channel_low;
+      24_25: tdc = CHECK(tdc);
+
+
+
+
+
+
+
+      26: trailing;
+
+      27_31: 0b00000;
+
+
+      ENCODE(data[(tdc << 3) | channel_low],
+      (value=value ));
+
+
+
+
+
+    }
+
+  optional UINT32 error_flags
+    {
+      0_14: flags;
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00100;
+    }
+
+  MARK_COUNT(tdc_end);
+
+  UINT32 trailer
+    {
+      0_11: word_count = CHECK_COUNT(tdc_start,tdc_end,4,4);
+      12_23: event_id = CHECK(header.event_id);
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00011;
+    }
+}
+
+VME_CAEN_V1290(geom)
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(v1190_start);
+
+  UINT32 header
+    {
+      0_4: geom = MATCH(geom);
+      5_26: event_number;
+      27_31: 0b01000;
+    }
+
+  select several
+    {
+      tdc[0] = VME_CAEN_V1290_SUBTDC(tdc=0,event_id=(header.event_number&0xfff),data=data);
+      tdc[1] = VME_CAEN_V1290_SUBTDC(tdc=1,event_id=(header.event_number&0xfff),data=data);
+      tdc[2] = VME_CAEN_V1290_SUBTDC(tdc=2,event_id=(header.event_number&0xfff),data=data);
+      tdc[3] = VME_CAEN_V1290_SUBTDC(tdc=3,event_id=(header.event_number&0xfff),data=data);
+    }
+
+  UINT32 trigger
+    {
+      0_26: time_tag;
+      27_31: 0b10001;
+    }
+
+  MARK_COUNT(v1190_end);
+
+  UINT32 trailer
+    {
+      0_4: geom = CHECK(geom);
+      5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+      24: tdc_error;
+      25: buffer_overflow;
+      26: trigger_lost;
+      27_31: 0b10000;
+    }
+}
+
+
+
+
+
+VME_CAEN_V1290_SHORT_SUBTDC(tdc,event_id,data )
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  UINT32 ch_data NOENCODE
+    {
+
+      0_20: value;
+      21_23: channel_low;
+      24_25: tdc = CHECK(tdc);
+
+
+
+
+
+
+
+      26: trailing;
+
+      27_31: 0b00000;
+
+
+      ENCODE(data[(tdc << 3) | channel_low],
+      (value=value ));
+
+
+
+
+
+    }
+}
+
+VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc)
+{
+  UINT32 error_flags
+    {
+      0_14: flags;
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00100;
+    }
+}
+
+VME_CAEN_V1290_SHORT(geom)
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(v1190_start);
+
+  UINT32 header
+    {
+      0_4: geom = MATCH(geom);
+      5_26: event_number;
+      27_31: 0b01000;
+    }
+
+  select several
+    {
+      tdc[0] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=0,event_id=(header.event_number&0xfff),data=data);
+      tdc[1] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=1,event_id=(header.event_number&0xfff),data=data);
+      tdc[2] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=2,event_id=(header.event_number&0xfff),data=data);
+      tdc[3] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=3,event_id=(header.event_number&0xfff),data=data);
+
+      norevisit err[0] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=0);
+      norevisit err[1] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=1);
+      norevisit err[2] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=2);
+      norevisit err[3] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=3);
+    }
+
+  UINT32 trigger
+    {
+      0_26: time_tag;
+      27_31: 0b10001;
+    }
+
+  MARK_COUNT(v1190_end);
+
+  UINT32 trailer
+    {
+      0_4: geom = CHECK(geom);
+      5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+      24: tdc_error;
+      25: buffer_overflow;
+      26: trigger_lost;
+      27_31: 0b10000;
+    }
+}
+# 28 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v1290.spec" 2
+
+
+
+
+
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v1290.spec" 1
+# 39 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v1290.spec"
+VME_CAEN_V1190_SUBTDC(tdc,event_id,data )
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(tdc_start);
+
+  UINT32 header
+    {
+      0_11: bunch_id;
+      12_23: event_id = CHECK(event_id);
+
+      24_25: tdc = MATCH(tdc);
+      27_31: 0b00001;
+    }
+
+  several UINT32 ch_data NOENCODE
+    {
+
+
+
+
+
+
+      0_18: value;
+      19_23: channel_low;
+      24_25: tdc = CHECK(tdc);
+
+
+      26: trailing;
+
+      27_31: 0b00000;
+
+
+
+
+
+
+      ENCODE(data[(tdc << 5) | channel_low],
+      (value=value ));
+
+    }
+
+  optional UINT32 error_flags
+    {
+      0_14: flags;
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00100;
+    }
+
+  MARK_COUNT(tdc_end);
+
+  UINT32 trailer
+    {
+      0_11: word_count = CHECK_COUNT(tdc_start,tdc_end,4,4);
+      12_23: event_id = CHECK(header.event_id);
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00011;
+    }
+}
+
+VME_CAEN_V1190(geom)
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(v1190_start);
+
+  UINT32 header
+    {
+      0_4: geom = MATCH(geom);
+      5_26: event_number;
+      27_31: 0b01000;
+    }
+
+  select several
+    {
+      tdc[0] = VME_CAEN_V1190_SUBTDC(tdc=0,event_id=(header.event_number&0xfff),data=data);
+      tdc[1] = VME_CAEN_V1190_SUBTDC(tdc=1,event_id=(header.event_number&0xfff),data=data);
+      tdc[2] = VME_CAEN_V1190_SUBTDC(tdc=2,event_id=(header.event_number&0xfff),data=data);
+      tdc[3] = VME_CAEN_V1190_SUBTDC(tdc=3,event_id=(header.event_number&0xfff),data=data);
+    }
+
+  UINT32 trigger
+    {
+      0_26: time_tag;
+      27_31: 0b10001;
+    }
+
+  MARK_COUNT(v1190_end);
+
+  UINT32 trailer
+    {
+      0_4: geom = CHECK(geom);
+      5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+      24: tdc_error;
+      25: buffer_overflow;
+      26: trigger_lost;
+      27_31: 0b10000;
+    }
+}
+
+
+
+
+
+VME_CAEN_V1190_SHORT_SUBTDC(tdc,event_id,data )
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  UINT32 ch_data NOENCODE
+    {
+
+
+
+
+
+
+      0_18: value;
+      19_23: channel_low;
+      24_25: tdc = CHECK(tdc);
+
+
+      26: trailing;
+
+      27_31: 0b00000;
+
+
+
+
+
+
+      ENCODE(data[(tdc << 5) | channel_low],
+      (value=value ));
+
+    }
+}
+
+VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc)
+{
+  UINT32 error_flags
+    {
+      0_14: flags;
+
+      24_25: tdc = CHECK(tdc);
+      27_31: 0b00100;
+    }
+}
+
+VME_CAEN_V1190_SHORT(geom)
+{
+
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+
+  MARK_COUNT(v1190_start);
+
+  UINT32 header
+    {
+      0_4: geom = MATCH(geom);
+      5_26: event_number;
+      27_31: 0b01000;
+    }
+
+  select several
+    {
+      tdc[0] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=0,event_id=(header.event_number&0xfff),data=data);
+      tdc[1] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=1,event_id=(header.event_number&0xfff),data=data);
+      tdc[2] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=2,event_id=(header.event_number&0xfff),data=data);
+      tdc[3] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=3,event_id=(header.event_number&0xfff),data=data);
+
+      norevisit err[0] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=0);
+      norevisit err[1] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=1);
+      norevisit err[2] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=2);
+      norevisit err[3] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=3);
+    }
+
+  UINT32 trigger
+    {
+      0_26: time_tag;
+      27_31: 0b10001;
+    }
+
+  MARK_COUNT(v1190_end);
+
+  UINT32 trailer
+    {
+      0_4: geom = CHECK(geom);
+      5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+      24: tdc_error;
+      25: buffer_overflow;
+      26: trigger_lost;
+      27_31: 0b10000;
+    }
+}
+# 34 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_caen_v1290.spec" 2
+# 32 "/u/land/fake_cvmfs/upexps/../ucesb/spec/spec.spec" 2
+
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_mesytec_madc32.spec" 1
+# 23 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_mesytec_madc32.spec"
+VME_MESYTEC_MADC32(geom)
+{
+  MEMBER(DATA14_OVERFLOW data[32] ZERO_SUPPRESS);
+
+  MARK_COUNT(start);
+  UINT32 header NOENCODE
+  {
+    0_11: word_number;
+    12_14: adc_resol;
+    15: out_form;
+    16_23: geom = MATCH(geom);
+    24_29: 0b000000;
+    30_31: 0b01;
+  }
+
+  several UINT32 ch_data NOENCODE
+  {
+    0_12: value;
+    14: outofrange;
+    16_20: channel;
+    21_29: 0b000100000;
+    30_31: 0b00;
+
+    ENCODE(data[channel], (value = value, overflow = outofrange));
+  }
+
+
+  optional UINT32 filler NOENCODE
+  {
+    0_31: 0x00000000;
+  }
+
+  UINT32 end_of_event
+  {
+    0_29: counter;
+    30_31: 0b11;
+  }
+
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_number,start,end,-4,4);
+}
+# 34 "/u/land/fake_cvmfs/upexps/../ucesb/spec/spec.spec" 2
+# 1 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_mesytec_mdpp16.spec" 1
+# 35 "/u/land/fake_cvmfs/upexps/../ucesb/spec/vme_mesytec_mdpp16.spec"
+VME_MESYTEC_MDPP16(geom)
+{
+  MEMBER(DATA16_OVERFLOW data[34] ZERO_SUPPRESS_MULTI(100));
+
+  MARK_COUNT(start);
+  UINT32 header NOENCODE
+  {
+    0_9: word_number;
+    10_12: adc_res;
+    13_15: tdc_res;
+    16_23: geom = MATCH(geom);
+    24_29: 0b000000;
+    30_31: 0b01;
+  }
+
+  several UINT32 ch_data NOENCODE
+  {
+    0_15: value;
+    16_21: channel;
+    22: overflow;
+    23: pileup;
+    24_27: 0b0000;
+    28_31: 0b0001;
+
+    ENCODE(data[channel], (value = value, overflow = overflow, pileup = pileup));
+  }
+
+  several UINT32 fill_word NOENCODE
+  {
+    0_31: 0x0;
+  }
+
+  UINT32 end_of_event
+  {
+    0_29: counter;
+    30_31: 0b11;
+  }
+
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_number,start,end,-4,4);
+}
+# 35 "/u/land/fake_cvmfs/upexps/../ucesb/spec/spec.spec" 2
+# 4 "s232.spec" 2
+
+
+
+
+# 1 "./../land_common/land_camac_converter.spec" 1
+
+
+SUBEVENT(LAND_CAMAC_CONVERTER)
+{
+  UINT16 tpat;
+  UINT16 tprev;
+  UINT16 tnext;
+  UINT16 tprev2;
+
+  if (EXTERNAL has_data)
+    {
+# 1 "./camac_c2.hh" 1
+tPHI7079 = CAMAC_PHILLIPS_7164(channels=16,mark_channel_no=1);
+aPHI12160 = CAMAC_PHILLIPS_7164(channels=14,mark_channel_no=1);
+# 13 "./../land_common/land_camac_converter.spec" 2
+# 1 "./camac_c3.hh" 1
+qSIA0415 = CAMAC_SILENA_4418(channels=8,mark_channel_no=0);
+qSIA0418 = CAMAC_SILENA_4418(channels=8,mark_channel_no=0);
+qSIA0458 = CAMAC_SILENA_4418(channels=8,mark_channel_no=0);
+tSIA0400 = CAMAC_SILENA_4418(channels=8,mark_channel_no=0);
+tSIA0426 = CAMAC_SILENA_4418(channels=8,mark_channel_no=0);
+tSIA0401 = CAMAC_SILENA_4418(channels=8,mark_channel_no=0);
+# 14 "./../land_common/land_camac_converter.spec" 2
+    }
+}
+
+# 1 "./../land_common/ntp_tcal.spec" 1
+
+
+NTP64_TIME()
+{
+  UINT32 sec;
+  UINT32 frac;
+}
+
+NTP_MESSAGE(id)
+{
+  UINT32 header
+    {
+      0_15: word_count;
+
+      16: quick_burst;
+      24_31: id = MATCH(id);
+    }
+
+  MARK_COUNT(start);
+
+  UINT32 server_id;
+
+
+  UINT32 sspp
+    {
+      0_7: precision;
+      8_15: poll;
+      16_19: stratum;
+
+      24_26: mode;
+      27_29: version = 3;
+      30_31: leap;
+    }
+
+  UINT32 root_dly
+    {
+      16_31: sec;
+      0_15: frac;
+    }
+  UINT32 root_disp
+    {
+      16_31: sec;
+      0_15: frac;
+    }
+  UINT32 refid;
+
+  reftime = NTP64_TIME();
+  origtime = NTP64_TIME();
+  rectime = NTP64_TIME();
+  tmittime = NTP64_TIME();
+
+
+  rxtime = NTP64_TIME();
+
+  if (header.quick_burst)
+    {
+      orig2time = NTP64_TIME();
+      rec2time = NTP64_TIME();
+      tmit2time = NTP64_TIME();
+      rx2time = NTP64_TIME();
+    }
+
+  MARK_COUNT(end);
+
+  CHECK_COUNT(header.word_count,start,end,0,4);
+}
+
+
+
+RANDOM_TCAL_TSTAMP_CLOCK()
+{
+
+  UINT32 soft_latches;
+  UINT32 hard_latches;
+  UINT32 clock_ticks;
+  before = NTP64_TIME();
+  after = NTP64_TIME();
+}
+
+
+RANDOM_TCAL(id)
+{
+  UINT32 header
+    {
+      0_7: word_count;
+
+      8_11: pulses;
+      12_17: clock_bits;
+
+      18: has_tstamp1;
+      19: has_tstamp2;
+
+      24_31: id = MATCH(id);
+    }
+
+  MARK_COUNT(start);
+
+  if (header.has_tstamp1)
+    {
+      tstamp1 = RANDOM_TCAL_TSTAMP_CLOCK();
+    }
+  if (header.has_tstamp2)
+    {
+      tstamp2 = RANDOM_TCAL_TSTAMP_CLOCK();
+    }
+
+  MARK_COUNT(end);
+
+  CHECK_COUNT(header.word_count,start,end,0,4);
+}
+# 18 "./../land_common/land_camac_converter.spec" 2
+
+SUBEVENT(LAND_CAMAC_TCAL_INFO)
+{
+  UINT32 info;
+
+  select several
+    {
+      rtcal = RANDOM_TCAL(id = 0xe7);
+      ntp = NTP_MESSAGE(id = 0xef);
+    }
+}
+# 9 "s232.spec" 2
+# 1 "./../land_common/land_camac_scaler.spec" 1
+
+
+SOFT_SCALER32(channels)
+{
+  MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+
+  list(0<=index<channels)
+    {
+      UINT32 ch_data NOENCODE
+        {
+          0_31: value;
+
+          ENCODE(data[index],(value=value));
+        }
+    }
+}
+
+SUBEVENT(LAND_CAMAC_SCALER)
+{
+  scaler0 = CAMAC_LECROY_4434(channels=32);
+  scaler1 = CAMAC_LECROY_4434(channels=32);
+  scaler2 = CAMAC_LECROY_4434(channels=32);
+
+
+
+
+
+
+  if (EXTERNAL has_timestamp)
+    {
+      UINT32 timestamp;
+      UINT32 endianess { 0_31: 0x87654321; }
+    }
+}
+
+SUBEVENT(LAND_CAMAC_START_STOP_STAMP)
+{
+  UINT32 timestamp;
+  UINT32 endianess { 0_31: 0x87654321; }
+}
+# 10 "s232.spec" 2
+# 1 "./../land_common/land_fastbus.spec" 1
+
+
+SUBEVENT(LAND_FASTBUS_ERROR)
+{
+  UINT32 error_code
+    {
+      0: timeout_waiting_smi;
+      1: illegal_block_transfer;
+      2: fifa_address_overflow;
+      3: fifa_register_error;
+      16: init_error;
+    }
+  UINT32 error_num;
+}
+
+SUBEVENT(LAND_FASTBUS_ERROR_NGF)
+{
+  UINT32 magic
+    {
+      0_31: 0x10000000;
+    };
+  UINT32 error_code
+    {
+      0: error;
+      1: uninitialized;
+      2: ss1;
+      3: wc;
+      4: mid;
+      5: fifo_empty;
+      6: fifo_not_empty;
+      7: not_finished;
+      8: bad_end_addr;
+      9: word_lost;
+    };
+}
+
+SUBEVENT(LAND_FASTBUS1)
+{
+
+  UINT32 zero NOENCODE { 0_31: 0; }
+
+
+  select several
+    {
+# 1 "./fastbus_c1.hh" 1
+T87044 = FASTBUS_LECROY_1875(geom=4,channels=64);
+T87024 = FASTBUS_LECROY_1875(geom=5,channels=64);
+T81800 = FASTBUS_LECROY_1875(geom=6,channels=64);
+Q47342 = FASTBUS_LECROY_1885(geom=7,channels=96);
+Q11111 = FASTBUS_LECROY_1885(geom=8,channels=96);
+Q47264 = FASTBUS_LECROY_1885(geom=9,channels=96);
+Q46848 = FASTBUS_LECROY_1885(geom=10,channels=96);
+T81855 = FASTBUS_LECROY_1875(geom=12,channels=64);
+Q17320 = FASTBUS_LECROY_1885(geom=13,channels=96);
+Q47315 = FASTBUS_LECROY_1885(geom=14,channels=96);
+Q15372 = FASTBUS_LECROY_1885(geom=15,channels=96);
+Q46962 = FASTBUS_LECROY_1885(geom=16,channels=96);
+Q15358 = FASTBUS_LECROY_1885(geom=17,channels=96);
+Q46993 = FASTBUS_LECROY_1885(geom=18,channels=96);
+T87047 = FASTBUS_LECROY_1875(geom=19,channels=64);
+T48854 = FASTBUS_LECROY_1875(geom=20,channels=64);
+T81808 = FASTBUS_LECROY_1875(geom=21,channels=64);
+T81859 = FASTBUS_LECROY_1875(geom=22,channels=64);
+T81795 = FASTBUS_LECROY_1875(geom=23,channels=64);
+T81806 = FASTBUS_LECROY_1875(geom=24,channels=64);
+T48834 = FASTBUS_LECROY_1875(geom=25,channels=64);
+# 46 "./../land_common/land_fastbus.spec" 2
+    }
+}
+# 11 "s232.spec" 2
+
+# 1 "./../land_common/land_type_subtype.spec" 1
+# 13 "s232.spec" 2
+
+EVENT
+{
+
+
+
+  camac = LAND_CAMAC_CONVERTER(type = 34,
+         subtype = 3200);
+
+
+
+
+
+  camac_scalers = LAND_CAMAC_SCALER(type = 34,
+         subtype = 3100);
+
+  fastbus_error = LAND_FASTBUS_ERROR(type = 31,
+         subtype = 3100);
+  fastbus1 = LAND_FASTBUS1(type = 32,
+         subtype = 3100);
+}
+
+# 1 "mapping.hh" 1
+SIGNAL(CS155_1_E,fastbus1.Q47342.data[57],DATA12);
+SIGNAL(CS155_1_T,fastbus1.T87024.data[41],DATA12);
+SIGNAL(CS154_1_E,fastbus1.Q47342.data[55],DATA12);
+SIGNAL(CS154_1_T,fastbus1.T87024.data[39],DATA12);
+SIGNAL(CS153_1_E,fastbus1.Q47342.data[53],DATA12);
+SIGNAL(CS153_1_T,fastbus1.T87024.data[37],DATA12);
+SIGNAL(CS152_1_E,fastbus1.Q47342.data[51],DATA12);
+SIGNAL(CS152_1_T,fastbus1.T87024.data[35],DATA12);
+SIGNAL(CS151_1_E,fastbus1.Q47342.data[49],DATA12);
+SIGNAL(CS151_1_T,fastbus1.T87024.data[33],DATA12);
+SIGNAL(CS150_1_E,fastbus1.Q47342.data[58],DATA12);
+SIGNAL(CS150_1_T,fastbus1.T87024.data[42],DATA12);
+SIGNAL(CS149_1_E,fastbus1.Q47342.data[56],DATA12);
+SIGNAL(CS149_1_T,fastbus1.T87024.data[40],DATA12);
+SIGNAL(CS148_1_E,fastbus1.Q47342.data[54],DATA12);
+SIGNAL(CS148_1_T,fastbus1.T87024.data[38],DATA12);
+SIGNAL(CS147_1_E,fastbus1.Q47342.data[52],DATA12);
+SIGNAL(CS147_1_T,fastbus1.T87024.data[36],DATA12);
+SIGNAL(CS146_1_E,fastbus1.Q47342.data[50],DATA12);
+SIGNAL(CS146_1_T,fastbus1.T87024.data[34],DATA12);
+SIGNAL(CS145_1_E,fastbus1.Q47342.data[48],DATA12);
+SIGNAL(CS145_1_T,fastbus1.T87024.data[32],DATA12);
+SIGNAL(CS144_1_E,fastbus1.Q11111.data[78],DATA12);
+SIGNAL(CS144_1_T,fastbus1.T87024.data[14],DATA12);
+SIGNAL(CS143_1_E,fastbus1.Q11111.data[76],DATA12);
+SIGNAL(CS143_1_T,fastbus1.T87024.data[12],DATA12);
+SIGNAL(CS142_1_E,fastbus1.Q11111.data[74],DATA12);
+SIGNAL(CS142_1_T,fastbus1.T87024.data[10],DATA12);
+SIGNAL(CS141_1_E,fastbus1.Q47342.data[47],DATA12);
+SIGNAL(CS141_1_T,fastbus1.T87044.data[15],DATA12);
+SIGNAL(CS140_1_E,fastbus1.Q47342.data[45],DATA12);
+SIGNAL(CS140_1_T,fastbus1.T87044.data[13],DATA12);
+SIGNAL(CS139_1_E,fastbus1.Q47342.data[43],DATA12);
+SIGNAL(CS139_1_T,fastbus1.T87044.data[11],DATA12);
+SIGNAL(CS138_1_E,fastbus1.Q47342.data[41],DATA12);
+SIGNAL(CS138_1_T,fastbus1.T87044.data[9],DATA12);
+SIGNAL(CS137_1_E,fastbus1.Q47342.data[39],DATA12);
+SIGNAL(CS137_1_T,fastbus1.T87044.data[7],DATA12);
+SIGNAL(CS136_1_E,fastbus1.Q47342.data[37],DATA12);
+SIGNAL(CS136_1_T,fastbus1.T87044.data[5],DATA12);
+SIGNAL(CS135_1_E,fastbus1.Q11111.data[72],DATA12);
+SIGNAL(CS135_1_T,fastbus1.T87024.data[8],DATA12);
+SIGNAL(CS134_1_E,fastbus1.Q11111.data[70],DATA12);
+SIGNAL(CS134_1_T,fastbus1.T87024.data[6],DATA12);
+SIGNAL(CS133_1_E,fastbus1.Q11111.data[68],DATA12);
+SIGNAL(CS133_1_T,fastbus1.T87024.data[4],DATA12);
+SIGNAL(CS132_1_E,fastbus1.Q11111.data[66],DATA12);
+SIGNAL(CS132_1_T,fastbus1.T87024.data[2],DATA12);
+SIGNAL(CS131_1_E,fastbus1.Q11111.data[64],DATA12);
+SIGNAL(CS131_1_T,fastbus1.T87024.data[0],DATA12);
+SIGNAL(CS130_1_E,fastbus1.Q11111.data[63],DATA12);
+SIGNAL(CS130_1_T,fastbus1.T81800.data[63],DATA12);
+SIGNAL(CS129_1_E,fastbus1.Q47342.data[35],DATA12);
+SIGNAL(CS129_1_T,fastbus1.T87044.data[3],DATA12);
+SIGNAL(CS128_1_E,fastbus1.Q47342.data[33],DATA12);
+SIGNAL(CS128_1_T,fastbus1.T87044.data[1],DATA12);
+SIGNAL(CS127_1_E,fastbus1.Q47342.data[46],DATA12);
+SIGNAL(CS127_1_T,fastbus1.T87044.data[14],DATA12);
+SIGNAL(CS126_1_E,fastbus1.Q47342.data[44],DATA12);
+SIGNAL(CS126_1_T,fastbus1.T87044.data[12],DATA12);
+SIGNAL(CS125_1_E,fastbus1.Q47342.data[42],DATA12);
+SIGNAL(CS125_1_T,fastbus1.T87044.data[10],DATA12);
+SIGNAL(CS124_1_E,fastbus1.Q47342.data[40],DATA12);
+SIGNAL(CS124_1_T,fastbus1.T87044.data[8],DATA12);
+SIGNAL(CS123_1_E,fastbus1.Q11111.data[61],DATA12);
+SIGNAL(CS123_1_T,fastbus1.T81800.data[61],DATA12);
+SIGNAL(CS122_1_E,fastbus1.Q11111.data[59],DATA12);
+SIGNAL(CS122_1_T,fastbus1.T81800.data[59],DATA12);
+SIGNAL(CS121_1_E,fastbus1.Q11111.data[57],DATA12);
+SIGNAL(CS121_1_T,fastbus1.T81800.data[57],DATA12);
+SIGNAL(CS120_1_E,fastbus1.Q11111.data[55],DATA12);
+SIGNAL(CS120_1_T,fastbus1.T81800.data[55],DATA12);
+SIGNAL(CS119_1_E,fastbus1.Q11111.data[53],DATA12);
+SIGNAL(CS119_1_T,fastbus1.T81800.data[53],DATA12);
+SIGNAL(CS118_1_E,fastbus1.Q11111.data[51],DATA12);
+SIGNAL(CS118_1_T,fastbus1.T81800.data[51],DATA12);
+SIGNAL(CS117_1_E,fastbus1.Q47342.data[38],DATA12);
+SIGNAL(CS117_1_T,fastbus1.T87044.data[6],DATA12);
+SIGNAL(CS116_1_E,fastbus1.Q47342.data[36],DATA12);
+SIGNAL(CS116_1_T,fastbus1.T87044.data[4],DATA12);
+SIGNAL(CS115_1_E,fastbus1.Q47342.data[34],DATA12);
+SIGNAL(CS115_1_T,fastbus1.T87044.data[2],DATA12);
+SIGNAL(CS114_1_E,fastbus1.Q47342.data[32],DATA12);
+SIGNAL(CS114_1_T,fastbus1.T87044.data[0],DATA12);
+SIGNAL(CS113_1_E,fastbus1.Q47342.data[31],DATA12);
+SIGNAL(CS113_1_T,fastbus1.T87024.data[63],DATA12);
+SIGNAL(CS112_1_E,fastbus1.Q47342.data[29],DATA12);
+SIGNAL(CS112_1_T,fastbus1.T87024.data[61],DATA12);
+SIGNAL(CS111_1_E,fastbus1.Q11111.data[49],DATA12);
+SIGNAL(CS111_1_T,fastbus1.T81800.data[49],DATA12);
+SIGNAL(CS110_1_E,fastbus1.Q11111.data[62],DATA12);
+SIGNAL(CS110_1_T,fastbus1.T81800.data[62],DATA12);
+SIGNAL(CS109_1_E,fastbus1.Q11111.data[60],DATA12);
+SIGNAL(CS109_1_T,fastbus1.T81800.data[60],DATA12);
+SIGNAL(CS108_1_E,fastbus1.Q11111.data[58],DATA12);
+SIGNAL(CS108_1_T,fastbus1.T81800.data[58],DATA12);
+SIGNAL(CS107_1_E,fastbus1.Q11111.data[56],DATA12);
+SIGNAL(CS107_1_T,fastbus1.T81800.data[56],DATA12);
+SIGNAL(CS106_1_E,fastbus1.Q11111.data[54],DATA12);
+SIGNAL(CS106_1_T,fastbus1.T81800.data[54],DATA12);
+SIGNAL(CS105_1_E,fastbus1.Q47342.data[27],DATA12);
+SIGNAL(CS105_1_T,fastbus1.T87024.data[59],DATA12);
+SIGNAL(CS104_1_E,fastbus1.Q47342.data[25],DATA12);
+SIGNAL(CS104_1_T,fastbus1.T87024.data[57],DATA12);
+SIGNAL(CS103_1_E,fastbus1.Q47342.data[23],DATA12);
+SIGNAL(CS103_1_T,fastbus1.T87024.data[55],DATA12);
+SIGNAL(CS102_1_E,fastbus1.Q47342.data[21],DATA12);
+SIGNAL(CS102_1_T,fastbus1.T87024.data[53],DATA12);
+SIGNAL(CS101_1_E,fastbus1.Q47342.data[19],DATA12);
+SIGNAL(CS101_1_T,fastbus1.T87024.data[51],DATA12);
+SIGNAL(CS100_1_E,fastbus1.Q47342.data[17],DATA12);
+SIGNAL(CS100_1_T,fastbus1.T87024.data[49],DATA12);
+SIGNAL(CS099_1_E,fastbus1.Q11111.data[52],DATA12);
+SIGNAL(CS099_1_T,fastbus1.T81800.data[52],DATA12);
+SIGNAL(CS098_1_E,fastbus1.Q11111.data[50],DATA12);
+SIGNAL(CS098_1_T,fastbus1.T81800.data[50],DATA12);
+SIGNAL(CS097_1_E,fastbus1.Q11111.data[48],DATA12);
+SIGNAL(CS097_1_T,fastbus1.T81800.data[48],DATA12);
+SIGNAL(CS096_1_E,fastbus1.Q11111.data[47],DATA12);
+SIGNAL(CS096_1_T,fastbus1.T81800.data[47],DATA12);
+SIGNAL(CS095_1_E,fastbus1.Q11111.data[45],DATA12);
+SIGNAL(CS095_1_T,fastbus1.T81800.data[45],DATA12);
+SIGNAL(CS094_1_E,fastbus1.Q11111.data[43],DATA12);
+SIGNAL(CS094_1_T,fastbus1.T81800.data[43],DATA12);
+SIGNAL(CS093_1_E,fastbus1.Q47342.data[30],DATA12);
+SIGNAL(CS093_1_T,fastbus1.T87024.data[62],DATA12);
+SIGNAL(CS092_1_E,fastbus1.Q47342.data[28],DATA12);
+SIGNAL(CS092_1_T,fastbus1.T87024.data[60],DATA12);
+SIGNAL(CS091_1_E,fastbus1.Q47342.data[26],DATA12);
+SIGNAL(CS091_1_T,fastbus1.T87024.data[58],DATA12);
+SIGNAL(CS090_1_E,fastbus1.Q47342.data[24],DATA12);
+SIGNAL(CS090_1_T,fastbus1.T87024.data[56],DATA12);
+SIGNAL(CS089_1_E,fastbus1.Q47342.data[22],DATA12);
+SIGNAL(CS089_1_T,fastbus1.T87024.data[54],DATA12);
+SIGNAL(CS088_1_E,fastbus1.Q47342.data[20],DATA12);
+SIGNAL(CS088_1_T,fastbus1.T87024.data[52],DATA12);
+SIGNAL(CS087_1_E,fastbus1.Q11111.data[41],DATA12);
+SIGNAL(CS087_1_T,fastbus1.T81800.data[41],DATA12);
+SIGNAL(CS086_1_E,fastbus1.Q11111.data[39],DATA12);
+SIGNAL(CS086_1_T,fastbus1.T81800.data[39],DATA12);
+SIGNAL(CS085_1_E,fastbus1.Q11111.data[37],DATA12);
+SIGNAL(CS085_1_T,fastbus1.T81800.data[37],DATA12);
+SIGNAL(CS084_1_E,fastbus1.Q11111.data[35],DATA12);
+SIGNAL(CS084_1_T,fastbus1.T81800.data[35],DATA12);
+SIGNAL(CS083_1_E,fastbus1.Q11111.data[33],DATA12);
+SIGNAL(CS083_1_T,fastbus1.T81800.data[33],DATA12);
+SIGNAL(CS082_1_E,fastbus1.Q11111.data[46],DATA12);
+SIGNAL(CS082_1_T,fastbus1.T81800.data[46],DATA12);
+SIGNAL(CS081_1_E,fastbus1.Q47342.data[18],DATA12);
+SIGNAL(CS081_1_T,fastbus1.T87024.data[50],DATA12);
+SIGNAL(CS080_1_E,fastbus1.Q47342.data[16],DATA12);
+SIGNAL(CS080_1_T,fastbus1.T87024.data[48],DATA12);
+SIGNAL(CS079_1_E,fastbus1.Q47342.data[15],DATA12);
+SIGNAL(CS079_1_T,fastbus1.T87044.data[31],DATA12);
+SIGNAL(CS078_1_E,fastbus1.Q47342.data[13],DATA12);
+SIGNAL(CS078_1_T,fastbus1.T87044.data[29],DATA12);
+SIGNAL(CS077_1_E,fastbus1.Q47342.data[11],DATA12);
+SIGNAL(CS077_1_T,fastbus1.T87044.data[27],DATA12);
+SIGNAL(CS076_1_E,fastbus1.Q47342.data[9],DATA12);
+SIGNAL(CS076_1_T,fastbus1.T87044.data[25],DATA12);
+SIGNAL(CS075_1_E,fastbus1.Q11111.data[44],DATA12);
+SIGNAL(CS075_1_T,fastbus1.T81800.data[44],DATA12);
+SIGNAL(CS074_1_E,fastbus1.Q11111.data[42],DATA12);
+SIGNAL(CS074_1_T,fastbus1.T81800.data[42],DATA12);
+SIGNAL(CS073_1_E,fastbus1.Q11111.data[40],DATA12);
+SIGNAL(CS073_1_T,fastbus1.T81800.data[40],DATA12);
+SIGNAL(CS072_1_E,fastbus1.Q11111.data[38],DATA12);
+SIGNAL(CS072_1_T,fastbus1.T81800.data[38],DATA12);
+SIGNAL(CS071_1_E,fastbus1.Q11111.data[36],DATA12);
+SIGNAL(CS071_1_T,fastbus1.T81800.data[36],DATA12);
+SIGNAL(CS070_1_E,fastbus1.Q11111.data[34],DATA12);
+SIGNAL(CS070_1_T,fastbus1.T81800.data[34],DATA12);
+SIGNAL(CS069_1_E,fastbus1.Q47342.data[7],DATA12);
+SIGNAL(CS069_1_T,fastbus1.T87044.data[23],DATA12);
+SIGNAL(CS068_1_E,fastbus1.Q47342.data[5],DATA12);
+SIGNAL(CS068_1_T,fastbus1.T87044.data[21],DATA12);
+SIGNAL(CS067_1_E,fastbus1.Q47342.data[3],DATA12);
+SIGNAL(CS067_1_T,fastbus1.T87044.data[19],DATA12);
+SIGNAL(CS066_1_E,fastbus1.Q47342.data[1],DATA12);
+SIGNAL(CS066_1_T,fastbus1.T87044.data[17],DATA12);
+SIGNAL(CS065_1_E,fastbus1.Q47342.data[14],DATA12);
+SIGNAL(CS065_1_T,fastbus1.T87044.data[30],DATA12);
+SIGNAL(CS064_1_E,fastbus1.Q47342.data[12],DATA12);
+SIGNAL(CS064_1_T,fastbus1.T87044.data[28],DATA12);
+SIGNAL(CS063_1_E,fastbus1.Q11111.data[32],DATA12);
+SIGNAL(CS063_1_T,fastbus1.T81800.data[32],DATA12);
+SIGNAL(CS062_1_E,fastbus1.Q11111.data[31],DATA12);
+SIGNAL(CS062_1_T,fastbus1.T81800.data[31],DATA12);
+SIGNAL(CS061_1_E,fastbus1.Q11111.data[29],DATA12);
+SIGNAL(CS061_1_T,fastbus1.T81800.data[29],DATA12);
+SIGNAL(CS060_1_E,fastbus1.Q11111.data[27],DATA12);
+SIGNAL(CS060_1_T,fastbus1.T81800.data[27],DATA12);
+SIGNAL(CS059_1_E,fastbus1.Q11111.data[25],DATA12);
+SIGNAL(CS059_1_T,fastbus1.T81800.data[25],DATA12);
+SIGNAL(CS058_1_E,fastbus1.Q11111.data[23],DATA12);
+SIGNAL(CS058_1_T,fastbus1.T81800.data[23],DATA12);
+SIGNAL(CS057_1_E,fastbus1.Q47342.data[10],DATA12);
+SIGNAL(CS057_1_T,fastbus1.T87044.data[26],DATA12);
+SIGNAL(CS056_1_E,fastbus1.Q47342.data[8],DATA12);
+SIGNAL(CS056_1_T,fastbus1.T87044.data[24],DATA12);
+SIGNAL(CS055_1_E,fastbus1.Q47342.data[6],DATA12);
+SIGNAL(CS055_1_T,fastbus1.T87044.data[22],DATA12);
+SIGNAL(CS054_1_E,fastbus1.Q47342.data[4],DATA12);
+SIGNAL(CS054_1_T,fastbus1.T87044.data[20],DATA12);
+SIGNAL(CS053_1_E,fastbus1.Q47342.data[2],DATA12);
+SIGNAL(CS053_1_T,fastbus1.T87044.data[18],DATA12);
+SIGNAL(CS052_1_E,fastbus1.Q47342.data[0],DATA12);
+SIGNAL(CS052_1_T,fastbus1.T87044.data[16],DATA12);
+SIGNAL(CS051_1_E,fastbus1.Q11111.data[21],DATA12);
+SIGNAL(CS051_1_T,fastbus1.T81800.data[21],DATA12);
+SIGNAL(CS050_1_E,fastbus1.Q11111.data[19],DATA12);
+SIGNAL(CS050_1_T,fastbus1.T81800.data[19],DATA12);
+SIGNAL(CS049_1_E,fastbus1.Q11111.data[17],DATA12);
+SIGNAL(CS049_1_T,fastbus1.T81800.data[17],DATA12);
+SIGNAL(CS048_1_E,fastbus1.Q11111.data[30],DATA12);
+SIGNAL(CS048_1_T,fastbus1.T81800.data[30],DATA12);
+SIGNAL(CS047_1_E,fastbus1.Q11111.data[28],DATA12);
+SIGNAL(CS047_1_T,fastbus1.T81800.data[28],DATA12);
+SIGNAL(CS046_1_E,fastbus1.Q11111.data[26],DATA12);
+SIGNAL(CS046_1_T,fastbus1.T81800.data[26],DATA12);
+SIGNAL(CS045_1_E,fastbus1.Q11111.data[95],DATA12);
+SIGNAL(CS045_1_T,fastbus1.T87024.data[31],DATA12);
+SIGNAL(CS044_1_E,fastbus1.Q11111.data[93],DATA12);
+SIGNAL(CS044_1_T,fastbus1.T87024.data[29],DATA12);
+SIGNAL(CS043_1_E,fastbus1.Q11111.data[91],DATA12);
+SIGNAL(CS043_1_T,fastbus1.T87024.data[27],DATA12);
+SIGNAL(CS042_1_E,fastbus1.Q11111.data[89],DATA12);
+SIGNAL(CS042_1_T,fastbus1.T87024.data[25],DATA12);
+SIGNAL(CS041_1_E,fastbus1.Q11111.data[87],DATA12);
+SIGNAL(CS041_1_T,fastbus1.T87024.data[23],DATA12);
+SIGNAL(CS040_1_E,fastbus1.Q11111.data[85],DATA12);
+SIGNAL(CS040_1_T,fastbus1.T87024.data[21],DATA12);
+SIGNAL(CS039_1_E,fastbus1.Q11111.data[24],DATA12);
+SIGNAL(CS039_1_T,fastbus1.T81800.data[24],DATA12);
+SIGNAL(CS038_1_E,fastbus1.Q11111.data[22],DATA12);
+SIGNAL(CS038_1_T,fastbus1.T81800.data[22],DATA12);
+SIGNAL(CS037_1_E,fastbus1.Q11111.data[20],DATA12);
+SIGNAL(CS037_1_T,fastbus1.T81800.data[20],DATA12);
+SIGNAL(CS036_1_E,fastbus1.Q11111.data[18],DATA12);
+SIGNAL(CS036_1_T,fastbus1.T81800.data[18],DATA12);
+SIGNAL(CS035_1_E,fastbus1.Q11111.data[16],DATA12);
+SIGNAL(CS035_1_T,fastbus1.T81800.data[16],DATA12);
+SIGNAL(CS034_1_E,fastbus1.Q11111.data[15],DATA12);
+SIGNAL(CS034_1_T,fastbus1.T81800.data[15],DATA12);
+SIGNAL(CS033_1_E,fastbus1.Q11111.data[83],DATA12);
+SIGNAL(CS033_1_T,fastbus1.T87024.data[19],DATA12);
+SIGNAL(CS032_1_E,fastbus1.Q11111.data[81],DATA12);
+SIGNAL(CS032_1_T,fastbus1.T87024.data[17],DATA12);
+SIGNAL(CS031_1_E,fastbus1.Q11111.data[94],DATA12);
+SIGNAL(CS031_1_T,fastbus1.T87024.data[30],DATA12);
+SIGNAL(CS030_1_E,fastbus1.Q11111.data[92],DATA12);
+SIGNAL(CS030_1_T,fastbus1.T87024.data[28],DATA12);
+SIGNAL(CS029_1_E,fastbus1.Q11111.data[90],DATA12);
+SIGNAL(CS029_1_T,fastbus1.T87024.data[26],DATA12);
+SIGNAL(CS028_1_E,fastbus1.Q11111.data[88],DATA12);
+SIGNAL(CS028_1_T,fastbus1.T87024.data[24],DATA12);
+SIGNAL(CS027_1_E,fastbus1.Q11111.data[13],DATA12);
+SIGNAL(CS027_1_T,fastbus1.T81800.data[13],DATA12);
+SIGNAL(CS026_1_E,fastbus1.Q11111.data[11],DATA12);
+SIGNAL(CS026_1_T,fastbus1.T81800.data[11],DATA12);
+SIGNAL(CS025_1_E,fastbus1.Q11111.data[9],DATA12);
+SIGNAL(CS025_1_T,fastbus1.T81800.data[9],DATA12);
+SIGNAL(CS024_1_E,fastbus1.Q11111.data[7],DATA12);
+SIGNAL(CS024_1_T,fastbus1.T81800.data[7],DATA12);
+SIGNAL(CS023_1_E,fastbus1.Q11111.data[5],DATA12);
+SIGNAL(CS023_1_T,fastbus1.T81800.data[5],DATA12);
+SIGNAL(CS022_1_E,fastbus1.Q11111.data[3],DATA12);
+SIGNAL(CS022_1_T,fastbus1.T81800.data[3],DATA12);
+SIGNAL(CS021_1_E,fastbus1.Q11111.data[86],DATA12);
+SIGNAL(CS021_1_T,fastbus1.T87024.data[22],DATA12);
+SIGNAL(CS020_1_E,fastbus1.Q11111.data[84],DATA12);
+SIGNAL(CS020_1_T,fastbus1.T87024.data[20],DATA12);
+SIGNAL(CS019_1_E,fastbus1.Q11111.data[82],DATA12);
+SIGNAL(CS019_1_T,fastbus1.T87024.data[18],DATA12);
+SIGNAL(CS018_1_E,fastbus1.Q11111.data[80],DATA12);
+SIGNAL(CS018_1_T,fastbus1.T87024.data[16],DATA12);
+SIGNAL(CS017_1_E,fastbus1.Q11111.data[79],DATA12);
+SIGNAL(CS017_1_T,fastbus1.T87024.data[15],DATA12);
+SIGNAL(CS016_1_E,fastbus1.Q11111.data[77],DATA12);
+SIGNAL(CS016_1_T,fastbus1.T87024.data[13],DATA12);
+SIGNAL(CS015_1_E,fastbus1.Q11111.data[1],DATA12);
+SIGNAL(CS015_1_T,fastbus1.T81800.data[1],DATA12);
+SIGNAL(CS014_1_E,fastbus1.Q11111.data[14],DATA12);
+SIGNAL(CS014_1_T,fastbus1.T81800.data[14],DATA12);
+SIGNAL(CS013_1_E,fastbus1.Q11111.data[12],DATA12);
+SIGNAL(CS013_1_T,fastbus1.T81800.data[12],DATA12);
+SIGNAL(CS012_1_E,fastbus1.Q11111.data[10],DATA12);
+SIGNAL(CS012_1_T,fastbus1.T81800.data[10],DATA12);
+SIGNAL(CS011_1_E,fastbus1.Q11111.data[8],DATA12);
+SIGNAL(CS011_1_T,fastbus1.T81800.data[8],DATA12);
+SIGNAL(CS010_1_E,fastbus1.Q11111.data[6],DATA12);
+SIGNAL(CS010_1_T,fastbus1.T81800.data[6],DATA12);
+SIGNAL(CS009_1_E,fastbus1.Q11111.data[75],DATA12);
+SIGNAL(CS009_1_T,fastbus1.T87024.data[11],DATA12);
+SIGNAL(CS008_1_E,fastbus1.Q11111.data[73],DATA12);
+SIGNAL(CS008_1_T,fastbus1.T87024.data[9],DATA12);
+SIGNAL(CS007_1_E,fastbus1.Q11111.data[71],DATA12);
+SIGNAL(CS007_1_T,fastbus1.T87024.data[7],DATA12);
+SIGNAL(CS006_1_E,fastbus1.Q11111.data[69],DATA12);
+SIGNAL(CS006_1_T,fastbus1.T87024.data[5],DATA12);
+SIGNAL(CS005_1_E,fastbus1.Q11111.data[67],DATA12);
+SIGNAL(CS005_1_T,fastbus1.T87024.data[3],DATA12);
+SIGNAL(CS004_1_E,fastbus1.Q11111.data[65],DATA12);
+SIGNAL(CS004_1_T,fastbus1.T87024.data[1],DATA12);
+SIGNAL(CS003_1_E,fastbus1.Q11111.data[4],DATA12);
+SIGNAL(CS003_1_T,fastbus1.T81800.data[4],DATA12);
+SIGNAL(CS002_1_E,fastbus1.Q11111.data[2],DATA12);
+SIGNAL(CS002_1_T,fastbus1.T81800.data[2],DATA12);
+SIGNAL(CS001_1_E,fastbus1.Q11111.data[0],DATA12);
+SIGNAL(CS001_1_T,fastbus1.T81800.data[0],DATA12);
+# 36 "s232.spec" 2
+SIGNAL(ZERO_SUPPRESS: N1_1);
+SIGNAL(ZERO_SUPPRESS: V1_1);
+SIGNAL(ZERO_SUPPRESS: TFW1);
+SIGNAL(ZERO_SUPPRESS: NTF1);
+SIGNAL(ZERO_SUPPRESS: CS1_1);
+SIGNAL(ZERO_SUPPRESS: CV1_1);
+SIGNAL(ZERO_SUPPRESS: GFI1_1);
+SIGNAL(ZERO_SUPPRESS: FGR1_1);

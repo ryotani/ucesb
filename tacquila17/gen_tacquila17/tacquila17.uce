@@ -1,0 +1,1061 @@
+
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+TACQUILA_GTB(sam,gtb)
+{
+  MEMBER(DATA12 tac[2][16] ZERO_SUPPRESS);
+  MEMBER(DATA12 adc[2][16] ZERO_SUPPRESS);
+  UINT32 header
+  {
+     0_08: count;
+    12_15: trigger_tacquila = RANGE(0,0);
+    16_19: trigger_sam = RANGE(1,1);
+    20_23: local_event_counter;
+    24_27: gtb = MATCH(gtb);
+    28_31: sam = MATCH(sam);
+  }
+  list(0<=index<header.count)
+  {
+    if(( ! (index & 1)))
+    {
+      UINT32 ch_data NOENCODE
+      {
+         0_11: tac_value;
+        12_17: clock_cycle;
+           20: trigger = RANGE(0,0);
+           21: 0;
+        22_26: channel = RANGE(0,15);
+        27_31: module = RANGE(1,2);
+        ENCODE(tac[(module - 1)][channel],(value=tac_value));
+      }
+    }
+    else
+    {
+      UINT32 ch_data2 NOENCODE
+      {
+         0_11: adc_value;
+           20: trigger = RANGE(0,0);
+           21: 1;
+        22_26: channel = RANGE(0,15);
+        27_31: module = RANGE(1,2);
+        ENCODE(adc[(module - 1)][channel],(value=adc_value));
+      }
+    }
+  }
+}
+
+SUBEVENT(TACQUILA_RPC)
+{
+  tacq = TACQUILA_GTB(sam=6,gtb=0);
+}
+
+/**********************************************************
+ * The event definition:
+ */
+
+EVENT
+{
+  rpc = TACQUILA_RPC(type=10,subtype=1);
+  ignore_unknown_subevent;
+}
+
+/**********************************************************
+ * The sticky_event definition:
+ */
+
+/**********************************************************
+ * Signal name mappings:
+ */
+
+SIGNAL(tac1q1,rpc.tacq.adc[0][0],DATA12);
+SIGNAL(tac1q10,rpc.tacq.adc[0][9],DATA12);
+SIGNAL(tac1q11,rpc.tacq.adc[0][10],DATA12);
+SIGNAL(tac1q12,rpc.tacq.adc[0][11],DATA12);
+SIGNAL(tac1q13,rpc.tacq.adc[0][12],DATA12);
+SIGNAL(tac1q14,rpc.tacq.adc[0][13],DATA12);
+SIGNAL(tac1q15,rpc.tacq.adc[0][14],DATA12);
+SIGNAL(tac1q16,rpc.tacq.adc[0][15],DATA12);
+SIGNAL(tac1q2,rpc.tacq.adc[0][1],DATA12);
+SIGNAL(tac1q3,rpc.tacq.adc[0][2],DATA12);
+SIGNAL(tac1q4,rpc.tacq.adc[0][3],DATA12);
+SIGNAL(tac1q5,rpc.tacq.adc[0][4],DATA12);
+SIGNAL(tac1q6,rpc.tacq.adc[0][5],DATA12);
+SIGNAL(tac1q7,rpc.tacq.adc[0][6],DATA12);
+SIGNAL(tac1q8,rpc.tacq.adc[0][7],DATA12);
+SIGNAL(tac1q9,rpc.tacq.adc[0][8],DATA12);
+SIGNAL(tac1t1,rpc.tacq.tac[0][0],DATA12);
+SIGNAL(tac1t10,rpc.tacq.tac[0][9],DATA12);
+SIGNAL(tac1t11,rpc.tacq.tac[0][10],DATA12);
+SIGNAL(tac1t12,rpc.tacq.tac[0][11],DATA12);
+SIGNAL(tac1t13,rpc.tacq.tac[0][12],DATA12);
+SIGNAL(tac1t14,rpc.tacq.tac[0][13],DATA12);
+SIGNAL(tac1t15,rpc.tacq.tac[0][14],DATA12);
+SIGNAL(tac1t16,rpc.tacq.tac[0][15],DATA12);
+SIGNAL(tac1t2,rpc.tacq.tac[0][1],DATA12);
+SIGNAL(tac1t3,rpc.tacq.tac[0][2],DATA12);
+SIGNAL(tac1t4,rpc.tacq.tac[0][3],DATA12);
+SIGNAL(tac1t5,rpc.tacq.tac[0][4],DATA12);
+SIGNAL(tac1t6,rpc.tacq.tac[0][5],DATA12);
+SIGNAL(tac1t7,rpc.tacq.tac[0][6],DATA12);
+SIGNAL(tac1t8,rpc.tacq.tac[0][7],DATA12);
+SIGNAL(tac1t9,rpc.tacq.tac[0][8],DATA12);
+SIGNAL(tac2q1,rpc.tacq.adc[1][0],DATA12);
+SIGNAL(tac2q10,rpc.tacq.adc[1][9],DATA12);
+SIGNAL(tac2q11,rpc.tacq.adc[1][10],DATA12);
+SIGNAL(tac2q12,rpc.tacq.adc[1][11],DATA12);
+SIGNAL(tac2q13,rpc.tacq.adc[1][12],DATA12);
+SIGNAL(tac2q14,rpc.tacq.adc[1][13],DATA12);
+SIGNAL(tac2q15,rpc.tacq.adc[1][14],DATA12);
+SIGNAL(tac2q16,rpc.tacq.adc[1][15],DATA12);
+SIGNAL(tac2q2,rpc.tacq.adc[1][1],DATA12);
+SIGNAL(tac2q3,rpc.tacq.adc[1][2],DATA12);
+SIGNAL(tac2q4,rpc.tacq.adc[1][3],DATA12);
+SIGNAL(tac2q5,rpc.tacq.adc[1][4],DATA12);
+SIGNAL(tac2q6,rpc.tacq.adc[1][5],DATA12);
+SIGNAL(tac2q7,rpc.tacq.adc[1][6],DATA12);
+SIGNAL(tac2q8,rpc.tacq.adc[1][7],DATA12);
+SIGNAL(tac2q9,rpc.tacq.adc[1][8],DATA12);
+SIGNAL(tac2t1,rpc.tacq.tac[1][0],DATA12);
+SIGNAL(tac2t10,rpc.tacq.tac[1][9],DATA12);
+SIGNAL(tac2t11,rpc.tacq.tac[1][10],DATA12);
+SIGNAL(tac2t12,rpc.tacq.tac[1][11],DATA12);
+SIGNAL(tac2t13,rpc.tacq.tac[1][12],DATA12);
+SIGNAL(tac2t14,rpc.tacq.tac[1][13],DATA12);
+SIGNAL(tac2t15,rpc.tacq.tac[1][14],DATA12);
+SIGNAL(tac2t16,rpc.tacq.tac[1][15],DATA12);
+SIGNAL(tac2t2,rpc.tacq.tac[1][1],DATA12);
+SIGNAL(tac2t3,rpc.tacq.tac[1][2],DATA12);
+SIGNAL(tac2t4,rpc.tacq.tac[1][3],DATA12);
+SIGNAL(tac2t5,rpc.tacq.tac[1][4],DATA12);
+SIGNAL(tac2t6,rpc.tacq.tac[1][5],DATA12);
+SIGNAL(tac2t7,rpc.tacq.tac[1][6],DATA12);
+SIGNAL(tac2t8,rpc.tacq.tac[1][7],DATA12);
+SIGNAL(tac2t9,rpc.tacq.tac[1][8],DATA12);
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/
+
+/**********************************************************
+ * Generating unpacking code...
+ */
+
+//
+// Generating code for: TACQUILA_GTB
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for TACQUILA_GTB.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TACQUILA_GTB(sam,gtb)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_TACQUILA_GTB
+class TACQUILA_GTB
+#else//PACKER_CODE
+# define DECLARED_PACKER_TACQUILA_GTB
+class PACKER_TACQUILA_GTB
+#endif//PACKER_CODE
+
+{
+public:
+  // MEMBER(DATA12 tac[2][16] ZERO_SUPPRESS);
+  raw_array_zero_suppress<DATA12,DATA12,16> tac[2];
+  // MEMBER(DATA12 adc[2][16] ZERO_SUPPRESS);
+  raw_array_zero_suppress<DATA12,DATA12,16> adc[2];
+  // UINT32 header
+  // {
+    //  0_08: count;
+    // 12_15: trigger_tacquila = RANGE(0,0);
+    // 16_19: trigger_sam = RANGE(1,1);
+    // 20_23: local_event_counter;
+    // 24_27: gtb = MATCH(gtb);
+    // 28_31: sam = MATCH(sam);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 count : 9; // 0..8
+      uint32 dummy_9_11 : 3;
+      uint32 trigger_tacquila : 4; // 12..15
+      uint32 trigger_sam : 4; // 16..19
+      uint32 local_event_counter : 4; // 20..23
+      uint32 gtb : 4; // 24..27
+      uint32 sam : 4; // 28..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 sam : 4; // 28..31
+      uint32 gtb : 4; // 24..27
+      uint32 local_event_counter : 4; // 20..23
+      uint32 trigger_sam : 4; // 16..19
+      uint32 trigger_tacquila : 4; // 12..15
+      uint32 dummy_9_11 : 3;
+      uint32 count : 9; // 0..8
+#endif
+    };
+    uint32  u32;
+  } header;
+  // list(0<=index<header.count)
+
+    // if(( ! (index & 1)))
+
+    // else
+
+      // UINT32 ch_data NOENCODE
+      // {
+        //  0_11: tac_value;
+        // 12_17: clock_cycle;
+        //    20: trigger = RANGE(0,0);
+        //    21: 0;
+        // 22_26: channel = RANGE(0,15);
+        // 27_31: module = RANGE(1,2);
+        // ENCODE(tac[(module - 1)][channel],(value=tac_value));
+      // }
+      // UINT32 ch_data2 NOENCODE
+      // {
+        //  0_11: adc_value;
+        //    20: trigger = RANGE(0,0);
+        //    21: 1;
+        // 22_26: channel = RANGE(0,15);
+        // 27_31: module = RANGE(1,2);
+        // ENCODE(adc[(module - 1)][channel],(value=adc_value));
+      // }
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer,uint32 sam,uint32 gtb);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer,uint32 sam,uint32 gtb);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer,uint32 sam,uint32 gtb);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(TACQUILA_GTB);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for TACQUILA_GTB.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TACQUILA_GTB(sam,gtb)
+template<typename __data_src_t>
+void TACQUILA_GTB::__unpack(__data_src_t &__buffer,uint32 sam,uint32 gtb)
+{
+  // MEMBER(DATA12 tac[2][16] ZERO_SUPPRESS);
+  // MEMBER(DATA12 adc[2][16] ZERO_SUPPRESS);
+  // UINT32 header
+  // {
+    //  0_08: count;
+    // 12_15: trigger_tacquila = RANGE(0,0);
+    // 16_19: trigger_sam = RANGE(1,1);
+    // 20_23: local_event_counter;
+    // 24_27: gtb = MATCH(gtb);
+    // 28_31: sam = MATCH(sam);
+  // }
+  READ_FROM_BUFFER_FULL(22,uint32 ,header,header.u32);
+  CHECK_BITS_RANGE_MAX(17,header.trigger_tacquila,0);
+  CHECK_BITS_RANGE(18,header.trigger_sam,1,1);
+  CHECK_BITS_EQUAL(20,header.gtb,gtb);
+  CHECK_BITS_EQUAL(21,header.sam,sam);
+  CHECK_UNNAMED_BITS_ZERO(22,header.u32,0x00000e00);
+  // list(0<=index<header.count)
+
+  for (uint32 index = 0; index < (uint32) (header.count); ++index)
+  {
+    // if(( ! (index & 1)))
+
+    // else
+
+    if (( ! (index & 1)))
+    {
+      // UINT32 ch_data NOENCODE
+      // {
+        //  0_11: tac_value;
+        // 12_17: clock_cycle;
+        //    20: trigger = RANGE(0,0);
+        //    21: 0;
+        // 22_26: channel = RANGE(0,15);
+        // 27_31: module = RANGE(1,2);
+        // ENCODE(tac[(module - 1)][channel],(value=tac_value));
+      // }
+      union
+      {
+        struct
+        {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+          uint32 tac_value : 12; // 0..11
+          uint32 clock_cycle : 6; // 12..17
+          uint32 dummy_18_19 : 2;
+          uint32 trigger : 1; // 20
+          uint32 unnamed_21_21 : 1; // 21
+          uint32 channel : 5; // 22..26
+          uint32 module : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+          uint32 module : 5; // 27..31
+          uint32 channel : 5; // 22..26
+          uint32 unnamed_21_21 : 1; // 21
+          uint32 trigger : 1; // 20
+          uint32 dummy_18_19 : 2;
+          uint32 clock_cycle : 6; // 12..17
+          uint32 tac_value : 12; // 0..11
+#endif
+        };
+        uint32  u32;
+      } ch_data;
+      READ_FROM_BUFFER_FULL(38,uint32 ,ch_data,ch_data.u32);
+      CHECK_BITS_RANGE_MAX(32,ch_data.trigger,0);
+      CHECK_BITS_EQUAL(33,ch_data.unnamed_21_21,0);
+      CHECK_BITS_RANGE_MAX(34,ch_data.channel,15);
+      CHECK_BITS_RANGE(35,ch_data.module,1,2);
+      CHECK_UNNAMED_BITS_ZERO(38,ch_data.u32,0x000c0000);
+      {
+        typedef __typeof__(*(&(tac[(ch_data.module - 1)]))) __array_t;
+        typedef typename __array_t::item_t __item_t;
+        __item_t &__item = tac[(ch_data.module - 1)].insert_index(37,ch_data.channel);
+        __item.value = ch_data.tac_value;
+      }
+    }
+
+    else
+    {
+      // UINT32 ch_data2 NOENCODE
+      // {
+        //  0_11: adc_value;
+        //    20: trigger = RANGE(0,0);
+        //    21: 1;
+        // 22_26: channel = RANGE(0,15);
+        // 27_31: module = RANGE(1,2);
+        // ENCODE(adc[(module - 1)][channel],(value=adc_value));
+      // }
+      union
+      {
+        struct
+        {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+          uint32 adc_value : 12; // 0..11
+          uint32 dummy_12_19 : 8;
+          uint32 trigger : 1; // 20
+          uint32 unnamed_21_21 : 1; // 21
+          uint32 channel : 5; // 22..26
+          uint32 module : 5; // 27..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+          uint32 module : 5; // 27..31
+          uint32 channel : 5; // 22..26
+          uint32 unnamed_21_21 : 1; // 21
+          uint32 trigger : 1; // 20
+          uint32 dummy_12_19 : 8;
+          uint32 adc_value : 12; // 0..11
+#endif
+        };
+        uint32  u32;
+      } ch_data2;
+      READ_FROM_BUFFER_FULL(50,uint32 ,ch_data2,ch_data2.u32);
+      CHECK_BITS_RANGE_MAX(44,ch_data2.trigger,0);
+      CHECK_BITS_EQUAL(45,ch_data2.unnamed_21_21,1);
+      CHECK_BITS_RANGE_MAX(46,ch_data2.channel,15);
+      CHECK_BITS_RANGE(47,ch_data2.module,1,2);
+      CHECK_UNNAMED_BITS_ZERO(50,ch_data2.u32,0x000ff000);
+      {
+        typedef __typeof__(*(&(adc[(ch_data2.module - 1)]))) __array_t;
+        typedef typename __array_t::item_t __item_t;
+        __item_t &__item = adc[(ch_data2.module - 1)].insert_index(49,ch_data2.channel);
+        __item.value = ch_data2.adc_value;
+      }
+    }
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,TACQUILA_GTB::__unpack,uint32 sam,uint32 gtb);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for TACQUILA_GTB.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TACQUILA_GTB(sam,gtb)
+template<typename __data_src_t>
+bool TACQUILA_GTB::__match(__data_src_t &__buffer,uint32 sam,uint32 gtb)
+{
+  // MEMBER(DATA12 tac[2][16] ZERO_SUPPRESS);
+  // MEMBER(DATA12 adc[2][16] ZERO_SUPPRESS);
+  // UINT32 header
+  // {
+    //  0_08: count;
+    // 12_15: trigger_tacquila = RANGE(0,0);
+    // 16_19: trigger_sam = RANGE(1,1);
+    // 20_23: local_event_counter;
+    // 24_27: gtb = MATCH(gtb);
+    // 28_31: sam = MATCH(sam);
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 count : 9; // 0..8
+      uint32 dummy_9_11 : 3;
+      uint32 trigger_tacquila : 4; // 12..15
+      uint32 trigger_sam : 4; // 16..19
+      uint32 local_event_counter : 4; // 20..23
+      uint32 gtb : 4; // 24..27
+      uint32 sam : 4; // 28..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 sam : 4; // 28..31
+      uint32 gtb : 4; // 24..27
+      uint32 local_event_counter : 4; // 20..23
+      uint32 trigger_sam : 4; // 16..19
+      uint32 trigger_tacquila : 4; // 12..15
+      uint32 dummy_9_11 : 3;
+      uint32 count : 9; // 0..8
+#endif
+    };
+    uint32  u32;
+  } __header;
+  READ_FROM_BUFFER_FULL(22,uint32 ,header,__header.u32);
+  MATCH_BITS_RANGE_MAX(17,__header.trigger_tacquila,0);
+  MATCH_BITS_RANGE(18,__header.trigger_sam,1,1);
+  MATCH_BITS_EQUAL(20,__header.gtb,gtb);
+  MATCH_BITS_EQUAL(21,__header.sam,sam);
+  MATCH_UNNAMED_BITS_ZERO(22,__header.u32,0x00000e00);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(bool,TACQUILA_GTB::__match,uint32 sam,uint32 gtb);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for TACQUILA_GTB.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TACQUILA_GTB(sam,gtb)
+template<typename __data_dest_t>
+void PACKER_TACQUILA_GTB::__packer(__data_dest_t &__buffer,uint32 sam,uint32 gtb)
+{
+  // MEMBER(DATA12 tac[2][16] ZERO_SUPPRESS);
+  // MEMBER(DATA12 adc[2][16] ZERO_SUPPRESS);
+  // UINT32 header
+  // {
+    //  0_08: count;
+    // 12_15: trigger_tacquila = RANGE(0,0);
+    // 16_19: trigger_sam = RANGE(1,1);
+    // 20_23: local_event_counter;
+    // 24_27: gtb = MATCH(gtb);
+    // 28_31: sam = MATCH(sam);
+  // }
+  // list(0<=index<header.count)
+
+  {
+    // if(( ! (index & 1)))
+
+    // else
+
+    if (( ! (index & 1)))
+    {
+      // UINT32 ch_data NOENCODE
+      // {
+        //  0_11: tac_value;
+        // 12_17: clock_cycle;
+        //    20: trigger = RANGE(0,0);
+        //    21: 0;
+        // 22_26: channel = RANGE(0,15);
+        // 27_31: module = RANGE(1,2);
+        // ENCODE(tac[(module - 1)][channel],(value=tac_value));
+      // }
+    }
+
+    else
+    {
+      // UINT32 ch_data2 NOENCODE
+      // {
+        //  0_11: adc_value;
+        //    20: trigger = RANGE(0,0);
+        //    21: 1;
+        // 22_26: channel = RANGE(0,15);
+        // 27_31: module = RANGE(1,2);
+        // ENCODE(adc[(module - 1)][channel],(value=adc_value));
+      // }
+    }
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,TACQUILA_GTB::__packer,uint32 sam,uint32 gtb);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: TACQUILA_RPC
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for TACQUILA_RPC.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(TACQUILA_RPC)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_TACQUILA_RPC
+class TACQUILA_RPC
+#else//PACKER_CODE
+# define DECLARED_PACKER_TACQUILA_RPC
+class PACKER_TACQUILA_RPC
+#endif//PACKER_CODE
+ : public unpack_subevent_base
+{
+public:
+  // tacq = TACQUILA_GTB(sam=6,gtb=0);
+  SINGLE(TACQUILA_GTB,tacq);
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(TACQUILA_RPC);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for TACQUILA_RPC.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(TACQUILA_RPC)
+template<typename __data_src_t>
+void TACQUILA_RPC::__unpack(__data_src_t &__buffer)
+{
+  // tacq = TACQUILA_GTB(sam=6,gtb=0);
+  UNPACK_DECL(64,TACQUILA_GTB,tacq,/*sam*/6,/*gtb*/0);
+}
+FORCE_IMPL_DATA_SRC_FCN(void,TACQUILA_RPC::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for TACQUILA_RPC.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(TACQUILA_RPC)
+// No __match function for subevents.
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for TACQUILA_RPC.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// SUBEVENT(TACQUILA_RPC)
+template<typename __data_dest_t>
+void PACKER_TACQUILA_RPC::__packer(__data_dest_t &__buffer)
+{
+  // tacq = TACQUILA_GTB(sam=6,gtb=0);
+  PACK_DECL(64,TACQUILA_GTB,tacq,/*sam*/6,/*gtb*/0);
+}
+FORCE_IMPL_DATA_SRC_FCN(void,TACQUILA_RPC::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for EVENT
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+class unpack_event : public unpack_event_base
+{
+public:
+  // rpc = TACQUILA_RPC(type=10,subtype=1);
+  // ignore_unknown_subevent;
+SINGLE(TACQUILA_RPC,rpc);
+public:
+#ifndef __PSDC__
+  bitsone<2> __visited;
+  void __clear_visited() { __visited.clear(); }
+  bool ignore_unknown_subevent() { return true; }
+#endif//!__PSDC__
+
+public:
+#ifndef __PSDC__
+template<typename __data_src_t>
+  int __unpack_subevent(subevent_header *__header,__data_src_t &__buffer);
+  int __revoke_subevent(subevent_header *__header);
+  // void __clean_event();
+
+  STRUCT_FCNS_DECL(unpack_event);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+template<typename __data_src_t>
+int unpack_event::__unpack_subevent(subevent_header *__header,__data_src_t &__buffer)
+  // rpc = TACQUILA_RPC(type=10,subtype=1);
+  // ignore_unknown_subevent;
+{
+  int __match_no = 0;
+  MATCH_SUBEVENT_DECL(57,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)),rpc);
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+    case 1:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(57,TACQUILA_RPC,rpc,0);
+      UNPACK_SUBEVENT_DECL(57,0,TACQUILA_RPC,rpc);
+      break;
+  }
+  return 0;
+}
+FORCE_IMPL_DATA_SRC_FCN_HDR(int,unpack_event::__unpack_subevent);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+  // rpc = TACQUILA_RPC(type=10,subtype=1);
+  // ignore_unknown_subevent;
+{
+}
+
+/** END_PACKER ********************************************************/
+
+
+/** BEGIN_REVOKE *******************************************************
+ *
+ * Event revoker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// EVENT
+int unpack_event::__revoke_subevent(subevent_header *__header)
+  // rpc = TACQUILA_RPC(type=10,subtype=1);
+  // ignore_unknown_subevent;
+{
+  int __match_no = 0;
+  MATCH_SUBEVENT_DECL(57,__match_no,1,((VES10_1_type==10)&&(VES10_1_subtype==1)),rpc);
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+    case 1:
+      UNPACK_SUBEVENT_CHECK_NO_REVISIT(57,TACQUILA_RPC,rpc,0);
+      REVOKE_SUBEVENT_DECL(57,0,TACQUILA_RPC,rpc);
+      break;
+  }
+  return 0;
+}
+
+/** END_REVOKE ********************************************************/
+
+
+/** BEGIN_SUBEVENT_NAMES ***********************************************
+ *
+ * Mappings of names for [incl|excl] name lookup.
+ *
+ * Do not edit - automatically generated.
+ */
+
+{ "rpc", "type=10:subtype=1" },
+
+/** END_SUBEVENT_NAMES ************************************************/
+
+//
+// Generating code for EVENT
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+class unpack_sticky_event : public unpack_sticky_event_base
+{
+public:
+public:
+#ifndef __PSDC__
+  void __clear_visited() { }
+  bool ignore_unknown_subevent() { return false; }
+#endif//!__PSDC__
+
+public:
+#ifndef __PSDC__
+template<typename __data_src_t>
+  int __unpack_subevent(subevent_header *__header,__data_src_t &__buffer);
+  int __revoke_subevent(subevent_header *__header);
+  // void __clean_event();
+
+  STRUCT_FCNS_DECL(unpack_sticky_event);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+template<typename __data_src_t>
+int unpack_sticky_event::__unpack_subevent(subevent_header *__header,__data_src_t &__buffer)
+{
+  int __match_no = 0;
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+  }
+  return 0;
+}
+FORCE_IMPL_DATA_SRC_FCN_HDR(int,unpack_sticky_event::__unpack_subevent);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+{
+}
+
+/** END_PACKER ********************************************************/
+
+
+/** BEGIN_REVOKE *******************************************************
+ *
+ * Event revoker for EVENT.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// STICKY_EVENT
+int unpack_sticky_event::__revoke_subevent(subevent_header *__header)
+{
+  int __match_no = 0;
+  if (!__match_no) return 0;
+  switch (__match_no)
+  {
+  }
+  return 0;
+}
+
+/** END_REVOKE ********************************************************/
+
+
+/** BEGIN_SUBEVENT_NAMES ***********************************************
+ *
+ * Mappings of names for [incl|excl] name lookup.
+ *
+ * Do not edit - automatically generated.
+ */
+
+
+/** END_SUBEVENT_NAMES ************************************************/
+
+
+/** BEGIN_UNPACKER_DEFINES *********************************************
+ *
+ * Control
+ *
+ * Do not edit - automatically generated.
+ */
+
+#define STICKY_EVENT_IS_NONTRIVIAL  0
+
+
+/** END_UNPACKER_DEFINES **********************************************/
+
+/**********************************************************/
+/**********************************************************
+ * Generating event structure...
+ */
+
+
+/** BEGIN_EVENT_RAW_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+//DUMPY: 2 0
+class raw_event_tac
+{
+public:
+//DUMPY: 16 0
+  DATA12 t[16];
+//DUMPY: 16 0
+  DATA12 q[16];
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_event_tac);
+#endif//!__PSDC__
+} ;
+
+class raw_event : public raw_event_base
+{
+public:
+//DUMPY: 2 0
+  raw_event_tac
+  /* {
+  public:
+//DUMPY: 16 0
+    DATA12 t[16];
+//DUMPY: 16 0
+    DATA12 q[16];
+  } */ tac[2];
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_event);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_RAW_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_CAL_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+class cal_event : public cal_event_base
+{
+public:
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(cal_event);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_CAL_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_RAW_STRUCTURE ******************************************
+ *
+ * Event data structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+class raw_sticky : public raw_sticky_base
+{
+public:
+
+public:
+#ifndef __PSDC__
+  STRUCT_FCNS_DECL(raw_sticky);
+#endif//!__PSDC__
+} ;
+
+/** END_EVENT_RAW_STRUCTURE *******************************************/
+
+
+/** BEGIN_EVENT_DATA_MAPPING *******************************************
+ *
+ * Event data mapping.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// The order in this file does not matter.
+// This information parsed once and not treated eventwise,
+// it is used to initialize a structure.
+
+SIGNAL_MAPPING(DATA12,tac1q1,rpc.tacq.adc[0][0],tac[0].q[0]);
+SIGNAL_MAPPING(DATA12,tac1q10,rpc.tacq.adc[0][9],tac[0].q[9]);
+SIGNAL_MAPPING(DATA12,tac1q11,rpc.tacq.adc[0][10],tac[0].q[10]);
+SIGNAL_MAPPING(DATA12,tac1q12,rpc.tacq.adc[0][11],tac[0].q[11]);
+SIGNAL_MAPPING(DATA12,tac1q13,rpc.tacq.adc[0][12],tac[0].q[12]);
+SIGNAL_MAPPING(DATA12,tac1q14,rpc.tacq.adc[0][13],tac[0].q[13]);
+SIGNAL_MAPPING(DATA12,tac1q15,rpc.tacq.adc[0][14],tac[0].q[14]);
+SIGNAL_MAPPING(DATA12,tac1q16,rpc.tacq.adc[0][15],tac[0].q[15]);
+SIGNAL_MAPPING(DATA12,tac1q2,rpc.tacq.adc[0][1],tac[0].q[1]);
+SIGNAL_MAPPING(DATA12,tac1q3,rpc.tacq.adc[0][2],tac[0].q[2]);
+SIGNAL_MAPPING(DATA12,tac1q4,rpc.tacq.adc[0][3],tac[0].q[3]);
+SIGNAL_MAPPING(DATA12,tac1q5,rpc.tacq.adc[0][4],tac[0].q[4]);
+SIGNAL_MAPPING(DATA12,tac1q6,rpc.tacq.adc[0][5],tac[0].q[5]);
+SIGNAL_MAPPING(DATA12,tac1q7,rpc.tacq.adc[0][6],tac[0].q[6]);
+SIGNAL_MAPPING(DATA12,tac1q8,rpc.tacq.adc[0][7],tac[0].q[7]);
+SIGNAL_MAPPING(DATA12,tac1q9,rpc.tacq.adc[0][8],tac[0].q[8]);
+SIGNAL_MAPPING(DATA12,tac1t1,rpc.tacq.tac[0][0],tac[0].t[0]);
+SIGNAL_MAPPING(DATA12,tac1t10,rpc.tacq.tac[0][9],tac[0].t[9]);
+SIGNAL_MAPPING(DATA12,tac1t11,rpc.tacq.tac[0][10],tac[0].t[10]);
+SIGNAL_MAPPING(DATA12,tac1t12,rpc.tacq.tac[0][11],tac[0].t[11]);
+SIGNAL_MAPPING(DATA12,tac1t13,rpc.tacq.tac[0][12],tac[0].t[12]);
+SIGNAL_MAPPING(DATA12,tac1t14,rpc.tacq.tac[0][13],tac[0].t[13]);
+SIGNAL_MAPPING(DATA12,tac1t15,rpc.tacq.tac[0][14],tac[0].t[14]);
+SIGNAL_MAPPING(DATA12,tac1t16,rpc.tacq.tac[0][15],tac[0].t[15]);
+SIGNAL_MAPPING(DATA12,tac1t2,rpc.tacq.tac[0][1],tac[0].t[1]);
+SIGNAL_MAPPING(DATA12,tac1t3,rpc.tacq.tac[0][2],tac[0].t[2]);
+SIGNAL_MAPPING(DATA12,tac1t4,rpc.tacq.tac[0][3],tac[0].t[3]);
+SIGNAL_MAPPING(DATA12,tac1t5,rpc.tacq.tac[0][4],tac[0].t[4]);
+SIGNAL_MAPPING(DATA12,tac1t6,rpc.tacq.tac[0][5],tac[0].t[5]);
+SIGNAL_MAPPING(DATA12,tac1t7,rpc.tacq.tac[0][6],tac[0].t[6]);
+SIGNAL_MAPPING(DATA12,tac1t8,rpc.tacq.tac[0][7],tac[0].t[7]);
+SIGNAL_MAPPING(DATA12,tac1t9,rpc.tacq.tac[0][8],tac[0].t[8]);
+SIGNAL_MAPPING(DATA12,tac2q1,rpc.tacq.adc[1][0],tac[1].q[0]);
+SIGNAL_MAPPING(DATA12,tac2q10,rpc.tacq.adc[1][9],tac[1].q[9]);
+SIGNAL_MAPPING(DATA12,tac2q11,rpc.tacq.adc[1][10],tac[1].q[10]);
+SIGNAL_MAPPING(DATA12,tac2q12,rpc.tacq.adc[1][11],tac[1].q[11]);
+SIGNAL_MAPPING(DATA12,tac2q13,rpc.tacq.adc[1][12],tac[1].q[12]);
+SIGNAL_MAPPING(DATA12,tac2q14,rpc.tacq.adc[1][13],tac[1].q[13]);
+SIGNAL_MAPPING(DATA12,tac2q15,rpc.tacq.adc[1][14],tac[1].q[14]);
+SIGNAL_MAPPING(DATA12,tac2q16,rpc.tacq.adc[1][15],tac[1].q[15]);
+SIGNAL_MAPPING(DATA12,tac2q2,rpc.tacq.adc[1][1],tac[1].q[1]);
+SIGNAL_MAPPING(DATA12,tac2q3,rpc.tacq.adc[1][2],tac[1].q[2]);
+SIGNAL_MAPPING(DATA12,tac2q4,rpc.tacq.adc[1][3],tac[1].q[3]);
+SIGNAL_MAPPING(DATA12,tac2q5,rpc.tacq.adc[1][4],tac[1].q[4]);
+SIGNAL_MAPPING(DATA12,tac2q6,rpc.tacq.adc[1][5],tac[1].q[5]);
+SIGNAL_MAPPING(DATA12,tac2q7,rpc.tacq.adc[1][6],tac[1].q[6]);
+SIGNAL_MAPPING(DATA12,tac2q8,rpc.tacq.adc[1][7],tac[1].q[7]);
+SIGNAL_MAPPING(DATA12,tac2q9,rpc.tacq.adc[1][8],tac[1].q[8]);
+SIGNAL_MAPPING(DATA12,tac2t1,rpc.tacq.tac[1][0],tac[1].t[0]);
+SIGNAL_MAPPING(DATA12,tac2t10,rpc.tacq.tac[1][9],tac[1].t[9]);
+SIGNAL_MAPPING(DATA12,tac2t11,rpc.tacq.tac[1][10],tac[1].t[10]);
+SIGNAL_MAPPING(DATA12,tac2t12,rpc.tacq.tac[1][11],tac[1].t[11]);
+SIGNAL_MAPPING(DATA12,tac2t13,rpc.tacq.tac[1][12],tac[1].t[12]);
+SIGNAL_MAPPING(DATA12,tac2t14,rpc.tacq.tac[1][13],tac[1].t[13]);
+SIGNAL_MAPPING(DATA12,tac2t15,rpc.tacq.tac[1][14],tac[1].t[14]);
+SIGNAL_MAPPING(DATA12,tac2t16,rpc.tacq.tac[1][15],tac[1].t[15]);
+SIGNAL_MAPPING(DATA12,tac2t2,rpc.tacq.tac[1][1],tac[1].t[1]);
+SIGNAL_MAPPING(DATA12,tac2t3,rpc.tacq.tac[1][2],tac[1].t[2]);
+SIGNAL_MAPPING(DATA12,tac2t4,rpc.tacq.tac[1][3],tac[1].t[3]);
+SIGNAL_MAPPING(DATA12,tac2t5,rpc.tacq.tac[1][4],tac[1].t[4]);
+SIGNAL_MAPPING(DATA12,tac2t6,rpc.tacq.tac[1][5],tac[1].t[5]);
+SIGNAL_MAPPING(DATA12,tac2t7,rpc.tacq.tac[1][6],tac[1].t[6]);
+SIGNAL_MAPPING(DATA12,tac2t8,rpc.tacq.tac[1][7],tac[1].t[7]);
+SIGNAL_MAPPING(DATA12,tac2t9,rpc.tacq.tac[1][8],tac[1].t[8]);
+
+/** END_EVENT_DATA_MAPPING ********************************************/
+
+
+/** BEGIN_EVENT_DATA_MAPPING *******************************************
+ *
+ * Event data mapping.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// The order in this file does not matter.
+// This information parsed once and not treated eventwise,
+// it is used to initialize a structure.
+
+
+/** END_EVENT_DATA_MAPPING ********************************************/
+
+/**********************************************************/
+
+/** BEGIN_LOCATIONS ****************************************************
+ *
+ * File and line locations from the parsed specification files.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// It's left to the compiler to only store one copy of each
+// unique string.
+
+location spec_locations[] =
+{ 
+  { 2, 1, "tacquila17.spec" },
+  { 3, 1, "<built-in>" },
+  { 4, 1, "<command-line>" },
+  { 5, 1, "/usr/include/stdc-predef.h" },
+  { 6, 1, "<command-line>" },
+  { 7, 1, "tacquila17.spec" },
+};
+
+/** END_LOCATIONS *****************************************************/
+

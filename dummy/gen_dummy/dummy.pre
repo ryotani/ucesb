@@ -1,0 +1,193 @@
+# 1 "dummy.spec"
+# 1 "<built-in>"
+# 1 "<command-line>"
+# 1 "/usr/include/stdc-predef.h" 1 3 4
+# 1 "<command-line>" 2
+# 1 "dummy.spec"
+
+
+# 1 "../land_common/whiterabbit.spec" 1
+TIMESTAMP_WHITERABBIT(id)
+{
+ MEMBER(DATA12 subsystem_id);
+ MEMBER(DATA16 t1);
+ MEMBER(DATA16 t2);
+ MEMBER(DATA16 t3);
+ MEMBER(DATA16 t4);
+
+ UINT32 header NOENCODE {
+  0_11: id = MATCH(id);
+  12_15: 0;
+     16: error_bit;
+  17_31: 0;
+  ENCODE(subsystem_id, (value=id));
+ };
+ UINT32 d1 NOENCODE {
+  0_15: t1;
+  16_31: 0x03e1;
+  ENCODE(t1, (value=t1));
+ };
+ UINT32 d2 NOENCODE {
+  0_15: t2;
+  16_31: 0x04e1;
+  ENCODE(t2, (value=t2));
+ };
+ UINT32 d3 NOENCODE {
+  0_15: t3;
+  16_31: 0x05e1;
+  ENCODE(t3, (value=t3));
+ };
+ UINT32 d4 NOENCODE {
+  0_15: t4;
+  16_31: 0x06e1;
+  ENCODE(t4, (value=t4));
+ };
+}
+
+WR_MULTI()
+{
+ MEMBER(DATA32 time_hi);
+ MEMBER(DATA32 time_lo);
+
+ UINT32 hi NOENCODE {
+  0_31: time;
+  ENCODE(time_hi, (value = time));
+ }
+ UINT32 lo NOENCODE {
+  0_31: time;
+  ENCODE(time_lo, (value = time));
+ }
+}
+# 4 "dummy.spec" 2
+# 1 "../land_common/land_vme.spec" 1
+
+
+LAND_STD_VME()
+{
+
+  UINT32 failure
+    {
+      0: fail_general;
+      1: fail_data_corrupt;
+      2: fail_data_missing;
+      3: fail_data_too_much;
+      4: fail_event_counter_mismatch;
+      5: fail_readout_error_driver;
+      6: fail_unexpected_trigger;
+      7: fail_firmware_mismatch;
+
+      22: has_multi_trlo_ii_counter0;
+      23: has_clock_counter_stamp;
+      24: has_continous_event_counter;
+      25: has_update_qdc_iped_value;
+      26: spurious_start_before_tcal;
+      27: has_no_zero_suppression;
+      28: has_multi_adctdc_counter0;
+      29: has_multi_scaler_counter0;
+      30: has_multi_event;
+      31: has_time_stamp;
+    }
+
+  if (failure.has_continous_event_counter) {
+    UINT32 continous_event_counter;
+  }
+
+  if (failure.has_time_stamp) {
+    UINT32 time_stamp;
+  }
+
+  if (failure.has_clock_counter_stamp) {
+    UINT32 clock_counter_stamp;
+  }
+
+  if (failure.has_update_qdc_iped_value) {
+    UINT32 iped;
+  }
+
+  if (failure.has_multi_event) {
+    UINT32 multi_events;
+  }
+
+  if (failure.has_multi_trlo_ii_counter0) {
+    UINT32 multi_trlo_ii_counter0;
+  }
+
+  if (failure.has_multi_scaler_counter0) {
+    UINT32 multi_scaler_counter0;
+  }
+
+  if (failure.has_multi_adctdc_counter0) {
+    UINT32 multi_adctdc_counter0;
+  }
+}
+# 5 "dummy.spec" 2
+
+
+
+DUMMY(id)
+{
+ MEMBER(DATA32 time_lo);
+ MEMBER(DATA32 time_hi);
+ MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+
+ UINT32 header NOENCODE
+ {
+  0_15: wordcount;
+  16_31: id = MATCH(id);
+ }
+
+ UINT32 timestamp_hi NOENCODE
+ {
+  0_31: value;
+  ENCODE(time_hi, (value=value));
+ }
+ UINT32 timestamp_lo NOENCODE
+ {
+  0_31: value;
+  ENCODE(time_lo, (value=value));
+ }
+
+ list (0 <= ch < 32) {
+  UINT32 item NOENCODE
+  {
+   0_23: value;
+   24_31: channel;
+   ENCODE(data[channel], (value=value));
+  }
+ }
+
+ UINT32 footer NOENCODE
+ {
+  0_31: event_number;
+ }
+}
+
+SUBEVENT(vme_subevent)
+{
+ header = LAND_STD_VME();
+ select several
+ {
+  multi dummy[0] = DUMMY(id = 0x1234);
+ }
+}
+
+SUBEVENT(wr_ts_100)
+{
+ ts = TIMESTAMP_WHITERABBIT(id=0x100);
+}
+
+SUBEVENT(empty_subevent) {
+}
+
+SUBEVENT(land_header_only) {
+ header = LAND_STD_VME();
+}
+
+EVENT
+{
+ ts = wr_ts_100(type=10, subtype=1, control=0, subcrate=0);
+ vme = vme_subevent(type=88, subtype=8800, control=0, subcrate=0);
+ vme_drasi = empty_subevent(type=1234, subtype=5678, control=9, subcrate=0);
+ vme_drasi_unknown = empty_subevent(type=0xffff, subtype=0xffff,
+  control=9, subcrate=9);
+}

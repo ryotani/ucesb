@@ -1,0 +1,483 @@
+
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+class raw_event_U_QDC
+{
+  DATA32 CH[16];
+} ;
+class raw_event_U_TDC
+{
+  raw_list_ii_zero_suppress<DATA32,DATA32,5> CH[32];
+} ;
+class raw_event_U_Sca
+{
+  DATA32 CH[32];
+} ;
+class raw_event_U
+{
+  raw_event_U_QDC QDC[2];
+  raw_event_U_TDC TDC[1];
+  raw_event_U_Sca Sca[4];
+  DATA32 MPflag;
+  DATA32 tsCH[8];
+  DATA32 RBWCH[2];
+} ;
+class raw_event : public raw_event_base
+{
+  raw_event_U U;
+} ;
+class raw_sticky : public raw_sticky_base
+{
+  ;
+} ;
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/
+
+
+/** BEGIN_MIRROR_STRUCT ************************************************
+ *
+ * Mirror (1 to 1) structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+#ifndef USER_DEF_raw_event_U_QDC
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_U_QDC)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(CH);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(CH__i0,,16);
+  STRUCT_MIRROR_TYPE(DATA32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(CH[16]);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_U_QDC);
+};
+#endif//USER_DEF_raw_event_U_QDC
+
+#ifndef USER_DEF_raw_event_U_TDC
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_U_TDC)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(CH);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(CH__i0,,32);
+  STRUCT_MIRROR_TYPE(raw_list_ii_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA32),STRUCT_MIRROR_TEMPLATE_ARG(DATA32),5> STRUCT_MIRROR_NAME(CH[32]);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_U_TDC);
+};
+#endif//USER_DEF_raw_event_U_TDC
+
+#ifndef USER_DEF_raw_event_U_Sca
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_U_Sca)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(CH);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(CH__i0,,32);
+  STRUCT_MIRROR_TYPE(DATA32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(CH[32]);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_U_Sca);
+};
+#endif//USER_DEF_raw_event_U_Sca
+
+#ifndef USER_DEF_raw_event_U
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_U)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(QDC);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(QDC__i0,,2);
+  STRUCT_MIRROR_TYPE(raw_event_U_QDC) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(QDC[2]);
+  STRUCT_MIRROR_ITEM_CTRL(TDC);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(TDC__i0,,1);
+  STRUCT_MIRROR_TYPE(raw_event_U_TDC) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(TDC[1]);
+  STRUCT_MIRROR_ITEM_CTRL(Sca);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(Sca__i0,,4);
+  STRUCT_MIRROR_TYPE(raw_event_U_Sca) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(Sca[4]);
+  STRUCT_MIRROR_ITEM_CTRL(MPflag);
+  STRUCT_MIRROR_TYPE(DATA32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(MPflag);
+  STRUCT_MIRROR_ITEM_CTRL(tsCH);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(tsCH__i0,,8);
+  STRUCT_MIRROR_TYPE(DATA32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tsCH[8]);
+  STRUCT_MIRROR_ITEM_CTRL(RBWCH);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(RBWCH__i0,,2);
+  STRUCT_MIRROR_TYPE(DATA32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(RBWCH[2]);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_U);
+};
+#endif//USER_DEF_raw_event_U
+
+#ifndef USER_DEF_raw_event
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event) : public STRUCT_MIRROR_BASE(raw_event_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(raw_event_base);
+  STRUCT_MIRROR_ITEM_CTRL(U);
+  STRUCT_MIRROR_TYPE(raw_event_U) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(U);
+  STRUCT_MIRROR_FCNS_DECL(raw_event);
+};
+#endif//USER_DEF_raw_event
+
+#ifndef USER_DEF_raw_sticky
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_sticky) : public STRUCT_MIRROR_BASE(raw_sticky_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(raw_sticky_base);
+  STRUCT_MIRROR_FCNS_DECL(raw_sticky);
+};
+#endif//USER_DEF_raw_sticky
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_STRUCT *************************************************/
+
+
+/** BEGIN_MIRROR_DECL_STRUCT *******************************************
+ *
+ * Mirror structure names.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_U_QDC);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_U_TDC);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_U_Sca);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_U);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_sticky);
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_DECL_STRUCT ********************************************/
+
+
+/** BEGIN_FUNCTION_CALL_PER_MEMBER *************************************
+ *
+ * Recursive function calls per member.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_fcncall_define.hh"
+
+#ifndef USER_DEF_raw_event_U_QDC
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_U_QDC)::FCNCALL_NAME(raw_event_U_QDC)
+{
+  FCNCALL_INIT;
+  // DATA32 CH[16];
+  {
+  FCNCALL_SUBNAME("CH");
+  FCNCALL_FOR(__i0,16)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(CH__i0,,__i0,CH[__i0].FCNCALL_CALL(CH[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_U_QDC
+
+#ifndef USER_DEF_raw_event_U_TDC
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_U_TDC)::FCNCALL_NAME(raw_event_U_TDC)
+{
+  FCNCALL_INIT;
+  // raw_list_ii_zero_suppress<DATA32,DATA32,5> CH[32];
+  {
+  FCNCALL_SUBNAME("CH");
+  FCNCALL_FOR(__i0,32)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(CH__i0,,__i0,CH[__i0].FCNCALL_CALL(CH[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_U_TDC
+
+#ifndef USER_DEF_raw_event_U_Sca
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_U_Sca)::FCNCALL_NAME(raw_event_U_Sca)
+{
+  FCNCALL_INIT;
+  // DATA32 CH[32];
+  {
+  FCNCALL_SUBNAME("CH");
+  FCNCALL_FOR(__i0,32)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(CH__i0,,__i0,CH[__i0].FCNCALL_CALL(CH[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_U_Sca
+
+#ifndef USER_DEF_raw_event_U
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_U)::FCNCALL_NAME(raw_event_U)
+{
+  FCNCALL_INIT;
+  // raw_event_U_QDC QDC[2];
+  {
+  FCNCALL_SUBNAME("QDC");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(QDC__i0,,__i0,QDC[__i0].FCNCALL_CALL(QDC[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_U_TDC TDC[1];
+  {
+  FCNCALL_SUBNAME("TDC");
+  FCNCALL_FOR(__i0,1)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(TDC__i0,,__i0,TDC[__i0].FCNCALL_CALL(TDC[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_U_Sca Sca[4];
+  {
+  FCNCALL_SUBNAME("Sca");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(Sca__i0,,__i0,Sca[__i0].FCNCALL_CALL(Sca[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA32 MPflag;
+  {
+  FCNCALL_SUBNAME("MPflag");
+  { FCNCALL_CALL_CTRL_WRAP(MPflag,MPflag.FCNCALL_CALL(MPflag)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA32 tsCH[8];
+  {
+  FCNCALL_SUBNAME("tsCH");
+  FCNCALL_FOR(__i0,8)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(tsCH__i0,,__i0,tsCH[__i0].FCNCALL_CALL(tsCH[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA32 RBWCH[2];
+  {
+  FCNCALL_SUBNAME("RBWCH");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(RBWCH__i0,,__i0,RBWCH[__i0].FCNCALL_CALL(RBWCH[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_U
+
+#ifndef USER_DEF_raw_event
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event)::FCNCALL_NAME(raw_event)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(raw_event_base,FCNCALL_CLASS_NAME(raw_event_base)::FCNCALL_CALL_BASE());
+  // raw_event_U U;
+  {
+  FCNCALL_SUBNAME("U");
+  { FCNCALL_CALL_CTRL_WRAP(U,U.FCNCALL_CALL(U)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event
+
+#ifndef USER_DEF_raw_sticky
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_sticky)::FCNCALL_NAME(raw_sticky)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(raw_sticky_base,FCNCALL_CLASS_NAME(raw_sticky_base)::FCNCALL_CALL_BASE());
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_sticky
+
+#include "gen/default_fcncall_undef.hh"
+
+
+/** END_FUNCTION_CALL_PER_MEMBER **************************************/
+
+
+/** BEGIN_CORR_STRUCT **************************************************
+ *
+ * Correlation structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// Corr struct for: raw_event_U_QDC
+// DATA32  .CH[16]
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U_QDC
+// .raw_event_U_QDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U_QDC
+// .raw_event_U_QDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U_QDC
+// .raw_event_U_QDC
+// Corr struct for: raw_event_U_TDC
+// raw_list_ii_zero_suppress  .CH[32](DATA32)[5]
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U_TDC
+// .raw_event_U_TDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U_TDC
+// .raw_event_U_TDC// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U_TDC
+// .raw_event_U_TDC
+// Corr struct for: raw_event_U_Sca
+// DATA32  .CH[32]
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U_Sca
+// .raw_event_U_Sca// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U_Sca
+// .raw_event_U_Sca// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U_Sca
+// .raw_event_U_Sca
+// Corr struct for: raw_event_U
+// raw_event_U_QDC  .QDC[2]
+  // DATA32  .CH[16]
+    // ---
+// raw_event_U_TDC  .TDC[1]
+  // raw_list_ii_zero_suppress  .CH[32](DATA32)[5]
+    // ---
+// raw_event_U_Sca  .Sca[4]
+  // DATA32  .CH[32]
+    // ---
+// DATA32  .MPflag
+  // ---
+// DATA32  .tsCH[8]
+  // ---
+// DATA32  .RBWCH[2]
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U
+// .raw_event_U// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U
+// .raw_event_U// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_U
+// .raw_event_U
+// Corr struct for: raw_event
+//  : public raw_event_base
+// ---
+// raw_event_U  .U
+  // raw_event_U_QDC  .QDC[2]
+    // DATA32  .CH[16]
+      // ---
+  // raw_event_U_TDC  .TDC[1]
+    // raw_list_ii_zero_suppress  .CH[32](DATA32)[5]
+      // ---
+  // raw_event_U_Sca  .Sca[4]
+    // DATA32  .CH[32]
+      // ---
+  // DATA32  .MPflag
+    // ---
+  // DATA32  .tsCH[8]
+    // ---
+  // DATA32  .RBWCH[2]
+    // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event
+// .raw_event// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event
+// .raw_event// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event
+// .raw_event
+// Corr struct for: raw_sticky
+//  : public raw_sticky_base
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_sticky
+// .raw_sticky// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_sticky
+// .raw_sticky// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_sticky
+// .raw_sticky
+
+/** END_CORR_STRUCT ***************************************************/
+

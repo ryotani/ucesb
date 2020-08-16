@@ -1,0 +1,766 @@
+
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+struct hit_mul
+{
+  float x;
+  float y;
+  float sumx;
+  float sumy;
+} ;
+struct hit_tpc
+{
+  float x1;
+  float x2;
+  float y;
+  float sumx[4][2];
+} ;
+struct hit_sci
+{
+  float de;
+  float dt;
+} ;
+struct hit_tof
+{
+  float s2s3;
+} ;
+struct hit_angle
+{
+  float pos[2][2];
+  float at_s[2];
+} ;
+struct hit_track
+{
+  float xtr;
+} ;
+struct hit_id
+{
+  float q[2];
+  float rho;
+  float brho;
+  float beta;
+  float gamma;
+  float aoq;
+} ;
+struct hit_event
+{
+  hit_sci sc[3];
+  hit_tof tof;
+  hit_mul mw[2];
+  hit_tpc tpc[3];
+  hit_angle ang;
+  hit_track s[2];
+  hit_id s3;
+} ;
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/
+
+
+/** BEGIN_MIRROR_STRUCT ************************************************
+ *
+ * Mirror (1 to 1) structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+#ifndef USER_DEF_hit_mul
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_mul)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(x);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(x);
+  STRUCT_MIRROR_ITEM_CTRL(y);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(y);
+  STRUCT_MIRROR_ITEM_CTRL(sumx);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(sumx);
+  STRUCT_MIRROR_ITEM_CTRL(sumy);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(sumy);
+  STRUCT_MIRROR_FCNS_DECL(hit_mul);
+};
+#endif//USER_DEF_hit_mul
+
+#ifndef USER_DEF_hit_tpc
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_tpc)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(x1);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(x1);
+  STRUCT_MIRROR_ITEM_CTRL(x2);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(x2);
+  STRUCT_MIRROR_ITEM_CTRL(y);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(y);
+  STRUCT_MIRROR_ITEM_CTRL(sumx);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(sumx__i0,,4);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(sumx__i0__i1,[4],2);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(sumx[4][2]);
+  STRUCT_MIRROR_FCNS_DECL(hit_tpc);
+};
+#endif//USER_DEF_hit_tpc
+
+#ifndef USER_DEF_hit_sci
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_sci)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(de);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(de);
+  STRUCT_MIRROR_ITEM_CTRL(dt);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dt);
+  STRUCT_MIRROR_FCNS_DECL(hit_sci);
+};
+#endif//USER_DEF_hit_sci
+
+#ifndef USER_DEF_hit_tof
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_tof)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(s2s3);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(s2s3);
+  STRUCT_MIRROR_FCNS_DECL(hit_tof);
+};
+#endif//USER_DEF_hit_tof
+
+#ifndef USER_DEF_hit_angle
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_angle)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(pos);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(pos__i0,,2);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(pos__i0__i1,[2],2);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(pos[2][2]);
+  STRUCT_MIRROR_ITEM_CTRL(at_s);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(at_s__i0,,2);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(at_s[2]);
+  STRUCT_MIRROR_FCNS_DECL(hit_angle);
+};
+#endif//USER_DEF_hit_angle
+
+#ifndef USER_DEF_hit_track
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_track)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(xtr);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(xtr);
+  STRUCT_MIRROR_FCNS_DECL(hit_track);
+};
+#endif//USER_DEF_hit_track
+
+#ifndef USER_DEF_hit_id
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_id)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(q);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(q__i0,,2);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(q[2]);
+  STRUCT_MIRROR_ITEM_CTRL(rho);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(rho);
+  STRUCT_MIRROR_ITEM_CTRL(brho);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(brho);
+  STRUCT_MIRROR_ITEM_CTRL(beta);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(beta);
+  STRUCT_MIRROR_ITEM_CTRL(gamma);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(gamma);
+  STRUCT_MIRROR_ITEM_CTRL(aoq);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(aoq);
+  STRUCT_MIRROR_FCNS_DECL(hit_id);
+};
+#endif//USER_DEF_hit_id
+
+#ifndef USER_DEF_hit_event
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_event)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(sc);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(sc__i0,,3);
+  STRUCT_MIRROR_TYPE(hit_sci) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(sc[3]);
+  STRUCT_MIRROR_ITEM_CTRL(tof);
+  STRUCT_MIRROR_TYPE(hit_tof) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tof);
+  STRUCT_MIRROR_ITEM_CTRL(mw);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(mw__i0,,2);
+  STRUCT_MIRROR_TYPE(hit_mul) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(mw[2]);
+  STRUCT_MIRROR_ITEM_CTRL(tpc);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(tpc__i0,,3);
+  STRUCT_MIRROR_TYPE(hit_tpc) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tpc[3]);
+  STRUCT_MIRROR_ITEM_CTRL(ang);
+  STRUCT_MIRROR_TYPE(hit_angle) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(ang);
+  STRUCT_MIRROR_ITEM_CTRL(s);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(s__i0,,2);
+  STRUCT_MIRROR_TYPE(hit_track) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(s[2]);
+  STRUCT_MIRROR_ITEM_CTRL(s3);
+  STRUCT_MIRROR_TYPE(hit_id) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(s3);
+  STRUCT_MIRROR_FCNS_DECL(hit_event);
+};
+#endif//USER_DEF_hit_event
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_STRUCT *************************************************/
+
+
+/** BEGIN_MIRROR_DECL_STRUCT *******************************************
+ *
+ * Mirror structure names.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_mul);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_tpc);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_sci);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_tof);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_angle);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_track);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_id);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_event);
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_DECL_STRUCT ********************************************/
+
+
+/** BEGIN_FUNCTION_CALL_PER_MEMBER *************************************
+ *
+ * Recursive function calls per member.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_fcncall_define.hh"
+
+#ifndef USER_DEF_hit_mul
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(hit_mul)::FCNCALL_NAME(hit_mul)
+{
+  FCNCALL_INIT;
+  // float x;
+  {
+  FCNCALL_SUBNAME("x");
+  { FCNCALL_CALL_CTRL_WRAP(x,FCNCALL_CALL_TYPE(float,x)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float y;
+  {
+  FCNCALL_SUBNAME("y");
+  { FCNCALL_CALL_CTRL_WRAP(y,FCNCALL_CALL_TYPE(float,y)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float sumx;
+  {
+  FCNCALL_SUBNAME("sumx");
+  { FCNCALL_CALL_CTRL_WRAP(sumx,FCNCALL_CALL_TYPE(float,sumx)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float sumy;
+  {
+  FCNCALL_SUBNAME("sumy");
+  { FCNCALL_CALL_CTRL_WRAP(sumy,FCNCALL_CALL_TYPE(float,sumy)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_hit_mul
+
+#ifndef USER_DEF_hit_tpc
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(hit_tpc)::FCNCALL_NAME(hit_tpc)
+{
+  FCNCALL_INIT;
+  // float x1;
+  {
+  FCNCALL_SUBNAME("x1");
+  { FCNCALL_CALL_CTRL_WRAP(x1,FCNCALL_CALL_TYPE(float,x1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float x2;
+  {
+  FCNCALL_SUBNAME("x2");
+  { FCNCALL_CALL_CTRL_WRAP(x2,FCNCALL_CALL_TYPE(float,x2)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float y;
+  {
+  FCNCALL_SUBNAME("y");
+  { FCNCALL_CALL_CTRL_WRAP(y,FCNCALL_CALL_TYPE(float,y)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float sumx[4][2];
+  {
+  FCNCALL_SUBNAME("sumx");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,2)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(sumx__i0__i1,[__i0],__i1,FCNCALL_CALL_TYPE(float,sumx[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_hit_tpc
+
+#ifndef USER_DEF_hit_sci
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(hit_sci)::FCNCALL_NAME(hit_sci)
+{
+  FCNCALL_INIT;
+  // float de;
+  {
+  FCNCALL_SUBNAME("de");
+  { FCNCALL_CALL_CTRL_WRAP(de,FCNCALL_CALL_TYPE(float,de)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float dt;
+  {
+  FCNCALL_SUBNAME("dt");
+  { FCNCALL_CALL_CTRL_WRAP(dt,FCNCALL_CALL_TYPE(float,dt)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_hit_sci
+
+#ifndef USER_DEF_hit_tof
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(hit_tof)::FCNCALL_NAME(hit_tof)
+{
+  FCNCALL_INIT;
+  // float s2s3;
+  {
+  FCNCALL_SUBNAME("s2s3");
+  { FCNCALL_CALL_CTRL_WRAP(s2s3,FCNCALL_CALL_TYPE(float,s2s3)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_hit_tof
+
+#ifndef USER_DEF_hit_angle
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(hit_angle)::FCNCALL_NAME(hit_angle)
+{
+  FCNCALL_INIT;
+  // float pos[2][2];
+  {
+  FCNCALL_SUBNAME("pos");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,2)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(pos__i0__i1,[__i0],__i1,FCNCALL_CALL_TYPE(float,pos[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // float at_s[2];
+  {
+  FCNCALL_SUBNAME("at_s");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(at_s__i0,,__i0,FCNCALL_CALL_TYPE(float,at_s[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_hit_angle
+
+#ifndef USER_DEF_hit_track
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(hit_track)::FCNCALL_NAME(hit_track)
+{
+  FCNCALL_INIT;
+  // float xtr;
+  {
+  FCNCALL_SUBNAME("xtr");
+  { FCNCALL_CALL_CTRL_WRAP(xtr,FCNCALL_CALL_TYPE(float,xtr)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_hit_track
+
+#ifndef USER_DEF_hit_id
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(hit_id)::FCNCALL_NAME(hit_id)
+{
+  FCNCALL_INIT;
+  // float q[2];
+  {
+  FCNCALL_SUBNAME("q");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(q__i0,,__i0,FCNCALL_CALL_TYPE(float,q[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // float rho;
+  {
+  FCNCALL_SUBNAME("rho");
+  { FCNCALL_CALL_CTRL_WRAP(rho,FCNCALL_CALL_TYPE(float,rho)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float brho;
+  {
+  FCNCALL_SUBNAME("brho");
+  { FCNCALL_CALL_CTRL_WRAP(brho,FCNCALL_CALL_TYPE(float,brho)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float beta;
+  {
+  FCNCALL_SUBNAME("beta");
+  { FCNCALL_CALL_CTRL_WRAP(beta,FCNCALL_CALL_TYPE(float,beta)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float gamma;
+  {
+  FCNCALL_SUBNAME("gamma");
+  { FCNCALL_CALL_CTRL_WRAP(gamma,FCNCALL_CALL_TYPE(float,gamma)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float aoq;
+  {
+  FCNCALL_SUBNAME("aoq");
+  { FCNCALL_CALL_CTRL_WRAP(aoq,FCNCALL_CALL_TYPE(float,aoq)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_hit_id
+
+#ifndef USER_DEF_hit_event
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(hit_event)::FCNCALL_NAME(hit_event)
+{
+  FCNCALL_INIT;
+  // hit_sci sc[3];
+  {
+  FCNCALL_SUBNAME("sc");
+  FCNCALL_FOR(__i0,3)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(sc__i0,,__i0,sc[__i0].FCNCALL_CALL(sc[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // hit_tof tof;
+  {
+  FCNCALL_SUBNAME("tof");
+  { FCNCALL_CALL_CTRL_WRAP(tof,tof.FCNCALL_CALL(tof)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // hit_mul mw[2];
+  {
+  FCNCALL_SUBNAME("mw");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(mw__i0,,__i0,mw[__i0].FCNCALL_CALL(mw[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // hit_tpc tpc[3];
+  {
+  FCNCALL_SUBNAME("tpc");
+  FCNCALL_FOR(__i0,3)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(tpc__i0,,__i0,tpc[__i0].FCNCALL_CALL(tpc[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // hit_angle ang;
+  {
+  FCNCALL_SUBNAME("ang");
+  { FCNCALL_CALL_CTRL_WRAP(ang,ang.FCNCALL_CALL(ang)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // hit_track s[2];
+  {
+  FCNCALL_SUBNAME("s");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(s__i0,,__i0,s[__i0].FCNCALL_CALL(s[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // hit_id s3;
+  {
+  FCNCALL_SUBNAME("s3");
+  { FCNCALL_CALL_CTRL_WRAP(s3,s3.FCNCALL_CALL(s3)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_hit_event
+
+#include "gen/default_fcncall_undef.hh"
+
+
+/** END_FUNCTION_CALL_PER_MEMBER **************************************/
+
+
+/** BEGIN_CORR_STRUCT **************************************************
+ *
+ * Correlation structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// Corr struct for: hit_mul
+// float  .x
+  // ---
+// float  .y
+  // ---
+// float  .sumx
+  // ---
+// float  .sumy
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_mul
+// .hit_mul// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_mul
+// .hit_mul// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_mul
+// .hit_mul
+// Corr struct for: hit_tpc
+// float  .x1
+  // ---
+// float  .x2
+  // ---
+// float  .y
+  // ---
+// float  .sumx[4][2]
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_tpc
+// .hit_tpc// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_tpc
+// .hit_tpc// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_tpc
+// .hit_tpc
+// Corr struct for: hit_sci
+// float  .de
+  // ---
+// float  .dt
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_sci
+// .hit_sci// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_sci
+// .hit_sci// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_sci
+// .hit_sci
+// Corr struct for: hit_tof
+// float  .s2s3
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_tof
+// .hit_tof// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_tof
+// .hit_tof// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_tof
+// .hit_tof
+// Corr struct for: hit_angle
+// float  .pos[2][2]
+  // ---
+// float  .at_s[2]
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_angle
+// .hit_angle// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_angle
+// .hit_angle// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_angle
+// .hit_angle
+// Corr struct for: hit_track
+// float  .xtr
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_track
+// .hit_track// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_track
+// .hit_track// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_track
+// .hit_track
+// Corr struct for: hit_id
+// float  .q[2]
+  // ---
+// float  .rho
+  // ---
+// float  .brho
+  // ---
+// float  .beta
+  // ---
+// float  .gamma
+  // ---
+// float  .aoq
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_id
+// .hit_id// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_id
+// .hit_id// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_id
+// .hit_id
+// Corr struct for: hit_event
+// hit_sci  .sc[3]
+  // float  .de
+    // ---
+  // float  .dt
+    // ---
+// hit_tof  .tof
+  // float  .s2s3
+    // ---
+// hit_mul  .mw[2]
+  // float  .x
+    // ---
+  // float  .y
+    // ---
+  // float  .sumx
+    // ---
+  // float  .sumy
+    // ---
+// hit_tpc  .tpc[3]
+  // float  .x1
+    // ---
+  // float  .x2
+    // ---
+  // float  .y
+    // ---
+  // float  .sumx[4][2]
+    // ---
+// hit_angle  .ang
+  // float  .pos[2][2]
+    // ---
+  // float  .at_s[2]
+    // ---
+// hit_track  .s[2]
+  // float  .xtr
+    // ---
+// hit_id  .s3
+  // float  .q[2]
+    // ---
+  // float  .rho
+    // ---
+  // float  .brho
+    // ---
+  // float  .beta
+    // ---
+  // float  .gamma
+    // ---
+  // float  .aoq
+    // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_event
+// .hit_event// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_event
+// .hit_event// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_event
+// .hit_event
+
+/** END_CORR_STRUCT ***************************************************/
+

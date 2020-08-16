@@ -1,0 +1,669 @@
+
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+struct dummy
+{
+  float t0 UNIT("#ns");
+  float t_off[240] UNIT("#ns");
+  float t_slope UNIT("#ns/ch");
+} ;
+struct cal_tof
+{
+  float tofgain UNIT("#ns/ch");
+  float tofoff UNIT("#ns");
+  float pedestal UNIT("#ns");
+} ;
+struct cal_mul
+{
+  float dummy;
+  float csumxmin UNIT("#ch");
+  float csumxmax UNIT("#ch");
+  float csumymin UNIT("#ch");
+  float csumymax UNIT("#ch");
+} ;
+struct cal_tpc
+{
+  float calftpcx[2] UNIT("#mm/ch");
+  float calotpcx[2] UNIT("#mm/ch");
+  float calftpcy UNIT("#mm/ch");
+  float csumxmin[4] UNIT("#mm");
+  float csumxmax[4] UNIT("#mm");
+} ;
+struct cal_brho
+{
+  float bfield UNIT("##T");
+  float rho0 UNIT("#mm");
+  float length UNIT("#mm");
+} ;
+struct hit_calib
+{
+  cal_tof tof;
+  cal_mul mw[2];
+  cal_tpc tpc[3][2];
+  cal_brho brho;
+  dummy test[2];
+} ;
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/
+
+
+/** BEGIN_MIRROR_STRUCT ************************************************
+ *
+ * Mirror (1 to 1) structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+#ifndef USER_DEF_dummy
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(dummy)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(t0);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(t0);
+  STRUCT_MIRROR_ITEM_CTRL(t_off);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(t_off__i0,,240);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(t_off[240]);
+  STRUCT_MIRROR_ITEM_CTRL(t_slope);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(t_slope);
+  STRUCT_MIRROR_FCNS_DECL(dummy);
+};
+#endif//USER_DEF_dummy
+
+#ifndef USER_DEF_cal_tof
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(cal_tof)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(tofgain);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tofgain);
+  STRUCT_MIRROR_ITEM_CTRL(tofoff);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tofoff);
+  STRUCT_MIRROR_ITEM_CTRL(pedestal);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(pedestal);
+  STRUCT_MIRROR_FCNS_DECL(cal_tof);
+};
+#endif//USER_DEF_cal_tof
+
+#ifndef USER_DEF_cal_mul
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(cal_mul)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(dummy);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy);
+  STRUCT_MIRROR_ITEM_CTRL(csumxmin);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(csumxmin);
+  STRUCT_MIRROR_ITEM_CTRL(csumxmax);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(csumxmax);
+  STRUCT_MIRROR_ITEM_CTRL(csumymin);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(csumymin);
+  STRUCT_MIRROR_ITEM_CTRL(csumymax);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(csumymax);
+  STRUCT_MIRROR_FCNS_DECL(cal_mul);
+};
+#endif//USER_DEF_cal_mul
+
+#ifndef USER_DEF_cal_tpc
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(cal_tpc)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(calftpcx);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(calftpcx__i0,,2);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(calftpcx[2]);
+  STRUCT_MIRROR_ITEM_CTRL(calotpcx);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(calotpcx__i0,,2);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(calotpcx[2]);
+  STRUCT_MIRROR_ITEM_CTRL(calftpcy);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(calftpcy);
+  STRUCT_MIRROR_ITEM_CTRL(csumxmin);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(csumxmin__i0,,4);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(csumxmin[4]);
+  STRUCT_MIRROR_ITEM_CTRL(csumxmax);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(csumxmax__i0,,4);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(csumxmax[4]);
+  STRUCT_MIRROR_FCNS_DECL(cal_tpc);
+};
+#endif//USER_DEF_cal_tpc
+
+#ifndef USER_DEF_cal_brho
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(cal_brho)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(bfield);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(bfield);
+  STRUCT_MIRROR_ITEM_CTRL(rho0);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(rho0);
+  STRUCT_MIRROR_ITEM_CTRL(length);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(length);
+  STRUCT_MIRROR_FCNS_DECL(cal_brho);
+};
+#endif//USER_DEF_cal_brho
+
+#ifndef USER_DEF_hit_calib
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_calib)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(tof);
+  STRUCT_MIRROR_TYPE(cal_tof) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tof);
+  STRUCT_MIRROR_ITEM_CTRL(mw);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(mw__i0,,2);
+  STRUCT_MIRROR_TYPE(cal_mul) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(mw[2]);
+  STRUCT_MIRROR_ITEM_CTRL(tpc);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(tpc__i0,,3);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(tpc__i0__i1,[3],2);
+  STRUCT_MIRROR_TYPE(cal_tpc) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tpc[3][2]);
+  STRUCT_MIRROR_ITEM_CTRL(brho);
+  STRUCT_MIRROR_TYPE(cal_brho) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(brho);
+  STRUCT_MIRROR_ITEM_CTRL(test);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(test__i0,,2);
+  STRUCT_MIRROR_TYPE(dummy) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(test[2]);
+  STRUCT_MIRROR_FCNS_DECL(hit_calib);
+};
+#endif//USER_DEF_hit_calib
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_STRUCT *************************************************/
+
+
+/** BEGIN_MIRROR_DECL_STRUCT *******************************************
+ *
+ * Mirror structure names.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(dummy);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(cal_tof);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(cal_mul);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(cal_tpc);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(cal_brho);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(hit_calib);
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_DECL_STRUCT ********************************************/
+
+
+/** BEGIN_FUNCTION_CALL_PER_MEMBER *************************************
+ *
+ * Recursive function calls per member.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_fcncall_define.hh"
+
+#ifndef USER_DEF_dummy
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(dummy)::FCNCALL_NAME(dummy)
+{
+  FCNCALL_INIT;
+  // float t0 UNIT("#ns");
+  {
+  FCNCALL_SUBNAME("t0");
+  FCNCALL_UNIT("#ns");
+  { FCNCALL_CALL_CTRL_WRAP(t0,FCNCALL_CALL_TYPE(float,t0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float t_off[240] UNIT("#ns");
+  {
+  FCNCALL_SUBNAME("t_off");
+  FCNCALL_UNIT("#ns");
+  FCNCALL_FOR(__i0,240)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(t_off__i0,,__i0,FCNCALL_CALL_TYPE(float,t_off[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // float t_slope UNIT("#ns/ch");
+  {
+  FCNCALL_SUBNAME("t_slope");
+  FCNCALL_UNIT("#ns/ch");
+  { FCNCALL_CALL_CTRL_WRAP(t_slope,FCNCALL_CALL_TYPE(float,t_slope)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_dummy
+
+#ifndef USER_DEF_cal_tof
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(cal_tof)::FCNCALL_NAME(cal_tof)
+{
+  FCNCALL_INIT;
+  // float tofgain UNIT("#ns/ch");
+  {
+  FCNCALL_SUBNAME("tofgain");
+  FCNCALL_UNIT("#ns/ch");
+  { FCNCALL_CALL_CTRL_WRAP(tofgain,FCNCALL_CALL_TYPE(float,tofgain)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float tofoff UNIT("#ns");
+  {
+  FCNCALL_SUBNAME("tofoff");
+  FCNCALL_UNIT("#ns");
+  { FCNCALL_CALL_CTRL_WRAP(tofoff,FCNCALL_CALL_TYPE(float,tofoff)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float pedestal UNIT("#ns");
+  {
+  FCNCALL_SUBNAME("pedestal");
+  FCNCALL_UNIT("#ns");
+  { FCNCALL_CALL_CTRL_WRAP(pedestal,FCNCALL_CALL_TYPE(float,pedestal)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_cal_tof
+
+#ifndef USER_DEF_cal_mul
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(cal_mul)::FCNCALL_NAME(cal_mul)
+{
+  FCNCALL_INIT;
+  // float dummy;
+  {
+  FCNCALL_SUBNAME("dummy");
+  { FCNCALL_CALL_CTRL_WRAP(dummy,FCNCALL_CALL_TYPE(float,dummy)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float csumxmin UNIT("#ch");
+  {
+  FCNCALL_SUBNAME("csumxmin");
+  FCNCALL_UNIT("#ch");
+  { FCNCALL_CALL_CTRL_WRAP(csumxmin,FCNCALL_CALL_TYPE(float,csumxmin)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float csumxmax UNIT("#ch");
+  {
+  FCNCALL_SUBNAME("csumxmax");
+  FCNCALL_UNIT("#ch");
+  { FCNCALL_CALL_CTRL_WRAP(csumxmax,FCNCALL_CALL_TYPE(float,csumxmax)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float csumymin UNIT("#ch");
+  {
+  FCNCALL_SUBNAME("csumymin");
+  FCNCALL_UNIT("#ch");
+  { FCNCALL_CALL_CTRL_WRAP(csumymin,FCNCALL_CALL_TYPE(float,csumymin)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float csumymax UNIT("#ch");
+  {
+  FCNCALL_SUBNAME("csumymax");
+  FCNCALL_UNIT("#ch");
+  { FCNCALL_CALL_CTRL_WRAP(csumymax,FCNCALL_CALL_TYPE(float,csumymax)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_cal_mul
+
+#ifndef USER_DEF_cal_tpc
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(cal_tpc)::FCNCALL_NAME(cal_tpc)
+{
+  FCNCALL_INIT;
+  // float calftpcx[2] UNIT("#mm/ch");
+  {
+  FCNCALL_SUBNAME("calftpcx");
+  FCNCALL_UNIT("#mm/ch");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(calftpcx__i0,,__i0,FCNCALL_CALL_TYPE(float,calftpcx[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // float calotpcx[2] UNIT("#mm/ch");
+  {
+  FCNCALL_SUBNAME("calotpcx");
+  FCNCALL_UNIT("#mm/ch");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(calotpcx__i0,,__i0,FCNCALL_CALL_TYPE(float,calotpcx[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // float calftpcy UNIT("#mm/ch");
+  {
+  FCNCALL_SUBNAME("calftpcy");
+  FCNCALL_UNIT("#mm/ch");
+  { FCNCALL_CALL_CTRL_WRAP(calftpcy,FCNCALL_CALL_TYPE(float,calftpcy)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float csumxmin[4] UNIT("#mm");
+  {
+  FCNCALL_SUBNAME("csumxmin");
+  FCNCALL_UNIT("#mm");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(csumxmin__i0,,__i0,FCNCALL_CALL_TYPE(float,csumxmin[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // float csumxmax[4] UNIT("#mm");
+  {
+  FCNCALL_SUBNAME("csumxmax");
+  FCNCALL_UNIT("#mm");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(csumxmax__i0,,__i0,FCNCALL_CALL_TYPE(float,csumxmax[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_cal_tpc
+
+#ifndef USER_DEF_cal_brho
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(cal_brho)::FCNCALL_NAME(cal_brho)
+{
+  FCNCALL_INIT;
+  // float bfield UNIT("##T");
+  {
+  FCNCALL_SUBNAME("bfield");
+  FCNCALL_UNIT("##T");
+  { FCNCALL_CALL_CTRL_WRAP(bfield,FCNCALL_CALL_TYPE(float,bfield)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float rho0 UNIT("#mm");
+  {
+  FCNCALL_SUBNAME("rho0");
+  FCNCALL_UNIT("#mm");
+  { FCNCALL_CALL_CTRL_WRAP(rho0,FCNCALL_CALL_TYPE(float,rho0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float length UNIT("#mm");
+  {
+  FCNCALL_SUBNAME("length");
+  FCNCALL_UNIT("#mm");
+  { FCNCALL_CALL_CTRL_WRAP(length,FCNCALL_CALL_TYPE(float,length)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_cal_brho
+
+#ifndef USER_DEF_hit_calib
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(hit_calib)::FCNCALL_NAME(hit_calib)
+{
+  FCNCALL_INIT;
+  // cal_tof tof;
+  {
+  FCNCALL_SUBNAME("tof");
+  { FCNCALL_CALL_CTRL_WRAP(tof,tof.FCNCALL_CALL(tof)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // cal_mul mw[2];
+  {
+  FCNCALL_SUBNAME("mw");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(mw__i0,,__i0,mw[__i0].FCNCALL_CALL(mw[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // cal_tpc tpc[3][2];
+  {
+  FCNCALL_SUBNAME("tpc");
+  FCNCALL_FOR(__i0,3)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,2)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(tpc__i0__i1,[__i0],__i1,tpc[__i0][__i1].FCNCALL_CALL(tpc[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // cal_brho brho;
+  {
+  FCNCALL_SUBNAME("brho");
+  { FCNCALL_CALL_CTRL_WRAP(brho,brho.FCNCALL_CALL(brho)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // dummy test[2];
+  {
+  FCNCALL_SUBNAME("test");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(test__i0,,__i0,test[__i0].FCNCALL_CALL(test[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_hit_calib
+
+#include "gen/default_fcncall_undef.hh"
+
+
+/** END_FUNCTION_CALL_PER_MEMBER **************************************/
+
+
+/** BEGIN_CORR_STRUCT **************************************************
+ *
+ * Correlation structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// Corr struct for: dummy
+// float  .t0
+  // ---
+// float  .t_off[240]
+  // ---
+// float  .t_slope
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: dummy
+// .dummy// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: dummy
+// .dummy// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: dummy
+// .dummy
+// Corr struct for: cal_tof
+// float  .tofgain
+  // ---
+// float  .tofoff
+  // ---
+// float  .pedestal
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_tof
+// .cal_tof// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_tof
+// .cal_tof// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_tof
+// .cal_tof
+// Corr struct for: cal_mul
+// float  .dummy
+  // ---
+// float  .csumxmin
+  // ---
+// float  .csumxmax
+  // ---
+// float  .csumymin
+  // ---
+// float  .csumymax
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_mul
+// .cal_mul// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_mul
+// .cal_mul// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_mul
+// .cal_mul
+// Corr struct for: cal_tpc
+// float  .calftpcx[2]
+  // ---
+// float  .calotpcx[2]
+  // ---
+// float  .calftpcy
+  // ---
+// float  .csumxmin[4]
+  // ---
+// float  .csumxmax[4]
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_tpc
+// .cal_tpc// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_tpc
+// .cal_tpc// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_tpc
+// .cal_tpc
+// Corr struct for: cal_brho
+// float  .bfield
+  // ---
+// float  .rho0
+  // ---
+// float  .length
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_brho
+// .cal_brho// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_brho
+// .cal_brho// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: cal_brho
+// .cal_brho
+// Corr struct for: hit_calib
+// cal_tof  .tof
+  // float  .tofgain
+    // ---
+  // float  .tofoff
+    // ---
+  // float  .pedestal
+    // ---
+// cal_mul  .mw[2]
+  // float  .dummy
+    // ---
+  // float  .csumxmin
+    // ---
+  // float  .csumxmax
+    // ---
+  // float  .csumymin
+    // ---
+  // float  .csumymax
+    // ---
+// cal_tpc  .tpc[3][2]
+  // float  .calftpcx[2]
+    // ---
+  // float  .calotpcx[2]
+    // ---
+  // float  .calftpcy
+    // ---
+  // float  .csumxmin[4]
+    // ---
+  // float  .csumxmax[4]
+    // ---
+// cal_brho  .brho
+  // float  .bfield
+    // ---
+  // float  .rho0
+    // ---
+  // float  .length
+    // ---
+// dummy  .test[2]
+  // float  .t0
+    // ---
+  // float  .t_off[240]
+    // ---
+  // float  .t_slope
+    // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_calib
+// .hit_calib// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_calib
+// .hit_calib// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: hit_calib
+// .hit_calib
+
+/** END_CORR_STRUCT ***************************************************/
+

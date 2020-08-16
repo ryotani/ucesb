@@ -1,0 +1,338 @@
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+FZD_Modul(geom)
+{
+  MEMBER(DATA32 data[32] ZERO_SUPPRESS_MULTI(5));
+  UINT32 header
+  {
+     0_23: 0;
+    24_28: geom = MATCH(geom);
+       29: 1;
+       30: 0;
+       31: 0;
+  }
+  select several
+  {
+    dummy = FZD_data_SUBITEM(geo=geom,data=data);
+  }
+  UINT32 EOB
+  {
+     0_23: 0;
+    24_28: geom = MATCH(geom);
+       29: 0;
+       30: 1;
+       31: 0;
+  }
+}
+
+FZD_V1495(geom)
+{
+  MEMBER(DATA32 ts[8] ZERO_SUPPRESS);
+  MEMBER(DATA32 RBWL[2] ZERO_SUPPRESS);
+  MEMBER(DATA32 MP);
+  UINT32 header
+  {
+     0_23: 0;
+    24_28: geom = MATCH(geom);
+       29: 1;
+       30: 0;
+       31: 0;
+  }
+  list(0<=index<5)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_23: timestamp;
+      24_28: channel = RANGE(0,4);
+         29: 0;
+         30: 0;
+         31: 0;
+      ENCODE(ts[channel],(value=timestamp));
+    }
+  }
+  UINT32 ch_data NOENCODE
+  {
+     0_07: timestamp;
+        8: dummy = RANGE(0,1);
+        9: MPF = RANGE(0,1);
+       10: RBWF = RANGE(0,1);
+    11_23: 0;
+    24_28: channel = RANGE(5,5);
+       29: 0;
+       30: 0;
+       31: 0;
+    ENCODE(MP,(value=MPF));
+    ENCODE(ts[channel],(value=timestamp));
+  }
+  list(0<=index<2)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_23: timestamp;
+      24_28: channel = RANGE(6,7);
+         29: 0;
+         30: 0;
+         31: 0;
+      ENCODE(ts[channel],(value=timestamp));
+    }
+  }
+  list(0<=index<2)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_23: length;
+      24_28: channel = RANGE(8,9);
+         29: 0;
+         30: 0;
+         31: 0;
+      ENCODE(RBWL[(channel - 8)],(value=length));
+    }
+  }
+  UINT32 EOB
+  {
+     0_23: 0;
+    24_28: geom = MATCH(geom);
+       29: 0;
+       30: 1;
+       31: 0;
+  }
+}
+
+FZD_data_SUBITEM(geo,data)
+{
+  MEMBER(DATA32 data[32] ZERO_SUPPRESS_MULTI(5));
+  UINT32 ch_data NOENCODE
+  {
+     0_23: data;
+    24_28: channel = RANGE(0,32);
+       29: 0;
+       30: 0;
+       31: 0;
+    ENCODE(data[channel],(value=data));
+  }
+}
+
+SUBEVENT(CRATE)
+{
+  select several
+  {
+    timestamp = FZD_V1495(geom=21);
+    QDC1 = FZD_Modul(geom=7);
+    QDC2 = FZD_Modul(geom=8);
+    TDC1 = FZD_Modul(geom=5);
+    Sca1 = FZD_Modul(geom=13);
+    Sca2 = FZD_Modul(geom=14);
+    Sca3 = FZD_Modul(geom=15);
+    Sca4 = FZD_Modul(geom=16);
+  }
+}
+
+/**********************************************************
+ * The event definition:
+ */
+
+EVENT
+{
+  vme0 = CRATE(type=10,subtype=1);
+}
+
+/**********************************************************
+ * The sticky_event definition:
+ */
+
+/**********************************************************
+ * Signal name mappings:
+ */
+
+SIGNAL(U_MPflag,vme0.timestamp.MP,DATA32);
+SIGNAL(U_QDC1CH1,vme0.QDC1.data[0],DATA32);
+SIGNAL(U_QDC1CH10,vme0.QDC1.data[9],DATA32);
+SIGNAL(U_QDC1CH11,vme0.QDC1.data[10],DATA32);
+SIGNAL(U_QDC1CH12,vme0.QDC1.data[11],DATA32);
+SIGNAL(U_QDC1CH13,vme0.QDC1.data[12],DATA32);
+SIGNAL(U_QDC1CH14,vme0.QDC1.data[13],DATA32);
+SIGNAL(U_QDC1CH15,vme0.QDC1.data[14],DATA32);
+SIGNAL(U_QDC1CH16,vme0.QDC1.data[15],DATA32);
+SIGNAL(U_QDC1CH2,vme0.QDC1.data[1],DATA32);
+SIGNAL(U_QDC1CH3,vme0.QDC1.data[2],DATA32);
+SIGNAL(U_QDC1CH4,vme0.QDC1.data[3],DATA32);
+SIGNAL(U_QDC1CH5,vme0.QDC1.data[4],DATA32);
+SIGNAL(U_QDC1CH6,vme0.QDC1.data[5],DATA32);
+SIGNAL(U_QDC1CH7,vme0.QDC1.data[6],DATA32);
+SIGNAL(U_QDC1CH8,vme0.QDC1.data[7],DATA32);
+SIGNAL(U_QDC1CH9,vme0.QDC1.data[8],DATA32);
+SIGNAL(U_QDC2CH1,vme0.QDC2.data[0],DATA32);
+SIGNAL(U_QDC2CH10,vme0.QDC2.data[9],DATA32);
+SIGNAL(U_QDC2CH11,vme0.QDC2.data[10],DATA32);
+SIGNAL(U_QDC2CH12,vme0.QDC2.data[11],DATA32);
+SIGNAL(U_QDC2CH13,vme0.QDC2.data[12],DATA32);
+SIGNAL(U_QDC2CH14,vme0.QDC2.data[13],DATA32);
+SIGNAL(U_QDC2CH15,vme0.QDC2.data[14],DATA32);
+SIGNAL(U_QDC2CH16,vme0.QDC2.data[15],DATA32);
+SIGNAL(U_QDC2CH2,vme0.QDC2.data[1],DATA32);
+SIGNAL(U_QDC2CH3,vme0.QDC2.data[2],DATA32);
+SIGNAL(U_QDC2CH4,vme0.QDC2.data[3],DATA32);
+SIGNAL(U_QDC2CH5,vme0.QDC2.data[4],DATA32);
+SIGNAL(U_QDC2CH6,vme0.QDC2.data[5],DATA32);
+SIGNAL(U_QDC2CH7,vme0.QDC2.data[6],DATA32);
+SIGNAL(U_QDC2CH8,vme0.QDC2.data[7],DATA32);
+SIGNAL(U_QDC2CH9,vme0.QDC2.data[8],DATA32);
+SIGNAL(U_RBWCH1,vme0.timestamp.RBWL[0],DATA32);
+SIGNAL(U_RBWCH2,vme0.timestamp.RBWL[1],DATA32);
+SIGNAL(U_Sca1CH1,vme0.Sca1.data[0],DATA32);
+SIGNAL(U_Sca1CH2,vme0.Sca1.data[1],DATA32);
+SIGNAL(U_Sca1CH3,vme0.Sca1.data[2],DATA32);
+SIGNAL(U_Sca1CH4,vme0.Sca1.data[3],DATA32);
+SIGNAL(U_Sca1CH5,vme0.Sca1.data[4],DATA32);
+SIGNAL(U_Sca1CH6,vme0.Sca1.data[5],DATA32);
+SIGNAL(U_Sca1CH7,vme0.Sca1.data[6],DATA32);
+SIGNAL(U_Sca1CH8,vme0.Sca1.data[7],DATA32);
+SIGNAL(U_Sca2CH1,vme0.Sca2.data[0],DATA32);
+SIGNAL(U_Sca2CH10,vme0.Sca2.data[9],DATA32);
+SIGNAL(U_Sca2CH11,vme0.Sca2.data[10],DATA32);
+SIGNAL(U_Sca2CH12,vme0.Sca2.data[11],DATA32);
+SIGNAL(U_Sca2CH13,vme0.Sca2.data[12],DATA32);
+SIGNAL(U_Sca2CH14,vme0.Sca2.data[13],DATA32);
+SIGNAL(U_Sca2CH15,vme0.Sca2.data[14],DATA32);
+SIGNAL(U_Sca2CH16,vme0.Sca2.data[15],DATA32);
+SIGNAL(U_Sca2CH17,vme0.Sca2.data[16],DATA32);
+SIGNAL(U_Sca2CH18,vme0.Sca2.data[17],DATA32);
+SIGNAL(U_Sca2CH19,vme0.Sca2.data[18],DATA32);
+SIGNAL(U_Sca2CH2,vme0.Sca2.data[1],DATA32);
+SIGNAL(U_Sca2CH20,vme0.Sca2.data[19],DATA32);
+SIGNAL(U_Sca2CH21,vme0.Sca2.data[20],DATA32);
+SIGNAL(U_Sca2CH22,vme0.Sca2.data[21],DATA32);
+SIGNAL(U_Sca2CH23,vme0.Sca2.data[22],DATA32);
+SIGNAL(U_Sca2CH24,vme0.Sca2.data[23],DATA32);
+SIGNAL(U_Sca2CH25,vme0.Sca2.data[24],DATA32);
+SIGNAL(U_Sca2CH26,vme0.Sca2.data[25],DATA32);
+SIGNAL(U_Sca2CH27,vme0.Sca2.data[26],DATA32);
+SIGNAL(U_Sca2CH28,vme0.Sca2.data[27],DATA32);
+SIGNAL(U_Sca2CH29,vme0.Sca2.data[28],DATA32);
+SIGNAL(U_Sca2CH3,vme0.Sca2.data[2],DATA32);
+SIGNAL(U_Sca2CH30,vme0.Sca2.data[29],DATA32);
+SIGNAL(U_Sca2CH31,vme0.Sca2.data[30],DATA32);
+SIGNAL(U_Sca2CH32,vme0.Sca2.data[31],DATA32);
+SIGNAL(U_Sca2CH4,vme0.Sca2.data[3],DATA32);
+SIGNAL(U_Sca2CH5,vme0.Sca2.data[4],DATA32);
+SIGNAL(U_Sca2CH6,vme0.Sca2.data[5],DATA32);
+SIGNAL(U_Sca2CH7,vme0.Sca2.data[6],DATA32);
+SIGNAL(U_Sca2CH8,vme0.Sca2.data[7],DATA32);
+SIGNAL(U_Sca2CH9,vme0.Sca2.data[8],DATA32);
+SIGNAL(U_Sca3CH1,vme0.Sca3.data[0],DATA32);
+SIGNAL(U_Sca3CH10,vme0.Sca3.data[9],DATA32);
+SIGNAL(U_Sca3CH11,vme0.Sca3.data[10],DATA32);
+SIGNAL(U_Sca3CH12,vme0.Sca3.data[11],DATA32);
+SIGNAL(U_Sca3CH13,vme0.Sca3.data[12],DATA32);
+SIGNAL(U_Sca3CH14,vme0.Sca3.data[13],DATA32);
+SIGNAL(U_Sca3CH15,vme0.Sca3.data[14],DATA32);
+SIGNAL(U_Sca3CH16,vme0.Sca3.data[15],DATA32);
+SIGNAL(U_Sca3CH17,vme0.Sca3.data[16],DATA32);
+SIGNAL(U_Sca3CH18,vme0.Sca3.data[17],DATA32);
+SIGNAL(U_Sca3CH19,vme0.Sca3.data[18],DATA32);
+SIGNAL(U_Sca3CH2,vme0.Sca3.data[1],DATA32);
+SIGNAL(U_Sca3CH20,vme0.Sca3.data[19],DATA32);
+SIGNAL(U_Sca3CH21,vme0.Sca3.data[20],DATA32);
+SIGNAL(U_Sca3CH22,vme0.Sca3.data[21],DATA32);
+SIGNAL(U_Sca3CH23,vme0.Sca3.data[22],DATA32);
+SIGNAL(U_Sca3CH24,vme0.Sca3.data[23],DATA32);
+SIGNAL(U_Sca3CH25,vme0.Sca3.data[24],DATA32);
+SIGNAL(U_Sca3CH26,vme0.Sca3.data[25],DATA32);
+SIGNAL(U_Sca3CH27,vme0.Sca3.data[26],DATA32);
+SIGNAL(U_Sca3CH28,vme0.Sca3.data[27],DATA32);
+SIGNAL(U_Sca3CH29,vme0.Sca3.data[28],DATA32);
+SIGNAL(U_Sca3CH3,vme0.Sca3.data[2],DATA32);
+SIGNAL(U_Sca3CH30,vme0.Sca3.data[29],DATA32);
+SIGNAL(U_Sca3CH31,vme0.Sca3.data[30],DATA32);
+SIGNAL(U_Sca3CH32,vme0.Sca3.data[31],DATA32);
+SIGNAL(U_Sca3CH4,vme0.Sca3.data[3],DATA32);
+SIGNAL(U_Sca3CH5,vme0.Sca3.data[4],DATA32);
+SIGNAL(U_Sca3CH6,vme0.Sca3.data[5],DATA32);
+SIGNAL(U_Sca3CH7,vme0.Sca3.data[6],DATA32);
+SIGNAL(U_Sca3CH8,vme0.Sca3.data[7],DATA32);
+SIGNAL(U_Sca3CH9,vme0.Sca3.data[8],DATA32);
+SIGNAL(U_Sca4CH1,vme0.Sca4.data[0],DATA32);
+SIGNAL(U_Sca4CH10,vme0.Sca4.data[9],DATA32);
+SIGNAL(U_Sca4CH11,vme0.Sca4.data[10],DATA32);
+SIGNAL(U_Sca4CH12,vme0.Sca4.data[11],DATA32);
+SIGNAL(U_Sca4CH13,vme0.Sca4.data[12],DATA32);
+SIGNAL(U_Sca4CH14,vme0.Sca4.data[13],DATA32);
+SIGNAL(U_Sca4CH15,vme0.Sca4.data[14],DATA32);
+SIGNAL(U_Sca4CH16,vme0.Sca4.data[15],DATA32);
+SIGNAL(U_Sca4CH17,vme0.Sca4.data[16],DATA32);
+SIGNAL(U_Sca4CH18,vme0.Sca4.data[17],DATA32);
+SIGNAL(U_Sca4CH19,vme0.Sca4.data[18],DATA32);
+SIGNAL(U_Sca4CH2,vme0.Sca4.data[1],DATA32);
+SIGNAL(U_Sca4CH20,vme0.Sca4.data[19],DATA32);
+SIGNAL(U_Sca4CH21,vme0.Sca4.data[20],DATA32);
+SIGNAL(U_Sca4CH22,vme0.Sca4.data[21],DATA32);
+SIGNAL(U_Sca4CH23,vme0.Sca4.data[22],DATA32);
+SIGNAL(U_Sca4CH24,vme0.Sca4.data[23],DATA32);
+SIGNAL(U_Sca4CH25,vme0.Sca4.data[24],DATA32);
+SIGNAL(U_Sca4CH26,vme0.Sca4.data[25],DATA32);
+SIGNAL(U_Sca4CH27,vme0.Sca4.data[26],DATA32);
+SIGNAL(U_Sca4CH28,vme0.Sca4.data[27],DATA32);
+SIGNAL(U_Sca4CH29,vme0.Sca4.data[28],DATA32);
+SIGNAL(U_Sca4CH3,vme0.Sca4.data[2],DATA32);
+SIGNAL(U_Sca4CH30,vme0.Sca4.data[29],DATA32);
+SIGNAL(U_Sca4CH31,vme0.Sca4.data[30],DATA32);
+SIGNAL(U_Sca4CH32,vme0.Sca4.data[31],DATA32);
+SIGNAL(U_Sca4CH4,vme0.Sca4.data[3],DATA32);
+SIGNAL(U_Sca4CH5,vme0.Sca4.data[4],DATA32);
+SIGNAL(U_Sca4CH6,vme0.Sca4.data[5],DATA32);
+SIGNAL(U_Sca4CH7,vme0.Sca4.data[6],DATA32);
+SIGNAL(U_Sca4CH8,vme0.Sca4.data[7],DATA32);
+SIGNAL(U_Sca4CH9,vme0.Sca4.data[8],DATA32);
+SIGNAL(U_TDC1CH10_1,vme0.TDC1.data[9],DATA32);
+SIGNAL(U_TDC1CH11_1,vme0.TDC1.data[10],DATA32);
+SIGNAL(U_TDC1CH12_1,vme0.TDC1.data[11],DATA32);
+SIGNAL(U_TDC1CH13_1,vme0.TDC1.data[12],DATA32);
+SIGNAL(U_TDC1CH14_1,vme0.TDC1.data[13],DATA32);
+SIGNAL(U_TDC1CH15_1,vme0.TDC1.data[14],DATA32);
+SIGNAL(U_TDC1CH16_1,vme0.TDC1.data[15],DATA32);
+SIGNAL(U_TDC1CH17_1,vme0.TDC1.data[16],DATA32);
+SIGNAL(U_TDC1CH18_1,vme0.TDC1.data[17],DATA32);
+SIGNAL(U_TDC1CH19_1,vme0.TDC1.data[18],DATA32);
+SIGNAL(U_TDC1CH1_1,vme0.TDC1.data[0],DATA32);
+SIGNAL(U_TDC1CH20_1,vme0.TDC1.data[19],DATA32);
+SIGNAL(U_TDC1CH21_1,vme0.TDC1.data[20],DATA32);
+SIGNAL(U_TDC1CH22_1,vme0.TDC1.data[21],DATA32);
+SIGNAL(U_TDC1CH23_1,vme0.TDC1.data[22],DATA32);
+SIGNAL(U_TDC1CH24_1,vme0.TDC1.data[23],DATA32);
+SIGNAL(U_TDC1CH25_1,vme0.TDC1.data[24],DATA32);
+SIGNAL(U_TDC1CH26_1,vme0.TDC1.data[25],DATA32);
+SIGNAL(U_TDC1CH27_1,vme0.TDC1.data[26],DATA32);
+SIGNAL(U_TDC1CH28_1,vme0.TDC1.data[27],DATA32);
+SIGNAL(U_TDC1CH29_1,vme0.TDC1.data[28],DATA32);
+SIGNAL(U_TDC1CH2_1,vme0.TDC1.data[1],DATA32);
+SIGNAL(U_TDC1CH30_1,vme0.TDC1.data[29],DATA32);
+SIGNAL(U_TDC1CH31_1,vme0.TDC1.data[30],DATA32);
+SIGNAL(U_TDC1CH32_1,vme0.TDC1.data[31],DATA32);
+SIGNAL(U_TDC1CH3_1,vme0.TDC1.data[2],DATA32);
+SIGNAL(U_TDC1CH4_1,vme0.TDC1.data[3],DATA32);
+SIGNAL(U_TDC1CH5_1,vme0.TDC1.data[4],DATA32);
+SIGNAL(U_TDC1CH6_1,vme0.TDC1.data[5],DATA32);
+SIGNAL(U_TDC1CH7_1,vme0.TDC1.data[6],DATA32);
+SIGNAL(U_TDC1CH8_1,vme0.TDC1.data[7],DATA32);
+SIGNAL(U_TDC1CH9_1,vme0.TDC1.data[8],DATA32);
+SIGNAL(U_tsCH1,vme0.timestamp.ts[0],DATA32);
+SIGNAL(U_tsCH2,vme0.timestamp.ts[1],DATA32);
+SIGNAL(U_tsCH3,vme0.timestamp.ts[2],DATA32);
+SIGNAL(U_tsCH4,vme0.timestamp.ts[3],DATA32);
+SIGNAL(U_tsCH5,vme0.timestamp.ts[4],DATA32);
+SIGNAL(U_tsCH6,vme0.timestamp.ts[5],DATA32);
+SIGNAL(U_tsCH7,vme0.timestamp.ts[6],DATA32);
+SIGNAL(U_tsCH8,vme0.timestamp.ts[7],DATA32);
+SIGNAL( NO_INDEX_LIST(5):U_TDC1CH1);
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/

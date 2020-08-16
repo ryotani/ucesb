@@ -1,0 +1,1835 @@
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+BARRIER()
+{
+  UINT32 barrier
+  {
+     0_31: 0xbabababa;
+  }
+}
+
+FEBEX_BAD_EVENTHEADER()
+{
+  UINT32 badbad
+  {
+     0_31: 0xbad00bad;
+  }
+}
+
+FEBEX_EVENTHEADER()
+{
+  select
+  {
+    good = FEBEX_GOOD_EVENTHEADER();
+    bad = FEBEX_BAD_EVENTHEADER();
+  }
+}
+
+FEBEX_GOOD_EVENTHEADER()
+{
+  UINT32 febexcards
+  {
+     0_07: n_febex_sfp0 = RANGE(0,64);
+     8_15: n_febex_sfp1 = RANGE(0,64);
+    16_23: n_febex_sfp2 = RANGE(0,64);
+    24_31: n_febex_sfp3 = RANGE(0,64);
+  }
+  UINT32 trig_length
+  {
+     0_15: trace_length;
+    16_31: trigger_delay;
+  }
+  UINT32 energy_filter
+  {
+     0_10: sum_b;
+    11_20: gap;
+    21_31: sum_a;
+  }
+  UINT32 polarity1
+  {
+     0_31: pola;
+  }
+  UINT32 polarity2
+  {
+     0_31: pola;
+  }
+  UINT32 polarity3
+  {
+     0_31: pola;
+  }
+  UINT32 polarity4
+  {
+     0_31: pola;
+  }
+}
+
+FEBEX_NOTRACE(sfp,card)
+{
+  MEMBER(DATA8 n_hit[16]);
+  MEMBER(DATA12 t[16] ZERO_SUPPRESS_MULTI(32));
+  MEMBER(DATA32 e[16] ZERO_SUPPRESS_MULTI(32));
+  UINT32 indicator NOENCODE
+  {
+     0_07: 52;
+     8_11: trigger_type;
+    12_15: sfp = MATCH(sfp);
+    16_23: card = MATCH(card);
+    24_31: 255;
+  }
+  UINT32 data_size NOENCODE
+  {
+     0_31: size;
+  }
+  UINT32 head NOENCODE
+  {
+     0_23: unused;
+    24_31: 175;
+  }
+  UINT32 triggertime NOENCODE
+  {
+     0_31: trigger_time;
+  }
+  UINT32 time NOENCODE
+  {
+     0_31: time;
+  }
+  list(0<=i<((data_size.size - 16) >> 3))
+  {
+    UINT32 time NOENCODE
+    {
+       0_10: time;
+      11_14: unused1;
+         15: sign;
+      16_19: unused2;
+      20_23: multi_hit;
+      24_27: n_hit;
+      28_31: channel_id;
+      ENCODE(t[channel_id],(value=((time | (sign << 11)) & 0xfff)));
+      ENCODE(n_hit[channel_id],(value=n_hit));
+    }
+    UINT32 energy NOENCODE
+    {
+       0_21: energy;
+         22: unused1;
+         23: sign;
+      24_27: unused2;
+      28_31: channel_id;
+      ENCODE(e[channel_id],(value=(energy | (sign << 23))));
+    }
+  }
+  UINT32 trailer NOENCODE
+  {
+     0_23: unused;
+    24_31: 191;
+  }
+}
+
+FEBEX_PADDING()
+{
+  UINT32 pads_data NOENCODE
+  {
+     0_11: counter;
+    12_19: index;
+    20_31: 0xadd;
+  }
+}
+
+FEBEX_TRACE(sfp,card)
+{
+  MEMBER(DATA32 trace_length[16] ZERO_SUPPRESS);
+  MEMBER(DATA16 trace[16][1000] ZERO_SUPPRESS);
+  MEMBER(DATA32 filter[16][1000] ZERO_SUPPRESS);
+  UINT32 header NOENCODE
+  {
+     0_07: 52;
+     8_11: trigger_type;
+    12_15: sfp = MATCH(sfp);
+    16_23: card = MATCH(card);
+    24_31: channel_id = RANGE(0,254);
+  }
+  UINT32 trace_size NOENCODE
+  {
+     0_31: size;
+    ENCODE(trace_length[header.channel_id],(value=((size / 2) - 4)));
+  }
+  UINT32 trace_header NOENCODE
+  {
+     0_17: notused1;
+       18: filter_mode;
+       19: filter_onoff;
+    20_22: notused2;
+       23: adc_type;
+    24_31: 170;
+  }
+  if((trace_header.filter_onoff == 0))
+  {
+    list(0<=i<((trace_size.size / 4) - 2))
+    {
+      UINT32 channel_trace NOENCODE
+      {
+         0_13: data1;
+        14_15: nik_knows;
+        16_29: data2;
+        30_31: nik_knows2;
+        ENCODE(trace[header.channel_id][((2 * i) + 0)],(value=data1));
+        ENCODE(trace[header.channel_id][((2 * i) + 1)],(value=data2));
+      }
+    }
+  }
+  else
+  {
+    list(0<=i<((trace_size.size / 8) - 1))
+    {
+      UINT32 channel_trace NOENCODE
+      {
+         0_13: data1;
+        14_31: nik_knows;
+        ENCODE(trace[header.channel_id][i],(value=data1));
+      }
+      UINT32 channel_filter NOENCODE
+      {
+         0_22: data1;
+           23: sign;
+        24_31: nik_knows2;
+        ENCODE(filter[header.channel_id][i],(value=(data1 * (1 - (2 * sign)))));
+      }
+    }
+  }
+  UINT32 trace_trailer NOENCODE
+  {
+     0_23: notused;
+    24_31: 187;
+  }
+}
+
+LAND_STD_VME()
+{
+  UINT32 failure
+  {
+        0: fail_general;
+        1: fail_data_corrupt;
+        2: fail_data_missing;
+        3: fail_data_too_much;
+        4: fail_event_counter_mismatch;
+        5: fail_readout_error_driver;
+        6: fail_unexpected_trigger;
+        7: fail_firmware_mismatch;
+       22: has_multi_trlo_ii_counter0;
+       23: has_clock_counter_stamp;
+       24: has_continous_event_counter;
+       25: has_update_qdc_iped_value;
+       26: spurious_start_before_tcal;
+       27: has_no_zero_suppression;
+       28: has_multi_adctdc_counter0;
+       29: has_multi_scaler_counter0;
+       30: has_multi_event;
+       31: has_time_stamp;
+  }
+  if(failure.has_continous_event_counter)
+  {
+    UINT32 continous_event_counter;
+  }
+  if(failure.has_time_stamp)
+  {
+    UINT32 time_stamp;
+  }
+  if(failure.has_clock_counter_stamp)
+  {
+    UINT32 clock_counter_stamp;
+  }
+  if(failure.has_update_qdc_iped_value)
+  {
+    UINT32 iped;
+  }
+  if(failure.has_multi_event)
+  {
+    UINT32 multi_events;
+  }
+  if(failure.has_multi_trlo_ii_counter0)
+  {
+    UINT32 multi_trlo_ii_counter0;
+  }
+  if(failure.has_multi_scaler_counter0)
+  {
+    UINT32 multi_scaler_counter0;
+  }
+  if(failure.has_multi_adctdc_counter0)
+  {
+    UINT32 multi_adctdc_counter0;
+  }
+}
+
+SCALER()
+{
+  UINT32 scaler;
+}
+
+TAMEX3_HEADER()
+{
+  UINT32 trigger_window
+  {
+     0_15: post_trig_ns;
+    16_31: pre_trig_ns;
+  }
+}
+
+TAMEX3_PADDING()
+{
+  UINT32 padding NOENCODE
+  {
+     0_11: counter;
+    12_19: index;
+    20_31: 0xadd;
+  }
+}
+
+TAMEX3_SFP(sfp,card)
+{
+  MEMBER(DATA16 time_coarse[34] ZERO_SUPPRESS_MULTI(200));
+  MEMBER(DATA12 time_fine[34] ZERO_SUPPRESS_MULTI(200));
+  UINT32 indicator NOENCODE
+  {
+     0_07: 52;
+     8_11: trigger_type;
+    12_15: sfp = MATCH(sfp);
+    16_23: card = MATCH(card);
+    24_31: 0;
+  }
+  MATCH_END;
+  UINT32 data_size NOENCODE
+  {
+     0_31: bytes;
+  }
+  UINT32 tdc_header NOENCODE
+  {
+     0_15: lec;
+       16: buf_no;
+    17_19: reserved;
+    20_23: trigger_type;
+    24_31: 170;
+  }
+  list(0<=i<((data_size.bytes / 4) - 3))
+  {
+    UINT32 data NOENCODE
+    {
+       0_10: coarse;
+         11: is_leading;
+      12_21: fine;
+      22_28: channel_index;
+      29_31: type;
+      ENCODE(time_coarse[(((4 <= type) * channel_index) + ((4 > type) * 33))],(value=coarse));
+      ENCODE(time_fine[(((4 <= type) * channel_index) + ((4 > type) * 33))],(value=fine));
+    }
+  }
+  UINT32 error_bits NOENCODE
+  {
+     0_23: bits;
+    24_31: 238;
+  }
+  UINT32 trailer NOENCODE
+  {
+     0_23: unused;
+    24_31: 187;
+  }
+}
+
+TIMESTAMP_WHITERABBIT(id)
+{
+  MEMBER(DATA12 subsystem_id);
+  MEMBER(DATA16 t1);
+  MEMBER(DATA16 t2);
+  MEMBER(DATA16 t3);
+  MEMBER(DATA16 t4);
+  UINT32 header NOENCODE
+  {
+     0_11: id = MATCH(id);
+    12_15: 0;
+       16: error_bit;
+    17_31: 0;
+    ENCODE(subsystem_id,(value=id));
+  }
+  UINT32 d1 NOENCODE
+  {
+     0_15: t1;
+    16_31: 0x3e1;
+    ENCODE(t1,(value=t1));
+  }
+  UINT32 d2 NOENCODE
+  {
+     0_15: t2;
+    16_31: 0x4e1;
+    ENCODE(t2,(value=t2));
+  }
+  UINT32 d3 NOENCODE
+  {
+     0_15: t3;
+    16_31: 0x5e1;
+    ENCODE(t3,(value=t3));
+  }
+  UINT32 d4 NOENCODE
+  {
+     0_15: t4;
+    16_31: 0x6e1;
+    ENCODE(t4,(value=t4));
+  }
+}
+
+TRLOII_LMU_SCALERS(id)
+{
+  MEMBER(DATA32 before_lmu[63] ZERO_SUPPRESS);
+  MEMBER(DATA32 before_lmu_mux[31] ZERO_SUPPRESS);
+  MEMBER(DATA32 before_lmu_aux[31] ZERO_SUPPRESS);
+  MEMBER(DATA32 before_dt[127] ZERO_SUPPRESS);
+  MEMBER(DATA32 after_dt[127] ZERO_SUPPRESS);
+  MEMBER(DATA32 after_reduction[127] ZERO_SUPPRESS);
+  UINT32 header
+  {
+     0_05: before_lmu;
+     6_10: before_lmu_mux;
+    11_15: before_lmu_aux;
+    16_23: after_lmu;
+    24_31: id = MATCH(id);
+  }
+  list(0<=i<header.before_lmu)
+  {
+    UINT32 scaler NOENCODE
+    {
+       0_31: value;
+      ENCODE(before_lmu[i],(value=value));
+    }
+  }
+  list(0<=i<header.before_lmu_mux)
+  {
+    UINT32 scaler NOENCODE
+    {
+       0_31: value;
+      ENCODE(before_lmu_mux[i],(value=value));
+    }
+  }
+  list(0<=i<header.before_lmu_aux)
+  {
+    UINT32 scaler NOENCODE
+    {
+       0_31: value;
+      ENCODE(before_lmu_aux[i],(value=value));
+    }
+  }
+  list(0<=i<header.after_lmu)
+  {
+    UINT32 scaler_bdt NOENCODE
+    {
+       0_31: value;
+      ENCODE(before_dt[i],(value=value));
+    }
+    UINT32 scaler_adt NOENCODE
+    {
+       0_31: value;
+      ENCODE(after_dt[i],(value=value));
+    }
+    UINT32 scaler_ard NOENCODE
+    {
+       0_31: value;
+      ENCODE(after_reduction[i],(value=value));
+    }
+  }
+}
+
+TRLOII_SAMPLER(mark)
+{
+  MEMBER(DATA32 sampler[512] ZERO_SUPPRESS);
+  UINT32 header
+  {
+     0_09: word_num;
+       10: overflow;
+    16_31: mark = MATCH(mark);
+  }
+  list(0<=index<header.word_num)
+  {
+    UINT32 time_lo NOENCODE
+    {
+       0_29: time;
+         30: dunno;
+         31: overflow;
+      ENCODE(sampler[index],(value=time));
+    }
+  }
+}
+
+TRLOII_SAMPLER_TWO(mark)
+{
+  MEMBER(DATA32 sampler_hi[512] ZERO_SUPPRESS);
+  MEMBER(DATA32 sampler_lo[512] ZERO_SUPPRESS);
+  UINT32 header
+  {
+     0_09: word_num;
+       10: overflow;
+    16_31: mark = MATCH(mark);
+  }
+  list(0<=index<(header.word_num / 2))
+  {
+    UINT32 time_lo NOENCODE
+    {
+       0_29: time;
+         30: dunno;
+         31: overflow;
+      ENCODE(sampler_lo[index],(value=time));
+    }
+    UINT32 time_hi NOENCODE
+    {
+       0_29: time;
+         30: dunno;
+         31: overflow;
+      ENCODE(sampler_hi[index],(value=time));
+    }
+  }
+  if(((header.word_num % 2) == 1))
+  {
+    UINT32 last_word NOENCODE;
+  }
+}
+
+TRLOII_TPAT(id)
+{
+  MEMBER(DATA32 n);
+  MEMBER(DATA16 tpat[170] NO_INDEX_LIST);
+  MEMBER(DATA8 trig[170] NO_INDEX_LIST);
+  MEMBER(DATA32 ts_lo[170] NO_INDEX_LIST);
+  MEMBER(DATA32 ts_hi[170] NO_INDEX_LIST);
+  UINT32 header NOENCODE
+  {
+     0_11: uint32_num;
+    12_23: event_num;
+    24_31: id = MATCH(id);
+    ENCODE(n,(value=(uint32_num / 3)));
+  }
+  list(0<=index<(header.uint32_num / 3))
+  {
+    UINT32 time_lo NOENCODE
+    {
+       0_31: t;
+      ENCODE(ts_lo APPEND_LIST,(value=t));
+    }
+    UINT32 time_hi NOENCODE
+    {
+       0_30: t;
+         31: overflow;
+      ENCODE(ts_hi APPEND_LIST,(value=t));
+    }
+    UINT32 trigger NOENCODE
+    {
+       0_15: tpat;
+      16_23: dunno;
+      24_27: encoded;
+      28_31: lec;
+      ENCODE(tpat APPEND_LIST,(value=tpat));
+      ENCODE(trig APPEND_LIST,(value=encoded));
+    }
+  }
+}
+
+VFTX2_STATUS()
+{
+  UINT32 status;
+}
+
+VME_GSI_VFTX2(id)
+{
+  MEMBER(DATA12 time_fine[32] ZERO_SUPPRESS_MULTI(100));
+  MEMBER(DATA16 time_coarse[32] ZERO_SUPPRESS_MULTI(100));
+  MEMBER(DATA16 time_trigger);
+  UINT32 custom_header
+  {
+     0_04: id = MATCH(id);
+     5_08: internal_status;
+     9_17: count;
+    24_31: 171;
+  }
+  if((0 < custom_header.count))
+  {
+    UINT32 event_header
+    {
+       0_07: 170;
+      11_23: trigger_timestamp;
+      29_30: 1;
+         31: 1;
+      ENCODE(time_trigger,(value=trigger_timestamp));
+    }
+  }
+  list(1<=index<custom_header.count)
+  {
+    UINT32 event NOENCODE
+    {
+       0_10: time_fine;
+      11_23: time_coarse;
+         24: future;
+      25_29: channel;
+      ENCODE(time_fine[channel],(value=time_fine));
+      ENCODE(time_coarse[channel],(value=time_coarse));
+    }
+  }
+}
+
+VME_GSI_VFTX2_7PS(id)
+{
+  MEMBER(DATA12 time_fine[32] ZERO_SUPPRESS_MULTI(100));
+  MEMBER(DATA16 time_coarse[32] ZERO_SUPPRESS_MULTI(100));
+  MEMBER(DATA16 time_trigger);
+  UINT32 custom_header
+  {
+     0_04: id = MATCH(id);
+     5_08: internal_status;
+     9_17: count;
+    24_31: 171;
+  }
+  if((0 < custom_header.count))
+  {
+    UINT32 event_header NOENCODE
+    {
+       0_07: 170;
+      11_23: trigger_timestamp;
+      29_30: 1;
+         31: 1;
+      ENCODE(time_trigger,(value=trigger_timestamp));
+    }
+  }
+  list(1<=index<custom_header.count)
+  {
+    UINT32 event NOENCODE
+    {
+       0_10: time_fine;
+      11_23: time_coarse;
+         24: future;
+      25_29: channel;
+      ENCODE(time_fine[channel],(value=time_fine));
+      ENCODE(time_coarse[channel],(value=time_coarse));
+    }
+  }
+}
+
+VME_GSI_VFTX2_LT(id)
+{
+  MEMBER(DATA12 time_fine[64] ZERO_SUPPRESS_MULTI(100));
+  MEMBER(DATA16 time_coarse[64] ZERO_SUPPRESS_MULTI(100));
+  MEMBER(DATA16 time_trigger);
+  UINT32 custom_header
+  {
+     0_04: id = MATCH(id);
+     5_08: internal_status;
+     9_17: count;
+    24_31: 171;
+  }
+  if((0 < custom_header.count))
+  {
+    UINT32 event_header
+    {
+       0_07: 170;
+      11_23: trigger_timestamp;
+      29_30: 1;
+         31: 1;
+      ENCODE(time_trigger,(value=trigger_timestamp));
+    }
+  }
+  list(1<=index<custom_header.count)
+  {
+    UINT32 event NOENCODE
+    {
+       0_10: time_fine;
+      11_23: time_coarse;
+         24: future;
+      25_30: channel;
+      ENCODE(time_fine[channel],(value=time_fine));
+      ENCODE(time_coarse[channel],(value=time_coarse));
+    }
+  }
+}
+
+VME_GSI_VFTX2_STRAW(id)
+{
+  MEMBER(DATA12 time_fine[32] ZERO_SUPPRESS_MULTI(32));
+  MEMBER(DATA16 time_coarse[32] ZERO_SUPPRESS_MULTI(32));
+  MEMBER(DATA16 time_trigger);
+  UINT32 status
+  {
+     0_03: internal;
+     4_12: count;
+  }
+  UINT32 custom_header
+  {
+     0_15: count;
+    16_23: id = MATCH(id);
+    24_31: 171;
+  }
+  UINT32 event_header
+  {
+     0_07: 170;
+    11_23: trigger_timestamp;
+    29_30: 1;
+       31: 1;
+    ENCODE(time_trigger,(value=trigger_timestamp));
+  }
+  list(0<=index<custom_header.count)
+  {
+    UINT32 event NOENCODE
+    {
+       0_10: time_fine;
+      11_23: time_coarse;
+         24: future;
+      25_30: channel;
+         31: bluppidupp;
+      ENCODE(time_fine[channel],(value=time_fine));
+      ENCODE(time_coarse[channel],(value=time_coarse));
+    }
+  }
+}
+
+VME_MESYTEC_MADC32(geom)
+{
+  MEMBER(DATA14_OVERFLOW data[32] ZERO_SUPPRESS);
+  MARK_COUNT(start);
+  UINT32 header NOENCODE
+  {
+     0_11: word_number;
+    12_14: adc_resol;
+       15: out_form;
+    16_23: geom = MATCH(geom);
+    24_29: 0;
+    30_31: 1;
+  }
+  several UINT32 ch_data NOENCODE
+  {
+     0_12: value;
+       14: outofrange;
+    16_20: channel;
+    21_29: 32;
+    30_31: 0;
+    ENCODE(data[channel],(value=value,overflow=outofrange));
+  }
+  optional UINT32 filler NOENCODE
+  {
+     0_31: 0;
+  }
+  UINT32 end_of_event
+  {
+     0_29: counter;
+    30_31: 3;
+  }
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_number,start,end,( - 4),4)
+}
+
+WR_MULTI()
+{
+  MEMBER(DATA32 time_hi);
+  MEMBER(DATA32 time_lo);
+  UINT32 hi NOENCODE
+  {
+     0_31: time;
+    ENCODE(time_hi,(value=time));
+  }
+  UINT32 lo NOENCODE
+  {
+     0_31: time;
+    ENCODE(time_lo,(value=time));
+  }
+}
+
+SUBEVENT(empty_subev)
+{
+  ;
+}
+
+SUBEVENT(fitest_febex_subev)
+{
+  header = FEBEX_EVENTHEADER();
+  select several
+  {
+    padding = FEBEX_PADDING();
+  }
+  select several
+  {
+    febex[0] = FEBEX_NOTRACE(sfp=3,card=0);
+    febex[1] = FEBEX_NOTRACE(sfp=3,card=1);
+    febex[2] = FEBEX_NOTRACE(sfp=3,card=2);
+    febex[3] = FEBEX_NOTRACE(sfp=3,card=3);
+    febex[4] = FEBEX_NOTRACE(sfp=3,card=4);
+    febex[5] = FEBEX_NOTRACE(sfp=3,card=5);
+    febex[6] = FEBEX_NOTRACE(sfp=3,card=6);
+    febex[7] = FEBEX_NOTRACE(sfp=3,card=7);
+    febextrace[0] = FEBEX_TRACE(sfp=3,card=0);
+    febextrace[1] = FEBEX_TRACE(sfp=3,card=1);
+    febextrace[2] = FEBEX_TRACE(sfp=3,card=2);
+    febextrace[3] = FEBEX_TRACE(sfp=3,card=3);
+    febextrace[4] = FEBEX_TRACE(sfp=3,card=4);
+    febextrace[5] = FEBEX_TRACE(sfp=3,card=5);
+    febextrace[6] = FEBEX_TRACE(sfp=3,card=6);
+    febextrace[7] = FEBEX_TRACE(sfp=3,card=7);
+  }
+}
+
+SUBEVENT(lmu_scalers_subev)
+{
+  scalers = TRLOII_LMU_SCALERS(id=199);
+}
+
+SUBEVENT(los_sampler_subev)
+{
+  land_vme = LAND_STD_VME();
+  select several
+  {
+    sampler = TRLOII_SAMPLER(mark=0x1050);
+  }
+}
+
+SUBEVENT(los_scalers_subev)
+{
+  select several
+  {
+    scaler = SCALER();
+  }
+}
+
+SUBEVENT(los_subev)
+{
+  land_vme = LAND_STD_VME();
+  barrier1 = BARRIER();
+  barrier2 = BARRIER();
+  select several
+  {
+    vftx2 = VME_GSI_VFTX2_7PS(id=2);
+  }
+}
+
+SUBEVENT(master_subev)
+{
+  land_vme = LAND_STD_VME();
+  barrier = BARRIER();
+}
+
+SUBEVENT(straw_vme_subev)
+{
+  select several
+  {
+    vftx2 = VME_GSI_VFTX2_STRAW(id=0);
+  }
+}
+
+SUBEVENT(tbm_subev)
+{
+  land_vme = LAND_STD_VME();
+  barrier = BARRIER();
+  select several
+  {
+    vftx2 = VME_GSI_VFTX2_LT(id=1);
+    madc32 = VME_MESYTEC_MADC32(geom=2);
+  }
+}
+
+SUBEVENT(tofd_tamex_subev)
+{
+  header = TAMEX3_HEADER();
+  select several
+  {
+    padding1 = TAMEX3_PADDING();
+  }
+  select several
+  {
+    tamex_1 = TAMEX3_SFP(sfp=2,card=0);
+    tamex_2 = TAMEX3_SFP(sfp=2,card=1);
+  }
+  select several
+  {
+    padding2 = TAMEX3_PADDING();
+  }
+  select several
+  {
+    tamex_3 = TAMEX3_SFP(sfp=3,card=0);
+    tamex_4 = TAMEX3_SFP(sfp=3,card=1);
+  }
+}
+
+SUBEVENT(tofd_vme_subev)
+{
+  land_vme = LAND_STD_VME();
+  barrier = BARRIER();
+  select several
+  {
+    vftx2_1 = VME_GSI_VFTX2_7PS(id=1);
+    vftx2_2 = VME_GSI_VFTX2_7PS(id=2);
+    vftx2_3 = VME_GSI_VFTX2_7PS(id=3);
+  }
+}
+
+SUBEVENT(tpat_subev)
+{
+  tpat = TRLOII_TPAT(id=207);
+}
+
+SUBEVENT(tracking_febex_subev)
+{
+  header0 = FEBEX_EVENTHEADER();
+  select several
+  {
+    febex_0[0] = FEBEX_NOTRACE(sfp=0,card=0);
+    febex_0[1] = FEBEX_NOTRACE(sfp=0,card=1);
+    febex_0[2] = FEBEX_NOTRACE(sfp=0,card=2);
+    febex_0[3] = FEBEX_NOTRACE(sfp=0,card=3);
+    febex_0[4] = FEBEX_NOTRACE(sfp=0,card=4);
+    febex_0[5] = FEBEX_NOTRACE(sfp=0,card=5);
+    febex_0[6] = FEBEX_NOTRACE(sfp=0,card=6);
+    febex_0[7] = FEBEX_NOTRACE(sfp=0,card=7);
+    febex_0[8] = FEBEX_NOTRACE(sfp=0,card=8);
+    febex_0[9] = FEBEX_NOTRACE(sfp=0,card=9);
+    febex_0[10] = FEBEX_NOTRACE(sfp=0,card=10);
+    febex_0[11] = FEBEX_NOTRACE(sfp=0,card=11);
+    febex_0[12] = FEBEX_NOTRACE(sfp=0,card=12);
+    febex_0[13] = FEBEX_NOTRACE(sfp=0,card=13);
+    febex_0[14] = FEBEX_NOTRACE(sfp=0,card=14);
+    febex_0[15] = FEBEX_NOTRACE(sfp=0,card=15);
+  }
+  header2 = FEBEX_EVENTHEADER();
+  select several
+  {
+    febex_1[0] = FEBEX_NOTRACE(sfp=1,card=0);
+    febex_1[1] = FEBEX_NOTRACE(sfp=1,card=1);
+    febex_1[2] = FEBEX_NOTRACE(sfp=1,card=2);
+    febex_1[3] = FEBEX_NOTRACE(sfp=1,card=3);
+    febex_1[4] = FEBEX_NOTRACE(sfp=1,card=4);
+    febex_1[5] = FEBEX_NOTRACE(sfp=1,card=5);
+    febex_1[6] = FEBEX_NOTRACE(sfp=1,card=6);
+    febex_1[7] = FEBEX_NOTRACE(sfp=1,card=7);
+    febex_1[8] = FEBEX_NOTRACE(sfp=1,card=8);
+    febex_1[9] = FEBEX_NOTRACE(sfp=1,card=9);
+    febex_1[10] = FEBEX_NOTRACE(sfp=1,card=10);
+    febex_1[11] = FEBEX_NOTRACE(sfp=1,card=11);
+    febex_1[12] = FEBEX_NOTRACE(sfp=1,card=12);
+    febex_1[13] = FEBEX_NOTRACE(sfp=1,card=13);
+    febex_1[14] = FEBEX_NOTRACE(sfp=1,card=14);
+    febex_1[15] = FEBEX_NOTRACE(sfp=1,card=15);
+  }
+}
+
+SUBEVENT(wr_100)
+{
+  ts100 = TIMESTAMP_WHITERABBIT(id=0x100);
+}
+
+SUBEVENT(wr_200)
+{
+  ts200 = TIMESTAMP_WHITERABBIT(id=0x200);
+}
+
+SUBEVENT(wr_400)
+{
+  ts400 = TIMESTAMP_WHITERABBIT(id=0x400);
+}
+
+/**********************************************************
+ * The event definition:
+ */
+
+EVENT
+{
+  master_ts = wr_100(type=10,subtype=1,control=0);
+  master_tpat = tpat_subev(type=36,subtype=0xe10,control=0);
+  master_lmu_scalers = lmu_scalers_subev(type=37,subtype=0xe74,control=0);
+  master_vme = master_subev(type=88,subtype=0x2260,control=0);
+  los = los_subev(type=88,subtype=0x2260,control=1);
+  los_scalers = los_scalers_subev(type=38,subtype=0xed8,control=1);
+  los_sampler = los_sampler_subev(type=39,subtype=0xf3c,control=1);
+  tofd_vme = tofd_vme_subev(type=88,subtype=0x2260,control=2);
+  tbm_ts = wr_200(type=10,subtype=1,control=3);
+  tbm_tpat = tpat_subev(type=36,subtype=0xe10,control=3);
+  tbm_vme = tbm_subev(type=88,subtype=0x2260,control=3);
+  tofd_tamex = tofd_tamex_subev(type=102,subtype=0x27d8,control=4);
+  tracking_febex = tracking_febex_subev(type=100,subtype=0x2710,control=5);
+  los_empty = empty_subev(type=10,subtype=1,control=1);
+  tofd_empty = empty_subev(type=10,subtype=1,control=2);
+}
+
+/**********************************************************
+ * The sticky_event definition:
+ */
+
+/**********************************************************
+ * Signal name mappings:
+ */
+
+SIGNAL(LOS01_TC1,los.vftx2.time_coarse[0],DATA16);
+SIGNAL(LOS01_TC2,los.vftx2.time_coarse[1],DATA16);
+SIGNAL(LOS01_TC3,los.vftx2.time_coarse[2],DATA16);
+SIGNAL(LOS01_TC4,los.vftx2.time_coarse[3],DATA16);
+SIGNAL(LOS01_TF1,los.vftx2.time_fine[0],DATA12);
+SIGNAL(LOS01_TF2,los.vftx2.time_fine[1],DATA12);
+SIGNAL(LOS01_TF3,los.vftx2.time_fine[2],DATA12);
+SIGNAL(LOS01_TF4,los.vftx2.time_fine[3],DATA12);
+SIGNAL(TIMESTAMP_MASTER_ID,master_ts.ts100.subsystem_id,DATA12);
+SIGNAL(TIMESTAMP_MASTER_WR_T1,master_ts.ts100.t1,DATA16);
+SIGNAL(TIMESTAMP_MASTER_WR_T2,master_ts.ts100.t2,DATA16);
+SIGNAL(TIMESTAMP_MASTER_WR_T3,master_ts.ts100.t3,DATA16);
+SIGNAL(TIMESTAMP_MASTER_WR_T4,master_ts.ts100.t4,DATA16);
+SIGNAL(TOFD_P1T1_TCL1,tofd_vme.vftx2_1.time_coarse[0],DATA16);
+SIGNAL(TOFD_P1T1_TCL2,tofd_vme.vftx2_1.time_coarse[4],DATA16);
+SIGNAL(TOFD_P1T1_TCL3,tofd_vme.vftx2_1.time_coarse[8],DATA16);
+SIGNAL(TOFD_P1T1_TCL4,tofd_vme.vftx2_1.time_coarse[12],DATA16);
+SIGNAL(TOFD_P1T1_TCL5,tofd_vme.vftx2_2.time_coarse[0],DATA16);
+SIGNAL(TOFD_P1T1_TCL6,tofd_vme.vftx2_2.time_coarse[4],DATA16);
+SIGNAL(TOFD_P1T1_TCT1,tofd_vme.vftx2_1.time_coarse[1],DATA16);
+SIGNAL(TOFD_P1T1_TCT2,tofd_vme.vftx2_1.time_coarse[5],DATA16);
+SIGNAL(TOFD_P1T1_TCT3,tofd_vme.vftx2_1.time_coarse[9],DATA16);
+SIGNAL(TOFD_P1T1_TCT4,tofd_vme.vftx2_1.time_coarse[13],DATA16);
+SIGNAL(TOFD_P1T1_TCT5,tofd_vme.vftx2_2.time_coarse[1],DATA16);
+SIGNAL(TOFD_P1T1_TCT6,tofd_vme.vftx2_2.time_coarse[5],DATA16);
+SIGNAL(TOFD_P1T1_TFL1,tofd_vme.vftx2_1.time_fine[0],DATA12);
+SIGNAL(TOFD_P1T1_TFL2,tofd_vme.vftx2_1.time_fine[4],DATA12);
+SIGNAL(TOFD_P1T1_TFL3,tofd_vme.vftx2_1.time_fine[8],DATA12);
+SIGNAL(TOFD_P1T1_TFL4,tofd_vme.vftx2_1.time_fine[12],DATA12);
+SIGNAL(TOFD_P1T1_TFL5,tofd_vme.vftx2_2.time_fine[0],DATA12);
+SIGNAL(TOFD_P1T1_TFL6,tofd_vme.vftx2_2.time_fine[4],DATA12);
+SIGNAL(TOFD_P1T1_TFT1,tofd_vme.vftx2_1.time_fine[1],DATA12);
+SIGNAL(TOFD_P1T1_TFT2,tofd_vme.vftx2_1.time_fine[5],DATA12);
+SIGNAL(TOFD_P1T1_TFT3,tofd_vme.vftx2_1.time_fine[9],DATA12);
+SIGNAL(TOFD_P1T1_TFT4,tofd_vme.vftx2_1.time_fine[13],DATA12);
+SIGNAL(TOFD_P1T1_TFT5,tofd_vme.vftx2_2.time_fine[1],DATA12);
+SIGNAL(TOFD_P1T1_TFT6,tofd_vme.vftx2_2.time_fine[5],DATA12);
+SIGNAL(TOFD_P1T2_TCL1,tofd_vme.vftx2_1.time_coarse[2],DATA16);
+SIGNAL(TOFD_P1T2_TCL2,tofd_vme.vftx2_1.time_coarse[6],DATA16);
+SIGNAL(TOFD_P1T2_TCL3,tofd_vme.vftx2_1.time_coarse[10],DATA16);
+SIGNAL(TOFD_P1T2_TCL4,tofd_vme.vftx2_1.time_coarse[14],DATA16);
+SIGNAL(TOFD_P1T2_TCL5,tofd_vme.vftx2_2.time_coarse[2],DATA16);
+SIGNAL(TOFD_P1T2_TCL6,tofd_vme.vftx2_2.time_coarse[6],DATA16);
+SIGNAL(TOFD_P1T2_TCT1,tofd_vme.vftx2_1.time_coarse[3],DATA16);
+SIGNAL(TOFD_P1T2_TCT2,tofd_vme.vftx2_1.time_coarse[7],DATA16);
+SIGNAL(TOFD_P1T2_TCT3,tofd_vme.vftx2_1.time_coarse[11],DATA16);
+SIGNAL(TOFD_P1T2_TCT4,tofd_vme.vftx2_1.time_coarse[15],DATA16);
+SIGNAL(TOFD_P1T2_TCT5,tofd_vme.vftx2_2.time_coarse[3],DATA16);
+SIGNAL(TOFD_P1T2_TCT6,tofd_vme.vftx2_2.time_coarse[7],DATA16);
+SIGNAL(TOFD_P1T2_TFL1,tofd_vme.vftx2_1.time_fine[2],DATA12);
+SIGNAL(TOFD_P1T2_TFL2,tofd_vme.vftx2_1.time_fine[6],DATA12);
+SIGNAL(TOFD_P1T2_TFL3,tofd_vme.vftx2_1.time_fine[10],DATA12);
+SIGNAL(TOFD_P1T2_TFL4,tofd_vme.vftx2_1.time_fine[14],DATA12);
+SIGNAL(TOFD_P1T2_TFL5,tofd_vme.vftx2_2.time_fine[2],DATA12);
+SIGNAL(TOFD_P1T2_TFL6,tofd_vme.vftx2_2.time_fine[6],DATA12);
+SIGNAL(TOFD_P1T2_TFT1,tofd_vme.vftx2_1.time_fine[3],DATA12);
+SIGNAL(TOFD_P1T2_TFT2,tofd_vme.vftx2_1.time_fine[7],DATA12);
+SIGNAL(TOFD_P1T2_TFT3,tofd_vme.vftx2_1.time_fine[11],DATA12);
+SIGNAL(TOFD_P1T2_TFT4,tofd_vme.vftx2_1.time_fine[15],DATA12);
+SIGNAL(TOFD_P1T2_TFT5,tofd_vme.vftx2_2.time_fine[3],DATA12);
+SIGNAL(TOFD_P1T2_TFT6,tofd_vme.vftx2_2.time_fine[7],DATA12);
+SIGNAL(TOFD_P2T1_TCL1,tofd_vme.vftx2_2.time_coarse[8],DATA16);
+SIGNAL(TOFD_P2T1_TCL2,tofd_vme.vftx2_2.time_coarse[12],DATA16);
+SIGNAL(TOFD_P2T1_TCL3,tofd_vme.vftx2_3.time_coarse[0],DATA16);
+SIGNAL(TOFD_P2T1_TCL4,tofd_vme.vftx2_3.time_coarse[4],DATA16);
+SIGNAL(TOFD_P2T1_TCL5,tofd_vme.vftx2_3.time_coarse[8],DATA16);
+SIGNAL(TOFD_P2T1_TCL6,tofd_vme.vftx2_3.time_coarse[12],DATA16);
+SIGNAL(TOFD_P2T1_TCT1,tofd_vme.vftx2_2.time_coarse[9],DATA16);
+SIGNAL(TOFD_P2T1_TCT2,tofd_vme.vftx2_2.time_coarse[13],DATA16);
+SIGNAL(TOFD_P2T1_TCT3,tofd_vme.vftx2_3.time_coarse[1],DATA16);
+SIGNAL(TOFD_P2T1_TCT4,tofd_vme.vftx2_3.time_coarse[5],DATA16);
+SIGNAL(TOFD_P2T1_TCT5,tofd_vme.vftx2_3.time_coarse[9],DATA16);
+SIGNAL(TOFD_P2T1_TCT6,tofd_vme.vftx2_3.time_coarse[13],DATA16);
+SIGNAL(TOFD_P2T1_TFL1,tofd_vme.vftx2_2.time_fine[8],DATA12);
+SIGNAL(TOFD_P2T1_TFL2,tofd_vme.vftx2_2.time_fine[12],DATA12);
+SIGNAL(TOFD_P2T1_TFL3,tofd_vme.vftx2_3.time_fine[0],DATA12);
+SIGNAL(TOFD_P2T1_TFL4,tofd_vme.vftx2_3.time_fine[4],DATA12);
+SIGNAL(TOFD_P2T1_TFL5,tofd_vme.vftx2_3.time_fine[8],DATA12);
+SIGNAL(TOFD_P2T1_TFL6,tofd_vme.vftx2_3.time_fine[12],DATA12);
+SIGNAL(TOFD_P2T1_TFT1,tofd_vme.vftx2_2.time_fine[9],DATA12);
+SIGNAL(TOFD_P2T1_TFT2,tofd_vme.vftx2_2.time_fine[13],DATA12);
+SIGNAL(TOFD_P2T1_TFT3,tofd_vme.vftx2_3.time_fine[1],DATA12);
+SIGNAL(TOFD_P2T1_TFT4,tofd_vme.vftx2_3.time_fine[5],DATA12);
+SIGNAL(TOFD_P2T1_TFT5,tofd_vme.vftx2_3.time_fine[9],DATA12);
+SIGNAL(TOFD_P2T1_TFT6,tofd_vme.vftx2_3.time_fine[13],DATA12);
+SIGNAL(TOFD_P2T2_TCL1,tofd_vme.vftx2_2.time_coarse[10],DATA16);
+SIGNAL(TOFD_P2T2_TCL2,tofd_vme.vftx2_2.time_coarse[14],DATA16);
+SIGNAL(TOFD_P2T2_TCL3,tofd_vme.vftx2_3.time_coarse[2],DATA16);
+SIGNAL(TOFD_P2T2_TCL4,tofd_vme.vftx2_3.time_coarse[6],DATA16);
+SIGNAL(TOFD_P2T2_TCL5,tofd_vme.vftx2_3.time_coarse[10],DATA16);
+SIGNAL(TOFD_P2T2_TCL6,tofd_vme.vftx2_3.time_coarse[14],DATA16);
+SIGNAL(TOFD_P2T2_TCT1,tofd_vme.vftx2_2.time_coarse[11],DATA16);
+SIGNAL(TOFD_P2T2_TCT2,tofd_vme.vftx2_2.time_coarse[15],DATA16);
+SIGNAL(TOFD_P2T2_TCT3,tofd_vme.vftx2_3.time_coarse[3],DATA16);
+SIGNAL(TOFD_P2T2_TCT4,tofd_vme.vftx2_3.time_coarse[7],DATA16);
+SIGNAL(TOFD_P2T2_TCT5,tofd_vme.vftx2_3.time_coarse[11],DATA16);
+SIGNAL(TOFD_P2T2_TCT6,tofd_vme.vftx2_3.time_coarse[15],DATA16);
+SIGNAL(TOFD_P2T2_TFL1,tofd_vme.vftx2_2.time_fine[10],DATA12);
+SIGNAL(TOFD_P2T2_TFL2,tofd_vme.vftx2_2.time_fine[14],DATA12);
+SIGNAL(TOFD_P2T2_TFL3,tofd_vme.vftx2_3.time_fine[2],DATA12);
+SIGNAL(TOFD_P2T2_TFL4,tofd_vme.vftx2_3.time_fine[6],DATA12);
+SIGNAL(TOFD_P2T2_TFL5,tofd_vme.vftx2_3.time_fine[10],DATA12);
+SIGNAL(TOFD_P2T2_TFL6,tofd_vme.vftx2_3.time_fine[14],DATA12);
+SIGNAL(TOFD_P2T2_TFT1,tofd_vme.vftx2_2.time_fine[11],DATA12);
+SIGNAL(TOFD_P2T2_TFT2,tofd_vme.vftx2_2.time_fine[15],DATA12);
+SIGNAL(TOFD_P2T2_TFT3,tofd_vme.vftx2_3.time_fine[3],DATA12);
+SIGNAL(TOFD_P2T2_TFT4,tofd_vme.vftx2_3.time_fine[7],DATA12);
+SIGNAL(TOFD_P2T2_TFT5,tofd_vme.vftx2_3.time_fine[11],DATA12);
+SIGNAL(TOFD_P2T2_TFT6,tofd_vme.vftx2_3.time_fine[15],DATA12);
+SIGNAL(TOFD_P3T1_TCL1,tofd_tamex.tamex_1.time_coarse[1],DATA16);
+SIGNAL(TOFD_P3T1_TCL2,tofd_tamex.tamex_1.time_coarse[5],DATA16);
+SIGNAL(TOFD_P3T1_TCL3,tofd_tamex.tamex_1.time_coarse[9],DATA16);
+SIGNAL(TOFD_P3T1_TCL4,tofd_tamex.tamex_1.time_coarse[13],DATA16);
+SIGNAL(TOFD_P3T1_TCL5,tofd_tamex.tamex_1.time_coarse[17],DATA16);
+SIGNAL(TOFD_P3T1_TCL6,tofd_tamex.tamex_1.time_coarse[21],DATA16);
+SIGNAL(TOFD_P3T1_TCT1,tofd_tamex.tamex_1.time_coarse[2],DATA16);
+SIGNAL(TOFD_P3T1_TCT2,tofd_tamex.tamex_1.time_coarse[6],DATA16);
+SIGNAL(TOFD_P3T1_TCT3,tofd_tamex.tamex_1.time_coarse[10],DATA16);
+SIGNAL(TOFD_P3T1_TCT4,tofd_tamex.tamex_1.time_coarse[14],DATA16);
+SIGNAL(TOFD_P3T1_TCT5,tofd_tamex.tamex_1.time_coarse[18],DATA16);
+SIGNAL(TOFD_P3T1_TCT6,tofd_tamex.tamex_1.time_coarse[22],DATA16);
+SIGNAL(TOFD_P3T1_TFL1,tofd_tamex.tamex_1.time_fine[1],DATA12);
+SIGNAL(TOFD_P3T1_TFL2,tofd_tamex.tamex_1.time_fine[5],DATA12);
+SIGNAL(TOFD_P3T1_TFL3,tofd_tamex.tamex_1.time_fine[9],DATA12);
+SIGNAL(TOFD_P3T1_TFL4,tofd_tamex.tamex_1.time_fine[13],DATA12);
+SIGNAL(TOFD_P3T1_TFL5,tofd_tamex.tamex_1.time_fine[17],DATA12);
+SIGNAL(TOFD_P3T1_TFL6,tofd_tamex.tamex_1.time_fine[21],DATA12);
+SIGNAL(TOFD_P3T1_TFT1,tofd_tamex.tamex_1.time_fine[2],DATA12);
+SIGNAL(TOFD_P3T1_TFT2,tofd_tamex.tamex_1.time_fine[6],DATA12);
+SIGNAL(TOFD_P3T1_TFT3,tofd_tamex.tamex_1.time_fine[10],DATA12);
+SIGNAL(TOFD_P3T1_TFT4,tofd_tamex.tamex_1.time_fine[14],DATA12);
+SIGNAL(TOFD_P3T1_TFT5,tofd_tamex.tamex_1.time_fine[18],DATA12);
+SIGNAL(TOFD_P3T1_TFT6,tofd_tamex.tamex_1.time_fine[22],DATA12);
+SIGNAL(TOFD_P3T2_TCL1,tofd_tamex.tamex_1.time_coarse[3],DATA16);
+SIGNAL(TOFD_P3T2_TCL2,tofd_tamex.tamex_1.time_coarse[7],DATA16);
+SIGNAL(TOFD_P3T2_TCL3,tofd_tamex.tamex_1.time_coarse[11],DATA16);
+SIGNAL(TOFD_P3T2_TCL4,tofd_tamex.tamex_1.time_coarse[15],DATA16);
+SIGNAL(TOFD_P3T2_TCL5,tofd_tamex.tamex_1.time_coarse[19],DATA16);
+SIGNAL(TOFD_P3T2_TCL6,tofd_tamex.tamex_1.time_coarse[23],DATA16);
+SIGNAL(TOFD_P3T2_TCT1,tofd_tamex.tamex_1.time_coarse[4],DATA16);
+SIGNAL(TOFD_P3T2_TCT2,tofd_tamex.tamex_1.time_coarse[8],DATA16);
+SIGNAL(TOFD_P3T2_TCT3,tofd_tamex.tamex_1.time_coarse[12],DATA16);
+SIGNAL(TOFD_P3T2_TCT4,tofd_tamex.tamex_1.time_coarse[16],DATA16);
+SIGNAL(TOFD_P3T2_TCT5,tofd_tamex.tamex_1.time_coarse[20],DATA16);
+SIGNAL(TOFD_P3T2_TCT6,tofd_tamex.tamex_1.time_coarse[24],DATA16);
+SIGNAL(TOFD_P3T2_TFL1,tofd_tamex.tamex_1.time_fine[3],DATA12);
+SIGNAL(TOFD_P3T2_TFL2,tofd_tamex.tamex_1.time_fine[7],DATA12);
+SIGNAL(TOFD_P3T2_TFL3,tofd_tamex.tamex_1.time_fine[11],DATA12);
+SIGNAL(TOFD_P3T2_TFL4,tofd_tamex.tamex_1.time_fine[15],DATA12);
+SIGNAL(TOFD_P3T2_TFL5,tofd_tamex.tamex_1.time_fine[19],DATA12);
+SIGNAL(TOFD_P3T2_TFL6,tofd_tamex.tamex_1.time_fine[23],DATA12);
+SIGNAL(TOFD_P3T2_TFT1,tofd_tamex.tamex_1.time_fine[4],DATA12);
+SIGNAL(TOFD_P3T2_TFT2,tofd_tamex.tamex_1.time_fine[8],DATA12);
+SIGNAL(TOFD_P3T2_TFT3,tofd_tamex.tamex_1.time_fine[12],DATA12);
+SIGNAL(TOFD_P3T2_TFT4,tofd_tamex.tamex_1.time_fine[16],DATA12);
+SIGNAL(TOFD_P3T2_TFT5,tofd_tamex.tamex_1.time_fine[20],DATA12);
+SIGNAL(TOFD_P3T2_TFT6,tofd_tamex.tamex_1.time_fine[24],DATA12);
+SIGNAL(TOFD_P4T1_TCL1,tofd_tamex.tamex_2.time_coarse[1],DATA16);
+SIGNAL(TOFD_P4T1_TCL2,tofd_tamex.tamex_2.time_coarse[5],DATA16);
+SIGNAL(TOFD_P4T1_TCL3,tofd_tamex.tamex_2.time_coarse[9],DATA16);
+SIGNAL(TOFD_P4T1_TCL4,tofd_tamex.tamex_2.time_coarse[13],DATA16);
+SIGNAL(TOFD_P4T1_TCL5,tofd_tamex.tamex_2.time_coarse[17],DATA16);
+SIGNAL(TOFD_P4T1_TCL6,tofd_tamex.tamex_2.time_coarse[21],DATA16);
+SIGNAL(TOFD_P4T1_TCT1,tofd_tamex.tamex_2.time_coarse[2],DATA16);
+SIGNAL(TOFD_P4T1_TCT2,tofd_tamex.tamex_2.time_coarse[6],DATA16);
+SIGNAL(TOFD_P4T1_TCT3,tofd_tamex.tamex_2.time_coarse[10],DATA16);
+SIGNAL(TOFD_P4T1_TCT4,tofd_tamex.tamex_2.time_coarse[14],DATA16);
+SIGNAL(TOFD_P4T1_TCT5,tofd_tamex.tamex_2.time_coarse[18],DATA16);
+SIGNAL(TOFD_P4T1_TCT6,tofd_tamex.tamex_2.time_coarse[22],DATA16);
+SIGNAL(TOFD_P4T1_TFL1,tofd_tamex.tamex_2.time_fine[1],DATA12);
+SIGNAL(TOFD_P4T1_TFL2,tofd_tamex.tamex_2.time_fine[5],DATA12);
+SIGNAL(TOFD_P4T1_TFL3,tofd_tamex.tamex_2.time_fine[9],DATA12);
+SIGNAL(TOFD_P4T1_TFL4,tofd_tamex.tamex_2.time_fine[13],DATA12);
+SIGNAL(TOFD_P4T1_TFL5,tofd_tamex.tamex_2.time_fine[17],DATA12);
+SIGNAL(TOFD_P4T1_TFL6,tofd_tamex.tamex_2.time_fine[21],DATA12);
+SIGNAL(TOFD_P4T1_TFT1,tofd_tamex.tamex_2.time_fine[2],DATA12);
+SIGNAL(TOFD_P4T1_TFT2,tofd_tamex.tamex_2.time_fine[6],DATA12);
+SIGNAL(TOFD_P4T1_TFT3,tofd_tamex.tamex_2.time_fine[10],DATA12);
+SIGNAL(TOFD_P4T1_TFT4,tofd_tamex.tamex_2.time_fine[14],DATA12);
+SIGNAL(TOFD_P4T1_TFT5,tofd_tamex.tamex_2.time_fine[18],DATA12);
+SIGNAL(TOFD_P4T1_TFT6,tofd_tamex.tamex_2.time_fine[22],DATA12);
+SIGNAL(TOFD_P4T2_TCL1,tofd_tamex.tamex_2.time_coarse[3],DATA16);
+SIGNAL(TOFD_P4T2_TCL2,tofd_tamex.tamex_2.time_coarse[7],DATA16);
+SIGNAL(TOFD_P4T2_TCL3,tofd_tamex.tamex_2.time_coarse[11],DATA16);
+SIGNAL(TOFD_P4T2_TCL4,tofd_tamex.tamex_2.time_coarse[15],DATA16);
+SIGNAL(TOFD_P4T2_TCL5,tofd_tamex.tamex_2.time_coarse[19],DATA16);
+SIGNAL(TOFD_P4T2_TCL6,tofd_tamex.tamex_2.time_coarse[23],DATA16);
+SIGNAL(TOFD_P4T2_TCT1,tofd_tamex.tamex_2.time_coarse[4],DATA16);
+SIGNAL(TOFD_P4T2_TCT2,tofd_tamex.tamex_2.time_coarse[8],DATA16);
+SIGNAL(TOFD_P4T2_TCT3,tofd_tamex.tamex_2.time_coarse[12],DATA16);
+SIGNAL(TOFD_P4T2_TCT4,tofd_tamex.tamex_2.time_coarse[16],DATA16);
+SIGNAL(TOFD_P4T2_TCT5,tofd_tamex.tamex_2.time_coarse[20],DATA16);
+SIGNAL(TOFD_P4T2_TCT6,tofd_tamex.tamex_2.time_coarse[24],DATA16);
+SIGNAL(TOFD_P4T2_TFL1,tofd_tamex.tamex_2.time_fine[3],DATA12);
+SIGNAL(TOFD_P4T2_TFL2,tofd_tamex.tamex_2.time_fine[7],DATA12);
+SIGNAL(TOFD_P4T2_TFL3,tofd_tamex.tamex_2.time_fine[11],DATA12);
+SIGNAL(TOFD_P4T2_TFL4,tofd_tamex.tamex_2.time_fine[15],DATA12);
+SIGNAL(TOFD_P4T2_TFL5,tofd_tamex.tamex_2.time_fine[19],DATA12);
+SIGNAL(TOFD_P4T2_TFL6,tofd_tamex.tamex_2.time_fine[23],DATA12);
+SIGNAL(TOFD_P4T2_TFT1,tofd_tamex.tamex_2.time_fine[4],DATA12);
+SIGNAL(TOFD_P4T2_TFT2,tofd_tamex.tamex_2.time_fine[8],DATA12);
+SIGNAL(TOFD_P4T2_TFT3,tofd_tamex.tamex_2.time_fine[12],DATA12);
+SIGNAL(TOFD_P4T2_TFT4,tofd_tamex.tamex_2.time_fine[16],DATA12);
+SIGNAL(TOFD_P4T2_TFT5,tofd_tamex.tamex_2.time_fine[20],DATA12);
+SIGNAL(TOFD_P4T2_TFT6,tofd_tamex.tamex_2.time_fine[24],DATA12);
+SIGNAL(TOFD_P5T1_TCL1,tofd_tamex.tamex_3.time_coarse[1],DATA16);
+SIGNAL(TOFD_P5T1_TCL2,tofd_tamex.tamex_3.time_coarse[5],DATA16);
+SIGNAL(TOFD_P5T1_TCL3,tofd_tamex.tamex_3.time_coarse[9],DATA16);
+SIGNAL(TOFD_P5T1_TCL4,tofd_tamex.tamex_3.time_coarse[13],DATA16);
+SIGNAL(TOFD_P5T1_TCL5,tofd_tamex.tamex_3.time_coarse[17],DATA16);
+SIGNAL(TOFD_P5T1_TCL6,tofd_tamex.tamex_3.time_coarse[21],DATA16);
+SIGNAL(TOFD_P5T1_TCT1,tofd_tamex.tamex_3.time_coarse[2],DATA16);
+SIGNAL(TOFD_P5T1_TCT2,tofd_tamex.tamex_3.time_coarse[6],DATA16);
+SIGNAL(TOFD_P5T1_TCT3,tofd_tamex.tamex_3.time_coarse[10],DATA16);
+SIGNAL(TOFD_P5T1_TCT4,tofd_tamex.tamex_3.time_coarse[14],DATA16);
+SIGNAL(TOFD_P5T1_TCT5,tofd_tamex.tamex_3.time_coarse[18],DATA16);
+SIGNAL(TOFD_P5T1_TCT6,tofd_tamex.tamex_3.time_coarse[22],DATA16);
+SIGNAL(TOFD_P5T1_TFL1,tofd_tamex.tamex_3.time_fine[1],DATA12);
+SIGNAL(TOFD_P5T1_TFL2,tofd_tamex.tamex_3.time_fine[5],DATA12);
+SIGNAL(TOFD_P5T1_TFL3,tofd_tamex.tamex_3.time_fine[9],DATA12);
+SIGNAL(TOFD_P5T1_TFL4,tofd_tamex.tamex_3.time_fine[13],DATA12);
+SIGNAL(TOFD_P5T1_TFL5,tofd_tamex.tamex_3.time_fine[17],DATA12);
+SIGNAL(TOFD_P5T1_TFL6,tofd_tamex.tamex_3.time_fine[21],DATA12);
+SIGNAL(TOFD_P5T1_TFT1,tofd_tamex.tamex_3.time_fine[2],DATA12);
+SIGNAL(TOFD_P5T1_TFT2,tofd_tamex.tamex_3.time_fine[6],DATA12);
+SIGNAL(TOFD_P5T1_TFT3,tofd_tamex.tamex_3.time_fine[10],DATA12);
+SIGNAL(TOFD_P5T1_TFT4,tofd_tamex.tamex_3.time_fine[14],DATA12);
+SIGNAL(TOFD_P5T1_TFT5,tofd_tamex.tamex_3.time_fine[18],DATA12);
+SIGNAL(TOFD_P5T1_TFT6,tofd_tamex.tamex_3.time_fine[22],DATA12);
+SIGNAL(TOFD_P5T2_TCL1,tofd_tamex.tamex_3.time_coarse[3],DATA16);
+SIGNAL(TOFD_P5T2_TCL2,tofd_tamex.tamex_3.time_coarse[7],DATA16);
+SIGNAL(TOFD_P5T2_TCL3,tofd_tamex.tamex_3.time_coarse[11],DATA16);
+SIGNAL(TOFD_P5T2_TCL4,tofd_tamex.tamex_3.time_coarse[15],DATA16);
+SIGNAL(TOFD_P5T2_TCL5,tofd_tamex.tamex_3.time_coarse[19],DATA16);
+SIGNAL(TOFD_P5T2_TCL6,tofd_tamex.tamex_3.time_coarse[23],DATA16);
+SIGNAL(TOFD_P5T2_TCT1,tofd_tamex.tamex_3.time_coarse[4],DATA16);
+SIGNAL(TOFD_P5T2_TCT2,tofd_tamex.tamex_3.time_coarse[8],DATA16);
+SIGNAL(TOFD_P5T2_TCT3,tofd_tamex.tamex_3.time_coarse[12],DATA16);
+SIGNAL(TOFD_P5T2_TCT4,tofd_tamex.tamex_3.time_coarse[16],DATA16);
+SIGNAL(TOFD_P5T2_TCT5,tofd_tamex.tamex_3.time_coarse[20],DATA16);
+SIGNAL(TOFD_P5T2_TCT6,tofd_tamex.tamex_3.time_coarse[24],DATA16);
+SIGNAL(TOFD_P5T2_TFL1,tofd_tamex.tamex_3.time_fine[3],DATA12);
+SIGNAL(TOFD_P5T2_TFL2,tofd_tamex.tamex_3.time_fine[7],DATA12);
+SIGNAL(TOFD_P5T2_TFL3,tofd_tamex.tamex_3.time_fine[11],DATA12);
+SIGNAL(TOFD_P5T2_TFL4,tofd_tamex.tamex_3.time_fine[15],DATA12);
+SIGNAL(TOFD_P5T2_TFL5,tofd_tamex.tamex_3.time_fine[19],DATA12);
+SIGNAL(TOFD_P5T2_TFL6,tofd_tamex.tamex_3.time_fine[23],DATA12);
+SIGNAL(TOFD_P5T2_TFT1,tofd_tamex.tamex_3.time_fine[4],DATA12);
+SIGNAL(TOFD_P5T2_TFT2,tofd_tamex.tamex_3.time_fine[8],DATA12);
+SIGNAL(TOFD_P5T2_TFT3,tofd_tamex.tamex_3.time_fine[12],DATA12);
+SIGNAL(TOFD_P5T2_TFT4,tofd_tamex.tamex_3.time_fine[16],DATA12);
+SIGNAL(TOFD_P5T2_TFT5,tofd_tamex.tamex_3.time_fine[20],DATA12);
+SIGNAL(TOFD_P5T2_TFT6,tofd_tamex.tamex_3.time_fine[24],DATA12);
+SIGNAL(TOFD_P6T1_TCL1,tofd_tamex.tamex_4.time_coarse[1],DATA16);
+SIGNAL(TOFD_P6T1_TCL2,tofd_tamex.tamex_4.time_coarse[5],DATA16);
+SIGNAL(TOFD_P6T1_TCL3,tofd_tamex.tamex_4.time_coarse[9],DATA16);
+SIGNAL(TOFD_P6T1_TCL4,tofd_tamex.tamex_4.time_coarse[13],DATA16);
+SIGNAL(TOFD_P6T1_TCL5,tofd_tamex.tamex_4.time_coarse[17],DATA16);
+SIGNAL(TOFD_P6T1_TCL6,tofd_tamex.tamex_4.time_coarse[21],DATA16);
+SIGNAL(TOFD_P6T1_TCT1,tofd_tamex.tamex_4.time_coarse[2],DATA16);
+SIGNAL(TOFD_P6T1_TCT2,tofd_tamex.tamex_4.time_coarse[6],DATA16);
+SIGNAL(TOFD_P6T1_TCT3,tofd_tamex.tamex_4.time_coarse[10],DATA16);
+SIGNAL(TOFD_P6T1_TCT4,tofd_tamex.tamex_4.time_coarse[14],DATA16);
+SIGNAL(TOFD_P6T1_TCT5,tofd_tamex.tamex_4.time_coarse[18],DATA16);
+SIGNAL(TOFD_P6T1_TCT6,tofd_tamex.tamex_4.time_coarse[22],DATA16);
+SIGNAL(TOFD_P6T1_TFL1,tofd_tamex.tamex_4.time_fine[1],DATA12);
+SIGNAL(TOFD_P6T1_TFL2,tofd_tamex.tamex_4.time_fine[5],DATA12);
+SIGNAL(TOFD_P6T1_TFL3,tofd_tamex.tamex_4.time_fine[9],DATA12);
+SIGNAL(TOFD_P6T1_TFL4,tofd_tamex.tamex_4.time_fine[13],DATA12);
+SIGNAL(TOFD_P6T1_TFL5,tofd_tamex.tamex_4.time_fine[17],DATA12);
+SIGNAL(TOFD_P6T1_TFL6,tofd_tamex.tamex_4.time_fine[21],DATA12);
+SIGNAL(TOFD_P6T1_TFT1,tofd_tamex.tamex_4.time_fine[2],DATA12);
+SIGNAL(TOFD_P6T1_TFT2,tofd_tamex.tamex_4.time_fine[6],DATA12);
+SIGNAL(TOFD_P6T1_TFT3,tofd_tamex.tamex_4.time_fine[10],DATA12);
+SIGNAL(TOFD_P6T1_TFT4,tofd_tamex.tamex_4.time_fine[14],DATA12);
+SIGNAL(TOFD_P6T1_TFT5,tofd_tamex.tamex_4.time_fine[18],DATA12);
+SIGNAL(TOFD_P6T1_TFT6,tofd_tamex.tamex_4.time_fine[22],DATA12);
+SIGNAL(TOFD_P6T2_TCL1,tofd_tamex.tamex_4.time_coarse[3],DATA16);
+SIGNAL(TOFD_P6T2_TCL2,tofd_tamex.tamex_4.time_coarse[7],DATA16);
+SIGNAL(TOFD_P6T2_TCL3,tofd_tamex.tamex_4.time_coarse[11],DATA16);
+SIGNAL(TOFD_P6T2_TCL4,tofd_tamex.tamex_4.time_coarse[15],DATA16);
+SIGNAL(TOFD_P6T2_TCL5,tofd_tamex.tamex_4.time_coarse[19],DATA16);
+SIGNAL(TOFD_P6T2_TCL6,tofd_tamex.tamex_4.time_coarse[23],DATA16);
+SIGNAL(TOFD_P6T2_TCT1,tofd_tamex.tamex_4.time_coarse[4],DATA16);
+SIGNAL(TOFD_P6T2_TCT2,tofd_tamex.tamex_4.time_coarse[8],DATA16);
+SIGNAL(TOFD_P6T2_TCT3,tofd_tamex.tamex_4.time_coarse[12],DATA16);
+SIGNAL(TOFD_P6T2_TCT4,tofd_tamex.tamex_4.time_coarse[16],DATA16);
+SIGNAL(TOFD_P6T2_TCT5,tofd_tamex.tamex_4.time_coarse[20],DATA16);
+SIGNAL(TOFD_P6T2_TCT6,tofd_tamex.tamex_4.time_coarse[24],DATA16);
+SIGNAL(TOFD_P6T2_TFL1,tofd_tamex.tamex_4.time_fine[3],DATA12);
+SIGNAL(TOFD_P6T2_TFL2,tofd_tamex.tamex_4.time_fine[7],DATA12);
+SIGNAL(TOFD_P6T2_TFL3,tofd_tamex.tamex_4.time_fine[11],DATA12);
+SIGNAL(TOFD_P6T2_TFL4,tofd_tamex.tamex_4.time_fine[15],DATA12);
+SIGNAL(TOFD_P6T2_TFL5,tofd_tamex.tamex_4.time_fine[19],DATA12);
+SIGNAL(TOFD_P6T2_TFL6,tofd_tamex.tamex_4.time_fine[23],DATA12);
+SIGNAL(TOFD_P6T2_TFT1,tofd_tamex.tamex_4.time_fine[4],DATA12);
+SIGNAL(TOFD_P6T2_TFT2,tofd_tamex.tamex_4.time_fine[8],DATA12);
+SIGNAL(TOFD_P6T2_TFT3,tofd_tamex.tamex_4.time_fine[12],DATA12);
+SIGNAL(TOFD_P6T2_TFT4,tofd_tamex.tamex_4.time_fine[16],DATA12);
+SIGNAL(TOFD_P6T2_TFT5,tofd_tamex.tamex_4.time_fine[20],DATA12);
+SIGNAL(TOFD_P6T2_TFT6,tofd_tamex.tamex_4.time_fine[24],DATA12);
+SIGNAL(TOFD_VFTX2_T1,tofd_vme.vftx2_1.time_trigger,DATA16);
+SIGNAL(TOFD_VFTX2_T2,tofd_vme.vftx2_2.time_trigger,DATA16);
+SIGNAL(TOFD_VFTX2_T3,tofd_vme.vftx2_3.time_trigger,DATA16);
+SIGNAL(TRLO_SAMPLER_S1,los_sampler.sampler.sampler[0],DATA32);
+SIGNAL(TRLO_SAMPLER_S10,los_sampler.sampler.sampler[9],DATA32);
+SIGNAL(TRLO_SAMPLER_S100,los_sampler.sampler.sampler[99],DATA32);
+SIGNAL(TRLO_SAMPLER_S101,los_sampler.sampler.sampler[100],DATA32);
+SIGNAL(TRLO_SAMPLER_S102,los_sampler.sampler.sampler[101],DATA32);
+SIGNAL(TRLO_SAMPLER_S103,los_sampler.sampler.sampler[102],DATA32);
+SIGNAL(TRLO_SAMPLER_S104,los_sampler.sampler.sampler[103],DATA32);
+SIGNAL(TRLO_SAMPLER_S105,los_sampler.sampler.sampler[104],DATA32);
+SIGNAL(TRLO_SAMPLER_S106,los_sampler.sampler.sampler[105],DATA32);
+SIGNAL(TRLO_SAMPLER_S107,los_sampler.sampler.sampler[106],DATA32);
+SIGNAL(TRLO_SAMPLER_S108,los_sampler.sampler.sampler[107],DATA32);
+SIGNAL(TRLO_SAMPLER_S109,los_sampler.sampler.sampler[108],DATA32);
+SIGNAL(TRLO_SAMPLER_S11,los_sampler.sampler.sampler[10],DATA32);
+SIGNAL(TRLO_SAMPLER_S110,los_sampler.sampler.sampler[109],DATA32);
+SIGNAL(TRLO_SAMPLER_S111,los_sampler.sampler.sampler[110],DATA32);
+SIGNAL(TRLO_SAMPLER_S112,los_sampler.sampler.sampler[111],DATA32);
+SIGNAL(TRLO_SAMPLER_S113,los_sampler.sampler.sampler[112],DATA32);
+SIGNAL(TRLO_SAMPLER_S114,los_sampler.sampler.sampler[113],DATA32);
+SIGNAL(TRLO_SAMPLER_S115,los_sampler.sampler.sampler[114],DATA32);
+SIGNAL(TRLO_SAMPLER_S116,los_sampler.sampler.sampler[115],DATA32);
+SIGNAL(TRLO_SAMPLER_S117,los_sampler.sampler.sampler[116],DATA32);
+SIGNAL(TRLO_SAMPLER_S118,los_sampler.sampler.sampler[117],DATA32);
+SIGNAL(TRLO_SAMPLER_S119,los_sampler.sampler.sampler[118],DATA32);
+SIGNAL(TRLO_SAMPLER_S12,los_sampler.sampler.sampler[11],DATA32);
+SIGNAL(TRLO_SAMPLER_S120,los_sampler.sampler.sampler[119],DATA32);
+SIGNAL(TRLO_SAMPLER_S121,los_sampler.sampler.sampler[120],DATA32);
+SIGNAL(TRLO_SAMPLER_S122,los_sampler.sampler.sampler[121],DATA32);
+SIGNAL(TRLO_SAMPLER_S123,los_sampler.sampler.sampler[122],DATA32);
+SIGNAL(TRLO_SAMPLER_S124,los_sampler.sampler.sampler[123],DATA32);
+SIGNAL(TRLO_SAMPLER_S125,los_sampler.sampler.sampler[124],DATA32);
+SIGNAL(TRLO_SAMPLER_S126,los_sampler.sampler.sampler[125],DATA32);
+SIGNAL(TRLO_SAMPLER_S127,los_sampler.sampler.sampler[126],DATA32);
+SIGNAL(TRLO_SAMPLER_S128,los_sampler.sampler.sampler[127],DATA32);
+SIGNAL(TRLO_SAMPLER_S129,los_sampler.sampler.sampler[128],DATA32);
+SIGNAL(TRLO_SAMPLER_S13,los_sampler.sampler.sampler[12],DATA32);
+SIGNAL(TRLO_SAMPLER_S130,los_sampler.sampler.sampler[129],DATA32);
+SIGNAL(TRLO_SAMPLER_S131,los_sampler.sampler.sampler[130],DATA32);
+SIGNAL(TRLO_SAMPLER_S132,los_sampler.sampler.sampler[131],DATA32);
+SIGNAL(TRLO_SAMPLER_S133,los_sampler.sampler.sampler[132],DATA32);
+SIGNAL(TRLO_SAMPLER_S134,los_sampler.sampler.sampler[133],DATA32);
+SIGNAL(TRLO_SAMPLER_S135,los_sampler.sampler.sampler[134],DATA32);
+SIGNAL(TRLO_SAMPLER_S136,los_sampler.sampler.sampler[135],DATA32);
+SIGNAL(TRLO_SAMPLER_S137,los_sampler.sampler.sampler[136],DATA32);
+SIGNAL(TRLO_SAMPLER_S138,los_sampler.sampler.sampler[137],DATA32);
+SIGNAL(TRLO_SAMPLER_S139,los_sampler.sampler.sampler[138],DATA32);
+SIGNAL(TRLO_SAMPLER_S14,los_sampler.sampler.sampler[13],DATA32);
+SIGNAL(TRLO_SAMPLER_S140,los_sampler.sampler.sampler[139],DATA32);
+SIGNAL(TRLO_SAMPLER_S141,los_sampler.sampler.sampler[140],DATA32);
+SIGNAL(TRLO_SAMPLER_S142,los_sampler.sampler.sampler[141],DATA32);
+SIGNAL(TRLO_SAMPLER_S143,los_sampler.sampler.sampler[142],DATA32);
+SIGNAL(TRLO_SAMPLER_S144,los_sampler.sampler.sampler[143],DATA32);
+SIGNAL(TRLO_SAMPLER_S145,los_sampler.sampler.sampler[144],DATA32);
+SIGNAL(TRLO_SAMPLER_S146,los_sampler.sampler.sampler[145],DATA32);
+SIGNAL(TRLO_SAMPLER_S147,los_sampler.sampler.sampler[146],DATA32);
+SIGNAL(TRLO_SAMPLER_S148,los_sampler.sampler.sampler[147],DATA32);
+SIGNAL(TRLO_SAMPLER_S149,los_sampler.sampler.sampler[148],DATA32);
+SIGNAL(TRLO_SAMPLER_S15,los_sampler.sampler.sampler[14],DATA32);
+SIGNAL(TRLO_SAMPLER_S150,los_sampler.sampler.sampler[149],DATA32);
+SIGNAL(TRLO_SAMPLER_S151,los_sampler.sampler.sampler[150],DATA32);
+SIGNAL(TRLO_SAMPLER_S152,los_sampler.sampler.sampler[151],DATA32);
+SIGNAL(TRLO_SAMPLER_S153,los_sampler.sampler.sampler[152],DATA32);
+SIGNAL(TRLO_SAMPLER_S154,los_sampler.sampler.sampler[153],DATA32);
+SIGNAL(TRLO_SAMPLER_S155,los_sampler.sampler.sampler[154],DATA32);
+SIGNAL(TRLO_SAMPLER_S156,los_sampler.sampler.sampler[155],DATA32);
+SIGNAL(TRLO_SAMPLER_S157,los_sampler.sampler.sampler[156],DATA32);
+SIGNAL(TRLO_SAMPLER_S158,los_sampler.sampler.sampler[157],DATA32);
+SIGNAL(TRLO_SAMPLER_S159,los_sampler.sampler.sampler[158],DATA32);
+SIGNAL(TRLO_SAMPLER_S16,los_sampler.sampler.sampler[15],DATA32);
+SIGNAL(TRLO_SAMPLER_S160,los_sampler.sampler.sampler[159],DATA32);
+SIGNAL(TRLO_SAMPLER_S161,los_sampler.sampler.sampler[160],DATA32);
+SIGNAL(TRLO_SAMPLER_S162,los_sampler.sampler.sampler[161],DATA32);
+SIGNAL(TRLO_SAMPLER_S163,los_sampler.sampler.sampler[162],DATA32);
+SIGNAL(TRLO_SAMPLER_S164,los_sampler.sampler.sampler[163],DATA32);
+SIGNAL(TRLO_SAMPLER_S165,los_sampler.sampler.sampler[164],DATA32);
+SIGNAL(TRLO_SAMPLER_S166,los_sampler.sampler.sampler[165],DATA32);
+SIGNAL(TRLO_SAMPLER_S167,los_sampler.sampler.sampler[166],DATA32);
+SIGNAL(TRLO_SAMPLER_S168,los_sampler.sampler.sampler[167],DATA32);
+SIGNAL(TRLO_SAMPLER_S169,los_sampler.sampler.sampler[168],DATA32);
+SIGNAL(TRLO_SAMPLER_S17,los_sampler.sampler.sampler[16],DATA32);
+SIGNAL(TRLO_SAMPLER_S170,los_sampler.sampler.sampler[169],DATA32);
+SIGNAL(TRLO_SAMPLER_S171,los_sampler.sampler.sampler[170],DATA32);
+SIGNAL(TRLO_SAMPLER_S172,los_sampler.sampler.sampler[171],DATA32);
+SIGNAL(TRLO_SAMPLER_S173,los_sampler.sampler.sampler[172],DATA32);
+SIGNAL(TRLO_SAMPLER_S174,los_sampler.sampler.sampler[173],DATA32);
+SIGNAL(TRLO_SAMPLER_S175,los_sampler.sampler.sampler[174],DATA32);
+SIGNAL(TRLO_SAMPLER_S176,los_sampler.sampler.sampler[175],DATA32);
+SIGNAL(TRLO_SAMPLER_S177,los_sampler.sampler.sampler[176],DATA32);
+SIGNAL(TRLO_SAMPLER_S178,los_sampler.sampler.sampler[177],DATA32);
+SIGNAL(TRLO_SAMPLER_S179,los_sampler.sampler.sampler[178],DATA32);
+SIGNAL(TRLO_SAMPLER_S18,los_sampler.sampler.sampler[17],DATA32);
+SIGNAL(TRLO_SAMPLER_S180,los_sampler.sampler.sampler[179],DATA32);
+SIGNAL(TRLO_SAMPLER_S181,los_sampler.sampler.sampler[180],DATA32);
+SIGNAL(TRLO_SAMPLER_S182,los_sampler.sampler.sampler[181],DATA32);
+SIGNAL(TRLO_SAMPLER_S183,los_sampler.sampler.sampler[182],DATA32);
+SIGNAL(TRLO_SAMPLER_S184,los_sampler.sampler.sampler[183],DATA32);
+SIGNAL(TRLO_SAMPLER_S185,los_sampler.sampler.sampler[184],DATA32);
+SIGNAL(TRLO_SAMPLER_S186,los_sampler.sampler.sampler[185],DATA32);
+SIGNAL(TRLO_SAMPLER_S187,los_sampler.sampler.sampler[186],DATA32);
+SIGNAL(TRLO_SAMPLER_S188,los_sampler.sampler.sampler[187],DATA32);
+SIGNAL(TRLO_SAMPLER_S189,los_sampler.sampler.sampler[188],DATA32);
+SIGNAL(TRLO_SAMPLER_S19,los_sampler.sampler.sampler[18],DATA32);
+SIGNAL(TRLO_SAMPLER_S190,los_sampler.sampler.sampler[189],DATA32);
+SIGNAL(TRLO_SAMPLER_S191,los_sampler.sampler.sampler[190],DATA32);
+SIGNAL(TRLO_SAMPLER_S192,los_sampler.sampler.sampler[191],DATA32);
+SIGNAL(TRLO_SAMPLER_S193,los_sampler.sampler.sampler[192],DATA32);
+SIGNAL(TRLO_SAMPLER_S194,los_sampler.sampler.sampler[193],DATA32);
+SIGNAL(TRLO_SAMPLER_S195,los_sampler.sampler.sampler[194],DATA32);
+SIGNAL(TRLO_SAMPLER_S196,los_sampler.sampler.sampler[195],DATA32);
+SIGNAL(TRLO_SAMPLER_S197,los_sampler.sampler.sampler[196],DATA32);
+SIGNAL(TRLO_SAMPLER_S198,los_sampler.sampler.sampler[197],DATA32);
+SIGNAL(TRLO_SAMPLER_S199,los_sampler.sampler.sampler[198],DATA32);
+SIGNAL(TRLO_SAMPLER_S2,los_sampler.sampler.sampler[1],DATA32);
+SIGNAL(TRLO_SAMPLER_S20,los_sampler.sampler.sampler[19],DATA32);
+SIGNAL(TRLO_SAMPLER_S200,los_sampler.sampler.sampler[199],DATA32);
+SIGNAL(TRLO_SAMPLER_S201,los_sampler.sampler.sampler[200],DATA32);
+SIGNAL(TRLO_SAMPLER_S202,los_sampler.sampler.sampler[201],DATA32);
+SIGNAL(TRLO_SAMPLER_S203,los_sampler.sampler.sampler[202],DATA32);
+SIGNAL(TRLO_SAMPLER_S204,los_sampler.sampler.sampler[203],DATA32);
+SIGNAL(TRLO_SAMPLER_S205,los_sampler.sampler.sampler[204],DATA32);
+SIGNAL(TRLO_SAMPLER_S206,los_sampler.sampler.sampler[205],DATA32);
+SIGNAL(TRLO_SAMPLER_S207,los_sampler.sampler.sampler[206],DATA32);
+SIGNAL(TRLO_SAMPLER_S208,los_sampler.sampler.sampler[207],DATA32);
+SIGNAL(TRLO_SAMPLER_S209,los_sampler.sampler.sampler[208],DATA32);
+SIGNAL(TRLO_SAMPLER_S21,los_sampler.sampler.sampler[20],DATA32);
+SIGNAL(TRLO_SAMPLER_S210,los_sampler.sampler.sampler[209],DATA32);
+SIGNAL(TRLO_SAMPLER_S211,los_sampler.sampler.sampler[210],DATA32);
+SIGNAL(TRLO_SAMPLER_S212,los_sampler.sampler.sampler[211],DATA32);
+SIGNAL(TRLO_SAMPLER_S213,los_sampler.sampler.sampler[212],DATA32);
+SIGNAL(TRLO_SAMPLER_S214,los_sampler.sampler.sampler[213],DATA32);
+SIGNAL(TRLO_SAMPLER_S215,los_sampler.sampler.sampler[214],DATA32);
+SIGNAL(TRLO_SAMPLER_S216,los_sampler.sampler.sampler[215],DATA32);
+SIGNAL(TRLO_SAMPLER_S217,los_sampler.sampler.sampler[216],DATA32);
+SIGNAL(TRLO_SAMPLER_S218,los_sampler.sampler.sampler[217],DATA32);
+SIGNAL(TRLO_SAMPLER_S219,los_sampler.sampler.sampler[218],DATA32);
+SIGNAL(TRLO_SAMPLER_S22,los_sampler.sampler.sampler[21],DATA32);
+SIGNAL(TRLO_SAMPLER_S220,los_sampler.sampler.sampler[219],DATA32);
+SIGNAL(TRLO_SAMPLER_S221,los_sampler.sampler.sampler[220],DATA32);
+SIGNAL(TRLO_SAMPLER_S222,los_sampler.sampler.sampler[221],DATA32);
+SIGNAL(TRLO_SAMPLER_S223,los_sampler.sampler.sampler[222],DATA32);
+SIGNAL(TRLO_SAMPLER_S224,los_sampler.sampler.sampler[223],DATA32);
+SIGNAL(TRLO_SAMPLER_S225,los_sampler.sampler.sampler[224],DATA32);
+SIGNAL(TRLO_SAMPLER_S226,los_sampler.sampler.sampler[225],DATA32);
+SIGNAL(TRLO_SAMPLER_S227,los_sampler.sampler.sampler[226],DATA32);
+SIGNAL(TRLO_SAMPLER_S228,los_sampler.sampler.sampler[227],DATA32);
+SIGNAL(TRLO_SAMPLER_S229,los_sampler.sampler.sampler[228],DATA32);
+SIGNAL(TRLO_SAMPLER_S23,los_sampler.sampler.sampler[22],DATA32);
+SIGNAL(TRLO_SAMPLER_S230,los_sampler.sampler.sampler[229],DATA32);
+SIGNAL(TRLO_SAMPLER_S231,los_sampler.sampler.sampler[230],DATA32);
+SIGNAL(TRLO_SAMPLER_S232,los_sampler.sampler.sampler[231],DATA32);
+SIGNAL(TRLO_SAMPLER_S233,los_sampler.sampler.sampler[232],DATA32);
+SIGNAL(TRLO_SAMPLER_S234,los_sampler.sampler.sampler[233],DATA32);
+SIGNAL(TRLO_SAMPLER_S235,los_sampler.sampler.sampler[234],DATA32);
+SIGNAL(TRLO_SAMPLER_S236,los_sampler.sampler.sampler[235],DATA32);
+SIGNAL(TRLO_SAMPLER_S237,los_sampler.sampler.sampler[236],DATA32);
+SIGNAL(TRLO_SAMPLER_S238,los_sampler.sampler.sampler[237],DATA32);
+SIGNAL(TRLO_SAMPLER_S239,los_sampler.sampler.sampler[238],DATA32);
+SIGNAL(TRLO_SAMPLER_S24,los_sampler.sampler.sampler[23],DATA32);
+SIGNAL(TRLO_SAMPLER_S240,los_sampler.sampler.sampler[239],DATA32);
+SIGNAL(TRLO_SAMPLER_S241,los_sampler.sampler.sampler[240],DATA32);
+SIGNAL(TRLO_SAMPLER_S242,los_sampler.sampler.sampler[241],DATA32);
+SIGNAL(TRLO_SAMPLER_S243,los_sampler.sampler.sampler[242],DATA32);
+SIGNAL(TRLO_SAMPLER_S244,los_sampler.sampler.sampler[243],DATA32);
+SIGNAL(TRLO_SAMPLER_S245,los_sampler.sampler.sampler[244],DATA32);
+SIGNAL(TRLO_SAMPLER_S246,los_sampler.sampler.sampler[245],DATA32);
+SIGNAL(TRLO_SAMPLER_S247,los_sampler.sampler.sampler[246],DATA32);
+SIGNAL(TRLO_SAMPLER_S248,los_sampler.sampler.sampler[247],DATA32);
+SIGNAL(TRLO_SAMPLER_S249,los_sampler.sampler.sampler[248],DATA32);
+SIGNAL(TRLO_SAMPLER_S25,los_sampler.sampler.sampler[24],DATA32);
+SIGNAL(TRLO_SAMPLER_S250,los_sampler.sampler.sampler[249],DATA32);
+SIGNAL(TRLO_SAMPLER_S251,los_sampler.sampler.sampler[250],DATA32);
+SIGNAL(TRLO_SAMPLER_S252,los_sampler.sampler.sampler[251],DATA32);
+SIGNAL(TRLO_SAMPLER_S253,los_sampler.sampler.sampler[252],DATA32);
+SIGNAL(TRLO_SAMPLER_S254,los_sampler.sampler.sampler[253],DATA32);
+SIGNAL(TRLO_SAMPLER_S255,los_sampler.sampler.sampler[254],DATA32);
+SIGNAL(TRLO_SAMPLER_S256,los_sampler.sampler.sampler[255],DATA32);
+SIGNAL(TRLO_SAMPLER_S257,los_sampler.sampler.sampler[256],DATA32);
+SIGNAL(TRLO_SAMPLER_S258,los_sampler.sampler.sampler[257],DATA32);
+SIGNAL(TRLO_SAMPLER_S259,los_sampler.sampler.sampler[258],DATA32);
+SIGNAL(TRLO_SAMPLER_S26,los_sampler.sampler.sampler[25],DATA32);
+SIGNAL(TRLO_SAMPLER_S260,los_sampler.sampler.sampler[259],DATA32);
+SIGNAL(TRLO_SAMPLER_S261,los_sampler.sampler.sampler[260],DATA32);
+SIGNAL(TRLO_SAMPLER_S262,los_sampler.sampler.sampler[261],DATA32);
+SIGNAL(TRLO_SAMPLER_S263,los_sampler.sampler.sampler[262],DATA32);
+SIGNAL(TRLO_SAMPLER_S264,los_sampler.sampler.sampler[263],DATA32);
+SIGNAL(TRLO_SAMPLER_S265,los_sampler.sampler.sampler[264],DATA32);
+SIGNAL(TRLO_SAMPLER_S266,los_sampler.sampler.sampler[265],DATA32);
+SIGNAL(TRLO_SAMPLER_S267,los_sampler.sampler.sampler[266],DATA32);
+SIGNAL(TRLO_SAMPLER_S268,los_sampler.sampler.sampler[267],DATA32);
+SIGNAL(TRLO_SAMPLER_S269,los_sampler.sampler.sampler[268],DATA32);
+SIGNAL(TRLO_SAMPLER_S27,los_sampler.sampler.sampler[26],DATA32);
+SIGNAL(TRLO_SAMPLER_S270,los_sampler.sampler.sampler[269],DATA32);
+SIGNAL(TRLO_SAMPLER_S271,los_sampler.sampler.sampler[270],DATA32);
+SIGNAL(TRLO_SAMPLER_S272,los_sampler.sampler.sampler[271],DATA32);
+SIGNAL(TRLO_SAMPLER_S273,los_sampler.sampler.sampler[272],DATA32);
+SIGNAL(TRLO_SAMPLER_S274,los_sampler.sampler.sampler[273],DATA32);
+SIGNAL(TRLO_SAMPLER_S275,los_sampler.sampler.sampler[274],DATA32);
+SIGNAL(TRLO_SAMPLER_S276,los_sampler.sampler.sampler[275],DATA32);
+SIGNAL(TRLO_SAMPLER_S277,los_sampler.sampler.sampler[276],DATA32);
+SIGNAL(TRLO_SAMPLER_S278,los_sampler.sampler.sampler[277],DATA32);
+SIGNAL(TRLO_SAMPLER_S279,los_sampler.sampler.sampler[278],DATA32);
+SIGNAL(TRLO_SAMPLER_S28,los_sampler.sampler.sampler[27],DATA32);
+SIGNAL(TRLO_SAMPLER_S280,los_sampler.sampler.sampler[279],DATA32);
+SIGNAL(TRLO_SAMPLER_S281,los_sampler.sampler.sampler[280],DATA32);
+SIGNAL(TRLO_SAMPLER_S282,los_sampler.sampler.sampler[281],DATA32);
+SIGNAL(TRLO_SAMPLER_S283,los_sampler.sampler.sampler[282],DATA32);
+SIGNAL(TRLO_SAMPLER_S284,los_sampler.sampler.sampler[283],DATA32);
+SIGNAL(TRLO_SAMPLER_S285,los_sampler.sampler.sampler[284],DATA32);
+SIGNAL(TRLO_SAMPLER_S286,los_sampler.sampler.sampler[285],DATA32);
+SIGNAL(TRLO_SAMPLER_S287,los_sampler.sampler.sampler[286],DATA32);
+SIGNAL(TRLO_SAMPLER_S288,los_sampler.sampler.sampler[287],DATA32);
+SIGNAL(TRLO_SAMPLER_S289,los_sampler.sampler.sampler[288],DATA32);
+SIGNAL(TRLO_SAMPLER_S29,los_sampler.sampler.sampler[28],DATA32);
+SIGNAL(TRLO_SAMPLER_S290,los_sampler.sampler.sampler[289],DATA32);
+SIGNAL(TRLO_SAMPLER_S291,los_sampler.sampler.sampler[290],DATA32);
+SIGNAL(TRLO_SAMPLER_S292,los_sampler.sampler.sampler[291],DATA32);
+SIGNAL(TRLO_SAMPLER_S293,los_sampler.sampler.sampler[292],DATA32);
+SIGNAL(TRLO_SAMPLER_S294,los_sampler.sampler.sampler[293],DATA32);
+SIGNAL(TRLO_SAMPLER_S295,los_sampler.sampler.sampler[294],DATA32);
+SIGNAL(TRLO_SAMPLER_S296,los_sampler.sampler.sampler[295],DATA32);
+SIGNAL(TRLO_SAMPLER_S297,los_sampler.sampler.sampler[296],DATA32);
+SIGNAL(TRLO_SAMPLER_S298,los_sampler.sampler.sampler[297],DATA32);
+SIGNAL(TRLO_SAMPLER_S299,los_sampler.sampler.sampler[298],DATA32);
+SIGNAL(TRLO_SAMPLER_S3,los_sampler.sampler.sampler[2],DATA32);
+SIGNAL(TRLO_SAMPLER_S30,los_sampler.sampler.sampler[29],DATA32);
+SIGNAL(TRLO_SAMPLER_S300,los_sampler.sampler.sampler[299],DATA32);
+SIGNAL(TRLO_SAMPLER_S301,los_sampler.sampler.sampler[300],DATA32);
+SIGNAL(TRLO_SAMPLER_S302,los_sampler.sampler.sampler[301],DATA32);
+SIGNAL(TRLO_SAMPLER_S303,los_sampler.sampler.sampler[302],DATA32);
+SIGNAL(TRLO_SAMPLER_S304,los_sampler.sampler.sampler[303],DATA32);
+SIGNAL(TRLO_SAMPLER_S305,los_sampler.sampler.sampler[304],DATA32);
+SIGNAL(TRLO_SAMPLER_S306,los_sampler.sampler.sampler[305],DATA32);
+SIGNAL(TRLO_SAMPLER_S307,los_sampler.sampler.sampler[306],DATA32);
+SIGNAL(TRLO_SAMPLER_S308,los_sampler.sampler.sampler[307],DATA32);
+SIGNAL(TRLO_SAMPLER_S309,los_sampler.sampler.sampler[308],DATA32);
+SIGNAL(TRLO_SAMPLER_S31,los_sampler.sampler.sampler[30],DATA32);
+SIGNAL(TRLO_SAMPLER_S310,los_sampler.sampler.sampler[309],DATA32);
+SIGNAL(TRLO_SAMPLER_S311,los_sampler.sampler.sampler[310],DATA32);
+SIGNAL(TRLO_SAMPLER_S312,los_sampler.sampler.sampler[311],DATA32);
+SIGNAL(TRLO_SAMPLER_S313,los_sampler.sampler.sampler[312],DATA32);
+SIGNAL(TRLO_SAMPLER_S314,los_sampler.sampler.sampler[313],DATA32);
+SIGNAL(TRLO_SAMPLER_S315,los_sampler.sampler.sampler[314],DATA32);
+SIGNAL(TRLO_SAMPLER_S316,los_sampler.sampler.sampler[315],DATA32);
+SIGNAL(TRLO_SAMPLER_S317,los_sampler.sampler.sampler[316],DATA32);
+SIGNAL(TRLO_SAMPLER_S318,los_sampler.sampler.sampler[317],DATA32);
+SIGNAL(TRLO_SAMPLER_S319,los_sampler.sampler.sampler[318],DATA32);
+SIGNAL(TRLO_SAMPLER_S32,los_sampler.sampler.sampler[31],DATA32);
+SIGNAL(TRLO_SAMPLER_S320,los_sampler.sampler.sampler[319],DATA32);
+SIGNAL(TRLO_SAMPLER_S321,los_sampler.sampler.sampler[320],DATA32);
+SIGNAL(TRLO_SAMPLER_S322,los_sampler.sampler.sampler[321],DATA32);
+SIGNAL(TRLO_SAMPLER_S323,los_sampler.sampler.sampler[322],DATA32);
+SIGNAL(TRLO_SAMPLER_S324,los_sampler.sampler.sampler[323],DATA32);
+SIGNAL(TRLO_SAMPLER_S325,los_sampler.sampler.sampler[324],DATA32);
+SIGNAL(TRLO_SAMPLER_S326,los_sampler.sampler.sampler[325],DATA32);
+SIGNAL(TRLO_SAMPLER_S327,los_sampler.sampler.sampler[326],DATA32);
+SIGNAL(TRLO_SAMPLER_S328,los_sampler.sampler.sampler[327],DATA32);
+SIGNAL(TRLO_SAMPLER_S329,los_sampler.sampler.sampler[328],DATA32);
+SIGNAL(TRLO_SAMPLER_S33,los_sampler.sampler.sampler[32],DATA32);
+SIGNAL(TRLO_SAMPLER_S330,los_sampler.sampler.sampler[329],DATA32);
+SIGNAL(TRLO_SAMPLER_S331,los_sampler.sampler.sampler[330],DATA32);
+SIGNAL(TRLO_SAMPLER_S332,los_sampler.sampler.sampler[331],DATA32);
+SIGNAL(TRLO_SAMPLER_S333,los_sampler.sampler.sampler[332],DATA32);
+SIGNAL(TRLO_SAMPLER_S334,los_sampler.sampler.sampler[333],DATA32);
+SIGNAL(TRLO_SAMPLER_S335,los_sampler.sampler.sampler[334],DATA32);
+SIGNAL(TRLO_SAMPLER_S336,los_sampler.sampler.sampler[335],DATA32);
+SIGNAL(TRLO_SAMPLER_S337,los_sampler.sampler.sampler[336],DATA32);
+SIGNAL(TRLO_SAMPLER_S338,los_sampler.sampler.sampler[337],DATA32);
+SIGNAL(TRLO_SAMPLER_S339,los_sampler.sampler.sampler[338],DATA32);
+SIGNAL(TRLO_SAMPLER_S34,los_sampler.sampler.sampler[33],DATA32);
+SIGNAL(TRLO_SAMPLER_S340,los_sampler.sampler.sampler[339],DATA32);
+SIGNAL(TRLO_SAMPLER_S341,los_sampler.sampler.sampler[340],DATA32);
+SIGNAL(TRLO_SAMPLER_S342,los_sampler.sampler.sampler[341],DATA32);
+SIGNAL(TRLO_SAMPLER_S343,los_sampler.sampler.sampler[342],DATA32);
+SIGNAL(TRLO_SAMPLER_S344,los_sampler.sampler.sampler[343],DATA32);
+SIGNAL(TRLO_SAMPLER_S345,los_sampler.sampler.sampler[344],DATA32);
+SIGNAL(TRLO_SAMPLER_S346,los_sampler.sampler.sampler[345],DATA32);
+SIGNAL(TRLO_SAMPLER_S347,los_sampler.sampler.sampler[346],DATA32);
+SIGNAL(TRLO_SAMPLER_S348,los_sampler.sampler.sampler[347],DATA32);
+SIGNAL(TRLO_SAMPLER_S349,los_sampler.sampler.sampler[348],DATA32);
+SIGNAL(TRLO_SAMPLER_S35,los_sampler.sampler.sampler[34],DATA32);
+SIGNAL(TRLO_SAMPLER_S350,los_sampler.sampler.sampler[349],DATA32);
+SIGNAL(TRLO_SAMPLER_S351,los_sampler.sampler.sampler[350],DATA32);
+SIGNAL(TRLO_SAMPLER_S352,los_sampler.sampler.sampler[351],DATA32);
+SIGNAL(TRLO_SAMPLER_S353,los_sampler.sampler.sampler[352],DATA32);
+SIGNAL(TRLO_SAMPLER_S354,los_sampler.sampler.sampler[353],DATA32);
+SIGNAL(TRLO_SAMPLER_S355,los_sampler.sampler.sampler[354],DATA32);
+SIGNAL(TRLO_SAMPLER_S356,los_sampler.sampler.sampler[355],DATA32);
+SIGNAL(TRLO_SAMPLER_S357,los_sampler.sampler.sampler[356],DATA32);
+SIGNAL(TRLO_SAMPLER_S358,los_sampler.sampler.sampler[357],DATA32);
+SIGNAL(TRLO_SAMPLER_S359,los_sampler.sampler.sampler[358],DATA32);
+SIGNAL(TRLO_SAMPLER_S36,los_sampler.sampler.sampler[35],DATA32);
+SIGNAL(TRLO_SAMPLER_S360,los_sampler.sampler.sampler[359],DATA32);
+SIGNAL(TRLO_SAMPLER_S361,los_sampler.sampler.sampler[360],DATA32);
+SIGNAL(TRLO_SAMPLER_S362,los_sampler.sampler.sampler[361],DATA32);
+SIGNAL(TRLO_SAMPLER_S363,los_sampler.sampler.sampler[362],DATA32);
+SIGNAL(TRLO_SAMPLER_S364,los_sampler.sampler.sampler[363],DATA32);
+SIGNAL(TRLO_SAMPLER_S365,los_sampler.sampler.sampler[364],DATA32);
+SIGNAL(TRLO_SAMPLER_S366,los_sampler.sampler.sampler[365],DATA32);
+SIGNAL(TRLO_SAMPLER_S367,los_sampler.sampler.sampler[366],DATA32);
+SIGNAL(TRLO_SAMPLER_S368,los_sampler.sampler.sampler[367],DATA32);
+SIGNAL(TRLO_SAMPLER_S369,los_sampler.sampler.sampler[368],DATA32);
+SIGNAL(TRLO_SAMPLER_S37,los_sampler.sampler.sampler[36],DATA32);
+SIGNAL(TRLO_SAMPLER_S370,los_sampler.sampler.sampler[369],DATA32);
+SIGNAL(TRLO_SAMPLER_S371,los_sampler.sampler.sampler[370],DATA32);
+SIGNAL(TRLO_SAMPLER_S372,los_sampler.sampler.sampler[371],DATA32);
+SIGNAL(TRLO_SAMPLER_S373,los_sampler.sampler.sampler[372],DATA32);
+SIGNAL(TRLO_SAMPLER_S374,los_sampler.sampler.sampler[373],DATA32);
+SIGNAL(TRLO_SAMPLER_S375,los_sampler.sampler.sampler[374],DATA32);
+SIGNAL(TRLO_SAMPLER_S376,los_sampler.sampler.sampler[375],DATA32);
+SIGNAL(TRLO_SAMPLER_S377,los_sampler.sampler.sampler[376],DATA32);
+SIGNAL(TRLO_SAMPLER_S378,los_sampler.sampler.sampler[377],DATA32);
+SIGNAL(TRLO_SAMPLER_S379,los_sampler.sampler.sampler[378],DATA32);
+SIGNAL(TRLO_SAMPLER_S38,los_sampler.sampler.sampler[37],DATA32);
+SIGNAL(TRLO_SAMPLER_S380,los_sampler.sampler.sampler[379],DATA32);
+SIGNAL(TRLO_SAMPLER_S381,los_sampler.sampler.sampler[380],DATA32);
+SIGNAL(TRLO_SAMPLER_S382,los_sampler.sampler.sampler[381],DATA32);
+SIGNAL(TRLO_SAMPLER_S383,los_sampler.sampler.sampler[382],DATA32);
+SIGNAL(TRLO_SAMPLER_S384,los_sampler.sampler.sampler[383],DATA32);
+SIGNAL(TRLO_SAMPLER_S385,los_sampler.sampler.sampler[384],DATA32);
+SIGNAL(TRLO_SAMPLER_S386,los_sampler.sampler.sampler[385],DATA32);
+SIGNAL(TRLO_SAMPLER_S387,los_sampler.sampler.sampler[386],DATA32);
+SIGNAL(TRLO_SAMPLER_S388,los_sampler.sampler.sampler[387],DATA32);
+SIGNAL(TRLO_SAMPLER_S389,los_sampler.sampler.sampler[388],DATA32);
+SIGNAL(TRLO_SAMPLER_S39,los_sampler.sampler.sampler[38],DATA32);
+SIGNAL(TRLO_SAMPLER_S390,los_sampler.sampler.sampler[389],DATA32);
+SIGNAL(TRLO_SAMPLER_S391,los_sampler.sampler.sampler[390],DATA32);
+SIGNAL(TRLO_SAMPLER_S392,los_sampler.sampler.sampler[391],DATA32);
+SIGNAL(TRLO_SAMPLER_S393,los_sampler.sampler.sampler[392],DATA32);
+SIGNAL(TRLO_SAMPLER_S394,los_sampler.sampler.sampler[393],DATA32);
+SIGNAL(TRLO_SAMPLER_S395,los_sampler.sampler.sampler[394],DATA32);
+SIGNAL(TRLO_SAMPLER_S396,los_sampler.sampler.sampler[395],DATA32);
+SIGNAL(TRLO_SAMPLER_S397,los_sampler.sampler.sampler[396],DATA32);
+SIGNAL(TRLO_SAMPLER_S398,los_sampler.sampler.sampler[397],DATA32);
+SIGNAL(TRLO_SAMPLER_S399,los_sampler.sampler.sampler[398],DATA32);
+SIGNAL(TRLO_SAMPLER_S4,los_sampler.sampler.sampler[3],DATA32);
+SIGNAL(TRLO_SAMPLER_S40,los_sampler.sampler.sampler[39],DATA32);
+SIGNAL(TRLO_SAMPLER_S400,los_sampler.sampler.sampler[399],DATA32);
+SIGNAL(TRLO_SAMPLER_S401,los_sampler.sampler.sampler[400],DATA32);
+SIGNAL(TRLO_SAMPLER_S402,los_sampler.sampler.sampler[401],DATA32);
+SIGNAL(TRLO_SAMPLER_S403,los_sampler.sampler.sampler[402],DATA32);
+SIGNAL(TRLO_SAMPLER_S404,los_sampler.sampler.sampler[403],DATA32);
+SIGNAL(TRLO_SAMPLER_S405,los_sampler.sampler.sampler[404],DATA32);
+SIGNAL(TRLO_SAMPLER_S406,los_sampler.sampler.sampler[405],DATA32);
+SIGNAL(TRLO_SAMPLER_S407,los_sampler.sampler.sampler[406],DATA32);
+SIGNAL(TRLO_SAMPLER_S408,los_sampler.sampler.sampler[407],DATA32);
+SIGNAL(TRLO_SAMPLER_S409,los_sampler.sampler.sampler[408],DATA32);
+SIGNAL(TRLO_SAMPLER_S41,los_sampler.sampler.sampler[40],DATA32);
+SIGNAL(TRLO_SAMPLER_S410,los_sampler.sampler.sampler[409],DATA32);
+SIGNAL(TRLO_SAMPLER_S411,los_sampler.sampler.sampler[410],DATA32);
+SIGNAL(TRLO_SAMPLER_S412,los_sampler.sampler.sampler[411],DATA32);
+SIGNAL(TRLO_SAMPLER_S413,los_sampler.sampler.sampler[412],DATA32);
+SIGNAL(TRLO_SAMPLER_S414,los_sampler.sampler.sampler[413],DATA32);
+SIGNAL(TRLO_SAMPLER_S415,los_sampler.sampler.sampler[414],DATA32);
+SIGNAL(TRLO_SAMPLER_S416,los_sampler.sampler.sampler[415],DATA32);
+SIGNAL(TRLO_SAMPLER_S417,los_sampler.sampler.sampler[416],DATA32);
+SIGNAL(TRLO_SAMPLER_S418,los_sampler.sampler.sampler[417],DATA32);
+SIGNAL(TRLO_SAMPLER_S419,los_sampler.sampler.sampler[418],DATA32);
+SIGNAL(TRLO_SAMPLER_S42,los_sampler.sampler.sampler[41],DATA32);
+SIGNAL(TRLO_SAMPLER_S420,los_sampler.sampler.sampler[419],DATA32);
+SIGNAL(TRLO_SAMPLER_S421,los_sampler.sampler.sampler[420],DATA32);
+SIGNAL(TRLO_SAMPLER_S422,los_sampler.sampler.sampler[421],DATA32);
+SIGNAL(TRLO_SAMPLER_S423,los_sampler.sampler.sampler[422],DATA32);
+SIGNAL(TRLO_SAMPLER_S424,los_sampler.sampler.sampler[423],DATA32);
+SIGNAL(TRLO_SAMPLER_S425,los_sampler.sampler.sampler[424],DATA32);
+SIGNAL(TRLO_SAMPLER_S426,los_sampler.sampler.sampler[425],DATA32);
+SIGNAL(TRLO_SAMPLER_S427,los_sampler.sampler.sampler[426],DATA32);
+SIGNAL(TRLO_SAMPLER_S428,los_sampler.sampler.sampler[427],DATA32);
+SIGNAL(TRLO_SAMPLER_S429,los_sampler.sampler.sampler[428],DATA32);
+SIGNAL(TRLO_SAMPLER_S43,los_sampler.sampler.sampler[42],DATA32);
+SIGNAL(TRLO_SAMPLER_S430,los_sampler.sampler.sampler[429],DATA32);
+SIGNAL(TRLO_SAMPLER_S431,los_sampler.sampler.sampler[430],DATA32);
+SIGNAL(TRLO_SAMPLER_S432,los_sampler.sampler.sampler[431],DATA32);
+SIGNAL(TRLO_SAMPLER_S433,los_sampler.sampler.sampler[432],DATA32);
+SIGNAL(TRLO_SAMPLER_S434,los_sampler.sampler.sampler[433],DATA32);
+SIGNAL(TRLO_SAMPLER_S435,los_sampler.sampler.sampler[434],DATA32);
+SIGNAL(TRLO_SAMPLER_S436,los_sampler.sampler.sampler[435],DATA32);
+SIGNAL(TRLO_SAMPLER_S437,los_sampler.sampler.sampler[436],DATA32);
+SIGNAL(TRLO_SAMPLER_S438,los_sampler.sampler.sampler[437],DATA32);
+SIGNAL(TRLO_SAMPLER_S439,los_sampler.sampler.sampler[438],DATA32);
+SIGNAL(TRLO_SAMPLER_S44,los_sampler.sampler.sampler[43],DATA32);
+SIGNAL(TRLO_SAMPLER_S440,los_sampler.sampler.sampler[439],DATA32);
+SIGNAL(TRLO_SAMPLER_S441,los_sampler.sampler.sampler[440],DATA32);
+SIGNAL(TRLO_SAMPLER_S442,los_sampler.sampler.sampler[441],DATA32);
+SIGNAL(TRLO_SAMPLER_S443,los_sampler.sampler.sampler[442],DATA32);
+SIGNAL(TRLO_SAMPLER_S444,los_sampler.sampler.sampler[443],DATA32);
+SIGNAL(TRLO_SAMPLER_S445,los_sampler.sampler.sampler[444],DATA32);
+SIGNAL(TRLO_SAMPLER_S446,los_sampler.sampler.sampler[445],DATA32);
+SIGNAL(TRLO_SAMPLER_S447,los_sampler.sampler.sampler[446],DATA32);
+SIGNAL(TRLO_SAMPLER_S448,los_sampler.sampler.sampler[447],DATA32);
+SIGNAL(TRLO_SAMPLER_S449,los_sampler.sampler.sampler[448],DATA32);
+SIGNAL(TRLO_SAMPLER_S45,los_sampler.sampler.sampler[44],DATA32);
+SIGNAL(TRLO_SAMPLER_S450,los_sampler.sampler.sampler[449],DATA32);
+SIGNAL(TRLO_SAMPLER_S451,los_sampler.sampler.sampler[450],DATA32);
+SIGNAL(TRLO_SAMPLER_S452,los_sampler.sampler.sampler[451],DATA32);
+SIGNAL(TRLO_SAMPLER_S453,los_sampler.sampler.sampler[452],DATA32);
+SIGNAL(TRLO_SAMPLER_S454,los_sampler.sampler.sampler[453],DATA32);
+SIGNAL(TRLO_SAMPLER_S455,los_sampler.sampler.sampler[454],DATA32);
+SIGNAL(TRLO_SAMPLER_S456,los_sampler.sampler.sampler[455],DATA32);
+SIGNAL(TRLO_SAMPLER_S457,los_sampler.sampler.sampler[456],DATA32);
+SIGNAL(TRLO_SAMPLER_S458,los_sampler.sampler.sampler[457],DATA32);
+SIGNAL(TRLO_SAMPLER_S459,los_sampler.sampler.sampler[458],DATA32);
+SIGNAL(TRLO_SAMPLER_S46,los_sampler.sampler.sampler[45],DATA32);
+SIGNAL(TRLO_SAMPLER_S460,los_sampler.sampler.sampler[459],DATA32);
+SIGNAL(TRLO_SAMPLER_S461,los_sampler.sampler.sampler[460],DATA32);
+SIGNAL(TRLO_SAMPLER_S462,los_sampler.sampler.sampler[461],DATA32);
+SIGNAL(TRLO_SAMPLER_S463,los_sampler.sampler.sampler[462],DATA32);
+SIGNAL(TRLO_SAMPLER_S464,los_sampler.sampler.sampler[463],DATA32);
+SIGNAL(TRLO_SAMPLER_S465,los_sampler.sampler.sampler[464],DATA32);
+SIGNAL(TRLO_SAMPLER_S466,los_sampler.sampler.sampler[465],DATA32);
+SIGNAL(TRLO_SAMPLER_S467,los_sampler.sampler.sampler[466],DATA32);
+SIGNAL(TRLO_SAMPLER_S468,los_sampler.sampler.sampler[467],DATA32);
+SIGNAL(TRLO_SAMPLER_S469,los_sampler.sampler.sampler[468],DATA32);
+SIGNAL(TRLO_SAMPLER_S47,los_sampler.sampler.sampler[46],DATA32);
+SIGNAL(TRLO_SAMPLER_S470,los_sampler.sampler.sampler[469],DATA32);
+SIGNAL(TRLO_SAMPLER_S471,los_sampler.sampler.sampler[470],DATA32);
+SIGNAL(TRLO_SAMPLER_S472,los_sampler.sampler.sampler[471],DATA32);
+SIGNAL(TRLO_SAMPLER_S473,los_sampler.sampler.sampler[472],DATA32);
+SIGNAL(TRLO_SAMPLER_S474,los_sampler.sampler.sampler[473],DATA32);
+SIGNAL(TRLO_SAMPLER_S475,los_sampler.sampler.sampler[474],DATA32);
+SIGNAL(TRLO_SAMPLER_S476,los_sampler.sampler.sampler[475],DATA32);
+SIGNAL(TRLO_SAMPLER_S477,los_sampler.sampler.sampler[476],DATA32);
+SIGNAL(TRLO_SAMPLER_S478,los_sampler.sampler.sampler[477],DATA32);
+SIGNAL(TRLO_SAMPLER_S479,los_sampler.sampler.sampler[478],DATA32);
+SIGNAL(TRLO_SAMPLER_S48,los_sampler.sampler.sampler[47],DATA32);
+SIGNAL(TRLO_SAMPLER_S480,los_sampler.sampler.sampler[479],DATA32);
+SIGNAL(TRLO_SAMPLER_S481,los_sampler.sampler.sampler[480],DATA32);
+SIGNAL(TRLO_SAMPLER_S482,los_sampler.sampler.sampler[481],DATA32);
+SIGNAL(TRLO_SAMPLER_S483,los_sampler.sampler.sampler[482],DATA32);
+SIGNAL(TRLO_SAMPLER_S484,los_sampler.sampler.sampler[483],DATA32);
+SIGNAL(TRLO_SAMPLER_S485,los_sampler.sampler.sampler[484],DATA32);
+SIGNAL(TRLO_SAMPLER_S486,los_sampler.sampler.sampler[485],DATA32);
+SIGNAL(TRLO_SAMPLER_S487,los_sampler.sampler.sampler[486],DATA32);
+SIGNAL(TRLO_SAMPLER_S488,los_sampler.sampler.sampler[487],DATA32);
+SIGNAL(TRLO_SAMPLER_S489,los_sampler.sampler.sampler[488],DATA32);
+SIGNAL(TRLO_SAMPLER_S49,los_sampler.sampler.sampler[48],DATA32);
+SIGNAL(TRLO_SAMPLER_S490,los_sampler.sampler.sampler[489],DATA32);
+SIGNAL(TRLO_SAMPLER_S491,los_sampler.sampler.sampler[490],DATA32);
+SIGNAL(TRLO_SAMPLER_S492,los_sampler.sampler.sampler[491],DATA32);
+SIGNAL(TRLO_SAMPLER_S493,los_sampler.sampler.sampler[492],DATA32);
+SIGNAL(TRLO_SAMPLER_S494,los_sampler.sampler.sampler[493],DATA32);
+SIGNAL(TRLO_SAMPLER_S495,los_sampler.sampler.sampler[494],DATA32);
+SIGNAL(TRLO_SAMPLER_S496,los_sampler.sampler.sampler[495],DATA32);
+SIGNAL(TRLO_SAMPLER_S497,los_sampler.sampler.sampler[496],DATA32);
+SIGNAL(TRLO_SAMPLER_S498,los_sampler.sampler.sampler[497],DATA32);
+SIGNAL(TRLO_SAMPLER_S499,los_sampler.sampler.sampler[498],DATA32);
+SIGNAL(TRLO_SAMPLER_S5,los_sampler.sampler.sampler[4],DATA32);
+SIGNAL(TRLO_SAMPLER_S50,los_sampler.sampler.sampler[49],DATA32);
+SIGNAL(TRLO_SAMPLER_S500,los_sampler.sampler.sampler[499],DATA32);
+SIGNAL(TRLO_SAMPLER_S501,los_sampler.sampler.sampler[500],DATA32);
+SIGNAL(TRLO_SAMPLER_S502,los_sampler.sampler.sampler[501],DATA32);
+SIGNAL(TRLO_SAMPLER_S503,los_sampler.sampler.sampler[502],DATA32);
+SIGNAL(TRLO_SAMPLER_S504,los_sampler.sampler.sampler[503],DATA32);
+SIGNAL(TRLO_SAMPLER_S505,los_sampler.sampler.sampler[504],DATA32);
+SIGNAL(TRLO_SAMPLER_S506,los_sampler.sampler.sampler[505],DATA32);
+SIGNAL(TRLO_SAMPLER_S507,los_sampler.sampler.sampler[506],DATA32);
+SIGNAL(TRLO_SAMPLER_S508,los_sampler.sampler.sampler[507],DATA32);
+SIGNAL(TRLO_SAMPLER_S509,los_sampler.sampler.sampler[508],DATA32);
+SIGNAL(TRLO_SAMPLER_S51,los_sampler.sampler.sampler[50],DATA32);
+SIGNAL(TRLO_SAMPLER_S510,los_sampler.sampler.sampler[509],DATA32);
+SIGNAL(TRLO_SAMPLER_S511,los_sampler.sampler.sampler[510],DATA32);
+SIGNAL(TRLO_SAMPLER_S512,los_sampler.sampler.sampler[511],DATA32);
+SIGNAL(TRLO_SAMPLER_S52,los_sampler.sampler.sampler[51],DATA32);
+SIGNAL(TRLO_SAMPLER_S53,los_sampler.sampler.sampler[52],DATA32);
+SIGNAL(TRLO_SAMPLER_S54,los_sampler.sampler.sampler[53],DATA32);
+SIGNAL(TRLO_SAMPLER_S55,los_sampler.sampler.sampler[54],DATA32);
+SIGNAL(TRLO_SAMPLER_S56,los_sampler.sampler.sampler[55],DATA32);
+SIGNAL(TRLO_SAMPLER_S57,los_sampler.sampler.sampler[56],DATA32);
+SIGNAL(TRLO_SAMPLER_S58,los_sampler.sampler.sampler[57],DATA32);
+SIGNAL(TRLO_SAMPLER_S59,los_sampler.sampler.sampler[58],DATA32);
+SIGNAL(TRLO_SAMPLER_S6,los_sampler.sampler.sampler[5],DATA32);
+SIGNAL(TRLO_SAMPLER_S60,los_sampler.sampler.sampler[59],DATA32);
+SIGNAL(TRLO_SAMPLER_S61,los_sampler.sampler.sampler[60],DATA32);
+SIGNAL(TRLO_SAMPLER_S62,los_sampler.sampler.sampler[61],DATA32);
+SIGNAL(TRLO_SAMPLER_S63,los_sampler.sampler.sampler[62],DATA32);
+SIGNAL(TRLO_SAMPLER_S64,los_sampler.sampler.sampler[63],DATA32);
+SIGNAL(TRLO_SAMPLER_S65,los_sampler.sampler.sampler[64],DATA32);
+SIGNAL(TRLO_SAMPLER_S66,los_sampler.sampler.sampler[65],DATA32);
+SIGNAL(TRLO_SAMPLER_S67,los_sampler.sampler.sampler[66],DATA32);
+SIGNAL(TRLO_SAMPLER_S68,los_sampler.sampler.sampler[67],DATA32);
+SIGNAL(TRLO_SAMPLER_S69,los_sampler.sampler.sampler[68],DATA32);
+SIGNAL(TRLO_SAMPLER_S7,los_sampler.sampler.sampler[6],DATA32);
+SIGNAL(TRLO_SAMPLER_S70,los_sampler.sampler.sampler[69],DATA32);
+SIGNAL(TRLO_SAMPLER_S71,los_sampler.sampler.sampler[70],DATA32);
+SIGNAL(TRLO_SAMPLER_S72,los_sampler.sampler.sampler[71],DATA32);
+SIGNAL(TRLO_SAMPLER_S73,los_sampler.sampler.sampler[72],DATA32);
+SIGNAL(TRLO_SAMPLER_S74,los_sampler.sampler.sampler[73],DATA32);
+SIGNAL(TRLO_SAMPLER_S75,los_sampler.sampler.sampler[74],DATA32);
+SIGNAL(TRLO_SAMPLER_S76,los_sampler.sampler.sampler[75],DATA32);
+SIGNAL(TRLO_SAMPLER_S77,los_sampler.sampler.sampler[76],DATA32);
+SIGNAL(TRLO_SAMPLER_S78,los_sampler.sampler.sampler[77],DATA32);
+SIGNAL(TRLO_SAMPLER_S79,los_sampler.sampler.sampler[78],DATA32);
+SIGNAL(TRLO_SAMPLER_S8,los_sampler.sampler.sampler[7],DATA32);
+SIGNAL(TRLO_SAMPLER_S80,los_sampler.sampler.sampler[79],DATA32);
+SIGNAL(TRLO_SAMPLER_S81,los_sampler.sampler.sampler[80],DATA32);
+SIGNAL(TRLO_SAMPLER_S82,los_sampler.sampler.sampler[81],DATA32);
+SIGNAL(TRLO_SAMPLER_S83,los_sampler.sampler.sampler[82],DATA32);
+SIGNAL(TRLO_SAMPLER_S84,los_sampler.sampler.sampler[83],DATA32);
+SIGNAL(TRLO_SAMPLER_S85,los_sampler.sampler.sampler[84],DATA32);
+SIGNAL(TRLO_SAMPLER_S86,los_sampler.sampler.sampler[85],DATA32);
+SIGNAL(TRLO_SAMPLER_S87,los_sampler.sampler.sampler[86],DATA32);
+SIGNAL(TRLO_SAMPLER_S88,los_sampler.sampler.sampler[87],DATA32);
+SIGNAL(TRLO_SAMPLER_S89,los_sampler.sampler.sampler[88],DATA32);
+SIGNAL(TRLO_SAMPLER_S9,los_sampler.sampler.sampler[8],DATA32);
+SIGNAL(TRLO_SAMPLER_S90,los_sampler.sampler.sampler[89],DATA32);
+SIGNAL(TRLO_SAMPLER_S91,los_sampler.sampler.sampler[90],DATA32);
+SIGNAL(TRLO_SAMPLER_S92,los_sampler.sampler.sampler[91],DATA32);
+SIGNAL(TRLO_SAMPLER_S93,los_sampler.sampler.sampler[92],DATA32);
+SIGNAL(TRLO_SAMPLER_S94,los_sampler.sampler.sampler[93],DATA32);
+SIGNAL(TRLO_SAMPLER_S95,los_sampler.sampler.sampler[94],DATA32);
+SIGNAL(TRLO_SAMPLER_S96,los_sampler.sampler.sampler[95],DATA32);
+SIGNAL(TRLO_SAMPLER_S97,los_sampler.sampler.sampler[96],DATA32);
+SIGNAL(TRLO_SAMPLER_S98,los_sampler.sampler.sampler[97],DATA32);
+SIGNAL(TRLO_SAMPLER_S99,los_sampler.sampler.sampler[98],DATA32);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):LOS01_TC1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):LOS01_TF1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P1T1_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P1T1_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P1T1_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P1T1_TFT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P1T2_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P1T2_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P1T2_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P1T2_TFT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P2T1_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P2T1_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P2T1_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P2T1_TFT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P2T2_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P2T2_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P2T2_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P2T2_TFT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P3T1_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P3T1_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P3T1_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P3T1_TFT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P3T2_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P3T2_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P3T2_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P3T2_TFT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P4T1_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P4T1_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P4T1_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P4T1_TFT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P4T2_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P4T2_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P4T2_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P4T2_TFT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P5T1_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P5T1_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P5T1_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P5T1_TFT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P5T2_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P5T2_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P5T2_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P5T2_TFT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P6T1_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P6T1_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P6T1_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P6T1_TFT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P6T2_TCL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P6T2_TCT1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P6T2_TFL1);
+SIGNAL( ZERO_SUPPRESS_MULTI(32):TOFD_P6T2_TFT1);
+SIGNAL( ZERO_SUPPRESS:TRLO_SAMPLER_S1);
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/

@@ -1,0 +1,2794 @@
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+APV25_BLOCK(dsp_no)
+{
+  MEMBER(DATA12_OVERFLOW d2[128] ZERO_SUPPRESS);
+  MEMBER(DATA12_OVERFLOW d3[128] ZERO_SUPPRESS);
+  UINT32 dsp_header
+  {
+     0_15: count32;
+    16_23: trigger_counter;
+    24_31: dsp_no = MATCH(dsp_no);
+  }
+  UINT32 seh_ahw_header
+  {
+        0: 0;
+     1_11: count32;
+    12_14: 0;
+       15: dummy;
+    16_23: se_trigger_counter = MATCH(dsp_header.trigger_counter);
+    24_26: trigger_number;
+    27_30: 0;
+       31: has_data;
+  }
+  if(seh_ahw_header.count32)
+  {
+    UINT32 first_ch_data NOENCODE
+    {
+       0_11: adc_value;
+         12: adc_id;
+         13: 1;
+         14: underflow;
+         15: overflow;
+      16_22: strip;
+         23: 1;
+      24_31: r;
+    }
+    if(first_ch_data.adc_id)
+    {
+      ENCODE(d3[first_ch_data.strip],(value=first_ch_data.adc_value,
+                                      overflow=first_ch_data.overflow));
+
+    }
+    else
+    {
+      ENCODE(d2[first_ch_data.strip],(value=first_ch_data.adc_value,
+                                      overflow=first_ch_data.overflow));
+
+    }
+    list(1<=index<seh_ahw_header.count32)
+    {
+      UINT32 ch_data NOENCODE
+      {
+         0_11: adc_value;
+           12: adc_id;
+           13: 1;
+           14: underflow;
+           15: overflow;
+        16_22: strip;
+           23: 1;
+        24_31: r = MATCH(first_ch_data.r);
+      }
+      if(ch_data.adc_id)
+      {
+        ENCODE(d3[ch_data.strip],(value=ch_data.adc_value,overflow=ch_data.overflow));
+
+      }
+      else
+      {
+        ENCODE(d2[ch_data.strip],(value=ch_data.adc_value,overflow=ch_data.overflow));
+
+      }
+    }
+  }
+}
+
+CAMAC_LECROY_2277_1CH_HACK(channel,edge,high_byte)
+{
+  MEMBER(DATA16 data[16] NO_INDEX_LIST);
+  UINT32 ch_data NOENCODE
+  {
+     0_15: value;
+       16: edge = CHECK(edge);
+    17_21: channel = CHECK(channel);
+    24_31: high = CHECK(high_byte);
+    ENCODE(data APPEND_LIST,(value=value));
+  }
+}
+
+CAMAC_LECROY_4434(channels)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS);
+  list(0<=index<channels)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_23: value;
+      24_31: 0;
+      ENCODE(data[index],(value=value));
+    }
+  }
+}
+
+CAMAC_PHILLIPS_7164(channels,mark_channel_no)
+{
+  MEMBER(DATA12 data[16] ZERO_SUPPRESS);
+  list(0<=index<channels)
+  {
+    if(mark_channel_no)
+    {
+      UINT16 ch_data NOENCODE
+      {
+         0_11: value;
+        12_15: channel = CHECK(index);
+        ENCODE(data[index],(value=value));
+      }
+    }
+    else
+    {
+      UINT16 ch_data NOENCODE
+      {
+         0_11: value;
+        ENCODE(data[index],(value=value));
+      }
+    }
+  }
+}
+
+CAMAC_SILENA_4418(channels,mark_channel_no)
+{
+  MEMBER(DATA12_OVERFLOW data[8] ZERO_SUPPRESS);
+  list(0<=index<channels)
+  {
+    if(mark_channel_no)
+    {
+      UINT16 ch_data NOENCODE
+      {
+         0_11: value;
+        12_14: channel = CHECK(index);
+           15: overflow;
+        ENCODE(data[index],(value=value,overflow=overflow));
+      }
+    }
+    else
+    {
+      UINT16 ch_data NOENCODE
+      {
+         0_11: value;
+           15: overflow;
+        ENCODE(data[index],(value=value,overflow=overflow));
+      }
+    }
+  }
+}
+
+CROS3_REWRITE(ccb_id)
+{
+  MEMBER(WIRE_START_END data[32768] ZERO_SUPPRESS);
+  UINT32 h1
+  {
+     0_15: data_size;
+       16: threshold_curve;
+       17: leading_edge;
+       18: data;
+    20_23: trigger_time;
+    24_27: ccb_id = MATCH(ccb_id);
+    28_31: event_counter;
+  }
+  if(h1.data)
+  {
+    UINT32 h2
+    {
+       0_01: read_out_mode;
+          4: pulser_enabled;
+       8_10: statistics;
+         11: both_edges;
+      12_19: slices;
+      20_21: scale;
+         31: odd_length16;
+    }
+    if(h1.leading_edge)
+    {
+      list(0<=index<static_cast<uint32>((h1.data_size - h2.odd_length16)))
+      {
+        UINT32 ch_data NOENCODE
+        {
+           0_07: start_slice1;
+           8_15: wire1;
+          16_23: start_slice2;
+          24_31: wire2;
+          ENCODE(data[(index * 2)],(wire=wire1,start=start_slice1,stop=0));
+          ENCODE(data[((index * 2) + 1)],(wire=wire2,start=start_slice2,
+                                          stop=0));
+        }
+      }
+      if(h2.odd_length16)
+      {
+        UINT32 ch_data_odd NOENCODE
+        {
+           0_07: start_slice1;
+           8_15: wire1;
+          16_23: start_slice2 = CHECK(255);
+          24_31: wire2 = CHECK(0);
+          ENCODE(data[((h1.data_size - 1) * 2)],(wire=wire1,start=start_slice1,
+                                                 stop=0));
+        }
+      }
+    }
+    else
+    {
+      list(0<=index<h1.data_size)
+      {
+        UINT32 ch_data NOENCODE
+        {
+           0_07: start_slice;
+           8_15: wire;
+          16_23: end_slice;
+          ENCODE(data[index],(wire=wire,start=start_slice,stop=end_slice));
+        }
+      }
+    }
+  }
+  else
+  {
+    if(h1.threshold_curve)
+    {
+      UINT32 trc_h2
+      {
+         0_01: read_out_mode;
+            4: pulser_enabled;
+         8_10: statistics;
+           11: both_edges;
+        12_19: threshold_start;
+        20_23: threshold_step;
+        24_28: boards;
+      }
+      list(0<=board<trc_h2.boards)
+      {
+        UINT32 trc_h3 NOENCODE
+        {
+           0_07: test_pulser_even;
+           8_15: test_pulser_odd;
+          16_23: threshold_steps;
+          28_31: ad_id;
+        }
+        list(0<=index_thr<trc_h3.threshold_steps)
+        {
+          list(0<=index_wire2<8)
+          {
+            UINT32 ch_counts NOENCODE
+            {
+               0_11: counts1;
+              12_15: wire1;
+              16_27: counts2;
+              28_31: wire2;
+            }
+          }
+        }
+      }
+    }
+    else
+    {
+      UINT32 dummy_h2 NOENCODE
+      {
+         0_31: 0;
+      }
+    }
+  }
+}
+
+DUMMY_WORD()
+{
+  UINT32 dummy_word;
+}
+
+external EXTERNAL_DATA_INFO()
+;
+
+external EXT_CROS3(ccb_id)
+;
+
+external EXT_SST(sam,gtb,siderem,branch)
+;
+
+FASTBUS_LECROY_1875(geom,channels)
+{
+  MEMBER(DATA12_RANGE data[64] ZERO_SUPPRESS);
+  UINT32 ch_data NOENCODE
+  {
+     0_11: value;
+    16_21: channel = RANGE(0,(channels - 1));
+       23: range;
+    24_26: n = CHECK(0);
+    27_31: geom = MATCH(geom);
+    ENCODE(data[channel],(value=value,range=range));
+  }
+}
+
+FASTBUS_LECROY_1885(geom,channels)
+{
+  MEMBER(DATA12_RANGE data[96] ZERO_SUPPRESS);
+  UINT32 ch_data NOENCODE
+  {
+     0_11: value;
+    16_22: channel = RANGE(0,(channels - 1));
+       23: range;
+    24_26: n = CHECK(0);
+    27_31: geom = MATCH(geom);
+    ENCODE(data[channel],(value=value,range=range));
+  }
+}
+
+LAND_STD_VME()
+{
+  UINT32 failure
+  {
+        0: fail_general;
+        1: fail_data_corrupt;
+        2: fail_data_missing;
+        3: fail_data_too_much;
+        4: fail_event_counter_mismatch;
+        5: fail_readout_error_driver;
+        6: fail_unexpected_trigger;
+        7: fail_firmware_mismatch;
+       22: has_multi_trlo_ii_counter0;
+       23: has_clock_counter_stamp;
+       24: has_continous_event_counter;
+       25: has_update_qdc_iped_value;
+       26: spurious_start_before_tcal;
+       27: has_no_zero_suppression;
+       28: has_multi_adctdc_counter0;
+       29: has_multi_scaler_counter0;
+       30: has_multi_event;
+       31: has_time_stamp;
+  }
+  if(failure.has_continous_event_counter)
+  {
+    UINT32 continous_event_counter;
+  }
+  if(failure.has_time_stamp)
+  {
+    UINT32 time_stamp;
+  }
+  if(failure.has_clock_counter_stamp)
+  {
+    UINT32 clock_counter_stamp;
+  }
+  if(failure.has_update_qdc_iped_value)
+  {
+    UINT32 iped;
+  }
+  if(failure.has_multi_event)
+  {
+    UINT32 multi_events;
+  }
+  if(failure.has_multi_trlo_ii_counter0)
+  {
+    UINT32 multi_trlo_ii_counter0;
+  }
+  if(failure.has_multi_scaler_counter0)
+  {
+    UINT32 multi_scaler_counter0;
+  }
+  if(failure.has_multi_adctdc_counter0)
+  {
+    UINT32 multi_adctdc_counter0;
+  }
+}
+
+NTP64_TIME()
+{
+  UINT32 sec;
+  UINT32 frac;
+}
+
+NTP_MESSAGE(id)
+{
+  UINT32 header
+  {
+     0_15: word_count;
+       16: quick_burst;
+    24_31: id = MATCH(id);
+  }
+  MARK_COUNT(start);
+  UINT32 server_id;
+  UINT32 sspp
+  {
+     0_07: precision;
+     8_15: poll;
+    16_19: stratum;
+    24_26: mode;
+    27_29: version = CHECK(3);
+    30_31: leap;
+  }
+  UINT32 root_dly
+  {
+     0_15: frac;
+    16_31: sec;
+  }
+  UINT32 root_disp
+  {
+     0_15: frac;
+    16_31: sec;
+  }
+  UINT32 refid;
+  reftime = NTP64_TIME();
+  origtime = NTP64_TIME();
+  rectime = NTP64_TIME();
+  tmittime = NTP64_TIME();
+  rxtime = NTP64_TIME();
+  if(header.quick_burst)
+  {
+    orig2time = NTP64_TIME();
+    rec2time = NTP64_TIME();
+    tmit2time = NTP64_TIME();
+    rx2time = NTP64_TIME();
+  }
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_count,start,end,0,4)
+}
+
+RANDOM_TCAL(id)
+{
+  UINT32 header
+  {
+     0_07: word_count;
+     8_11: pulses;
+    12_17: clock_bits;
+       18: has_tstamp1;
+       19: has_tstamp2;
+    24_31: id = MATCH(id);
+  }
+  MARK_COUNT(start);
+  if(header.has_tstamp1)
+  {
+    tstamp1 = RANDOM_TCAL_TSTAMP_CLOCK();
+  }
+  if(header.has_tstamp2)
+  {
+    tstamp2 = RANDOM_TCAL_TSTAMP_CLOCK();
+  }
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_count,start,end,0,4)
+}
+
+RANDOM_TCAL_TSTAMP_CLOCK()
+{
+  UINT32 soft_latches;
+  UINT32 hard_latches;
+  UINT32 clock_ticks;
+  before = NTP64_TIME();
+  after = NTP64_TIME();
+}
+
+SIDEREM_BLOCK(sam,gtb,siderem)
+{
+  MEMBER(DATA12 data[4][512] ZERO_SUPPRESS);
+  UINT32 header
+  {
+     0_11: count;
+    12_15: local_event_counter;
+    16_19: local_trigger;
+    20_23: siderem = MATCH(siderem);
+    24_27: gtb = MATCH(gtb);
+    28_31: sam = MATCH(sam);
+  }
+  list(0<=index<header.count)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_11: value;
+      12_13: adc_no;
+      16_24: channel;
+      28_31: 15;
+      ENCODE(data[adc_no][channel],(value=value));
+    }
+  }
+}
+
+SOFT_SCALER32(channels)
+{
+  MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  list(0<=index<channels)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_31: value;
+      ENCODE(data[index],(value=value));
+    }
+  }
+}
+
+VME_CAEN_V1190(geom)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(v1190_start);
+  UINT32 header
+  {
+     0_04: geom = MATCH(geom);
+     5_26: event_number;
+    27_31: 8;
+  }
+  select several
+  {
+    tdc[0] = VME_CAEN_V1190_SUBTDC(tdc=0,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[1] = VME_CAEN_V1190_SUBTDC(tdc=1,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[2] = VME_CAEN_V1190_SUBTDC(tdc=2,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[3] = VME_CAEN_V1190_SUBTDC(tdc=3,event_id=(header.event_number & 0xfff),
+                                   data=data);
+  }
+  UINT32 trigger
+  {
+     0_26: time_tag;
+    27_31: 17;
+  }
+  MARK_COUNT(v1190_end);
+  UINT32 trailer
+  {
+     0_04: geom = CHECK(geom);
+     5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+       24: tdc_error;
+       25: buffer_overflow;
+       26: trigger_lost;
+    27_31: 16;
+  }
+}
+
+VME_CAEN_V1190_SHORT(geom)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(v1190_start);
+  UINT32 header
+  {
+     0_04: geom = MATCH(geom);
+     5_26: event_number;
+    27_31: 8;
+  }
+  select several
+  {
+    tdc[0] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=0,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[1] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=1,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[2] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=2,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[3] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=3,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    norevisit err[0] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=0);
+    norevisit err[1] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=1);
+    norevisit err[2] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=2);
+    norevisit err[3] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=3);
+  }
+  UINT32 trigger
+  {
+     0_26: time_tag;
+    27_31: 17;
+  }
+  MARK_COUNT(v1190_end);
+  UINT32 trailer
+  {
+     0_04: geom = CHECK(geom);
+     5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+       24: tdc_error;
+       25: buffer_overflow;
+       26: trigger_lost;
+    27_31: 16;
+  }
+}
+
+VME_CAEN_V1190_SHORT_SUBTDC(tdc,event_id,data)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  UINT32 ch_data NOENCODE
+  {
+     0_18: value;
+    19_23: channel_low;
+    24_25: tdc = CHECK(tdc);
+       26: trailing;
+    27_31: 0;
+    ENCODE(data[((tdc << 5) | channel_low)],(value=value));
+  }
+}
+
+VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc)
+{
+  UINT32 error_flags
+  {
+     0_14: flags;
+    24_25: tdc = CHECK(tdc);
+    27_31: 4;
+  }
+}
+
+VME_CAEN_V1190_SUBTDC(tdc,event_id,data)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(tdc_start);
+  UINT32 header
+  {
+     0_11: bunch_id;
+    12_23: event_id = CHECK(event_id);
+    24_25: tdc = MATCH(tdc);
+    27_31: 1;
+  }
+  several UINT32 ch_data NOENCODE
+  {
+     0_18: value;
+    19_23: channel_low;
+    24_25: tdc = CHECK(tdc);
+       26: trailing;
+    27_31: 0;
+    ENCODE(data[((tdc << 5) | channel_low)],(value=value));
+  }
+  optional UINT32 error_flags
+  {
+     0_14: flags;
+    24_25: tdc = CHECK(tdc);
+    27_31: 4;
+  }
+  MARK_COUNT(tdc_end);
+  UINT32 trailer
+  {
+     0_11: word_count = CHECK_COUNT(tdc_start,tdc_end,4,4);
+    12_23: event_id = CHECK(header.event_id);
+    24_25: tdc = CHECK(tdc);
+    27_31: 3;
+  }
+}
+
+VME_CAEN_V1290(geom)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(v1190_start);
+  UINT32 header
+  {
+     0_04: geom = MATCH(geom);
+     5_26: event_number;
+    27_31: 8;
+  }
+  select several
+  {
+    tdc[0] = VME_CAEN_V1290_SUBTDC(tdc=0,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[1] = VME_CAEN_V1290_SUBTDC(tdc=1,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[2] = VME_CAEN_V1290_SUBTDC(tdc=2,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[3] = VME_CAEN_V1290_SUBTDC(tdc=3,event_id=(header.event_number & 0xfff),
+                                   data=data);
+  }
+  UINT32 trigger
+  {
+     0_26: time_tag;
+    27_31: 17;
+  }
+  MARK_COUNT(v1190_end);
+  UINT32 trailer
+  {
+     0_04: geom = CHECK(geom);
+     5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+       24: tdc_error;
+       25: buffer_overflow;
+       26: trigger_lost;
+    27_31: 16;
+  }
+}
+
+VME_CAEN_V1290_SHORT(geom)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(v1190_start);
+  UINT32 header
+  {
+     0_04: geom = MATCH(geom);
+     5_26: event_number;
+    27_31: 8;
+  }
+  select several
+  {
+    tdc[0] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=0,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[1] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=1,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[2] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=2,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[3] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=3,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    norevisit err[0] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=0);
+    norevisit err[1] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=1);
+    norevisit err[2] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=2);
+    norevisit err[3] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=3);
+  }
+  UINT32 trigger
+  {
+     0_26: time_tag;
+    27_31: 17;
+  }
+  MARK_COUNT(v1190_end);
+  UINT32 trailer
+  {
+     0_04: geom = CHECK(geom);
+     5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+       24: tdc_error;
+       25: buffer_overflow;
+       26: trigger_lost;
+    27_31: 16;
+  }
+}
+
+VME_CAEN_V1290_SHORT_SUBTDC(tdc,event_id,data)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  UINT32 ch_data NOENCODE
+  {
+     0_20: value;
+    21_23: channel_low;
+    24_25: tdc = CHECK(tdc);
+       26: trailing;
+    27_31: 0;
+    ENCODE(data[((tdc << 3) | channel_low)],(value=value));
+  }
+}
+
+VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc)
+{
+  UINT32 error_flags
+  {
+     0_14: flags;
+    24_25: tdc = CHECK(tdc);
+    27_31: 4;
+  }
+}
+
+VME_CAEN_V1290_SUBTDC(tdc,event_id,data)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(tdc_start);
+  UINT32 header
+  {
+     0_11: bunch_id;
+    12_23: event_id = CHECK(event_id);
+    24_25: tdc = MATCH(tdc);
+    27_31: 1;
+  }
+  several UINT32 ch_data NOENCODE
+  {
+     0_20: value;
+    21_23: channel_low;
+    24_25: tdc = CHECK(tdc);
+       26: trailing;
+    27_31: 0;
+    ENCODE(data[((tdc << 3) | channel_low)],(value=value));
+  }
+  optional UINT32 error_flags
+  {
+     0_14: flags;
+    24_25: tdc = CHECK(tdc);
+    27_31: 4;
+  }
+  MARK_COUNT(tdc_end);
+  UINT32 trailer
+  {
+     0_11: word_count = CHECK_COUNT(tdc_start,tdc_end,4,4);
+    12_23: event_id = CHECK(header.event_id);
+    24_25: tdc = CHECK(tdc);
+    27_31: 3;
+  }
+}
+
+VME_CAEN_V775(geom,crate)
+{
+  MEMBER(DATA12_OVERFLOW data[32] ZERO_SUPPRESS);
+  UINT32 header NOENCODE
+  {
+     8_13: count;
+    16_23: crate = MATCH(crate);
+    24_26: 2;
+    27_31: geom = MATCH(geom);
+  }
+  list(0<=index<header.count)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_11: value;
+         12: overflow;
+         13: underflow;
+         14: valid;
+      16_20: channel;
+      24_26: 0;
+      27_31: geom = CHECK(geom);
+      ENCODE(data[channel],(value=value,overflow=overflow));
+    }
+  }
+  UINT32 eob
+  {
+     0_23: event_number;
+    24_26: 4;
+    27_31: geom = CHECK(geom);
+  }
+}
+
+VME_CAEN_V830(geom)
+{
+  MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  UINT32 header
+  {
+     0_15: event_number;
+    16_17: ts;
+    18_23: count;
+       26: 1;
+    27_31: geom = MATCH(geom);
+  }
+  list(0<=index<header.count)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_25: value;
+         26: 0;
+      27_31: channel;
+      ENCODE(data[channel],(value=value));
+    }
+  }
+}
+
+VME_MESYTEC_MADC32(geom)
+{
+  MEMBER(DATA14_OVERFLOW data[32] ZERO_SUPPRESS);
+  MARK_COUNT(start);
+  UINT32 header NOENCODE
+  {
+     0_11: word_number;
+    12_14: adc_resol;
+       15: out_form;
+    16_23: geom = MATCH(geom);
+    24_29: 0;
+    30_31: 1;
+  }
+  several UINT32 ch_data NOENCODE
+  {
+     0_12: value;
+       14: outofrange;
+    16_20: channel;
+    21_29: 32;
+    30_31: 0;
+    ENCODE(data[channel],(value=value,overflow=outofrange));
+  }
+  optional UINT32 filler NOENCODE
+  {
+     0_31: 0;
+  }
+  UINT32 end_of_event
+  {
+     0_29: counter;
+    30_31: 3;
+  }
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_number,start,end,( - 4),4)
+}
+
+VME_MESYTEC_MDPP16(geom)
+{
+  MEMBER(DATA16_OVERFLOW data[34] ZERO_SUPPRESS_MULTI(100));
+  MARK_COUNT(start);
+  UINT32 header NOENCODE
+  {
+     0_09: word_number;
+    10_12: adc_res;
+    13_15: tdc_res;
+    16_23: geom = MATCH(geom);
+    24_29: 0;
+    30_31: 1;
+  }
+  several UINT32 ch_data NOENCODE
+  {
+     0_15: value;
+    16_21: channel;
+       22: overflow;
+       23: pileup;
+    24_27: 0;
+    28_31: 1;
+    ENCODE(data[channel],(value=value,overflow=overflow,pileup=pileup));
+  }
+  several UINT32 fill_word NOENCODE
+  {
+     0_31: 0;
+  }
+  UINT32 end_of_event
+  {
+     0_29: counter;
+    30_31: 3;
+  }
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_number,start,end,( - 4),4)
+}
+
+SUBEVENT(CROS3_REWRITE_SUBEVENT)
+{
+  select several
+  {
+    norevisit ccb[0] = CROS3_REWRITE(ccb_id=1);
+    norevisit ccb[1] = CROS3_REWRITE(ccb_id=2);
+  }
+}
+
+SUBEVENT(CROS3_SUBEVENT)
+{
+  select several
+  {
+    external norevisit ccb[0] = EXT_CROS3(ccb_id=1);
+    external norevisit ccb[1] = EXT_CROS3(ccb_id=2);
+  }
+}
+
+SUBEVENT(DIAMOND_SUBEVENT)
+{
+  external subevent_info = EXTERNAL_DATA_INFO();
+  UINT32 dummy_header NOENCODE
+  {
+     0_31: 0x54443041;
+  }
+  MARK(begin_tdc);
+  select several
+  {
+    tdc = VME_CAEN_V775(geom=31,crate=0);
+  }
+  MARK(end_tdc);
+  UINT32 dummy_footer NOENCODE
+  {
+     0_31: 0x54443045;
+  }
+  UINT32 dummy_header_adc NOENCODE
+  {
+     0_31: 0x41443041;
+  }
+  MARK(begin_adc);
+  select several
+  {
+    adc = VME_CAEN_V775(geom=31,crate=0);
+  }
+  MARK(end_adc);
+  UINT32 dummy_footer_adc NOENCODE
+  {
+     0_31: 0x41443045;
+  }
+  UINT32 dummy_header_apv NOENCODE
+  {
+     0_31: 0x41505641;
+  }
+  MARK(begin_apv25);
+  select several
+  {
+    apv25 = APV25_BLOCK(dsp_no=48);
+  }
+  MARK(end_apv25);
+  UINT32 dummy_footer_apv NOENCODE
+  {
+     0_31: 0x41505645;
+  }
+}
+
+SUBEVENT(DIAMOND_VME)
+{
+  vme = LAND_STD_VME();
+  select several
+  {
+    tdc = VME_CAEN_V775(geom=28,crate=0);
+    adc = VME_CAEN_V775(geom=31,crate=0);
+    apv25 = APV25_BLOCK(dsp_no=48);
+  }
+}
+
+SUBEVENT(DUMMY)
+{
+  select several
+  {
+    d = DUMMY_WORD();
+  }
+}
+
+SUBEVENT(LAND_CAMAC_CONVERTER)
+{
+  UINT16 tpat;
+  UINT16 tprev;
+  UINT16 tnext;
+  UINT16 tprev2;
+  if(EXTERNAL has_data)
+  {
+    aPHI14829 = CAMAC_PHILLIPS_7164(channels=16,mark_channel_no=1);
+    qSIA0429 = CAMAC_SILENA_4418(channels=8,mark_channel_no=0);
+    qSIA0480 = CAMAC_SILENA_4418(channels=8,mark_channel_no=0);
+    tSIA0400 = CAMAC_SILENA_4418(channels=8,mark_channel_no=0);
+    tC_FRS120 = CAMAC_SILENA_4418(channels=6,mark_channel_no=0);
+    tSIA0426 = CAMAC_SILENA_4418(channels=4,mark_channel_no=0);
+    qSIA0458 = CAMAC_SILENA_4418(channels=8,mark_channel_no=0);
+  }
+}
+
+SUBEVENT(LAND_CAMAC_PILEUP)
+{
+  select several
+  {
+    tdc = CAMAC_LECROY_2277_1CH_HACK(channel=0,edge=1,high_byte=0);
+    tcal = CAMAC_LECROY_2277_1CH_HACK(channel=1,edge=1,high_byte=0);
+  }
+}
+
+SUBEVENT(LAND_CAMAC_SCALER)
+{
+  scaler0 = CAMAC_LECROY_4434(channels=32);
+  scaler1 = CAMAC_LECROY_4434(channels=32);
+  scaler2 = CAMAC_LECROY_4434(channels=32);
+  scaler3 = SOFT_SCALER32(channels=16);
+  if(EXTERNAL has_timestamp)
+  {
+    UINT32 timestamp;
+    UINT32 endianess
+    {
+       0_31: 0x87654321;
+    }
+  }
+}
+
+SUBEVENT(LAND_CAMAC_START_STOP_STAMP)
+{
+  UINT32 timestamp;
+  UINT32 endianess
+  {
+     0_31: 0x87654321;
+  }
+}
+
+SUBEVENT(LAND_CAMAC_TCAL_INFO)
+{
+  UINT32 info;
+  select several
+  {
+    rtcal = RANDOM_TCAL(id=231);
+    ntp = NTP_MESSAGE(id=239);
+  }
+}
+
+SUBEVENT(LAND_FASTBUS1)
+{
+  select several
+  {
+    Q47342 = FASTBUS_LECROY_1885(geom=7,channels=96);
+    Q11111 = FASTBUS_LECROY_1885(geom=8,channels=96);
+    Q46848 = FASTBUS_LECROY_1885(geom=10,channels=96);
+    Q47315 = FASTBUS_LECROY_1885(geom=11,channels=96);
+    Q17320 = FASTBUS_LECROY_1885(geom=13,channels=96);
+    Q15372 = FASTBUS_LECROY_1885(geom=15,channels=96);
+    Q46962 = FASTBUS_LECROY_1885(geom=16,channels=96);
+    Q46993 = FASTBUS_LECROY_1885(geom=18,channels=96);
+    Q15358 = FASTBUS_LECROY_1885(geom=20,channels=96);
+    Q47264 = FASTBUS_LECROY_1885(geom=23,channels=96);
+    T81855 = FASTBUS_LECROY_1875(geom=3,channels=64);
+    T87044 = FASTBUS_LECROY_1875(geom=4,channels=64);
+    T87024 = FASTBUS_LECROY_1875(geom=5,channels=64);
+    T81800 = FASTBUS_LECROY_1875(geom=6,channels=64);
+  }
+}
+
+SUBEVENT(LAND_FASTBUS2)
+{
+  select several
+  {
+    Q75266 = FASTBUS_LECROY_1885(geom=17,channels=96);
+    T87047 = FASTBUS_LECROY_1875(geom=1,channels=64);
+    T48854 = FASTBUS_LECROY_1875(geom=2,channels=64);
+    T81808 = FASTBUS_LECROY_1875(geom=3,channels=64);
+    T81859 = FASTBUS_LECROY_1875(geom=4,channels=64);
+    T81795 = FASTBUS_LECROY_1875(geom=5,channels=64);
+    T81806 = FASTBUS_LECROY_1875(geom=6,channels=64);
+    T48834 = FASTBUS_LECROY_1875(geom=7,channels=64);
+  }
+}
+
+SUBEVENT(LAND_FASTBUS_ERROR)
+{
+  UINT32 error_code
+  {
+        0: timeout_waiting_smi;
+        1: illegal_block_transfer;
+        2: fifa_address_overflow;
+        3: fifa_register_error;
+       16: init_error;
+  }
+  UINT32 error_num;
+}
+
+SUBEVENT(LAND_FASTBUS_ERROR_NGF)
+{
+  UINT32 magic
+  {
+     0_31: 0x10000000;
+  }
+  UINT32 error_code
+  {
+        0: error;
+        1: uninitialized;
+        2: ss1;
+        3: wc;
+        4: mid;
+        5: fifo_empty;
+        6: fifo_not_empty;
+        7: not_finished;
+        8: bad_end_addr;
+        9: word_lost;
+  }
+}
+
+SUBEVENT(LAND_VME)
+{
+  vme = LAND_STD_VME();
+  select several
+  {
+    tCAEN0614 = VME_CAEN_V775(geom=16,crate=130);
+    qCAEN0472 = VME_CAEN_V775(geom=0,crate=1);
+    scaler[0] = VME_CAEN_V830(geom=30);
+    scaler[1] = VME_CAEN_V830(geom=31);
+    rtcal = RANDOM_TCAL(id=231);
+    ntp = NTP_MESSAGE(id=239);
+  }
+}
+
+SUBEVENT(SIDEREM01_VME)
+{
+  select several
+  {
+    external sst[0] = EXT_SST(siderem=1,gtb=0,sam=5,branch=1);
+    external sst[1] = EXT_SST(siderem=1,gtb=1,sam=5,branch=1);
+  }
+}
+
+/**********************************************************
+ * The event definition:
+ */
+
+EVENT
+{
+  cros3 = CROS3_SUBEVENT(type=85,subtype=0x2134);
+  cros3_rewrite = CROS3_REWRITE_SUBEVENT(type=85,subtype=0x213e);
+  diamond = DIAMOND_SUBEVENT(type=91,subtype=0x238c);
+  sst1 = SIDEREM01_VME(type=82,subtype=0x2008,control=3);
+  camac = LAND_CAMAC_CONVERTER(type=34,subtype=0xc80);
+  fastbus1 = LAND_FASTBUS1(type=32,subtype=0xc3a,subcrate=1);
+  fastbus2 = LAND_FASTBUS2(type=32,subtype=0xc3a,subcrate=2);
+  acq = DUMMY(type=35,subtype=0xc1c);
+  vme = LAND_VME(type=88,subtype=0x2260,control=5,subcrate=0);
+  vme_diamond = DIAMOND_VME(type=88,subtype=0x2260,subcrate=1);
+  camac_tcal_info = LAND_CAMAC_TCAL_INFO(type=0x26ce,subtype=0xc7f);
+  camac_scalers = LAND_CAMAC_SCALER(type=34,subtype=0xc1c);
+  fastbus1_error = LAND_FASTBUS_ERROR_NGF(type=31,subtype=0xc3b,subcrate=1);
+  fastbus2_error = LAND_FASTBUS_ERROR_NGF(type=31,subtype=0xc3b,subcrate=2);
+  pileup = LAND_CAMAC_PILEUP(type=34,subtype=0xdac,control=1);
+}
+
+/**********************************************************
+ * The sticky_event definition:
+ */
+
+/**********************************************************
+ * Signal name mappings:
+ */
+
+SIGNAL(GFI01_01_E,fastbus1.Q46848.data[32],DATA12);
+SIGNAL(GFI01_02_E,fastbus1.Q46848.data[1],DATA12);
+SIGNAL(GFI01_03_E,fastbus1.Q46848.data[2],DATA12);
+SIGNAL(GFI01_04_E,fastbus1.Q46848.data[3],DATA12);
+SIGNAL(GFI01_05_E,fastbus1.Q46848.data[4],DATA12);
+SIGNAL(GFI01_06_E,fastbus1.Q46848.data[5],DATA12);
+SIGNAL(GFI01_07_E,fastbus1.Q46848.data[6],DATA12);
+SIGNAL(GFI01_08_E,fastbus1.Q46848.data[7],DATA12);
+SIGNAL(GFI01_09_E,fastbus1.Q46848.data[8],DATA12);
+SIGNAL(GFI01_10_E,fastbus1.Q46848.data[9],DATA12);
+SIGNAL(GFI01_11_E,fastbus1.Q46848.data[10],DATA12);
+SIGNAL(GFI01_12_E,fastbus1.Q46848.data[11],DATA12);
+SIGNAL(GFI01_13_E,fastbus1.Q46848.data[12],DATA12);
+SIGNAL(GFI01_14_E,fastbus1.Q46848.data[13],DATA12);
+SIGNAL(GFI01_15_E,fastbus1.Q46848.data[14],DATA12);
+SIGNAL(GFI01_16_E,fastbus1.Q46848.data[15],DATA12);
+SIGNAL(GFI01_17_E,fastbus1.Q46848.data[16],DATA12);
+SIGNAL(GFI01_18_E,fastbus1.Q46848.data[17],DATA12);
+SIGNAL(GFI01_19_E,fastbus1.Q46848.data[18],DATA12);
+SIGNAL(GFI01_20_E,fastbus1.Q46848.data[19],DATA12);
+SIGNAL(GFI01_21_E,fastbus1.Q46848.data[20],DATA12);
+SIGNAL(GFI01_22_E,fastbus1.Q46848.data[21],DATA12);
+SIGNAL(GFI01_23_E,fastbus1.Q46848.data[22],DATA12);
+SIGNAL(GFI01_24_E,fastbus1.Q46848.data[23],DATA12);
+SIGNAL(GFI01_25_E,fastbus1.Q46848.data[24],DATA12);
+SIGNAL(GFI01_26_E,fastbus1.Q46848.data[25],DATA12);
+SIGNAL(GFI01_27_E,fastbus1.Q46848.data[26],DATA12);
+SIGNAL(GFI01_28_E,fastbus1.Q46848.data[27],DATA12);
+SIGNAL(GFI01_29_E,fastbus1.Q46848.data[28],DATA12);
+SIGNAL(GFI01_30_E,fastbus1.Q46848.data[29],DATA12);
+SIGNAL(GFI01_31_E,fastbus1.Q46848.data[30],DATA12);
+SIGNAL(GFI01_32_E,fastbus1.Q46848.data[31],DATA12);
+SIGNAL(GFI01_33_E,fastbus1.Q46848.data[0],DATA12);
+SIGNAL(GFI01_34_E,fastbus1.Q46848.data[33],DATA12);
+SIGNAL(GFI01_35_E,camac.qSIA0458.data[4],DATA12);
+SIGNAL(GFI01_35_T,camac.tC_FRS120.data[3],DATA12);
+SIGNAL(GFI02_01_E,fastbus1.Q47264.data[0],DATA12);
+SIGNAL(GFI02_02_E,fastbus1.Q47264.data[1],DATA12);
+SIGNAL(GFI02_03_E,fastbus1.Q47264.data[2],DATA12);
+SIGNAL(GFI02_04_E,fastbus1.Q47264.data[3],DATA12);
+SIGNAL(GFI02_05_E,fastbus1.Q47264.data[4],DATA12);
+SIGNAL(GFI02_06_E,fastbus1.Q47264.data[5],DATA12);
+SIGNAL(GFI02_07_E,fastbus1.Q47264.data[68],DATA12);
+SIGNAL(GFI02_08_E,fastbus1.Q47264.data[7],DATA12);
+SIGNAL(GFI02_09_E,fastbus1.Q47264.data[8],DATA12);
+SIGNAL(GFI02_10_E,fastbus1.Q47264.data[9],DATA12);
+SIGNAL(GFI02_11_E,fastbus1.Q47264.data[10],DATA12);
+SIGNAL(GFI02_12_E,fastbus1.Q47264.data[11],DATA12);
+SIGNAL(GFI02_13_E,fastbus1.Q47264.data[12],DATA12);
+SIGNAL(GFI02_14_E,fastbus1.Q47264.data[13],DATA12);
+SIGNAL(GFI02_15_E,fastbus1.Q47264.data[14],DATA12);
+SIGNAL(GFI02_16_E,fastbus1.Q47264.data[15],DATA12);
+SIGNAL(GFI02_17_E,fastbus1.Q47264.data[16],DATA12);
+SIGNAL(GFI02_18_E,fastbus1.Q47264.data[17],DATA12);
+SIGNAL(GFI02_19_E,fastbus1.Q47264.data[18],DATA12);
+SIGNAL(GFI02_20_E,fastbus1.Q47264.data[19],DATA12);
+SIGNAL(GFI02_21_E,fastbus1.Q47264.data[20],DATA12);
+SIGNAL(GFI02_22_E,fastbus1.Q47264.data[21],DATA12);
+SIGNAL(GFI02_23_E,fastbus1.Q47264.data[22],DATA12);
+SIGNAL(GFI02_24_E,fastbus1.Q47264.data[23],DATA12);
+SIGNAL(GFI02_25_E,fastbus1.Q47264.data[24],DATA12);
+SIGNAL(GFI02_26_E,fastbus1.Q47264.data[25],DATA12);
+SIGNAL(GFI02_27_E,fastbus1.Q47264.data[26],DATA12);
+SIGNAL(GFI02_28_E,fastbus1.Q47264.data[27],DATA12);
+SIGNAL(GFI02_29_E,fastbus1.Q47264.data[28],DATA12);
+SIGNAL(GFI02_30_E,fastbus1.Q47264.data[29],DATA12);
+SIGNAL(GFI02_31_E,fastbus1.Q47264.data[30],DATA12);
+SIGNAL(GFI02_32_E,fastbus1.Q47264.data[31],DATA12);
+SIGNAL(GFI02_33_E,fastbus1.Q47264.data[64],DATA12);
+SIGNAL(GFI02_34_E,fastbus1.Q47264.data[65],DATA12);
+SIGNAL(GFI02_35_E,camac.qSIA0458.data[5],DATA12);
+SIGNAL(GFI02_35_T,camac.tC_FRS120.data[4],DATA12);
+SIGNAL(GFI03_01_E,fastbus1.Q47264.data[32],DATA12);
+SIGNAL(GFI03_02_E,fastbus1.Q47264.data[33],DATA12);
+SIGNAL(GFI03_03_E,fastbus1.Q47264.data[34],DATA12);
+SIGNAL(GFI03_04_E,fastbus1.Q47264.data[35],DATA12);
+SIGNAL(GFI03_05_E,fastbus1.Q47264.data[36],DATA12);
+SIGNAL(GFI03_06_E,fastbus1.Q47264.data[37],DATA12);
+SIGNAL(GFI03_07_E,fastbus1.Q47264.data[38],DATA12);
+SIGNAL(GFI03_08_E,fastbus1.Q47264.data[39],DATA12);
+SIGNAL(GFI03_09_E,fastbus1.Q47264.data[40],DATA12);
+SIGNAL(GFI03_10_E,fastbus1.Q47264.data[41],DATA12);
+SIGNAL(GFI03_11_E,fastbus1.Q47264.data[42],DATA12);
+SIGNAL(GFI03_12_E,fastbus1.Q47264.data[43],DATA12);
+SIGNAL(GFI03_13_E,fastbus1.Q47264.data[44],DATA12);
+SIGNAL(GFI03_14_E,fastbus1.Q47264.data[45],DATA12);
+SIGNAL(GFI03_15_E,fastbus1.Q47264.data[46],DATA12);
+SIGNAL(GFI03_16_E,fastbus1.Q47264.data[47],DATA12);
+SIGNAL(GFI03_17_E,fastbus1.Q47264.data[48],DATA12);
+SIGNAL(GFI03_18_E,fastbus1.Q47264.data[49],DATA12);
+SIGNAL(GFI03_19_E,fastbus1.Q47264.data[50],DATA12);
+SIGNAL(GFI03_20_E,fastbus1.Q47264.data[51],DATA12);
+SIGNAL(GFI03_21_E,fastbus1.Q47264.data[52],DATA12);
+SIGNAL(GFI03_22_E,fastbus1.Q47264.data[53],DATA12);
+SIGNAL(GFI03_23_E,fastbus1.Q47264.data[54],DATA12);
+SIGNAL(GFI03_24_E,fastbus1.Q47264.data[55],DATA12);
+SIGNAL(GFI03_25_E,fastbus1.Q47264.data[56],DATA12);
+SIGNAL(GFI03_26_E,fastbus1.Q47264.data[57],DATA12);
+SIGNAL(GFI03_27_E,fastbus1.Q47264.data[58],DATA12);
+SIGNAL(GFI03_28_E,fastbus1.Q47264.data[59],DATA12);
+SIGNAL(GFI03_29_E,fastbus1.Q47264.data[60],DATA12);
+SIGNAL(GFI03_30_E,fastbus1.Q47264.data[61],DATA12);
+SIGNAL(GFI03_31_E,fastbus1.Q47264.data[62],DATA12);
+SIGNAL(GFI03_32_E,fastbus1.Q47264.data[63],DATA12);
+SIGNAL(GFI03_33_E,fastbus1.Q47264.data[66],DATA12);
+SIGNAL(GFI03_34_E,fastbus1.Q47264.data[67],DATA12);
+SIGNAL(MASTER_ACCEPT,vme.scaler[1].data[0],DATA32);
+SIGNAL(MASTER_WANTED,vme.scaler[1].data[1],DATA32);
+SIGNAL(N01_01_1_E,fastbus1.Q46993.data[0],DATA12);
+SIGNAL(N01_01_1_T,fastbus2.T48834.data[0],DATA12);
+SIGNAL(N01_01_2_E,fastbus1.Q46993.data[44],DATA12);
+SIGNAL(N01_01_2_T,fastbus2.T81795.data[12],DATA12);
+SIGNAL(N01_02_1_E,fastbus1.Q46993.data[4],DATA12);
+SIGNAL(N01_02_1_T,fastbus2.T48834.data[4],DATA12);
+SIGNAL(N01_02_2_E,fastbus1.Q46993.data[40],DATA12);
+SIGNAL(N01_02_2_T,fastbus2.T81795.data[8],DATA12);
+SIGNAL(N01_03_1_E,fastbus1.Q46993.data[8],DATA12);
+SIGNAL(N01_03_1_T,fastbus2.T48834.data[8],DATA12);
+SIGNAL(N01_03_2_E,fastbus1.Q46993.data[16],DATA12);
+SIGNAL(N01_03_2_T,fastbus2.T81806.data[0],DATA12);
+SIGNAL(N01_04_1_E,fastbus1.Q46993.data[12],DATA12);
+SIGNAL(N01_04_1_T,fastbus2.T48834.data[12],DATA12);
+SIGNAL(N01_04_2_E,fastbus1.Q46993.data[20],DATA12);
+SIGNAL(N01_04_2_T,fastbus2.T81806.data[4],DATA12);
+SIGNAL(N01_05_1_E,fastbus1.Q46993.data[1],DATA12);
+SIGNAL(N01_05_1_T,fastbus2.T48834.data[1],DATA12);
+SIGNAL(N01_05_2_E,fastbus1.Q46993.data[41],DATA12);
+SIGNAL(N01_05_2_T,fastbus2.T81795.data[9],DATA12);
+SIGNAL(N01_06_1_E,fastbus1.Q46993.data[5],DATA12);
+SIGNAL(N01_06_1_T,fastbus2.T48834.data[5],DATA12);
+SIGNAL(N01_06_2_E,fastbus1.Q46993.data[45],DATA12);
+SIGNAL(N01_06_2_T,fastbus2.T81795.data[13],DATA12);
+SIGNAL(N01_07_1_E,fastbus1.Q46993.data[9],DATA12);
+SIGNAL(N01_07_1_T,fastbus2.T48834.data[9],DATA12);
+SIGNAL(N01_07_2_E,fastbus1.Q46993.data[24],DATA12);
+SIGNAL(N01_07_2_T,fastbus2.T81806.data[8],DATA12);
+SIGNAL(N01_08_1_E,fastbus1.Q46993.data[13],DATA12);
+SIGNAL(N01_08_1_T,fastbus2.T48834.data[13],DATA12);
+SIGNAL(N01_08_2_E,fastbus1.Q46993.data[28],DATA12);
+SIGNAL(N01_08_2_T,fastbus2.T81806.data[12],DATA12);
+SIGNAL(N01_09_1_E,fastbus1.Q46993.data[2],DATA12);
+SIGNAL(N01_09_1_T,fastbus2.T48834.data[2],DATA12);
+SIGNAL(N01_09_2_E,fastbus1.Q46993.data[17],DATA12);
+SIGNAL(N01_09_2_T,fastbus2.T81806.data[1],DATA12);
+SIGNAL(N01_10_1_E,fastbus1.Q46993.data[6],DATA12);
+SIGNAL(N01_10_1_T,fastbus2.T48834.data[6],DATA12);
+SIGNAL(N01_10_2_E,fastbus1.Q46993.data[21],DATA12);
+SIGNAL(N01_10_2_T,fastbus2.T81806.data[5],DATA12);
+SIGNAL(N01_11_1_E,fastbus1.Q46993.data[10],DATA12);
+SIGNAL(N01_11_1_T,fastbus2.T48834.data[10],DATA12);
+SIGNAL(N01_11_2_E,fastbus1.Q46993.data[25],DATA12);
+SIGNAL(N01_11_2_T,fastbus2.T81806.data[9],DATA12);
+SIGNAL(N01_12_1_E,fastbus1.Q46993.data[14],DATA12);
+SIGNAL(N01_12_1_T,fastbus2.T48834.data[14],DATA12);
+SIGNAL(N01_12_2_E,fastbus1.Q46993.data[29],DATA12);
+SIGNAL(N01_12_2_T,fastbus2.T81806.data[13],DATA12);
+SIGNAL(N01_13_1_E,fastbus1.Q46993.data[3],DATA12);
+SIGNAL(N01_13_1_T,fastbus2.T48834.data[3],DATA12);
+SIGNAL(N01_13_2_E,fastbus1.Q46993.data[18],DATA12);
+SIGNAL(N01_13_2_T,fastbus2.T81806.data[2],DATA12);
+SIGNAL(N01_14_1_E,fastbus1.Q46993.data[7],DATA12);
+SIGNAL(N01_14_1_T,fastbus2.T48834.data[7],DATA12);
+SIGNAL(N01_14_2_E,fastbus1.Q46993.data[22],DATA12);
+SIGNAL(N01_14_2_T,fastbus2.T81806.data[6],DATA12);
+SIGNAL(N01_15_1_E,fastbus1.Q46993.data[46],DATA12);
+SIGNAL(N01_15_1_T,fastbus2.T81795.data[14],DATA12);
+SIGNAL(N01_15_2_E,fastbus1.Q46993.data[26],DATA12);
+SIGNAL(N01_15_2_T,fastbus2.T81806.data[10],DATA12);
+SIGNAL(N01_16_1_E,fastbus1.Q46993.data[42],DATA12);
+SIGNAL(N01_16_1_T,fastbus2.T81795.data[10],DATA12);
+SIGNAL(N01_16_2_E,fastbus1.Q46993.data[30],DATA12);
+SIGNAL(N01_16_2_T,fastbus2.T81806.data[14],DATA12);
+SIGNAL(N01_17_1_E,fastbus1.Q46993.data[11],DATA12);
+SIGNAL(N01_17_1_T,fastbus2.T48834.data[11],DATA12);
+SIGNAL(N01_17_2_E,fastbus1.Q46993.data[19],DATA12);
+SIGNAL(N01_17_2_T,fastbus2.T81806.data[3],DATA12);
+SIGNAL(N01_18_1_E,fastbus1.Q46993.data[15],DATA12);
+SIGNAL(N01_18_1_T,fastbus2.T48834.data[15],DATA12);
+SIGNAL(N01_18_2_E,fastbus1.Q46993.data[23],DATA12);
+SIGNAL(N01_18_2_T,fastbus2.T81806.data[7],DATA12);
+SIGNAL(N01_19_1_E,fastbus1.Q46993.data[47],DATA12);
+SIGNAL(N01_19_1_T,fastbus2.T81795.data[15],DATA12);
+SIGNAL(N01_19_2_E,fastbus1.Q46993.data[27],DATA12);
+SIGNAL(N01_19_2_T,fastbus2.T81806.data[11],DATA12);
+SIGNAL(N01_20_1_E,fastbus1.Q46993.data[43],DATA12);
+SIGNAL(N01_20_1_T,fastbus2.T81795.data[11],DATA12);
+SIGNAL(N01_20_2_E,fastbus1.Q46993.data[31],DATA12);
+SIGNAL(N01_20_2_T,fastbus2.T81806.data[15],DATA12);
+SIGNAL(N02_01_1_E,fastbus1.Q15358.data[0],DATA12);
+SIGNAL(N02_01_1_T,fastbus2.T81859.data[0],DATA12);
+SIGNAL(N02_01_2_E,fastbus1.Q46993.data[36],DATA12);
+SIGNAL(N02_01_2_T,fastbus2.T81795.data[4],DATA12);
+SIGNAL(N02_02_1_E,fastbus1.Q15358.data[4],DATA12);
+SIGNAL(N02_02_1_T,fastbus2.T81859.data[4],DATA12);
+SIGNAL(N02_02_2_E,fastbus1.Q46993.data[32],DATA12);
+SIGNAL(N02_02_2_T,fastbus2.T81795.data[0],DATA12);
+SIGNAL(N02_03_1_E,fastbus1.Q15358.data[8],DATA12);
+SIGNAL(N02_03_1_T,fastbus2.T81859.data[8],DATA12);
+SIGNAL(N02_03_2_E,fastbus1.Q15358.data[16],DATA12);
+SIGNAL(N02_03_2_T,fastbus2.T81808.data[0],DATA12);
+SIGNAL(N02_04_1_E,fastbus1.Q15358.data[12],DATA12);
+SIGNAL(N02_04_1_T,fastbus2.T81859.data[12],DATA12);
+SIGNAL(N02_04_2_E,fastbus1.Q15358.data[20],DATA12);
+SIGNAL(N02_04_2_T,fastbus2.T81808.data[4],DATA12);
+SIGNAL(N02_05_1_E,fastbus1.Q15358.data[1],DATA12);
+SIGNAL(N02_05_1_T,fastbus2.T81859.data[1],DATA12);
+SIGNAL(N02_05_2_E,fastbus1.Q46993.data[37],DATA12);
+SIGNAL(N02_05_2_T,fastbus2.T81795.data[5],DATA12);
+SIGNAL(N02_06_1_E,fastbus1.Q15358.data[5],DATA12);
+SIGNAL(N02_06_1_T,fastbus2.T81859.data[5],DATA12);
+SIGNAL(N02_06_2_E,fastbus1.Q46993.data[33],DATA12);
+SIGNAL(N02_06_2_T,fastbus2.T81795.data[1],DATA12);
+SIGNAL(N02_07_1_E,fastbus1.Q15358.data[9],DATA12);
+SIGNAL(N02_07_1_T,fastbus2.T81859.data[9],DATA12);
+SIGNAL(N02_07_2_E,fastbus1.Q15358.data[24],DATA12);
+SIGNAL(N02_07_2_T,fastbus2.T81808.data[8],DATA12);
+SIGNAL(N02_08_1_E,fastbus1.Q15358.data[13],DATA12);
+SIGNAL(N02_08_1_T,fastbus2.T81859.data[13],DATA12);
+SIGNAL(N02_08_2_E,fastbus1.Q15358.data[28],DATA12);
+SIGNAL(N02_08_2_T,fastbus2.T81808.data[12],DATA12);
+SIGNAL(N02_09_1_E,fastbus1.Q15358.data[2],DATA12);
+SIGNAL(N02_09_1_T,fastbus2.T81859.data[2],DATA12);
+SIGNAL(N02_09_2_E,fastbus1.Q15358.data[17],DATA12);
+SIGNAL(N02_09_2_T,fastbus2.T81808.data[1],DATA12);
+SIGNAL(N02_10_1_E,fastbus1.Q15358.data[6],DATA12);
+SIGNAL(N02_10_1_T,fastbus2.T81859.data[6],DATA12);
+SIGNAL(N02_10_2_E,fastbus1.Q15358.data[21],DATA12);
+SIGNAL(N02_10_2_T,fastbus2.T81808.data[5],DATA12);
+SIGNAL(N02_11_1_E,fastbus1.Q15358.data[10],DATA12);
+SIGNAL(N02_11_1_T,fastbus2.T81859.data[10],DATA12);
+SIGNAL(N02_11_2_E,fastbus1.Q15358.data[25],DATA12);
+SIGNAL(N02_11_2_T,fastbus2.T81808.data[9],DATA12);
+SIGNAL(N02_12_1_E,fastbus1.Q15358.data[14],DATA12);
+SIGNAL(N02_12_1_T,fastbus2.T81859.data[14],DATA12);
+SIGNAL(N02_12_2_E,fastbus1.Q15358.data[29],DATA12);
+SIGNAL(N02_12_2_T,fastbus2.T81808.data[13],DATA12);
+SIGNAL(N02_13_1_E,fastbus1.Q15358.data[3],DATA12);
+SIGNAL(N02_13_1_T,fastbus2.T81859.data[3],DATA12);
+SIGNAL(N02_13_2_E,fastbus1.Q15358.data[18],DATA12);
+SIGNAL(N02_13_2_T,fastbus2.T81808.data[2],DATA12);
+SIGNAL(N02_14_1_E,fastbus1.Q15358.data[7],DATA12);
+SIGNAL(N02_14_1_T,fastbus2.T81859.data[7],DATA12);
+SIGNAL(N02_14_2_E,fastbus1.Q15358.data[22],DATA12);
+SIGNAL(N02_14_2_T,fastbus2.T81808.data[6],DATA12);
+SIGNAL(N02_15_1_E,fastbus1.Q46993.data[38],DATA12);
+SIGNAL(N02_15_1_T,fastbus2.T81795.data[6],DATA12);
+SIGNAL(N02_15_2_E,fastbus1.Q15358.data[26],DATA12);
+SIGNAL(N02_15_2_T,fastbus2.T81808.data[10],DATA12);
+SIGNAL(N02_16_1_E,fastbus1.Q46993.data[34],DATA12);
+SIGNAL(N02_16_1_T,fastbus2.T81795.data[2],DATA12);
+SIGNAL(N02_16_2_E,fastbus1.Q15358.data[30],DATA12);
+SIGNAL(N02_16_2_T,fastbus2.T81808.data[14],DATA12);
+SIGNAL(N02_17_1_E,fastbus1.Q15358.data[11],DATA12);
+SIGNAL(N02_17_1_T,fastbus2.T81859.data[11],DATA12);
+SIGNAL(N02_17_2_E,fastbus1.Q15358.data[19],DATA12);
+SIGNAL(N02_17_2_T,fastbus2.T81808.data[3],DATA12);
+SIGNAL(N02_18_1_E,fastbus1.Q15358.data[15],DATA12);
+SIGNAL(N02_18_1_T,fastbus2.T81859.data[15],DATA12);
+SIGNAL(N02_18_2_E,fastbus1.Q15358.data[23],DATA12);
+SIGNAL(N02_18_2_T,fastbus2.T81808.data[7],DATA12);
+SIGNAL(N02_19_1_E,fastbus1.Q46993.data[39],DATA12);
+SIGNAL(N02_19_1_T,fastbus2.T81795.data[7],DATA12);
+SIGNAL(N02_19_2_E,fastbus1.Q15358.data[27],DATA12);
+SIGNAL(N02_19_2_T,fastbus2.T81808.data[11],DATA12);
+SIGNAL(N02_20_1_E,fastbus1.Q46993.data[35],DATA12);
+SIGNAL(N02_20_1_T,fastbus2.T81795.data[3],DATA12);
+SIGNAL(N02_20_2_E,fastbus1.Q15358.data[31],DATA12);
+SIGNAL(N02_20_2_T,fastbus2.T81808.data[15],DATA12);
+SIGNAL(N03_01_1_E,fastbus1.Q15358.data[32],DATA12);
+SIGNAL(N03_01_1_T,fastbus2.T48854.data[0],DATA12);
+SIGNAL(N03_01_2_E,fastbus1.Q46962.data[28],DATA12);
+SIGNAL(N03_01_2_T,fastbus2.T48834.data[28],DATA12);
+SIGNAL(N03_02_1_E,fastbus1.Q15358.data[36],DATA12);
+SIGNAL(N03_02_1_T,fastbus2.T48854.data[4],DATA12);
+SIGNAL(N03_02_2_E,fastbus1.Q46962.data[24],DATA12);
+SIGNAL(N03_02_2_T,fastbus2.T48834.data[24],DATA12);
+SIGNAL(N03_03_1_E,fastbus1.Q15358.data[40],DATA12);
+SIGNAL(N03_03_1_T,fastbus2.T48854.data[8],DATA12);
+SIGNAL(N03_03_2_E,fastbus1.Q46962.data[0],DATA12);
+SIGNAL(N03_03_2_T,fastbus2.T87047.data[0],DATA12);
+SIGNAL(N03_04_1_E,fastbus1.Q15358.data[44],DATA12);
+SIGNAL(N03_04_1_T,fastbus2.T48854.data[12],DATA12);
+SIGNAL(N03_04_2_E,fastbus1.Q46962.data[4],DATA12);
+SIGNAL(N03_04_2_T,fastbus2.T87047.data[4],DATA12);
+SIGNAL(N03_05_1_E,fastbus1.Q15358.data[33],DATA12);
+SIGNAL(N03_05_1_T,fastbus2.T48854.data[1],DATA12);
+SIGNAL(N03_05_2_E,fastbus1.Q46962.data[25],DATA12);
+SIGNAL(N03_05_2_T,fastbus2.T48834.data[25],DATA12);
+SIGNAL(N03_06_1_E,fastbus1.Q15358.data[37],DATA12);
+SIGNAL(N03_06_1_T,fastbus2.T48854.data[5],DATA12);
+SIGNAL(N03_06_2_E,fastbus1.Q46962.data[29],DATA12);
+SIGNAL(N03_06_2_T,fastbus2.T48834.data[29],DATA12);
+SIGNAL(N03_07_1_E,fastbus1.Q15358.data[41],DATA12);
+SIGNAL(N03_07_1_T,fastbus2.T48854.data[9],DATA12);
+SIGNAL(N03_07_2_E,fastbus1.Q46962.data[8],DATA12);
+SIGNAL(N03_07_2_T,fastbus2.T87047.data[8],DATA12);
+SIGNAL(N03_08_1_E,fastbus1.Q15358.data[45],DATA12);
+SIGNAL(N03_08_1_T,fastbus2.T48854.data[13],DATA12);
+SIGNAL(N03_08_2_E,fastbus1.Q46962.data[12],DATA12);
+SIGNAL(N03_08_2_T,fastbus2.T87047.data[12],DATA12);
+SIGNAL(N03_09_1_E,fastbus1.Q15358.data[34],DATA12);
+SIGNAL(N03_09_1_T,fastbus2.T48854.data[2],DATA12);
+SIGNAL(N03_09_2_E,fastbus1.Q46962.data[1],DATA12);
+SIGNAL(N03_09_2_T,fastbus2.T87047.data[1],DATA12);
+SIGNAL(N03_10_1_E,fastbus1.Q15358.data[38],DATA12);
+SIGNAL(N03_10_1_T,fastbus2.T48854.data[6],DATA12);
+SIGNAL(N03_10_2_E,fastbus1.Q46962.data[5],DATA12);
+SIGNAL(N03_10_2_T,fastbus2.T87047.data[5],DATA12);
+SIGNAL(N03_11_1_E,fastbus1.Q15358.data[42],DATA12);
+SIGNAL(N03_11_1_T,fastbus2.T48854.data[10],DATA12);
+SIGNAL(N03_11_2_E,fastbus1.Q46962.data[9],DATA12);
+SIGNAL(N03_11_2_T,fastbus2.T87047.data[9],DATA12);
+SIGNAL(N03_12_1_E,fastbus1.Q15358.data[46],DATA12);
+SIGNAL(N03_12_1_T,fastbus2.T48854.data[14],DATA12);
+SIGNAL(N03_12_2_E,fastbus1.Q46962.data[13],DATA12);
+SIGNAL(N03_12_2_T,fastbus2.T87047.data[13],DATA12);
+SIGNAL(N03_13_1_E,fastbus1.Q15358.data[35],DATA12);
+SIGNAL(N03_13_1_T,fastbus2.T48854.data[3],DATA12);
+SIGNAL(N03_13_2_E,fastbus1.Q46962.data[2],DATA12);
+SIGNAL(N03_13_2_T,fastbus2.T87047.data[2],DATA12);
+SIGNAL(N03_14_1_E,fastbus1.Q15358.data[39],DATA12);
+SIGNAL(N03_14_1_T,fastbus2.T48854.data[7],DATA12);
+SIGNAL(N03_14_2_E,fastbus1.Q46962.data[6],DATA12);
+SIGNAL(N03_14_2_T,fastbus2.T87047.data[6],DATA12);
+SIGNAL(N03_15_1_E,fastbus1.Q46962.data[30],DATA12);
+SIGNAL(N03_15_1_T,fastbus2.T48834.data[30],DATA12);
+SIGNAL(N03_15_2_E,fastbus1.Q46962.data[10],DATA12);
+SIGNAL(N03_15_2_T,fastbus2.T87047.data[10],DATA12);
+SIGNAL(N03_16_1_E,fastbus1.Q46962.data[26],DATA12);
+SIGNAL(N03_16_1_T,fastbus2.T48834.data[26],DATA12);
+SIGNAL(N03_16_2_E,fastbus1.Q46962.data[14],DATA12);
+SIGNAL(N03_16_2_T,fastbus2.T87047.data[14],DATA12);
+SIGNAL(N03_17_1_E,fastbus1.Q15358.data[43],DATA12);
+SIGNAL(N03_17_1_T,fastbus2.T48854.data[11],DATA12);
+SIGNAL(N03_17_2_E,fastbus1.Q46962.data[3],DATA12);
+SIGNAL(N03_17_2_T,fastbus2.T87047.data[3],DATA12);
+SIGNAL(N03_18_1_E,fastbus1.Q15358.data[47],DATA12);
+SIGNAL(N03_18_1_T,fastbus2.T48854.data[15],DATA12);
+SIGNAL(N03_18_2_E,fastbus1.Q46962.data[7],DATA12);
+SIGNAL(N03_18_2_T,fastbus2.T87047.data[7],DATA12);
+SIGNAL(N03_19_1_E,fastbus1.Q46962.data[31],DATA12);
+SIGNAL(N03_19_1_T,fastbus2.T48834.data[31],DATA12);
+SIGNAL(N03_19_2_E,fastbus1.Q46962.data[11],DATA12);
+SIGNAL(N03_19_2_T,fastbus2.T87047.data[11],DATA12);
+SIGNAL(N03_20_1_E,fastbus1.Q46962.data[27],DATA12);
+SIGNAL(N03_20_1_T,fastbus2.T48834.data[27],DATA12);
+SIGNAL(N03_20_2_E,fastbus1.Q46962.data[15],DATA12);
+SIGNAL(N03_20_2_T,fastbus2.T87047.data[15],DATA12);
+SIGNAL(N04_01_1_E,fastbus1.Q46962.data[32],DATA12);
+SIGNAL(N04_01_1_T,fastbus2.T81806.data[16],DATA12);
+SIGNAL(N04_01_2_E,fastbus1.Q46962.data[20],DATA12);
+SIGNAL(N04_01_2_T,fastbus2.T48834.data[20],DATA12);
+SIGNAL(N04_02_1_E,fastbus1.Q46962.data[36],DATA12);
+SIGNAL(N04_02_1_T,fastbus2.T81806.data[20],DATA12);
+SIGNAL(N04_02_2_E,fastbus1.Q46962.data[16],DATA12);
+SIGNAL(N04_02_2_T,fastbus2.T48834.data[16],DATA12);
+SIGNAL(N04_03_1_E,fastbus1.Q46962.data[40],DATA12);
+SIGNAL(N04_03_1_T,fastbus2.T81806.data[24],DATA12);
+SIGNAL(N04_03_2_E,fastbus1.Q15372.data[0],DATA12);
+SIGNAL(N04_03_2_T,fastbus2.T81795.data[16],DATA12);
+SIGNAL(N04_04_1_E,fastbus1.Q46962.data[44],DATA12);
+SIGNAL(N04_04_1_T,fastbus2.T81806.data[28],DATA12);
+SIGNAL(N04_04_2_E,fastbus1.Q15372.data[4],DATA12);
+SIGNAL(N04_04_2_T,fastbus2.T81795.data[20],DATA12);
+SIGNAL(N04_05_1_E,fastbus1.Q46962.data[33],DATA12);
+SIGNAL(N04_05_1_T,fastbus2.T81806.data[17],DATA12);
+SIGNAL(N04_05_2_E,fastbus1.Q46962.data[21],DATA12);
+SIGNAL(N04_05_2_T,fastbus2.T48834.data[21],DATA12);
+SIGNAL(N04_06_1_E,fastbus1.Q46962.data[37],DATA12);
+SIGNAL(N04_06_1_T,fastbus2.T81806.data[21],DATA12);
+SIGNAL(N04_06_2_E,fastbus1.Q46962.data[17],DATA12);
+SIGNAL(N04_06_2_T,fastbus2.T48834.data[17],DATA12);
+SIGNAL(N04_07_1_E,fastbus1.Q46962.data[41],DATA12);
+SIGNAL(N04_07_1_T,fastbus2.T81806.data[25],DATA12);
+SIGNAL(N04_07_2_E,fastbus1.Q15372.data[8],DATA12);
+SIGNAL(N04_07_2_T,fastbus2.T81795.data[24],DATA12);
+SIGNAL(N04_08_1_E,fastbus1.Q46962.data[45],DATA12);
+SIGNAL(N04_08_1_T,fastbus2.T81806.data[29],DATA12);
+SIGNAL(N04_08_2_E,fastbus1.Q15372.data[12],DATA12);
+SIGNAL(N04_08_2_T,fastbus2.T81795.data[28],DATA12);
+SIGNAL(N04_09_1_E,fastbus1.Q46962.data[34],DATA12);
+SIGNAL(N04_09_1_T,fastbus2.T81806.data[18],DATA12);
+SIGNAL(N04_09_2_E,fastbus1.Q15372.data[1],DATA12);
+SIGNAL(N04_09_2_T,fastbus2.T81795.data[17],DATA12);
+SIGNAL(N04_10_1_E,fastbus1.Q46962.data[38],DATA12);
+SIGNAL(N04_10_1_T,fastbus2.T81806.data[22],DATA12);
+SIGNAL(N04_10_2_E,fastbus1.Q15372.data[5],DATA12);
+SIGNAL(N04_10_2_T,fastbus2.T81795.data[21],DATA12);
+SIGNAL(N04_11_1_E,fastbus1.Q46962.data[42],DATA12);
+SIGNAL(N04_11_1_T,fastbus2.T81806.data[26],DATA12);
+SIGNAL(N04_11_2_E,fastbus1.Q15372.data[9],DATA12);
+SIGNAL(N04_11_2_T,fastbus2.T81795.data[25],DATA12);
+SIGNAL(N04_12_1_E,fastbus1.Q46962.data[46],DATA12);
+SIGNAL(N04_12_1_T,fastbus2.T81806.data[30],DATA12);
+SIGNAL(N04_12_2_E,fastbus1.Q15372.data[13],DATA12);
+SIGNAL(N04_12_2_T,fastbus2.T81795.data[29],DATA12);
+SIGNAL(N04_13_1_E,fastbus1.Q46962.data[35],DATA12);
+SIGNAL(N04_13_1_T,fastbus2.T81806.data[19],DATA12);
+SIGNAL(N04_13_2_E,fastbus1.Q15372.data[2],DATA12);
+SIGNAL(N04_13_2_T,fastbus2.T81795.data[18],DATA12);
+SIGNAL(N04_14_1_E,fastbus1.Q46962.data[39],DATA12);
+SIGNAL(N04_14_1_T,fastbus2.T81806.data[23],DATA12);
+SIGNAL(N04_14_2_E,fastbus1.Q15372.data[6],DATA12);
+SIGNAL(N04_14_2_T,fastbus2.T81795.data[22],DATA12);
+SIGNAL(N04_15_1_E,fastbus1.Q46962.data[22],DATA12);
+SIGNAL(N04_15_1_T,fastbus2.T48834.data[22],DATA12);
+SIGNAL(N04_15_2_E,fastbus1.Q15372.data[10],DATA12);
+SIGNAL(N04_15_2_T,fastbus2.T81795.data[26],DATA12);
+SIGNAL(N04_16_1_E,fastbus1.Q46962.data[18],DATA12);
+SIGNAL(N04_16_1_T,fastbus2.T48834.data[18],DATA12);
+SIGNAL(N04_16_2_E,fastbus1.Q15372.data[14],DATA12);
+SIGNAL(N04_16_2_T,fastbus2.T81795.data[30],DATA12);
+SIGNAL(N04_17_1_E,fastbus1.Q46962.data[43],DATA12);
+SIGNAL(N04_17_1_T,fastbus2.T81806.data[27],DATA12);
+SIGNAL(N04_17_2_E,fastbus1.Q15372.data[3],DATA12);
+SIGNAL(N04_17_2_T,fastbus2.T81795.data[19],DATA12);
+SIGNAL(N04_18_1_E,fastbus1.Q46962.data[47],DATA12);
+SIGNAL(N04_18_1_T,fastbus2.T81806.data[31],DATA12);
+SIGNAL(N04_18_2_E,fastbus1.Q15372.data[7],DATA12);
+SIGNAL(N04_18_2_T,fastbus2.T81795.data[23],DATA12);
+SIGNAL(N04_19_1_E,fastbus1.Q46962.data[23],DATA12);
+SIGNAL(N04_19_1_T,fastbus2.T48834.data[23],DATA12);
+SIGNAL(N04_19_2_E,fastbus1.Q15372.data[11],DATA12);
+SIGNAL(N04_19_2_T,fastbus2.T81795.data[27],DATA12);
+SIGNAL(N04_20_1_E,fastbus1.Q46962.data[19],DATA12);
+SIGNAL(N04_20_1_T,fastbus2.T48834.data[19],DATA12);
+SIGNAL(N04_20_2_E,fastbus1.Q15372.data[15],DATA12);
+SIGNAL(N04_20_2_T,fastbus2.T81795.data[31],DATA12);
+SIGNAL(N05_01_1_E,fastbus1.Q15372.data[16],DATA12);
+SIGNAL(N05_01_1_T,fastbus2.T81859.data[16],DATA12);
+SIGNAL(N05_01_2_E,fastbus1.Q47315.data[12],DATA12);
+SIGNAL(N05_01_2_T,fastbus2.T48854.data[28],DATA12);
+SIGNAL(N05_02_1_E,fastbus1.Q15372.data[20],DATA12);
+SIGNAL(N05_02_1_T,fastbus2.T81859.data[20],DATA12);
+SIGNAL(N05_02_2_E,fastbus1.Q47315.data[8],DATA12);
+SIGNAL(N05_02_2_T,fastbus2.T48854.data[24],DATA12);
+SIGNAL(N05_03_1_E,fastbus1.Q15372.data[24],DATA12);
+SIGNAL(N05_03_1_T,fastbus2.T81859.data[24],DATA12);
+SIGNAL(N05_03_2_E,fastbus1.Q15372.data[32],DATA12);
+SIGNAL(N05_03_2_T,fastbus2.T81808.data[16],DATA12);
+SIGNAL(N05_04_1_E,fastbus1.Q15372.data[28],DATA12);
+SIGNAL(N05_04_1_T,fastbus2.T81859.data[28],DATA12);
+SIGNAL(N05_04_2_E,fastbus1.Q15372.data[36],DATA12);
+SIGNAL(N05_04_2_T,fastbus2.T81808.data[20],DATA12);
+SIGNAL(N05_05_1_E,fastbus1.Q15372.data[17],DATA12);
+SIGNAL(N05_05_1_T,fastbus2.T81859.data[17],DATA12);
+SIGNAL(N05_05_2_E,fastbus1.Q47315.data[9],DATA12);
+SIGNAL(N05_05_2_T,fastbus2.T48854.data[25],DATA12);
+SIGNAL(N05_06_1_E,fastbus1.Q15372.data[21],DATA12);
+SIGNAL(N05_06_1_T,fastbus2.T81859.data[21],DATA12);
+SIGNAL(N05_06_2_E,fastbus1.Q47315.data[13],DATA12);
+SIGNAL(N05_06_2_T,fastbus2.T48854.data[29],DATA12);
+SIGNAL(N05_07_1_E,fastbus1.Q15372.data[25],DATA12);
+SIGNAL(N05_07_1_T,fastbus2.T81859.data[25],DATA12);
+SIGNAL(N05_07_2_E,fastbus1.Q15372.data[40],DATA12);
+SIGNAL(N05_07_2_T,fastbus2.T81808.data[24],DATA12);
+SIGNAL(N05_08_1_E,fastbus1.Q15372.data[29],DATA12);
+SIGNAL(N05_08_1_T,fastbus2.T81859.data[29],DATA12);
+SIGNAL(N05_08_2_E,fastbus1.Q15372.data[44],DATA12);
+SIGNAL(N05_08_2_T,fastbus2.T81808.data[28],DATA12);
+SIGNAL(N05_09_1_E,fastbus1.Q15372.data[18],DATA12);
+SIGNAL(N05_09_1_T,fastbus2.T81859.data[18],DATA12);
+SIGNAL(N05_09_2_E,fastbus1.Q15372.data[33],DATA12);
+SIGNAL(N05_09_2_T,fastbus2.T81808.data[17],DATA12);
+SIGNAL(N05_10_1_E,fastbus1.Q15372.data[22],DATA12);
+SIGNAL(N05_10_1_T,fastbus2.T81859.data[22],DATA12);
+SIGNAL(N05_10_2_E,fastbus1.Q15372.data[37],DATA12);
+SIGNAL(N05_10_2_T,fastbus2.T81808.data[21],DATA12);
+SIGNAL(N05_11_1_E,fastbus1.Q15372.data[26],DATA12);
+SIGNAL(N05_11_1_T,fastbus2.T81859.data[26],DATA12);
+SIGNAL(N05_11_2_E,fastbus1.Q15372.data[41],DATA12);
+SIGNAL(N05_11_2_T,fastbus2.T81808.data[25],DATA12);
+SIGNAL(N05_12_1_E,fastbus1.Q15372.data[30],DATA12);
+SIGNAL(N05_12_1_T,fastbus2.T81859.data[30],DATA12);
+SIGNAL(N05_12_2_E,fastbus1.Q15372.data[45],DATA12);
+SIGNAL(N05_12_2_T,fastbus2.T81808.data[29],DATA12);
+SIGNAL(N05_13_1_E,fastbus1.Q15372.data[19],DATA12);
+SIGNAL(N05_13_1_T,fastbus2.T81859.data[19],DATA12);
+SIGNAL(N05_13_2_E,fastbus1.Q15372.data[34],DATA12);
+SIGNAL(N05_13_2_T,fastbus2.T81808.data[18],DATA12);
+SIGNAL(N05_14_1_E,fastbus1.Q15372.data[23],DATA12);
+SIGNAL(N05_14_1_T,fastbus2.T81859.data[23],DATA12);
+SIGNAL(N05_14_2_E,fastbus1.Q15372.data[38],DATA12);
+SIGNAL(N05_14_2_T,fastbus2.T81808.data[22],DATA12);
+SIGNAL(N05_15_1_E,fastbus1.Q47315.data[14],DATA12);
+SIGNAL(N05_15_1_T,fastbus2.T48854.data[30],DATA12);
+SIGNAL(N05_15_2_E,fastbus1.Q15372.data[42],DATA12);
+SIGNAL(N05_15_2_T,fastbus2.T81808.data[26],DATA12);
+SIGNAL(N05_16_1_E,fastbus1.Q47315.data[10],DATA12);
+SIGNAL(N05_16_1_T,fastbus2.T48854.data[26],DATA12);
+SIGNAL(N05_16_2_E,fastbus1.Q15372.data[46],DATA12);
+SIGNAL(N05_16_2_T,fastbus2.T81808.data[30],DATA12);
+SIGNAL(N05_17_1_E,fastbus1.Q15372.data[27],DATA12);
+SIGNAL(N05_17_1_T,fastbus2.T81859.data[27],DATA12);
+SIGNAL(N05_17_2_E,fastbus1.Q15372.data[35],DATA12);
+SIGNAL(N05_17_2_T,fastbus2.T81808.data[19],DATA12);
+SIGNAL(N05_18_1_E,fastbus1.Q15372.data[31],DATA12);
+SIGNAL(N05_18_1_T,fastbus2.T81859.data[31],DATA12);
+SIGNAL(N05_18_2_E,fastbus1.Q15372.data[39],DATA12);
+SIGNAL(N05_18_2_T,fastbus2.T81808.data[23],DATA12);
+SIGNAL(N05_19_1_E,fastbus1.Q47315.data[15],DATA12);
+SIGNAL(N05_19_1_T,fastbus2.T48854.data[31],DATA12);
+SIGNAL(N05_19_2_E,fastbus1.Q15372.data[43],DATA12);
+SIGNAL(N05_19_2_T,fastbus2.T81808.data[27],DATA12);
+SIGNAL(N05_20_1_E,fastbus1.Q47315.data[11],DATA12);
+SIGNAL(N05_20_1_T,fastbus2.T48854.data[27],DATA12);
+SIGNAL(N05_20_2_E,fastbus1.Q15372.data[47],DATA12);
+SIGNAL(N05_20_2_T,fastbus2.T81808.data[31],DATA12);
+SIGNAL(N06_01_1_E,fastbus1.Q47315.data[16],DATA12);
+SIGNAL(N06_01_1_T,fastbus2.T87047.data[16],DATA12);
+SIGNAL(N06_01_2_E,fastbus1.Q47315.data[4],DATA12);
+SIGNAL(N06_01_2_T,fastbus2.T48854.data[20],DATA12);
+SIGNAL(N06_02_1_E,fastbus1.Q47315.data[20],DATA12);
+SIGNAL(N06_02_1_T,fastbus2.T87047.data[20],DATA12);
+SIGNAL(N06_02_2_E,fastbus1.Q47315.data[0],DATA12);
+SIGNAL(N06_02_2_T,fastbus2.T48854.data[16],DATA12);
+SIGNAL(N06_03_1_E,fastbus1.Q47315.data[24],DATA12);
+SIGNAL(N06_03_1_T,fastbus2.T87047.data[24],DATA12);
+SIGNAL(N06_03_2_E,fastbus1.Q46993.data[48],DATA12);
+SIGNAL(N06_03_2_T,fastbus2.T48834.data[32],DATA12);
+SIGNAL(N06_04_1_E,fastbus1.Q47315.data[28],DATA12);
+SIGNAL(N06_04_1_T,fastbus2.T87047.data[28],DATA12);
+SIGNAL(N06_04_2_E,fastbus1.Q46993.data[52],DATA12);
+SIGNAL(N06_04_2_T,fastbus2.T48834.data[36],DATA12);
+SIGNAL(N06_05_1_E,fastbus1.Q47315.data[17],DATA12);
+SIGNAL(N06_05_1_T,fastbus2.T87047.data[17],DATA12);
+SIGNAL(N06_05_2_E,fastbus1.Q47315.data[5],DATA12);
+SIGNAL(N06_05_2_T,fastbus2.T48854.data[21],DATA12);
+SIGNAL(N06_06_1_E,fastbus1.Q47315.data[21],DATA12);
+SIGNAL(N06_06_1_T,fastbus2.T87047.data[21],DATA12);
+SIGNAL(N06_06_2_E,fastbus1.Q47315.data[1],DATA12);
+SIGNAL(N06_06_2_T,fastbus2.T48854.data[17],DATA12);
+SIGNAL(N06_07_1_E,fastbus1.Q47315.data[25],DATA12);
+SIGNAL(N06_07_1_T,fastbus2.T87047.data[25],DATA12);
+SIGNAL(N06_07_2_E,fastbus1.Q46993.data[56],DATA12);
+SIGNAL(N06_07_2_T,fastbus2.T48834.data[40],DATA12);
+SIGNAL(N06_08_1_E,fastbus1.Q47315.data[29],DATA12);
+SIGNAL(N06_08_1_T,fastbus2.T87047.data[29],DATA12);
+SIGNAL(N06_08_2_E,fastbus1.Q46993.data[60],DATA12);
+SIGNAL(N06_08_2_T,fastbus2.T48834.data[44],DATA12);
+SIGNAL(N06_09_1_E,fastbus1.Q47315.data[18],DATA12);
+SIGNAL(N06_09_1_T,fastbus2.T87047.data[18],DATA12);
+SIGNAL(N06_09_2_E,fastbus1.Q46993.data[49],DATA12);
+SIGNAL(N06_09_2_T,fastbus2.T48834.data[33],DATA12);
+SIGNAL(N06_10_1_E,fastbus1.Q47315.data[22],DATA12);
+SIGNAL(N06_10_1_T,fastbus2.T87047.data[22],DATA12);
+SIGNAL(N06_10_2_E,fastbus1.Q46993.data[53],DATA12);
+SIGNAL(N06_10_2_T,fastbus2.T48834.data[37],DATA12);
+SIGNAL(N06_11_1_E,fastbus1.Q47315.data[26],DATA12);
+SIGNAL(N06_11_1_T,fastbus2.T87047.data[26],DATA12);
+SIGNAL(N06_11_2_E,fastbus1.Q46993.data[57],DATA12);
+SIGNAL(N06_11_2_T,fastbus2.T48834.data[41],DATA12);
+SIGNAL(N06_12_1_E,fastbus1.Q47315.data[30],DATA12);
+SIGNAL(N06_12_1_T,fastbus2.T87047.data[30],DATA12);
+SIGNAL(N06_12_2_E,fastbus1.Q46993.data[61],DATA12);
+SIGNAL(N06_12_2_T,fastbus2.T48834.data[45],DATA12);
+SIGNAL(N06_13_1_E,fastbus1.Q47315.data[19],DATA12);
+SIGNAL(N06_13_1_T,fastbus2.T87047.data[19],DATA12);
+SIGNAL(N06_13_2_E,fastbus1.Q46993.data[50],DATA12);
+SIGNAL(N06_13_2_T,fastbus2.T48834.data[34],DATA12);
+SIGNAL(N06_14_1_E,fastbus1.Q47315.data[23],DATA12);
+SIGNAL(N06_14_1_T,fastbus2.T87047.data[23],DATA12);
+SIGNAL(N06_14_2_E,fastbus1.Q46993.data[54],DATA12);
+SIGNAL(N06_14_2_T,fastbus2.T48834.data[38],DATA12);
+SIGNAL(N06_15_1_E,fastbus1.Q47315.data[6],DATA12);
+SIGNAL(N06_15_1_T,fastbus2.T48854.data[22],DATA12);
+SIGNAL(N06_15_2_E,fastbus1.Q46993.data[58],DATA12);
+SIGNAL(N06_15_2_T,fastbus2.T48834.data[42],DATA12);
+SIGNAL(N06_16_1_E,fastbus1.Q47315.data[2],DATA12);
+SIGNAL(N06_16_1_T,fastbus2.T48854.data[18],DATA12);
+SIGNAL(N06_16_2_E,fastbus1.Q46993.data[62],DATA12);
+SIGNAL(N06_16_2_T,fastbus2.T48834.data[46],DATA12);
+SIGNAL(N06_17_1_E,fastbus1.Q47315.data[27],DATA12);
+SIGNAL(N06_17_1_T,fastbus2.T87047.data[27],DATA12);
+SIGNAL(N06_17_2_E,fastbus1.Q46993.data[51],DATA12);
+SIGNAL(N06_17_2_T,fastbus2.T48834.data[35],DATA12);
+SIGNAL(N06_18_1_E,fastbus1.Q47315.data[31],DATA12);
+SIGNAL(N06_18_1_T,fastbus2.T87047.data[31],DATA12);
+SIGNAL(N06_18_2_E,fastbus1.Q46993.data[55],DATA12);
+SIGNAL(N06_18_2_T,fastbus2.T48834.data[39],DATA12);
+SIGNAL(N06_19_1_E,fastbus1.Q47315.data[7],DATA12);
+SIGNAL(N06_19_1_T,fastbus2.T48854.data[23],DATA12);
+SIGNAL(N06_19_2_E,fastbus1.Q46993.data[59],DATA12);
+SIGNAL(N06_19_2_T,fastbus2.T48834.data[43],DATA12);
+SIGNAL(N06_20_1_E,fastbus1.Q47315.data[3],DATA12);
+SIGNAL(N06_20_1_T,fastbus2.T48854.data[19],DATA12);
+SIGNAL(N06_20_2_E,fastbus1.Q46993.data[63],DATA12);
+SIGNAL(N06_20_2_T,fastbus2.T48834.data[47],DATA12);
+SIGNAL(N07_01_1_E,fastbus1.Q46993.data[64],DATA12);
+SIGNAL(N07_01_1_T,fastbus2.T81806.data[32],DATA12);
+SIGNAL(N07_01_2_E,fastbus1.Q15358.data[60],DATA12);
+SIGNAL(N07_01_2_T,fastbus2.T81859.data[44],DATA12);
+SIGNAL(N07_02_1_E,fastbus1.Q46993.data[68],DATA12);
+SIGNAL(N07_02_1_T,fastbus2.T81806.data[36],DATA12);
+SIGNAL(N07_02_2_E,fastbus1.Q15358.data[56],DATA12);
+SIGNAL(N07_02_2_T,fastbus2.T81859.data[40],DATA12);
+SIGNAL(N07_03_1_E,fastbus1.Q46993.data[72],DATA12);
+SIGNAL(N07_03_1_T,fastbus2.T81806.data[40],DATA12);
+SIGNAL(N07_03_2_E,fastbus1.Q46993.data[80],DATA12);
+SIGNAL(N07_03_2_T,fastbus2.T81795.data[32],DATA12);
+SIGNAL(N07_04_1_E,fastbus1.Q46993.data[76],DATA12);
+SIGNAL(N07_04_1_T,fastbus2.T81806.data[44],DATA12);
+SIGNAL(N07_04_2_E,fastbus1.Q46993.data[84],DATA12);
+SIGNAL(N07_04_2_T,fastbus2.T81795.data[36],DATA12);
+SIGNAL(N07_05_1_E,fastbus1.Q46993.data[65],DATA12);
+SIGNAL(N07_05_1_T,fastbus2.T81806.data[33],DATA12);
+SIGNAL(N07_05_2_E,fastbus1.Q15358.data[57],DATA12);
+SIGNAL(N07_05_2_T,fastbus2.T81859.data[41],DATA12);
+SIGNAL(N07_06_1_E,fastbus1.Q46993.data[69],DATA12);
+SIGNAL(N07_06_1_T,fastbus2.T81806.data[37],DATA12);
+SIGNAL(N07_06_2_E,fastbus1.Q15358.data[61],DATA12);
+SIGNAL(N07_06_2_T,fastbus2.T81859.data[45],DATA12);
+SIGNAL(N07_07_1_E,fastbus1.Q46993.data[73],DATA12);
+SIGNAL(N07_07_1_T,fastbus2.T81806.data[41],DATA12);
+SIGNAL(N07_07_2_E,fastbus1.Q46993.data[88],DATA12);
+SIGNAL(N07_07_2_T,fastbus2.T81795.data[40],DATA12);
+SIGNAL(N07_08_1_E,fastbus1.Q46993.data[77],DATA12);
+SIGNAL(N07_08_1_T,fastbus2.T81806.data[45],DATA12);
+SIGNAL(N07_08_2_E,fastbus1.Q46993.data[92],DATA12);
+SIGNAL(N07_08_2_T,fastbus2.T81795.data[44],DATA12);
+SIGNAL(N07_09_1_E,fastbus1.Q46993.data[66],DATA12);
+SIGNAL(N07_09_1_T,fastbus2.T81806.data[34],DATA12);
+SIGNAL(N07_09_2_E,fastbus1.Q46993.data[81],DATA12);
+SIGNAL(N07_09_2_T,fastbus2.T81795.data[33],DATA12);
+SIGNAL(N07_10_1_E,fastbus1.Q46993.data[70],DATA12);
+SIGNAL(N07_10_1_T,fastbus2.T81806.data[38],DATA12);
+SIGNAL(N07_10_2_E,fastbus1.Q46993.data[85],DATA12);
+SIGNAL(N07_10_2_T,fastbus2.T81795.data[37],DATA12);
+SIGNAL(N07_11_1_E,fastbus1.Q46993.data[74],DATA12);
+SIGNAL(N07_11_1_T,fastbus2.T81806.data[42],DATA12);
+SIGNAL(N07_11_2_E,fastbus1.Q46993.data[89],DATA12);
+SIGNAL(N07_11_2_T,fastbus2.T81795.data[41],DATA12);
+SIGNAL(N07_12_1_E,fastbus1.Q46993.data[78],DATA12);
+SIGNAL(N07_12_1_T,fastbus2.T81806.data[46],DATA12);
+SIGNAL(N07_12_2_E,fastbus1.Q46993.data[93],DATA12);
+SIGNAL(N07_12_2_T,fastbus2.T81795.data[45],DATA12);
+SIGNAL(N07_13_1_E,fastbus1.Q46993.data[67],DATA12);
+SIGNAL(N07_13_1_T,fastbus2.T81806.data[35],DATA12);
+SIGNAL(N07_13_2_E,fastbus1.Q46993.data[82],DATA12);
+SIGNAL(N07_13_2_T,fastbus2.T81795.data[34],DATA12);
+SIGNAL(N07_14_1_E,fastbus1.Q46993.data[71],DATA12);
+SIGNAL(N07_14_1_T,fastbus2.T81806.data[39],DATA12);
+SIGNAL(N07_14_2_E,fastbus1.Q46993.data[86],DATA12);
+SIGNAL(N07_14_2_T,fastbus2.T81795.data[38],DATA12);
+SIGNAL(N07_15_1_E,fastbus1.Q15358.data[62],DATA12);
+SIGNAL(N07_15_1_T,fastbus2.T81859.data[46],DATA12);
+SIGNAL(N07_15_2_E,fastbus1.Q46993.data[90],DATA12);
+SIGNAL(N07_15_2_T,fastbus2.T81795.data[42],DATA12);
+SIGNAL(N07_16_1_E,fastbus1.Q15358.data[58],DATA12);
+SIGNAL(N07_16_1_T,fastbus2.T81859.data[42],DATA12);
+SIGNAL(N07_16_2_E,fastbus1.Q46993.data[94],DATA12);
+SIGNAL(N07_16_2_T,fastbus2.T81795.data[46],DATA12);
+SIGNAL(N07_17_1_E,fastbus1.Q46993.data[75],DATA12);
+SIGNAL(N07_17_1_T,fastbus2.T81806.data[43],DATA12);
+SIGNAL(N07_17_2_E,fastbus1.Q46993.data[83],DATA12);
+SIGNAL(N07_17_2_T,fastbus2.T81795.data[35],DATA12);
+SIGNAL(N07_18_1_E,fastbus1.Q46993.data[79],DATA12);
+SIGNAL(N07_18_1_T,fastbus2.T81806.data[47],DATA12);
+SIGNAL(N07_18_2_E,fastbus1.Q46993.data[87],DATA12);
+SIGNAL(N07_18_2_T,fastbus2.T81795.data[39],DATA12);
+SIGNAL(N07_19_1_E,fastbus1.Q15358.data[63],DATA12);
+SIGNAL(N07_19_1_T,fastbus2.T81859.data[47],DATA12);
+SIGNAL(N07_19_2_E,fastbus1.Q46993.data[91],DATA12);
+SIGNAL(N07_19_2_T,fastbus2.T81795.data[43],DATA12);
+SIGNAL(N07_20_1_E,fastbus1.Q15358.data[59],DATA12);
+SIGNAL(N07_20_1_T,fastbus2.T81859.data[43],DATA12);
+SIGNAL(N07_20_2_E,fastbus1.Q46993.data[95],DATA12);
+SIGNAL(N07_20_2_T,fastbus2.T81795.data[47],DATA12);
+SIGNAL(N08_01_1_E,fastbus1.Q15358.data[64],DATA12);
+SIGNAL(N08_01_1_T,fastbus2.T81808.data[32],DATA12);
+SIGNAL(N08_01_2_E,fastbus1.Q15358.data[52],DATA12);
+SIGNAL(N08_01_2_T,fastbus2.T81859.data[36],DATA12);
+SIGNAL(N08_02_1_E,fastbus1.Q15358.data[68],DATA12);
+SIGNAL(N08_02_1_T,fastbus2.T81808.data[36],DATA12);
+SIGNAL(N08_02_2_E,fastbus1.Q15358.data[48],DATA12);
+SIGNAL(N08_02_2_T,fastbus2.T81859.data[32],DATA12);
+SIGNAL(N08_03_1_E,fastbus1.Q15358.data[72],DATA12);
+SIGNAL(N08_03_1_T,fastbus2.T81808.data[40],DATA12);
+SIGNAL(N08_03_2_E,fastbus1.Q15358.data[80],DATA12);
+SIGNAL(N08_03_2_T,fastbus2.T48854.data[32],DATA12);
+SIGNAL(N08_04_1_E,fastbus1.Q15358.data[76],DATA12);
+SIGNAL(N08_04_1_T,fastbus2.T81808.data[44],DATA12);
+SIGNAL(N08_04_2_E,fastbus1.Q15358.data[84],DATA12);
+SIGNAL(N08_04_2_T,fastbus2.T48854.data[36],DATA12);
+SIGNAL(N08_05_1_E,fastbus1.Q15358.data[65],DATA12);
+SIGNAL(N08_05_1_T,fastbus2.T81808.data[33],DATA12);
+SIGNAL(N08_05_2_E,fastbus1.Q15358.data[53],DATA12);
+SIGNAL(N08_05_2_T,fastbus2.T81859.data[37],DATA12);
+SIGNAL(N08_06_1_E,fastbus1.Q15358.data[69],DATA12);
+SIGNAL(N08_06_1_T,fastbus2.T81808.data[37],DATA12);
+SIGNAL(N08_06_2_E,fastbus1.Q15358.data[49],DATA12);
+SIGNAL(N08_06_2_T,fastbus2.T81859.data[33],DATA12);
+SIGNAL(N08_07_1_E,fastbus1.Q15358.data[73],DATA12);
+SIGNAL(N08_07_1_T,fastbus2.T81808.data[41],DATA12);
+SIGNAL(N08_07_2_E,fastbus1.Q15358.data[88],DATA12);
+SIGNAL(N08_07_2_T,fastbus2.T48854.data[40],DATA12);
+SIGNAL(N08_08_1_E,fastbus1.Q15358.data[77],DATA12);
+SIGNAL(N08_08_1_T,fastbus2.T81808.data[45],DATA12);
+SIGNAL(N08_08_2_E,fastbus1.Q15358.data[92],DATA12);
+SIGNAL(N08_08_2_T,fastbus2.T48854.data[44],DATA12);
+SIGNAL(N08_09_1_E,fastbus1.Q15358.data[66],DATA12);
+SIGNAL(N08_09_1_T,fastbus2.T81808.data[34],DATA12);
+SIGNAL(N08_09_2_E,fastbus1.Q15358.data[81],DATA12);
+SIGNAL(N08_09_2_T,fastbus2.T48854.data[33],DATA12);
+SIGNAL(N08_10_1_E,fastbus1.Q15358.data[70],DATA12);
+SIGNAL(N08_10_1_T,fastbus2.T81808.data[38],DATA12);
+SIGNAL(N08_10_2_E,fastbus1.Q15358.data[85],DATA12);
+SIGNAL(N08_10_2_T,fastbus2.T48854.data[37],DATA12);
+SIGNAL(N08_11_1_E,fastbus1.Q15358.data[74],DATA12);
+SIGNAL(N08_11_1_T,fastbus2.T81808.data[42],DATA12);
+SIGNAL(N08_11_2_E,fastbus1.Q15358.data[89],DATA12);
+SIGNAL(N08_11_2_T,fastbus2.T48854.data[41],DATA12);
+SIGNAL(N08_12_1_E,fastbus1.Q15358.data[78],DATA12);
+SIGNAL(N08_12_1_T,fastbus2.T81808.data[46],DATA12);
+SIGNAL(N08_12_2_E,fastbus1.Q15358.data[93],DATA12);
+SIGNAL(N08_12_2_T,fastbus2.T48854.data[45],DATA12);
+SIGNAL(N08_13_1_E,fastbus1.Q15358.data[67],DATA12);
+SIGNAL(N08_13_1_T,fastbus2.T81808.data[35],DATA12);
+SIGNAL(N08_13_2_E,fastbus1.Q15358.data[82],DATA12);
+SIGNAL(N08_13_2_T,fastbus2.T48854.data[34],DATA12);
+SIGNAL(N08_14_1_E,fastbus1.Q15358.data[71],DATA12);
+SIGNAL(N08_14_1_T,fastbus2.T81808.data[39],DATA12);
+SIGNAL(N08_14_2_E,fastbus1.Q15358.data[86],DATA12);
+SIGNAL(N08_14_2_T,fastbus2.T48854.data[38],DATA12);
+SIGNAL(N08_15_1_E,fastbus1.Q15358.data[54],DATA12);
+SIGNAL(N08_15_1_T,fastbus2.T81859.data[38],DATA12);
+SIGNAL(N08_15_2_E,fastbus1.Q15358.data[90],DATA12);
+SIGNAL(N08_15_2_T,fastbus2.T48854.data[42],DATA12);
+SIGNAL(N08_16_1_E,fastbus1.Q15358.data[50],DATA12);
+SIGNAL(N08_16_1_T,fastbus2.T81859.data[34],DATA12);
+SIGNAL(N08_16_2_E,fastbus1.Q15358.data[94],DATA12);
+SIGNAL(N08_16_2_T,fastbus2.T48854.data[46],DATA12);
+SIGNAL(N08_17_1_E,fastbus1.Q15358.data[75],DATA12);
+SIGNAL(N08_17_1_T,fastbus2.T81808.data[43],DATA12);
+SIGNAL(N08_17_2_E,fastbus1.Q15358.data[83],DATA12);
+SIGNAL(N08_17_2_T,fastbus2.T48854.data[35],DATA12);
+SIGNAL(N08_18_1_E,fastbus1.Q15358.data[79],DATA12);
+SIGNAL(N08_18_1_T,fastbus2.T81808.data[47],DATA12);
+SIGNAL(N08_18_2_E,fastbus1.Q15358.data[87],DATA12);
+SIGNAL(N08_18_2_T,fastbus2.T48854.data[39],DATA12);
+SIGNAL(N08_19_1_E,fastbus1.Q15358.data[55],DATA12);
+SIGNAL(N08_19_1_T,fastbus2.T81859.data[39],DATA12);
+SIGNAL(N08_19_2_E,fastbus1.Q15358.data[91],DATA12);
+SIGNAL(N08_19_2_T,fastbus2.T48854.data[43],DATA12);
+SIGNAL(N08_20_1_E,fastbus1.Q15358.data[51],DATA12);
+SIGNAL(N08_20_1_T,fastbus2.T81859.data[35],DATA12);
+SIGNAL(N08_20_2_E,fastbus1.Q15358.data[95],DATA12);
+SIGNAL(N08_20_2_T,fastbus2.T48854.data[47],DATA12);
+SIGNAL(N09_01_1_E,fastbus1.Q46962.data[48],DATA12);
+SIGNAL(N09_01_1_T,fastbus2.T87047.data[32],DATA12);
+SIGNAL(N09_01_2_E,fastbus1.Q46962.data[92],DATA12);
+SIGNAL(N09_01_2_T,fastbus2.T81808.data[60],DATA12);
+SIGNAL(N09_02_1_E,fastbus1.Q46962.data[52],DATA12);
+SIGNAL(N09_02_1_T,fastbus2.T87047.data[36],DATA12);
+SIGNAL(N09_02_2_E,fastbus1.Q46962.data[88],DATA12);
+SIGNAL(N09_02_2_T,fastbus2.T81808.data[56],DATA12);
+SIGNAL(N09_03_1_E,fastbus1.Q46962.data[56],DATA12);
+SIGNAL(N09_03_1_T,fastbus2.T87047.data[40],DATA12);
+SIGNAL(N09_03_2_E,fastbus1.Q46962.data[64],DATA12);
+SIGNAL(N09_03_2_T,fastbus2.T81859.data[48],DATA12);
+SIGNAL(N09_04_1_E,fastbus1.Q46962.data[60],DATA12);
+SIGNAL(N09_04_1_T,fastbus2.T87047.data[44],DATA12);
+SIGNAL(N09_04_2_E,fastbus1.Q46962.data[68],DATA12);
+SIGNAL(N09_04_2_T,fastbus2.T81859.data[52],DATA12);
+SIGNAL(N09_05_1_E,fastbus1.Q46962.data[49],DATA12);
+SIGNAL(N09_05_1_T,fastbus2.T87047.data[33],DATA12);
+SIGNAL(N09_05_2_E,fastbus1.Q46962.data[89],DATA12);
+SIGNAL(N09_05_2_T,fastbus2.T81808.data[57],DATA12);
+SIGNAL(N09_06_1_E,fastbus1.Q46962.data[53],DATA12);
+SIGNAL(N09_06_1_T,fastbus2.T87047.data[37],DATA12);
+SIGNAL(N09_06_2_E,fastbus1.Q46962.data[93],DATA12);
+SIGNAL(N09_06_2_T,fastbus2.T81808.data[61],DATA12);
+SIGNAL(N09_07_1_E,fastbus1.Q46962.data[57],DATA12);
+SIGNAL(N09_07_1_T,fastbus2.T87047.data[41],DATA12);
+SIGNAL(N09_07_2_E,fastbus1.Q46962.data[72],DATA12);
+SIGNAL(N09_07_2_T,fastbus2.T81859.data[56],DATA12);
+SIGNAL(N09_08_1_E,fastbus1.Q46962.data[61],DATA12);
+SIGNAL(N09_08_1_T,fastbus2.T87047.data[45],DATA12);
+SIGNAL(N09_08_2_E,fastbus1.Q46962.data[76],DATA12);
+SIGNAL(N09_08_2_T,fastbus2.T81859.data[60],DATA12);
+SIGNAL(N09_09_1_E,fastbus1.Q46962.data[50],DATA12);
+SIGNAL(N09_09_1_T,fastbus2.T87047.data[34],DATA12);
+SIGNAL(N09_09_2_E,fastbus1.Q46962.data[65],DATA12);
+SIGNAL(N09_09_2_T,fastbus2.T81859.data[49],DATA12);
+SIGNAL(N09_10_1_E,fastbus1.Q46962.data[54],DATA12);
+SIGNAL(N09_10_1_T,fastbus2.T87047.data[38],DATA12);
+SIGNAL(N09_10_2_E,fastbus1.Q46962.data[69],DATA12);
+SIGNAL(N09_10_2_T,fastbus2.T81859.data[53],DATA12);
+SIGNAL(N09_11_1_E,fastbus1.Q46962.data[58],DATA12);
+SIGNAL(N09_11_1_T,fastbus2.T87047.data[42],DATA12);
+SIGNAL(N09_11_2_E,fastbus1.Q46962.data[73],DATA12);
+SIGNAL(N09_11_2_T,fastbus2.T81859.data[57],DATA12);
+SIGNAL(N09_12_1_E,fastbus1.Q46962.data[62],DATA12);
+SIGNAL(N09_12_1_T,fastbus2.T87047.data[46],DATA12);
+SIGNAL(N09_12_2_E,fastbus1.Q46962.data[77],DATA12);
+SIGNAL(N09_12_2_T,fastbus2.T81859.data[61],DATA12);
+SIGNAL(N09_13_1_E,fastbus1.Q46962.data[51],DATA12);
+SIGNAL(N09_13_1_T,fastbus2.T87047.data[35],DATA12);
+SIGNAL(N09_13_2_E,fastbus1.Q46962.data[66],DATA12);
+SIGNAL(N09_13_2_T,fastbus2.T81859.data[50],DATA12);
+SIGNAL(N09_14_1_E,fastbus1.Q46962.data[55],DATA12);
+SIGNAL(N09_14_1_T,fastbus2.T87047.data[39],DATA12);
+SIGNAL(N09_14_2_E,fastbus1.Q46962.data[70],DATA12);
+SIGNAL(N09_14_2_T,fastbus2.T81859.data[54],DATA12);
+SIGNAL(N09_15_1_E,fastbus1.Q46962.data[94],DATA12);
+SIGNAL(N09_15_1_T,fastbus2.T81808.data[62],DATA12);
+SIGNAL(N09_15_2_E,fastbus1.Q46962.data[74],DATA12);
+SIGNAL(N09_15_2_T,fastbus2.T81859.data[58],DATA12);
+SIGNAL(N09_16_1_E,fastbus1.Q46962.data[90],DATA12);
+SIGNAL(N09_16_1_T,fastbus2.T81808.data[58],DATA12);
+SIGNAL(N09_16_2_E,fastbus1.Q46962.data[78],DATA12);
+SIGNAL(N09_16_2_T,fastbus2.T81859.data[62],DATA12);
+SIGNAL(N09_17_1_E,fastbus1.Q46962.data[59],DATA12);
+SIGNAL(N09_17_1_T,fastbus2.T87047.data[43],DATA12);
+SIGNAL(N09_17_2_E,fastbus1.Q46962.data[67],DATA12);
+SIGNAL(N09_17_2_T,fastbus2.T81859.data[51],DATA12);
+SIGNAL(N09_18_1_E,fastbus1.Q46962.data[63],DATA12);
+SIGNAL(N09_18_1_T,fastbus2.T87047.data[47],DATA12);
+SIGNAL(N09_18_2_E,fastbus1.Q46962.data[71],DATA12);
+SIGNAL(N09_18_2_T,fastbus2.T81859.data[55],DATA12);
+SIGNAL(N09_19_1_E,fastbus1.Q46962.data[95],DATA12);
+SIGNAL(N09_19_1_T,fastbus2.T81808.data[63],DATA12);
+SIGNAL(N09_19_2_E,fastbus1.Q46962.data[75],DATA12);
+SIGNAL(N09_19_2_T,fastbus2.T81859.data[59],DATA12);
+SIGNAL(N09_20_1_E,fastbus1.Q46962.data[91],DATA12);
+SIGNAL(N09_20_1_T,fastbus2.T81808.data[59],DATA12);
+SIGNAL(N09_20_2_E,fastbus1.Q46962.data[79],DATA12);
+SIGNAL(N09_20_2_T,fastbus2.T81859.data[63],DATA12);
+SIGNAL(N10_01_1_E,fastbus1.Q15372.data[64],DATA12);
+SIGNAL(N10_01_1_T,fastbus2.T48854.data[48],DATA12);
+SIGNAL(N10_01_2_E,fastbus1.Q46962.data[84],DATA12);
+SIGNAL(N10_01_2_T,fastbus2.T81808.data[52],DATA12);
+SIGNAL(N10_02_1_E,fastbus1.Q15372.data[68],DATA12);
+SIGNAL(N10_02_1_T,fastbus2.T48854.data[52],DATA12);
+SIGNAL(N10_02_2_E,fastbus1.Q46962.data[80],DATA12);
+SIGNAL(N10_02_2_T,fastbus2.T81808.data[48],DATA12);
+SIGNAL(N10_03_1_E,fastbus1.Q15372.data[72],DATA12);
+SIGNAL(N10_03_1_T,fastbus2.T48854.data[56],DATA12);
+SIGNAL(N10_03_2_E,fastbus1.Q15372.data[80],DATA12);
+SIGNAL(N10_03_2_T,fastbus2.T87047.data[48],DATA12);
+SIGNAL(N10_04_1_E,fastbus1.Q15372.data[76],DATA12);
+SIGNAL(N10_04_1_T,fastbus2.T48854.data[60],DATA12);
+SIGNAL(N10_04_2_E,fastbus1.Q15372.data[84],DATA12);
+SIGNAL(N10_04_2_T,fastbus2.T87047.data[52],DATA12);
+SIGNAL(N10_05_1_E,fastbus1.Q15372.data[65],DATA12);
+SIGNAL(N10_05_1_T,fastbus2.T48854.data[49],DATA12);
+SIGNAL(N10_05_2_E,fastbus1.Q46962.data[85],DATA12);
+SIGNAL(N10_05_2_T,fastbus2.T81808.data[53],DATA12);
+SIGNAL(N10_06_1_E,fastbus1.Q15372.data[69],DATA12);
+SIGNAL(N10_06_1_T,fastbus2.T48854.data[53],DATA12);
+SIGNAL(N10_06_2_E,fastbus1.Q46962.data[81],DATA12);
+SIGNAL(N10_06_2_T,fastbus2.T81808.data[49],DATA12);
+SIGNAL(N10_07_1_E,fastbus1.Q15372.data[73],DATA12);
+SIGNAL(N10_07_1_T,fastbus2.T48854.data[57],DATA12);
+SIGNAL(N10_07_2_E,fastbus1.Q15372.data[88],DATA12);
+SIGNAL(N10_07_2_T,fastbus2.T87047.data[56],DATA12);
+SIGNAL(N10_08_1_E,fastbus1.Q15372.data[77],DATA12);
+SIGNAL(N10_08_1_T,fastbus2.T48854.data[61],DATA12);
+SIGNAL(N10_08_2_E,fastbus1.Q15372.data[92],DATA12);
+SIGNAL(N10_08_2_T,fastbus2.T87047.data[60],DATA12);
+SIGNAL(N10_09_1_E,fastbus1.Q15372.data[66],DATA12);
+SIGNAL(N10_09_1_T,fastbus2.T48854.data[50],DATA12);
+SIGNAL(N10_09_2_E,fastbus1.Q15372.data[81],DATA12);
+SIGNAL(N10_09_2_T,fastbus2.T87047.data[49],DATA12);
+SIGNAL(N10_10_1_E,fastbus1.Q15372.data[70],DATA12);
+SIGNAL(N10_10_1_T,fastbus2.T48854.data[54],DATA12);
+SIGNAL(N10_10_2_E,fastbus1.Q15372.data[85],DATA12);
+SIGNAL(N10_10_2_T,fastbus2.T87047.data[53],DATA12);
+SIGNAL(N10_11_1_E,fastbus1.Q15372.data[74],DATA12);
+SIGNAL(N10_11_1_T,fastbus2.T48854.data[58],DATA12);
+SIGNAL(N10_11_2_E,fastbus1.Q15372.data[89],DATA12);
+SIGNAL(N10_11_2_T,fastbus2.T87047.data[57],DATA12);
+SIGNAL(N10_12_1_E,fastbus1.Q15372.data[79],DATA12);
+SIGNAL(N10_12_1_T,fastbus2.T48854.data[63],DATA12);
+SIGNAL(N10_12_2_E,fastbus1.Q15372.data[93],DATA12);
+SIGNAL(N10_12_2_T,fastbus2.T87047.data[61],DATA12);
+SIGNAL(N10_13_1_E,fastbus1.Q15372.data[67],DATA12);
+SIGNAL(N10_13_1_T,fastbus2.T48854.data[51],DATA12);
+SIGNAL(N10_13_2_E,fastbus1.Q15372.data[82],DATA12);
+SIGNAL(N10_13_2_T,fastbus2.T87047.data[50],DATA12);
+SIGNAL(N10_14_1_E,fastbus1.Q15372.data[71],DATA12);
+SIGNAL(N10_14_1_T,fastbus2.T48854.data[55],DATA12);
+SIGNAL(N10_14_2_E,fastbus1.Q15372.data[86],DATA12);
+SIGNAL(N10_14_2_T,fastbus2.T87047.data[54],DATA12);
+SIGNAL(N10_15_1_E,fastbus1.Q46962.data[86],DATA12);
+SIGNAL(N10_15_1_T,fastbus2.T81808.data[54],DATA12);
+SIGNAL(N10_15_2_E,fastbus1.Q15372.data[90],DATA12);
+SIGNAL(N10_15_2_T,fastbus2.T87047.data[58],DATA12);
+SIGNAL(N10_16_1_E,fastbus1.Q46962.data[82],DATA12);
+SIGNAL(N10_16_1_T,fastbus2.T81808.data[50],DATA12);
+SIGNAL(N10_16_2_E,fastbus1.Q15372.data[94],DATA12);
+SIGNAL(N10_16_2_T,fastbus2.T87047.data[62],DATA12);
+SIGNAL(N10_17_1_E,fastbus1.Q15372.data[75],DATA12);
+SIGNAL(N10_17_1_T,fastbus2.T48854.data[59],DATA12);
+SIGNAL(N10_17_2_E,fastbus1.Q15372.data[83],DATA12);
+SIGNAL(N10_17_2_T,fastbus2.T87047.data[51],DATA12);
+SIGNAL(N10_18_1_E,fastbus1.Q15372.data[78],DATA12);
+SIGNAL(N10_18_1_T,fastbus2.T48854.data[62],DATA12);
+SIGNAL(N10_18_2_E,fastbus1.Q15372.data[87],DATA12);
+SIGNAL(N10_18_2_T,fastbus2.T87047.data[55],DATA12);
+SIGNAL(N10_19_1_E,fastbus1.Q46962.data[87],DATA12);
+SIGNAL(N10_19_1_T,fastbus2.T81808.data[55],DATA12);
+SIGNAL(N10_19_2_E,fastbus1.Q15372.data[91],DATA12);
+SIGNAL(N10_19_2_T,fastbus2.T87047.data[59],DATA12);
+SIGNAL(N10_20_1_E,fastbus1.Q46962.data[83],DATA12);
+SIGNAL(N10_20_1_T,fastbus2.T81808.data[51],DATA12);
+SIGNAL(N10_20_2_E,fastbus1.Q15372.data[95],DATA12);
+SIGNAL(N10_20_2_T,fastbus2.T87047.data[63],DATA12);
+SIGNAL(NTF01_1_E,vme.qCAEN0472.data[0],DATA12);
+SIGNAL(NTF01_1_T,vme.tCAEN0614.data[0],DATA12);
+SIGNAL(NTF01_2_E,vme.qCAEN0472.data[2],DATA12);
+SIGNAL(NTF01_2_T,vme.tCAEN0614.data[2],DATA12);
+SIGNAL(NTF02_1_E,vme.qCAEN0472.data[5],DATA12);
+SIGNAL(NTF02_1_T,vme.tCAEN0614.data[5],DATA12);
+SIGNAL(NTF02_2_E,vme.qCAEN0472.data[7],DATA12);
+SIGNAL(NTF02_2_T,vme.tCAEN0614.data[7],DATA12);
+SIGNAL(NTF03_1_E,vme.qCAEN0472.data[8],DATA12);
+SIGNAL(NTF03_1_T,vme.tCAEN0614.data[8],DATA12);
+SIGNAL(NTF03_2_E,vme.qCAEN0472.data[10],DATA12);
+SIGNAL(NTF03_2_T,vme.tCAEN0614.data[10],DATA12);
+SIGNAL(NTF04_1_E,vme.qCAEN0472.data[13],DATA12);
+SIGNAL(NTF04_1_T,vme.tCAEN0614.data[13],DATA12);
+SIGNAL(NTF04_2_E,vme.qCAEN0472.data[15],DATA12);
+SIGNAL(NTF04_2_T,vme.tCAEN0614.data[15],DATA12);
+SIGNAL(NTF05_1_E,vme.qCAEN0472.data[1],DATA12);
+SIGNAL(NTF05_1_T,vme.tCAEN0614.data[1],DATA12);
+SIGNAL(NTF05_2_E,vme.qCAEN0472.data[3],DATA12);
+SIGNAL(NTF05_2_T,vme.tCAEN0614.data[3],DATA12);
+SIGNAL(NTF06_1_E,vme.qCAEN0472.data[4],DATA12);
+SIGNAL(NTF06_1_T,vme.tCAEN0614.data[4],DATA12);
+SIGNAL(NTF06_2_E,vme.qCAEN0472.data[6],DATA12);
+SIGNAL(NTF06_2_T,vme.tCAEN0614.data[6],DATA12);
+SIGNAL(NTF07_1_E,vme.qCAEN0472.data[9],DATA12);
+SIGNAL(NTF07_1_T,vme.tCAEN0614.data[9],DATA12);
+SIGNAL(NTF07_2_E,vme.qCAEN0472.data[11],DATA12);
+SIGNAL(NTF07_2_T,vme.tCAEN0614.data[11],DATA12);
+SIGNAL(NTF08_1_E,vme.qCAEN0472.data[12],DATA12);
+SIGNAL(NTF08_1_T,vme.tCAEN0614.data[12],DATA12);
+SIGNAL(NTF08_2_E,vme.qCAEN0472.data[14],DATA12);
+SIGNAL(NTF08_2_T,vme.tCAEN0614.data[14],DATA12);
+SIGNAL(NTF09_1_E,vme.qCAEN0472.data[16],DATA12);
+SIGNAL(NTF09_1_T,vme.tCAEN0614.data[16],DATA12);
+SIGNAL(NTF09_2_E,vme.qCAEN0472.data[18],DATA12);
+SIGNAL(NTF09_2_T,vme.tCAEN0614.data[18],DATA12);
+SIGNAL(NTF10_1_E,vme.qCAEN0472.data[21],DATA12);
+SIGNAL(NTF10_1_T,vme.tCAEN0614.data[21],DATA12);
+SIGNAL(NTF10_2_E,vme.qCAEN0472.data[23],DATA12);
+SIGNAL(NTF10_2_T,vme.tCAEN0614.data[23],DATA12);
+SIGNAL(NTF11_1_E,vme.qCAEN0472.data[24],DATA12);
+SIGNAL(NTF11_1_T,vme.tCAEN0614.data[24],DATA12);
+SIGNAL(NTF11_2_E,vme.qCAEN0472.data[26],DATA12);
+SIGNAL(NTF11_2_T,vme.tCAEN0614.data[26],DATA12);
+SIGNAL(NTF12_1_E,vme.qCAEN0472.data[29],DATA12);
+SIGNAL(NTF12_1_T,vme.tCAEN0614.data[29],DATA12);
+SIGNAL(NTF12_2_E,vme.qCAEN0472.data[31],DATA12);
+SIGNAL(NTF12_2_T,vme.tCAEN0614.data[31],DATA12);
+SIGNAL(NTF13_1_E,vme.qCAEN0472.data[17],DATA12);
+SIGNAL(NTF13_1_T,vme.tCAEN0614.data[17],DATA12);
+SIGNAL(NTF13_2_E,vme.qCAEN0472.data[19],DATA12);
+SIGNAL(NTF13_2_T,vme.tCAEN0614.data[19],DATA12);
+SIGNAL(NTF14_1_E,vme.qCAEN0472.data[20],DATA12);
+SIGNAL(NTF14_1_T,vme.tCAEN0614.data[20],DATA12);
+SIGNAL(NTF14_2_E,vme.qCAEN0472.data[22],DATA12);
+SIGNAL(NTF14_2_T,vme.tCAEN0614.data[22],DATA12);
+SIGNAL(NTF15_1_E,vme.qCAEN0472.data[25],DATA12);
+SIGNAL(NTF15_1_T,vme.tCAEN0614.data[25],DATA12);
+SIGNAL(NTF15_2_E,vme.qCAEN0472.data[27],DATA12);
+SIGNAL(NTF15_2_T,vme.tCAEN0614.data[27],DATA12);
+SIGNAL(NTF16_1_E,vme.qCAEN0472.data[28],DATA12);
+SIGNAL(NTF16_1_T,vme.tCAEN0614.data[28],DATA12);
+SIGNAL(NTF16_2_E,vme.qCAEN0472.data[30],DATA12);
+SIGNAL(NTF16_2_T,vme.tCAEN0614.data[30],DATA12);
+SIGNAL(PILEUP_1_T,pileup.tdc.data,DATA16);
+SIGNAL(POS01_01_E,camac.qSIA0429.data[0],DATA12);
+SIGNAL(POS01_01_T,camac.tSIA0426.data[0],DATA12);
+SIGNAL(POS01_02_E,camac.qSIA0429.data[1],DATA12);
+SIGNAL(POS01_02_T,camac.tSIA0426.data[1],DATA12);
+SIGNAL(POS01_03_E,camac.qSIA0429.data[2],DATA12);
+SIGNAL(POS01_03_T,camac.tSIA0426.data[2],DATA12);
+SIGNAL(POS01_04_E,camac.qSIA0429.data[3],DATA12);
+SIGNAL(POS01_04_T,camac.tSIA0426.data[3],DATA12);
+SIGNAL(PSP01_01_E,camac.aPHI14829.data[0],DATA12);
+SIGNAL(PSP01_02_E,camac.aPHI14829.data[1],DATA12);
+SIGNAL(PSP01_03_E,camac.aPHI14829.data[2],DATA12);
+SIGNAL(PSP01_04_E,camac.aPHI14829.data[3],DATA12);
+SIGNAL(PSP01_05_E,camac.aPHI14829.data[13],DATA12);
+SIGNAL(PSP02_01_E,camac.aPHI14829.data[4],DATA12);
+SIGNAL(PSP02_02_E,camac.aPHI14829.data[5],DATA12);
+SIGNAL(PSP02_03_E,camac.aPHI14829.data[6],DATA12);
+SIGNAL(PSP02_04_E,camac.aPHI14829.data[7],DATA12);
+SIGNAL(PSP02_05_E,camac.aPHI14829.data[12],DATA12);
+SIGNAL(ROL01_01_E,camac.qSIA0429.data[4],DATA12);
+SIGNAL(ROL01_02_E,camac.qSIA0429.data[5],DATA12);
+SIGNAL(ROL01_03_E,camac.qSIA0429.data[6],DATA12);
+SIGNAL(ROL01_04_E,camac.qSIA0429.data[7],DATA12);
+SIGNAL(SCI01_01_E,camac.qSIA0480.data[7],DATA12);
+SIGNAL(SCI01_01_T,camac.tSIA0400.data[4],DATA12);
+SIGNAL(SCI01_02_E,camac.qSIA0480.data[6],DATA12);
+SIGNAL(SCI01_02_T,camac.tSIA0400.data[5],DATA12);
+SIGNAL(SCI02_01_E,camac.qSIA0480.data[4],DATA12);
+SIGNAL(SCI02_01_T,camac.tSIA0400.data[6],DATA12);
+SIGNAL(SCI02_02_E,camac.qSIA0480.data[5],DATA12);
+SIGNAL(SCI02_02_T,camac.tSIA0400.data[7],DATA12);
+SIGNAL(STR1_01_E,camac.qSIA0458.data[0],DATA12);
+SIGNAL(STR1_01_T,camac.tC_FRS120.data[0],DATA12);
+SIGNAL(STR2_01_E,camac.qSIA0458.data[1],DATA12);
+SIGNAL(STR2_01_T,camac.tC_FRS120.data[1],DATA12);
+SIGNAL(TCALMT_1_T,pileup.tcal.data,DATA16);
+SIGNAL(TFW01_1_E,fastbus1.Q17320.data[32],DATA12);
+SIGNAL(TFW01_1_T,fastbus1.T81855.data[48],DATA12);
+SIGNAL(TFW01_2_E,fastbus1.Q17320.data[34],DATA12);
+SIGNAL(TFW01_2_T,fastbus1.T81855.data[50],DATA12);
+SIGNAL(TFW02_1_E,fastbus1.Q17320.data[36],DATA12);
+SIGNAL(TFW02_1_T,fastbus1.T81855.data[52],DATA12);
+SIGNAL(TFW02_2_E,fastbus1.Q17320.data[38],DATA12);
+SIGNAL(TFW02_2_T,fastbus1.T81855.data[54],DATA12);
+SIGNAL(TFW03_1_E,fastbus1.Q17320.data[40],DATA12);
+SIGNAL(TFW03_1_T,fastbus1.T81855.data[56],DATA12);
+SIGNAL(TFW03_2_E,fastbus1.Q17320.data[42],DATA12);
+SIGNAL(TFW03_2_T,fastbus1.T81855.data[58],DATA12);
+SIGNAL(TFW04_1_E,fastbus1.Q17320.data[44],DATA12);
+SIGNAL(TFW04_1_T,fastbus1.T81855.data[60],DATA12);
+SIGNAL(TFW04_2_E,fastbus1.Q17320.data[46],DATA12);
+SIGNAL(TFW04_2_T,fastbus1.T81855.data[62],DATA12);
+SIGNAL(TFW05_1_E,fastbus1.Q17320.data[33],DATA12);
+SIGNAL(TFW05_1_T,fastbus1.T81855.data[49],DATA12);
+SIGNAL(TFW05_2_E,fastbus1.Q17320.data[35],DATA12);
+SIGNAL(TFW05_2_T,fastbus1.T81855.data[51],DATA12);
+SIGNAL(TFW06_1_E,fastbus1.Q17320.data[37],DATA12);
+SIGNAL(TFW06_1_T,fastbus1.T81855.data[53],DATA12);
+SIGNAL(TFW06_2_E,fastbus1.Q17320.data[39],DATA12);
+SIGNAL(TFW06_2_T,fastbus1.T81855.data[55],DATA12);
+SIGNAL(TFW07_1_E,fastbus1.Q17320.data[41],DATA12);
+SIGNAL(TFW07_1_T,fastbus1.T81855.data[57],DATA12);
+SIGNAL(TFW07_2_E,fastbus1.Q17320.data[43],DATA12);
+SIGNAL(TFW07_2_T,fastbus1.T81855.data[59],DATA12);
+SIGNAL(TFW08_1_E,fastbus1.Q17320.data[45],DATA12);
+SIGNAL(TFW08_1_T,fastbus1.T81855.data[61],DATA12);
+SIGNAL(TFW08_2_E,fastbus1.Q17320.data[47],DATA12);
+SIGNAL(TFW08_2_T,fastbus1.T81855.data[63],DATA12);
+SIGNAL(TFW09_1_E,fastbus1.Q17320.data[16],DATA12);
+SIGNAL(TFW09_1_T,fastbus1.T81855.data[32],DATA12);
+SIGNAL(TFW09_2_E,fastbus1.Q17320.data[18],DATA12);
+SIGNAL(TFW09_2_T,fastbus1.T81855.data[34],DATA12);
+SIGNAL(TFW10_1_E,fastbus1.Q17320.data[20],DATA12);
+SIGNAL(TFW10_1_T,fastbus1.T81855.data[36],DATA12);
+SIGNAL(TFW10_2_E,fastbus1.Q17320.data[22],DATA12);
+SIGNAL(TFW10_2_T,fastbus1.T81855.data[38],DATA12);
+SIGNAL(TFW11_1_E,fastbus1.Q17320.data[24],DATA12);
+SIGNAL(TFW11_1_T,fastbus1.T81855.data[40],DATA12);
+SIGNAL(TFW11_2_E,fastbus1.Q17320.data[26],DATA12);
+SIGNAL(TFW11_2_T,fastbus1.T81855.data[42],DATA12);
+SIGNAL(TFW12_1_E,fastbus1.Q17320.data[28],DATA12);
+SIGNAL(TFW12_1_T,fastbus1.T81855.data[44],DATA12);
+SIGNAL(TFW12_2_E,fastbus1.Q17320.data[30],DATA12);
+SIGNAL(TFW12_2_T,fastbus1.T81855.data[46],DATA12);
+SIGNAL(TFW13_1_E,fastbus1.Q17320.data[17],DATA12);
+SIGNAL(TFW13_1_T,fastbus1.T81855.data[33],DATA12);
+SIGNAL(TFW13_2_E,fastbus1.Q17320.data[19],DATA12);
+SIGNAL(TFW13_2_T,fastbus1.T81855.data[35],DATA12);
+SIGNAL(TFW14_1_E,fastbus1.Q17320.data[21],DATA12);
+SIGNAL(TFW14_1_T,fastbus1.T81855.data[37],DATA12);
+SIGNAL(TFW14_2_E,fastbus1.Q17320.data[23],DATA12);
+SIGNAL(TFW14_2_T,fastbus1.T81855.data[39],DATA12);
+SIGNAL(TFW15_1_E,fastbus1.Q17320.data[25],DATA12);
+SIGNAL(TFW15_1_T,fastbus1.T81855.data[41],DATA12);
+SIGNAL(TFW15_2_E,fastbus1.Q17320.data[27],DATA12);
+SIGNAL(TFW15_2_T,fastbus1.T81855.data[43],DATA12);
+SIGNAL(TFW16_1_E,fastbus1.Q17320.data[29],DATA12);
+SIGNAL(TFW16_1_T,fastbus1.T81855.data[45],DATA12);
+SIGNAL(TFW16_2_E,fastbus1.Q17320.data[31],DATA12);
+SIGNAL(TFW16_2_T,fastbus1.T81855.data[47],DATA12);
+SIGNAL(TFW17_1_E,fastbus1.Q17320.data[80],DATA12);
+SIGNAL(TFW17_1_T,fastbus1.T81855.data[16],DATA12);
+SIGNAL(TFW17_2_E,fastbus1.Q17320.data[82],DATA12);
+SIGNAL(TFW17_2_T,fastbus1.T81855.data[18],DATA12);
+SIGNAL(TFW18_1_E,fastbus1.Q17320.data[84],DATA12);
+SIGNAL(TFW18_1_T,fastbus1.T81855.data[20],DATA12);
+SIGNAL(TFW18_2_E,fastbus1.Q17320.data[86],DATA12);
+SIGNAL(TFW18_2_T,fastbus1.T81855.data[22],DATA12);
+SIGNAL(TFW19_1_E,fastbus1.Q17320.data[88],DATA12);
+SIGNAL(TFW19_1_T,fastbus1.T81855.data[24],DATA12);
+SIGNAL(TFW19_2_E,fastbus1.Q17320.data[90],DATA12);
+SIGNAL(TFW19_2_T,fastbus1.T81855.data[26],DATA12);
+SIGNAL(TFW20_1_E,fastbus1.Q17320.data[92],DATA12);
+SIGNAL(TFW20_1_T,fastbus1.T81855.data[28],DATA12);
+SIGNAL(TFW20_2_E,fastbus1.Q17320.data[94],DATA12);
+SIGNAL(TFW20_2_T,fastbus1.T81855.data[30],DATA12);
+SIGNAL(TFW21_1_E,fastbus1.Q17320.data[81],DATA12);
+SIGNAL(TFW21_1_T,fastbus1.T81855.data[17],DATA12);
+SIGNAL(TFW21_2_E,fastbus1.Q17320.data[83],DATA12);
+SIGNAL(TFW21_2_T,fastbus1.T81855.data[19],DATA12);
+SIGNAL(TFW22_1_E,fastbus1.Q17320.data[85],DATA12);
+SIGNAL(TFW22_1_T,fastbus1.T81855.data[21],DATA12);
+SIGNAL(TFW22_2_E,fastbus1.Q17320.data[87],DATA12);
+SIGNAL(TFW22_2_T,fastbus1.T81855.data[23],DATA12);
+SIGNAL(TFW23_1_E,fastbus1.Q17320.data[89],DATA12);
+SIGNAL(TFW23_1_T,fastbus1.T81855.data[25],DATA12);
+SIGNAL(TFW23_2_E,fastbus1.Q17320.data[91],DATA12);
+SIGNAL(TFW23_2_T,fastbus1.T81855.data[27],DATA12);
+SIGNAL(TFW24_1_E,fastbus1.Q17320.data[93],DATA12);
+SIGNAL(TFW24_1_T,fastbus1.T81855.data[29],DATA12);
+SIGNAL(TFW24_2_E,fastbus1.Q17320.data[95],DATA12);
+SIGNAL(TFW24_2_T,fastbus1.T81855.data[31],DATA12);
+SIGNAL(TFW25_1_E,fastbus1.Q17320.data[48],DATA12);
+SIGNAL(TFW25_1_T,fastbus1.T81855.data[0],DATA12);
+SIGNAL(TFW25_2_E,fastbus1.Q17320.data[50],DATA12);
+SIGNAL(TFW25_2_T,fastbus1.T81855.data[2],DATA12);
+SIGNAL(TFW26_1_E,fastbus1.Q17320.data[52],DATA12);
+SIGNAL(TFW26_1_T,fastbus1.T81855.data[4],DATA12);
+SIGNAL(TFW26_2_E,fastbus1.Q17320.data[54],DATA12);
+SIGNAL(TFW26_2_T,fastbus1.T81855.data[6],DATA12);
+SIGNAL(TFW27_1_E,fastbus1.Q17320.data[56],DATA12);
+SIGNAL(TFW27_1_T,fastbus1.T81855.data[8],DATA12);
+SIGNAL(TFW27_2_E,fastbus1.Q17320.data[58],DATA12);
+SIGNAL(TFW27_2_T,fastbus1.T81855.data[10],DATA12);
+SIGNAL(TFW28_1_E,fastbus1.Q17320.data[60],DATA12);
+SIGNAL(TFW28_1_T,fastbus1.T81855.data[12],DATA12);
+SIGNAL(TFW28_2_E,fastbus1.Q17320.data[62],DATA12);
+SIGNAL(TFW28_2_T,fastbus1.T81855.data[14],DATA12);
+SIGNAL(TFW29_1_E,fastbus1.Q17320.data[49],DATA12);
+SIGNAL(TFW29_1_T,fastbus1.T81855.data[1],DATA12);
+SIGNAL(TFW29_2_E,fastbus1.Q17320.data[51],DATA12);
+SIGNAL(TFW29_2_T,fastbus1.T81855.data[3],DATA12);
+SIGNAL(TFW30_1_E,fastbus1.Q17320.data[53],DATA12);
+SIGNAL(TFW30_1_T,fastbus1.T81855.data[5],DATA12);
+SIGNAL(TFW30_2_E,fastbus1.Q17320.data[55],DATA12);
+SIGNAL(TFW30_2_T,fastbus1.T81855.data[7],DATA12);
+SIGNAL(TFW31_1_E,fastbus1.Q17320.data[57],DATA12);
+SIGNAL(TFW31_1_T,fastbus1.T81855.data[9],DATA12);
+SIGNAL(TFW31_2_E,fastbus1.Q17320.data[59],DATA12);
+SIGNAL(TFW31_2_T,fastbus1.T81855.data[11],DATA12);
+SIGNAL(TFW32_1_E,fastbus1.Q17320.data[61],DATA12);
+SIGNAL(TFW32_1_T,fastbus1.T81855.data[13],DATA12);
+SIGNAL(TFW32_2_E,fastbus1.Q17320.data[63],DATA12);
+SIGNAL(TFW32_2_T,fastbus1.T81855.data[15],DATA12);
+SIGNAL(V1_01_1_E,fastbus1.Q15372.data[48],DATA12);
+SIGNAL(V1_01_1_T,fastbus2.T81795.data[48],DATA12);
+SIGNAL(V1_01_2_E,fastbus1.Q17320.data[1],DATA12);
+SIGNAL(V1_01_2_T,fastbus1.T87024.data[49],DATA12);
+SIGNAL(V1_02_1_E,fastbus1.Q15372.data[52],DATA12);
+SIGNAL(V1_02_1_T,fastbus2.T81795.data[52],DATA12);
+SIGNAL(V1_02_2_E,fastbus1.Q17320.data[3],DATA12);
+SIGNAL(V1_02_2_T,fastbus1.T87024.data[51],DATA12);
+SIGNAL(V1_03_1_E,fastbus1.Q15372.data[56],DATA12);
+SIGNAL(V1_03_1_T,fastbus2.T81795.data[56],DATA12);
+SIGNAL(V1_03_2_E,fastbus1.Q47315.data[32],DATA12);
+SIGNAL(V1_03_2_T,fastbus1.T87044.data[48],DATA12);
+SIGNAL(V1_04_1_E,fastbus1.Q15372.data[60],DATA12);
+SIGNAL(V1_04_1_T,fastbus2.T81795.data[60],DATA12);
+SIGNAL(V1_04_2_E,fastbus1.Q47315.data[36],DATA12);
+SIGNAL(V1_04_2_T,fastbus1.T87044.data[52],DATA12);
+SIGNAL(V1_05_1_E,fastbus1.Q15372.data[49],DATA12);
+SIGNAL(V1_05_1_T,fastbus2.T81795.data[49],DATA12);
+SIGNAL(V1_05_2_E,fastbus1.Q17320.data[5],DATA12);
+SIGNAL(V1_05_2_T,fastbus1.T87024.data[53],DATA12);
+SIGNAL(V1_06_1_E,fastbus1.Q15372.data[53],DATA12);
+SIGNAL(V1_06_1_T,fastbus2.T81795.data[53],DATA12);
+SIGNAL(V1_06_2_E,fastbus1.Q17320.data[7],DATA12);
+SIGNAL(V1_06_2_T,fastbus1.T87024.data[55],DATA12);
+SIGNAL(V1_07_1_E,fastbus1.Q15372.data[57],DATA12);
+SIGNAL(V1_07_1_T,fastbus2.T81795.data[57],DATA12);
+SIGNAL(V1_07_2_E,fastbus1.Q47315.data[40],DATA12);
+SIGNAL(V1_07_2_T,fastbus1.T87044.data[56],DATA12);
+SIGNAL(V1_08_1_E,fastbus1.Q15372.data[61],DATA12);
+SIGNAL(V1_08_1_T,fastbus2.T81795.data[61],DATA12);
+SIGNAL(V1_08_2_E,fastbus1.Q47315.data[44],DATA12);
+SIGNAL(V1_08_2_T,fastbus1.T87044.data[60],DATA12);
+SIGNAL(V1_09_1_E,fastbus1.Q15372.data[50],DATA12);
+SIGNAL(V1_09_1_T,fastbus2.T81795.data[50],DATA12);
+SIGNAL(V1_09_2_E,fastbus1.Q47315.data[33],DATA12);
+SIGNAL(V1_09_2_T,fastbus1.T87044.data[49],DATA12);
+SIGNAL(V1_10_1_E,fastbus1.Q15372.data[54],DATA12);
+SIGNAL(V1_10_1_T,fastbus2.T81795.data[54],DATA12);
+SIGNAL(V1_10_2_E,fastbus1.Q47315.data[37],DATA12);
+SIGNAL(V1_10_2_T,fastbus1.T87044.data[53],DATA12);
+SIGNAL(V1_11_1_E,fastbus1.Q15372.data[58],DATA12);
+SIGNAL(V1_11_1_T,fastbus2.T81795.data[58],DATA12);
+SIGNAL(V1_11_2_E,fastbus1.Q47315.data[41],DATA12);
+SIGNAL(V1_11_2_T,fastbus1.T87044.data[57],DATA12);
+SIGNAL(V1_12_1_E,fastbus1.Q15372.data[62],DATA12);
+SIGNAL(V1_12_1_T,fastbus2.T81795.data[62],DATA12);
+SIGNAL(V1_12_2_E,fastbus1.Q47315.data[45],DATA12);
+SIGNAL(V1_12_2_T,fastbus1.T87044.data[61],DATA12);
+SIGNAL(V1_13_1_E,fastbus1.Q15372.data[51],DATA12);
+SIGNAL(V1_13_1_T,fastbus2.T81795.data[51],DATA12);
+SIGNAL(V1_13_2_E,fastbus1.Q47315.data[34],DATA12);
+SIGNAL(V1_13_2_T,fastbus1.T87044.data[50],DATA12);
+SIGNAL(V1_14_1_E,fastbus1.Q15372.data[55],DATA12);
+SIGNAL(V1_14_1_T,fastbus2.T81795.data[55],DATA12);
+SIGNAL(V1_14_2_E,fastbus1.Q47315.data[38],DATA12);
+SIGNAL(V1_14_2_T,fastbus1.T87044.data[54],DATA12);
+SIGNAL(V1_15_1_E,fastbus1.Q17320.data[0],DATA12);
+SIGNAL(V1_15_1_T,fastbus1.T87024.data[48],DATA12);
+SIGNAL(V1_15_2_E,fastbus1.Q47315.data[42],DATA12);
+SIGNAL(V1_15_2_T,fastbus1.T87044.data[58],DATA12);
+SIGNAL(V1_16_1_E,fastbus1.Q17320.data[2],DATA12);
+SIGNAL(V1_16_1_T,fastbus1.T87024.data[50],DATA12);
+SIGNAL(V1_16_2_E,fastbus1.Q47315.data[46],DATA12);
+SIGNAL(V1_16_2_T,fastbus1.T87044.data[62],DATA12);
+SIGNAL(V1_17_1_E,fastbus1.Q15372.data[59],DATA12);
+SIGNAL(V1_17_1_T,fastbus2.T81795.data[59],DATA12);
+SIGNAL(V1_17_2_E,fastbus1.Q47315.data[35],DATA12);
+SIGNAL(V1_17_2_T,fastbus1.T87044.data[51],DATA12);
+SIGNAL(V1_18_1_E,fastbus1.Q15372.data[63],DATA12);
+SIGNAL(V1_18_1_T,fastbus2.T81795.data[63],DATA12);
+SIGNAL(V1_18_2_E,fastbus1.Q47315.data[39],DATA12);
+SIGNAL(V1_18_2_T,fastbus1.T87044.data[55],DATA12);
+SIGNAL(V1_19_1_E,fastbus1.Q17320.data[4],DATA12);
+SIGNAL(V1_19_1_T,fastbus1.T87024.data[52],DATA12);
+SIGNAL(V1_19_2_E,fastbus1.Q47315.data[43],DATA12);
+SIGNAL(V1_19_2_T,fastbus1.T87044.data[59],DATA12);
+SIGNAL(V1_20_1_E,fastbus1.Q17320.data[6],DATA12);
+SIGNAL(V1_20_1_T,fastbus1.T87024.data[54],DATA12);
+SIGNAL(V1_20_2_E,fastbus1.Q47315.data[47],DATA12);
+SIGNAL(V1_20_2_T,fastbus1.T87044.data[63],DATA12);
+SIGNAL(XB001_1_E,fastbus1.Q11111.data[0],DATA12);
+SIGNAL(XB001_1_T,fastbus1.T81800.data[24],DATA12);
+SIGNAL(XB002_1_E,fastbus1.Q11111.data[2],DATA12);
+SIGNAL(XB002_1_T,fastbus1.T81800.data[26],DATA12);
+SIGNAL(XB003_1_E,fastbus1.Q11111.data[4],DATA12);
+SIGNAL(XB003_1_T,fastbus1.T81800.data[28],DATA12);
+SIGNAL(XB003_2_E,fastbus2.Q75266.data[31],DATA12);
+SIGNAL(XB004_1_E,fastbus1.Q11111.data[6],DATA12);
+SIGNAL(XB004_1_T,fastbus1.T81800.data[30],DATA12);
+SIGNAL(XB004_2_E,fastbus2.Q75266.data[7],DATA12);
+SIGNAL(XB005_1_E,fastbus1.Q11111.data[8],DATA12);
+SIGNAL(XB005_1_T,fastbus1.T81800.data[32],DATA12);
+SIGNAL(XB006_1_E,fastbus1.Q11111.data[10],DATA12);
+SIGNAL(XB006_1_T,fastbus1.T81800.data[34],DATA12);
+SIGNAL(XB007_1_E,fastbus1.Q11111.data[12],DATA12);
+SIGNAL(XB007_1_T,fastbus1.T81800.data[36],DATA12);
+SIGNAL(XB008_1_E,fastbus1.Q11111.data[14],DATA12);
+SIGNAL(XB008_1_T,fastbus1.T81800.data[38],DATA12);
+SIGNAL(XB009_1_E,fastbus1.Q46848.data[57],DATA12);
+SIGNAL(XB009_1_T,fastbus1.T81800.data[52],DATA12);
+SIGNAL(XB010_1_E,fastbus1.Q11111.data[18],DATA12);
+SIGNAL(XB010_1_T,fastbus1.T87044.data[34],DATA12);
+SIGNAL(XB010_2_E,fastbus2.Q75266.data[23],DATA12);
+SIGNAL(XB011_1_E,fastbus1.Q11111.data[20],DATA12);
+SIGNAL(XB011_1_T,fastbus1.T87044.data[36],DATA12);
+SIGNAL(XB011_2_E,fastbus2.Q75266.data[6],DATA12);
+SIGNAL(XB012_1_E,fastbus1.Q11111.data[22],DATA12);
+SIGNAL(XB012_1_T,fastbus1.T87044.data[38],DATA12);
+SIGNAL(XB012_2_E,fastbus2.Q75266.data[22],DATA12);
+SIGNAL(XB013_1_E,fastbus1.Q11111.data[24],DATA12);
+SIGNAL(XB013_1_T,fastbus1.T81800.data[8],DATA12);
+SIGNAL(XB013_2_E,fastbus2.Q75266.data[30],DATA12);
+SIGNAL(XB014_1_E,fastbus1.Q11111.data[26],DATA12);
+SIGNAL(XB014_1_T,fastbus1.T81800.data[10],DATA12);
+SIGNAL(XB014_2_E,fastbus2.Q75266.data[21],DATA12);
+SIGNAL(XB015_1_E,fastbus1.Q11111.data[28],DATA12);
+SIGNAL(XB015_1_T,fastbus1.T81800.data[12],DATA12);
+SIGNAL(XB016_1_E,fastbus1.Q11111.data[30],DATA12);
+SIGNAL(XB016_1_T,fastbus1.T81800.data[14],DATA12);
+SIGNAL(XB017_1_E,fastbus1.Q11111.data[32],DATA12);
+SIGNAL(XB017_1_T,fastbus1.T87044.data[0],DATA12);
+SIGNAL(XB018_1_E,fastbus1.Q11111.data[34],DATA12);
+SIGNAL(XB018_1_T,fastbus1.T87044.data[2],DATA12);
+SIGNAL(XB019_1_E,fastbus1.Q11111.data[36],DATA12);
+SIGNAL(XB019_1_T,fastbus1.T87044.data[4],DATA12);
+SIGNAL(XB020_1_E,fastbus1.Q11111.data[38],DATA12);
+SIGNAL(XB020_1_T,fastbus1.T87044.data[6],DATA12);
+SIGNAL(XB021_1_E,fastbus1.Q11111.data[40],DATA12);
+SIGNAL(XB021_1_T,fastbus1.T87044.data[8],DATA12);
+SIGNAL(XB022_1_E,fastbus1.Q11111.data[42],DATA12);
+SIGNAL(XB022_1_T,fastbus1.T87044.data[10],DATA12);
+SIGNAL(XB023_1_E,fastbus1.Q11111.data[44],DATA12);
+SIGNAL(XB023_1_T,fastbus1.T87044.data[12],DATA12);
+SIGNAL(XB023_2_E,fastbus2.Q75266.data[29],DATA12);
+SIGNAL(XB024_1_E,fastbus1.Q11111.data[46],DATA12);
+SIGNAL(XB024_1_T,fastbus1.T87044.data[14],DATA12);
+SIGNAL(XB024_2_E,fastbus2.Q75266.data[15],DATA12);
+SIGNAL(XB025_1_E,fastbus1.Q11111.data[48],DATA12);
+SIGNAL(XB025_1_T,fastbus1.T87024.data[24],DATA12);
+SIGNAL(XB025_2_E,fastbus2.Q75266.data[28],DATA12);
+SIGNAL(XB026_1_E,fastbus1.Q11111.data[50],DATA12);
+SIGNAL(XB026_1_T,fastbus1.T87024.data[26],DATA12);
+SIGNAL(XB026_2_E,fastbus2.Q75266.data[5],DATA12);
+SIGNAL(XB027_1_E,fastbus1.Q11111.data[52],DATA12);
+SIGNAL(XB027_1_T,fastbus1.T87024.data[28],DATA12);
+SIGNAL(XB027_2_E,fastbus2.Q75266.data[14],DATA12);
+SIGNAL(XB028_1_E,fastbus1.Q11111.data[54],DATA12);
+SIGNAL(XB028_1_T,fastbus1.T87024.data[30],DATA12);
+SIGNAL(XB028_2_E,fastbus2.Q75266.data[4],DATA12);
+SIGNAL(XB029_1_E,fastbus1.Q11111.data[56],DATA12);
+SIGNAL(XB029_1_T,fastbus1.T87024.data[32],DATA12);
+SIGNAL(XB030_1_E,fastbus1.Q11111.data[58],DATA12);
+SIGNAL(XB030_1_T,fastbus1.T87024.data[34],DATA12);
+SIGNAL(XB031_1_E,fastbus1.Q11111.data[60],DATA12);
+SIGNAL(XB031_1_T,fastbus1.T87024.data[36],DATA12);
+SIGNAL(XB032_1_E,fastbus1.Q11111.data[62],DATA12);
+SIGNAL(XB032_1_T,fastbus1.T87024.data[38],DATA12);
+SIGNAL(XB033_1_E,fastbus1.Q11111.data[33],DATA12);
+SIGNAL(XB033_1_T,fastbus1.T87044.data[1],DATA12);
+SIGNAL(XB034_1_E,fastbus1.Q11111.data[35],DATA12);
+SIGNAL(XB034_1_T,fastbus1.T87044.data[3],DATA12);
+SIGNAL(XB035_1_E,fastbus1.Q11111.data[37],DATA12);
+SIGNAL(XB035_1_T,fastbus1.T87044.data[5],DATA12);
+SIGNAL(XB036_1_E,fastbus1.Q11111.data[39],DATA12);
+SIGNAL(XB036_1_T,fastbus1.T87044.data[7],DATA12);
+SIGNAL(XB037_1_E,fastbus1.Q11111.data[41],DATA12);
+SIGNAL(XB037_1_T,fastbus1.T87044.data[9],DATA12);
+SIGNAL(XB038_1_E,fastbus1.Q11111.data[43],DATA12);
+SIGNAL(XB038_1_T,fastbus1.T87044.data[11],DATA12);
+SIGNAL(XB039_1_E,fastbus1.Q11111.data[45],DATA12);
+SIGNAL(XB039_1_T,fastbus1.T87044.data[13],DATA12);
+SIGNAL(XB039_2_E,fastbus2.Q75266.data[3],DATA12);
+SIGNAL(XB040_1_E,fastbus1.Q11111.data[47],DATA12);
+SIGNAL(XB040_1_T,fastbus1.T87044.data[15],DATA12);
+SIGNAL(XB040_2_E,fastbus2.Q75266.data[20],DATA12);
+SIGNAL(XB041_1_E,fastbus1.Q11111.data[17],DATA12);
+SIGNAL(XB041_1_T,fastbus1.T87044.data[33],DATA12);
+SIGNAL(XB041_2_E,fastbus2.Q75266.data[19],DATA12);
+SIGNAL(XB042_1_E,fastbus1.Q11111.data[19],DATA12);
+SIGNAL(XB042_1_T,fastbus1.T87044.data[35],DATA12);
+SIGNAL(XB042_2_E,fastbus2.Q75266.data[13],DATA12);
+SIGNAL(XB043_1_E,fastbus1.Q11111.data[21],DATA12);
+SIGNAL(XB043_1_T,fastbus1.T87044.data[37],DATA12);
+SIGNAL(XB043_2_E,fastbus2.Q75266.data[27],DATA12);
+SIGNAL(XB044_1_E,fastbus1.Q11111.data[23],DATA12);
+SIGNAL(XB044_1_T,fastbus1.T87044.data[39],DATA12);
+SIGNAL(XB044_2_E,fastbus2.Q75266.data[26],DATA12);
+SIGNAL(XB045_1_E,fastbus1.Q11111.data[25],DATA12);
+SIGNAL(XB045_1_T,fastbus1.T81800.data[9],DATA12);
+SIGNAL(XB045_2_E,fastbus2.Q75266.data[18],DATA12);
+SIGNAL(XB046_1_E,fastbus1.Q11111.data[27],DATA12);
+SIGNAL(XB046_1_T,fastbus1.T81800.data[11],DATA12);
+SIGNAL(XB047_1_E,fastbus1.Q11111.data[29],DATA12);
+SIGNAL(XB047_1_T,fastbus1.T81800.data[13],DATA12);
+SIGNAL(XB048_1_E,fastbus1.Q11111.data[31],DATA12);
+SIGNAL(XB048_1_T,fastbus1.T81800.data[15],DATA12);
+SIGNAL(XB049_1_E,fastbus1.Q11111.data[1],DATA12);
+SIGNAL(XB049_1_T,fastbus1.T81800.data[25],DATA12);
+SIGNAL(XB050_1_E,fastbus1.Q11111.data[3],DATA12);
+SIGNAL(XB050_1_T,fastbus1.T81800.data[27],DATA12);
+SIGNAL(XB051_1_E,fastbus1.Q11111.data[5],DATA12);
+SIGNAL(XB051_1_T,fastbus1.T81800.data[29],DATA12);
+SIGNAL(XB052_1_E,fastbus1.Q11111.data[7],DATA12);
+SIGNAL(XB052_1_T,fastbus1.T81800.data[31],DATA12);
+SIGNAL(XB053_1_E,fastbus1.Q11111.data[9],DATA12);
+SIGNAL(XB053_1_T,fastbus1.T81800.data[33],DATA12);
+SIGNAL(XB054_1_E,fastbus1.Q11111.data[11],DATA12);
+SIGNAL(XB054_1_T,fastbus1.T81800.data[35],DATA12);
+SIGNAL(XB055_1_E,fastbus1.Q11111.data[13],DATA12);
+SIGNAL(XB055_1_T,fastbus1.T81800.data[37],DATA12);
+SIGNAL(XB056_1_E,fastbus1.Q11111.data[15],DATA12);
+SIGNAL(XB056_1_T,fastbus1.T81800.data[39],DATA12);
+SIGNAL(XB057_1_E,fastbus1.Q47342.data[64],DATA12);
+SIGNAL(XB057_1_T,fastbus1.T87024.data[0],DATA12);
+SIGNAL(XB057_2_E,fastbus2.Q75266.data[25],DATA12);
+SIGNAL(XB058_1_E,fastbus1.Q47342.data[66],DATA12);
+SIGNAL(XB058_1_T,fastbus1.T87024.data[2],DATA12);
+SIGNAL(XB058_2_E,fastbus2.Q75266.data[12],DATA12);
+SIGNAL(XB059_1_E,fastbus1.Q47342.data[68],DATA12);
+SIGNAL(XB059_1_T,fastbus1.T87024.data[4],DATA12);
+SIGNAL(XB059_2_E,fastbus2.Q75266.data[24],DATA12);
+SIGNAL(XB060_1_E,fastbus1.Q47342.data[70],DATA12);
+SIGNAL(XB060_1_T,fastbus1.T87024.data[6],DATA12);
+SIGNAL(XB060_2_E,fastbus2.Q75266.data[11],DATA12);
+SIGNAL(XB061_1_E,fastbus1.Q47342.data[72],DATA12);
+SIGNAL(XB061_1_T,fastbus1.T87024.data[8],DATA12);
+SIGNAL(XB061_2_E,fastbus2.Q75266.data[2],DATA12);
+SIGNAL(XB062_1_E,fastbus1.Q47342.data[74],DATA12);
+SIGNAL(XB062_1_T,fastbus1.T87024.data[10],DATA12);
+SIGNAL(XB062_2_E,fastbus2.Q75266.data[10],DATA12);
+SIGNAL(XB063_1_E,fastbus1.Q47342.data[76],DATA12);
+SIGNAL(XB063_1_T,fastbus1.T87024.data[12],DATA12);
+SIGNAL(XB063_2_E,fastbus2.Q75266.data[1],DATA12);
+SIGNAL(XB064_1_E,fastbus1.Q47342.data[78],DATA12);
+SIGNAL(XB064_1_T,fastbus1.T87024.data[14],DATA12);
+SIGNAL(XB064_2_E,fastbus2.Q75266.data[9],DATA12);
+SIGNAL(XB065_1_E,fastbus1.Q11111.data[64],DATA12);
+SIGNAL(XB065_1_T,fastbus1.T81800.data[40],DATA12);
+SIGNAL(XB065_2_E,fastbus2.Q75266.data[0],DATA12);
+SIGNAL(XB066_1_E,fastbus1.Q11111.data[66],DATA12);
+SIGNAL(XB066_1_T,fastbus1.T81800.data[42],DATA12);
+SIGNAL(XB067_1_E,fastbus1.Q11111.data[68],DATA12);
+SIGNAL(XB067_1_T,fastbus1.T81800.data[44],DATA12);
+SIGNAL(XB068_1_E,fastbus1.Q11111.data[70],DATA12);
+SIGNAL(XB068_1_T,fastbus1.T81800.data[46],DATA12);
+SIGNAL(XB069_1_E,fastbus1.Q11111.data[72],DATA12);
+SIGNAL(XB069_1_T,fastbus1.T87024.data[40],DATA12);
+SIGNAL(XB070_1_E,fastbus1.Q11111.data[74],DATA12);
+SIGNAL(XB070_1_T,fastbus1.T87024.data[42],DATA12);
+SIGNAL(XB071_1_E,fastbus1.Q11111.data[76],DATA12);
+SIGNAL(XB071_1_T,fastbus1.T87024.data[44],DATA12);
+SIGNAL(XB072_1_E,fastbus1.Q11111.data[78],DATA12);
+SIGNAL(XB072_1_T,fastbus1.T87024.data[46],DATA12);
+SIGNAL(XB073_1_E,fastbus1.Q11111.data[16],DATA12);
+SIGNAL(XB073_1_T,fastbus1.T87044.data[32],DATA12);
+SIGNAL(XB074_1_E,fastbus1.Q46848.data[51],DATA12);
+SIGNAL(XB074_1_T,fastbus1.T81800.data[63],DATA12);
+SIGNAL(XB075_1_E,fastbus1.Q46848.data[53],DATA12);
+SIGNAL(XB075_1_T,fastbus1.T81800.data[49],DATA12);
+SIGNAL(XB076_1_E,fastbus1.Q46848.data[55],DATA12);
+SIGNAL(XB076_1_T,fastbus1.T81800.data[51],DATA12);
+SIGNAL(XB078_1_E,fastbus1.Q46848.data[59],DATA12);
+SIGNAL(XB078_1_T,fastbus1.T81800.data[56],DATA12);
+SIGNAL(XB078_2_E,fastbus2.Q75266.data[8],DATA12);
+SIGNAL(XB079_1_E,fastbus1.Q46848.data[61],DATA12);
+SIGNAL(XB079_1_T,fastbus1.T81800.data[57],DATA12);
+SIGNAL(XB079_2_E,fastbus2.Q75266.data[17],DATA12);
+SIGNAL(XB080_1_E,fastbus1.Q46848.data[63],DATA12);
+SIGNAL(XB080_1_T,fastbus1.T81800.data[58],DATA12);
+SIGNAL(XB080_2_E,fastbus2.Q75266.data[16],DATA12);
+SIGNAL(XB083_1_E,fastbus1.Q11111.data[53],DATA12);
+SIGNAL(XB083_1_T,fastbus1.T87024.data[29],DATA12);
+SIGNAL(XB084_1_E,fastbus1.Q11111.data[55],DATA12);
+SIGNAL(XB084_1_T,fastbus1.T87024.data[31],DATA12);
+SIGNAL(XB085_1_E,fastbus1.Q11111.data[57],DATA12);
+SIGNAL(XB085_1_T,fastbus1.T87024.data[33],DATA12);
+SIGNAL(XB086_1_E,fastbus1.Q11111.data[59],DATA12);
+SIGNAL(XB086_1_T,fastbus1.T87024.data[35],DATA12);
+SIGNAL(XB087_1_E,fastbus1.Q11111.data[61],DATA12);
+SIGNAL(XB087_1_T,fastbus1.T87024.data[37],DATA12);
+SIGNAL(XB087_2_E,fastbus2.Q75266.data[47],DATA12);
+SIGNAL(XB088_1_E,fastbus1.Q11111.data[63],DATA12);
+SIGNAL(XB088_1_T,fastbus1.T87024.data[39],DATA12);
+SIGNAL(XB088_2_E,fastbus2.Q75266.data[55],DATA12);
+SIGNAL(XB089_1_E,fastbus1.Q47342.data[16],DATA12);
+SIGNAL(XB089_1_T,fastbus1.T87044.data[24],DATA12);
+SIGNAL(XB089_2_E,fastbus2.Q75266.data[54],DATA12);
+SIGNAL(XB090_1_E,fastbus1.Q47342.data[18],DATA12);
+SIGNAL(XB090_1_T,fastbus1.T87044.data[26],DATA12);
+SIGNAL(XB090_2_E,fastbus2.Q75266.data[46],DATA12);
+SIGNAL(XB091_1_E,fastbus1.Q47342.data[20],DATA12);
+SIGNAL(XB091_1_T,fastbus1.T87044.data[28],DATA12);
+SIGNAL(XB091_2_E,fastbus2.Q75266.data[39],DATA12);
+SIGNAL(XB092_1_E,fastbus1.Q47342.data[22],DATA12);
+SIGNAL(XB092_1_T,fastbus1.T87044.data[30],DATA12);
+SIGNAL(XB092_2_E,fastbus2.Q75266.data[45],DATA12);
+SIGNAL(XB093_1_E,fastbus1.Q47342.data[24],DATA12);
+SIGNAL(XB093_1_T,fastbus1.T87044.data[40],DATA12);
+SIGNAL(XB093_2_E,fastbus2.Q75266.data[38],DATA12);
+SIGNAL(XB094_1_E,fastbus1.Q47342.data[26],DATA12);
+SIGNAL(XB094_1_T,fastbus1.T87044.data[42],DATA12);
+SIGNAL(XB094_2_E,fastbus2.Q75266.data[44],DATA12);
+SIGNAL(XB095_1_E,fastbus1.Q47342.data[28],DATA12);
+SIGNAL(XB095_1_T,fastbus1.T87044.data[44],DATA12);
+SIGNAL(XB095_2_E,fastbus2.Q75266.data[37],DATA12);
+SIGNAL(XB096_1_E,fastbus1.Q47342.data[30],DATA12);
+SIGNAL(XB096_1_T,fastbus1.T87044.data[46],DATA12);
+SIGNAL(XB097_1_E,fastbus1.Q47342.data[48],DATA12);
+SIGNAL(XB097_1_T,fastbus1.T87024.data[16],DATA12);
+SIGNAL(XB098_1_E,fastbus1.Q47342.data[50],DATA12);
+SIGNAL(XB098_1_T,fastbus1.T87024.data[18],DATA12);
+SIGNAL(XB099_1_E,fastbus1.Q47342.data[52],DATA12);
+SIGNAL(XB099_1_T,fastbus1.T87024.data[20],DATA12);
+SIGNAL(XB100_1_E,fastbus1.Q47342.data[54],DATA12);
+SIGNAL(XB100_1_T,fastbus1.T87024.data[22],DATA12);
+SIGNAL(XB101_1_E,fastbus1.Q47342.data[56],DATA12);
+SIGNAL(XB101_1_T,fastbus1.T81800.data[16],DATA12);
+SIGNAL(XB102_1_E,fastbus1.Q47342.data[58],DATA12);
+SIGNAL(XB102_1_T,fastbus1.T81800.data[18],DATA12);
+SIGNAL(XB103_1_E,fastbus1.Q47342.data[60],DATA12);
+SIGNAL(XB103_1_T,fastbus1.T81800.data[20],DATA12);
+SIGNAL(XB104_1_E,fastbus1.Q47342.data[62],DATA12);
+SIGNAL(XB104_1_T,fastbus1.T81800.data[22],DATA12);
+SIGNAL(XB105_1_E,fastbus1.Q47342.data[33],DATA12);
+SIGNAL(XB105_1_T,fastbus1.T87044.data[17],DATA12);
+SIGNAL(XB106_1_E,fastbus1.Q47342.data[35],DATA12);
+SIGNAL(XB106_1_T,fastbus1.T87044.data[19],DATA12);
+SIGNAL(XB107_1_E,fastbus1.Q47342.data[37],DATA12);
+SIGNAL(XB107_1_T,fastbus1.T87044.data[21],DATA12);
+SIGNAL(XB108_1_E,fastbus1.Q47342.data[39],DATA12);
+SIGNAL(XB108_1_T,fastbus1.T87044.data[23],DATA12);
+SIGNAL(XB109_1_E,fastbus1.Q47342.data[41],DATA12);
+SIGNAL(XB109_1_T,fastbus1.T81800.data[1],DATA12);
+SIGNAL(XB109_2_E,fastbus2.Q75266.data[63],DATA12);
+SIGNAL(XB110_1_E,fastbus1.Q47342.data[43],DATA12);
+SIGNAL(XB110_1_T,fastbus1.T81800.data[3],DATA12);
+SIGNAL(XB110_2_E,fastbus2.Q75266.data[43],DATA12);
+SIGNAL(XB111_1_E,fastbus1.Q47342.data[45],DATA12);
+SIGNAL(XB111_1_T,fastbus1.T81800.data[5],DATA12);
+SIGNAL(XB111_2_E,fastbus2.Q75266.data[62],DATA12);
+SIGNAL(XB112_1_E,fastbus1.Q47342.data[47],DATA12);
+SIGNAL(XB112_1_T,fastbus1.T81800.data[7],DATA12);
+SIGNAL(XB112_2_E,fastbus2.Q75266.data[53],DATA12);
+SIGNAL(XB113_1_E,fastbus1.Q47342.data[65],DATA12);
+SIGNAL(XB113_1_T,fastbus1.T87024.data[1],DATA12);
+SIGNAL(XB113_2_E,fastbus2.Q75266.data[42],DATA12);
+SIGNAL(XB114_1_E,fastbus1.Q47342.data[67],DATA12);
+SIGNAL(XB114_1_T,fastbus1.T87024.data[3],DATA12);
+SIGNAL(XB114_2_E,fastbus2.Q75266.data[61],DATA12);
+SIGNAL(XB115_1_E,fastbus1.Q47342.data[69],DATA12);
+SIGNAL(XB115_1_T,fastbus1.T87024.data[5],DATA12);
+SIGNAL(XB115_2_E,fastbus2.Q75266.data[60],DATA12);
+SIGNAL(XB116_1_E,fastbus1.Q47342.data[71],DATA12);
+SIGNAL(XB116_1_T,fastbus1.T87024.data[7],DATA12);
+SIGNAL(XB116_2_E,fastbus2.Q75266.data[52],DATA12);
+SIGNAL(XB117_1_E,fastbus1.Q47342.data[73],DATA12);
+SIGNAL(XB117_1_T,fastbus1.T87024.data[9],DATA12);
+SIGNAL(XB118_1_E,fastbus1.Q47342.data[75],DATA12);
+SIGNAL(XB118_1_T,fastbus1.T87024.data[11],DATA12);
+SIGNAL(XB119_1_E,fastbus1.Q47342.data[77],DATA12);
+SIGNAL(XB119_1_T,fastbus1.T87024.data[13],DATA12);
+SIGNAL(XB120_1_E,fastbus1.Q47342.data[79],DATA12);
+SIGNAL(XB120_1_T,fastbus1.T87024.data[15],DATA12);
+SIGNAL(XB121_1_E,fastbus1.Q47342.data[17],DATA12);
+SIGNAL(XB121_1_T,fastbus1.T87044.data[25],DATA12);
+SIGNAL(XB122_1_E,fastbus1.Q47342.data[19],DATA12);
+SIGNAL(XB122_1_T,fastbus1.T87044.data[27],DATA12);
+SIGNAL(XB123_1_E,fastbus1.Q47342.data[21],DATA12);
+SIGNAL(XB123_1_T,fastbus1.T87044.data[29],DATA12);
+SIGNAL(XB124_1_E,fastbus1.Q47342.data[23],DATA12);
+SIGNAL(XB124_1_T,fastbus1.T87044.data[31],DATA12);
+SIGNAL(XB125_1_E,fastbus1.Q47342.data[25],DATA12);
+SIGNAL(XB125_1_T,fastbus1.T87044.data[41],DATA12);
+SIGNAL(XB126_1_E,fastbus1.Q47342.data[27],DATA12);
+SIGNAL(XB126_1_T,fastbus1.T87044.data[43],DATA12);
+SIGNAL(XB126_2_E,fastbus2.Q75266.data[36],DATA12);
+SIGNAL(XB127_1_E,fastbus1.Q47342.data[29],DATA12);
+SIGNAL(XB127_1_T,fastbus1.T87044.data[45],DATA12);
+SIGNAL(XB127_2_E,fastbus2.Q75266.data[51],DATA12);
+SIGNAL(XB128_1_E,fastbus1.Q47342.data[31],DATA12);
+SIGNAL(XB128_1_T,fastbus1.T87044.data[47],DATA12);
+SIGNAL(XB128_2_E,fastbus2.Q75266.data[41],DATA12);
+SIGNAL(XB129_1_E,fastbus1.Q46848.data[48],DATA12);
+SIGNAL(XB129_1_T,fastbus1.T81800.data[60],DATA12);
+SIGNAL(XB129_2_E,fastbus2.Q75266.data[59],DATA12);
+SIGNAL(XB130_1_E,fastbus1.Q46848.data[50],DATA12);
+SIGNAL(XB130_1_T,fastbus1.T81800.data[62],DATA12);
+SIGNAL(XB130_2_E,fastbus2.Q75266.data[35],DATA12);
+SIGNAL(XB131_1_E,fastbus1.Q46848.data[52],DATA12);
+SIGNAL(XB131_1_T,fastbus1.T81800.data[48],DATA12);
+SIGNAL(XB131_2_E,fastbus2.Q75266.data[40],DATA12);
+SIGNAL(XB132_1_E,fastbus1.Q46848.data[54],DATA12);
+SIGNAL(XB132_1_T,fastbus1.T81800.data[50],DATA12);
+SIGNAL(XB132_2_E,fastbus2.Q75266.data[64],DATA12);
+SIGNAL(XB133_1_E,fastbus1.Q46848.data[56],DATA12);
+SIGNAL(XB133_1_T,fastbus1.T81800.data[61],DATA12);
+SIGNAL(XB134_1_E,fastbus1.Q46848.data[58],DATA12);
+SIGNAL(XB134_1_T,fastbus1.T81800.data[53],DATA12);
+SIGNAL(XB135_1_E,fastbus1.Q46848.data[60],DATA12);
+SIGNAL(XB135_1_T,fastbus1.T81800.data[55],DATA12);
+SIGNAL(XB136_1_E,fastbus1.Q46848.data[62],DATA12);
+SIGNAL(XB136_1_T,fastbus1.T81800.data[54],DATA12);
+SIGNAL(XB137_1_E,fastbus1.Q11111.data[65],DATA12);
+SIGNAL(XB137_1_T,fastbus1.T81800.data[41],DATA12);
+SIGNAL(XB138_1_E,fastbus1.Q11111.data[67],DATA12);
+SIGNAL(XB138_1_T,fastbus1.T81800.data[43],DATA12);
+SIGNAL(XB139_1_E,fastbus1.Q11111.data[69],DATA12);
+SIGNAL(XB139_1_T,fastbus1.T81800.data[45],DATA12);
+SIGNAL(XB140_1_E,fastbus1.Q11111.data[71],DATA12);
+SIGNAL(XB140_1_T,fastbus1.T81800.data[47],DATA12);
+SIGNAL(XB141_1_E,fastbus1.Q11111.data[73],DATA12);
+SIGNAL(XB141_1_T,fastbus1.T87024.data[41],DATA12);
+SIGNAL(XB142_1_E,fastbus1.Q11111.data[75],DATA12);
+SIGNAL(XB142_1_T,fastbus1.T87024.data[43],DATA12);
+SIGNAL(XB143_1_E,fastbus1.Q11111.data[77],DATA12);
+SIGNAL(XB143_1_T,fastbus1.T87024.data[45],DATA12);
+SIGNAL(XB143_2_E,fastbus2.Q75266.data[58],DATA12);
+SIGNAL(XB144_1_E,fastbus1.Q11111.data[79],DATA12);
+SIGNAL(XB144_1_T,fastbus1.T87024.data[47],DATA12);
+SIGNAL(XB144_2_E,fastbus2.Q75266.data[33],DATA12);
+SIGNAL(XB145_1_E,fastbus1.Q47342.data[32],DATA12);
+SIGNAL(XB145_1_T,fastbus1.T87044.data[16],DATA12);
+SIGNAL(XB145_2_E,fastbus2.Q75266.data[50],DATA12);
+SIGNAL(XB146_1_E,fastbus1.Q47342.data[34],DATA12);
+SIGNAL(XB146_1_T,fastbus1.T87044.data[18],DATA12);
+SIGNAL(XB146_2_E,fastbus2.Q75266.data[57],DATA12);
+SIGNAL(XB147_1_E,fastbus1.Q47342.data[36],DATA12);
+SIGNAL(XB147_1_T,fastbus1.T87044.data[20],DATA12);
+SIGNAL(XB147_2_E,fastbus2.Q75266.data[49],DATA12);
+SIGNAL(XB148_1_E,fastbus1.Q47342.data[38],DATA12);
+SIGNAL(XB148_1_T,fastbus1.T87044.data[22],DATA12);
+SIGNAL(XB149_1_E,fastbus1.Q47342.data[40],DATA12);
+SIGNAL(XB149_1_T,fastbus1.T81800.data[0],DATA12);
+SIGNAL(XB150_1_E,fastbus1.Q47342.data[42],DATA12);
+SIGNAL(XB150_1_T,fastbus1.T81800.data[2],DATA12);
+SIGNAL(XB151_1_E,fastbus1.Q47342.data[44],DATA12);
+SIGNAL(XB151_1_T,fastbus1.T81800.data[4],DATA12);
+SIGNAL(XB152_1_E,fastbus1.Q47342.data[46],DATA12);
+SIGNAL(XB152_1_T,fastbus1.T81800.data[6],DATA12);
+SIGNAL(XB153_1_E,fastbus1.Q47342.data[49],DATA12);
+SIGNAL(XB153_1_T,fastbus1.T87024.data[17],DATA12);
+SIGNAL(XB154_1_E,fastbus1.Q47342.data[51],DATA12);
+SIGNAL(XB154_1_T,fastbus1.T87024.data[19],DATA12);
+SIGNAL(XB155_1_E,fastbus1.Q47342.data[53],DATA12);
+SIGNAL(XB155_1_T,fastbus1.T87024.data[21],DATA12);
+SIGNAL(XB155_2_E,fastbus2.Q75266.data[48],DATA12);
+SIGNAL(XB156_1_E,fastbus1.Q47342.data[55],DATA12);
+SIGNAL(XB156_1_T,fastbus1.T87024.data[23],DATA12);
+SIGNAL(XB156_2_E,fastbus2.Q75266.data[56],DATA12);
+SIGNAL(XB157_1_E,fastbus1.Q47342.data[57],DATA12);
+SIGNAL(XB157_1_T,fastbus1.T81800.data[17],DATA12);
+SIGNAL(XB157_2_E,fastbus2.Q75266.data[32],DATA12);
+SIGNAL(XB158_1_E,fastbus1.Q47342.data[59],DATA12);
+SIGNAL(XB158_1_T,fastbus1.T81800.data[19],DATA12);
+SIGNAL(XB159_1_E,fastbus1.Q47342.data[61],DATA12);
+SIGNAL(XB159_1_T,fastbus1.T81800.data[21],DATA12);
+SIGNAL(XB160_1_E,fastbus1.Q47342.data[63],DATA12);
+SIGNAL(XB160_1_T,fastbus1.T81800.data[23],DATA12);
+SIGNAL(XB161_1_E,fastbus1.Q11111.data[49],DATA12);
+SIGNAL(XB161_1_T,fastbus1.T87024.data[25],DATA12);
+SIGNAL(XB162_1_E,fastbus1.Q11111.data[51],DATA12);
+SIGNAL(XB162_1_T,fastbus1.T87024.data[27],DATA12);
+SIGNAL(XBSUM_1_E,camac.qSIA0458.data[7],DATA12);
+SIGNAL(IPED,,uint16);
+SIGNAL(SST2_1024_E,,DATA12);
+SIGNAL(TCALE,,float);
+SIGNAL(TCALT,,float);
+SIGNAL( ZERO_SUPPRESS:CS1);
+SIGNAL( ZERO_SUPPRESS:CV1);
+SIGNAL( ZERO_SUPPRESS:FGR1_1);
+SIGNAL( ZERO_SUPPRESS:GFI1_1);
+SIGNAL( ZERO_SUPPRESS:N1_1);
+SIGNAL( ZERO_SUPPRESS:NTF1);
+SIGNAL( NO_INDEX_LIST(16):PILEUP);
+SIGNAL( ZERO_SUPPRESS:SST2_1024);
+SIGNAL( NO_INDEX_LIST(16):TCALMT);
+SIGNAL( ZERO_SUPPRESS:TFW1);
+SIGNAL( ZERO_SUPPRESS:V1_1);
+SIGNAL( ZERO_SUPPRESS:XB1);
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/

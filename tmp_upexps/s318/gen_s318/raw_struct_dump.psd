@@ -1,0 +1,1518 @@
+
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+class raw_event_GFI
+{
+  DATA12 E;
+  DATA12 T;
+} ;
+class raw_event_N
+{
+  DATA12 E;
+  DATA12 T;
+} ;
+class raw_event_NTF
+{
+  DATA12 E;
+  DATA12 T;
+} ;
+class raw_event_POS
+{
+  DATA12 E;
+  DATA12 T;
+} ;
+class raw_event_PSP
+{
+  DATA12 E;
+} ;
+class raw_event_ROL
+{
+  DATA12 E;
+} ;
+class raw_event_SCI
+{
+  DATA12 E;
+  DATA12 T;
+} ;
+class raw_event_STR
+{
+  DATA12 E;
+  DATA12 T;
+} ;
+class raw_event_TFW
+{
+  DATA12 E;
+  DATA12 T;
+} ;
+class raw_event_V
+{
+  DATA12 E;
+  DATA12 T;
+} ;
+class raw_event_XB
+{
+  DATA12 E;
+  DATA12 T;
+} ;
+class raw_event_XBSUM
+{
+  DATA12 E;
+} ;
+class raw_event_SST
+{
+  DATA12 E;
+} ;
+class raw_event_MASTER
+{
+  DATA32 ACCEPT;
+  DATA32 WANTED;
+} ;
+class raw_event_PILEUP
+{
+  DATA16 T;
+} ;
+class raw_event : public raw_event_base
+{
+  raw_array_zero_suppress<raw_event_GFI,raw_event_GFI,35> GFI[3];
+  raw_array_zero_suppress_1<raw_event_N,raw_event_N[2],20,2> N[10];
+  raw_array_zero_suppress_1<raw_event_NTF,raw_event_NTF[2],16,2> NTF;
+  raw_event_POS POS[1][4];
+  raw_event_PSP PSP[2][5];
+  raw_event_ROL ROL[1][4];
+  raw_event_SCI SCI[2][2];
+  raw_event_STR STR[2][1];
+  raw_array_zero_suppress_1<raw_event_TFW,raw_event_TFW[2],32,2> TFW;
+  raw_array_zero_suppress_1<raw_event_V,raw_event_V[2],20,2> V[1];
+  raw_array_zero_suppress_1<raw_event_XB,raw_event_XB[2],162,2> XB;
+  raw_event_XBSUM XBSUM[1];
+  raw_array_zero_suppress<raw_event_SST,raw_event_SST,1024> SST[6];
+  raw_event_MASTER MASTER;
+  raw_list_ii_zero_suppress<raw_event_PILEUP,raw_event_PILEUP,16> PILEUP;
+  uint16 IPED;
+  float TCALT;
+  float TCALE;
+} ;
+class raw_sticky : public raw_sticky_base
+{
+  ;
+} ;
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/
+
+
+/** BEGIN_MIRROR_STRUCT ************************************************
+ *
+ * Mirror (1 to 1) structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+#ifndef USER_DEF_raw_event_GFI
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_GFI)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_ITEM_CTRL(T);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_GFI);
+};
+#endif//USER_DEF_raw_event_GFI
+
+#ifndef USER_DEF_raw_event_N
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_N)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_ITEM_CTRL(T);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_N);
+};
+#endif//USER_DEF_raw_event_N
+
+#ifndef USER_DEF_raw_event_NTF
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_NTF)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_ITEM_CTRL(T);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_NTF);
+};
+#endif//USER_DEF_raw_event_NTF
+
+#ifndef USER_DEF_raw_event_POS
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_POS)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_ITEM_CTRL(T);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_POS);
+};
+#endif//USER_DEF_raw_event_POS
+
+#ifndef USER_DEF_raw_event_PSP
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_PSP)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_PSP);
+};
+#endif//USER_DEF_raw_event_PSP
+
+#ifndef USER_DEF_raw_event_ROL
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_ROL)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_ROL);
+};
+#endif//USER_DEF_raw_event_ROL
+
+#ifndef USER_DEF_raw_event_SCI
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_SCI)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_ITEM_CTRL(T);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_SCI);
+};
+#endif//USER_DEF_raw_event_SCI
+
+#ifndef USER_DEF_raw_event_STR
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_STR)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_ITEM_CTRL(T);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_STR);
+};
+#endif//USER_DEF_raw_event_STR
+
+#ifndef USER_DEF_raw_event_TFW
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_TFW)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_ITEM_CTRL(T);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_TFW);
+};
+#endif//USER_DEF_raw_event_TFW
+
+#ifndef USER_DEF_raw_event_V
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_V)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_ITEM_CTRL(T);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_V);
+};
+#endif//USER_DEF_raw_event_V
+
+#ifndef USER_DEF_raw_event_XB
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_XB)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_ITEM_CTRL(T);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_XB);
+};
+#endif//USER_DEF_raw_event_XB
+
+#ifndef USER_DEF_raw_event_XBSUM
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_XBSUM)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_XBSUM);
+};
+#endif//USER_DEF_raw_event_XBSUM
+
+#ifndef USER_DEF_raw_event_SST
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_SST)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(E);
+  STRUCT_MIRROR_TYPE(DATA12) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(E);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_SST);
+};
+#endif//USER_DEF_raw_event_SST
+
+#ifndef USER_DEF_raw_event_MASTER
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_MASTER)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(ACCEPT);
+  STRUCT_MIRROR_TYPE(DATA32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(ACCEPT);
+  STRUCT_MIRROR_ITEM_CTRL(WANTED);
+  STRUCT_MIRROR_TYPE(DATA32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(WANTED);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_MASTER);
+};
+#endif//USER_DEF_raw_event_MASTER
+
+#ifndef USER_DEF_raw_event_PILEUP
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event_PILEUP)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(T);
+  STRUCT_MIRROR_TYPE(DATA16) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(T);
+  STRUCT_MIRROR_FCNS_DECL(raw_event_PILEUP);
+};
+#endif//USER_DEF_raw_event_PILEUP
+
+#ifndef USER_DEF_raw_event
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_event) : public STRUCT_MIRROR_BASE(raw_event_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(raw_event_base);
+  STRUCT_MIRROR_ITEM_CTRL(GFI);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(GFI__i0,,3);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(raw_event_GFI),STRUCT_MIRROR_TEMPLATE_ARG(raw_event_GFI),35> STRUCT_MIRROR_NAME(GFI[3]);
+  STRUCT_MIRROR_ITEM_CTRL(N);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(N__i0,,10);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress_1) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(raw_event_N),STRUCT_MIRROR_TEMPLATE_ARG_N(raw_event_N,[2]),20,2> STRUCT_MIRROR_NAME(N[10]);
+  STRUCT_MIRROR_ITEM_CTRL(NTF);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress_1) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(raw_event_NTF),STRUCT_MIRROR_TEMPLATE_ARG_N(raw_event_NTF,[2]),16,2> STRUCT_MIRROR_NAME(NTF);
+  STRUCT_MIRROR_ITEM_CTRL(POS);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(POS__i0,,1);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(POS__i0__i1,[1],4);
+  STRUCT_MIRROR_TYPE(raw_event_POS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(POS[1][4]);
+  STRUCT_MIRROR_ITEM_CTRL(PSP);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(PSP__i0,,2);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(PSP__i0__i1,[2],5);
+  STRUCT_MIRROR_TYPE(raw_event_PSP) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(PSP[2][5]);
+  STRUCT_MIRROR_ITEM_CTRL(ROL);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(ROL__i0,,1);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(ROL__i0__i1,[1],4);
+  STRUCT_MIRROR_TYPE(raw_event_ROL) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(ROL[1][4]);
+  STRUCT_MIRROR_ITEM_CTRL(SCI);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(SCI__i0,,2);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(SCI__i0__i1,[2],2);
+  STRUCT_MIRROR_TYPE(raw_event_SCI) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(SCI[2][2]);
+  STRUCT_MIRROR_ITEM_CTRL(STR);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(STR__i0,,2);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(STR__i0__i1,[2],1);
+  STRUCT_MIRROR_TYPE(raw_event_STR) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(STR[2][1]);
+  STRUCT_MIRROR_ITEM_CTRL(TFW);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress_1) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(raw_event_TFW),STRUCT_MIRROR_TEMPLATE_ARG_N(raw_event_TFW,[2]),32,2> STRUCT_MIRROR_NAME(TFW);
+  STRUCT_MIRROR_ITEM_CTRL(V);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(V__i0,,1);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress_1) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(raw_event_V),STRUCT_MIRROR_TEMPLATE_ARG_N(raw_event_V,[2]),20,2> STRUCT_MIRROR_NAME(V[1]);
+  STRUCT_MIRROR_ITEM_CTRL(XB);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress_1) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(raw_event_XB),STRUCT_MIRROR_TEMPLATE_ARG_N(raw_event_XB,[2]),162,2> STRUCT_MIRROR_NAME(XB);
+  STRUCT_MIRROR_ITEM_CTRL(XBSUM);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(XBSUM__i0,,1);
+  STRUCT_MIRROR_TYPE(raw_event_XBSUM) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(XBSUM[1]);
+  STRUCT_MIRROR_ITEM_CTRL(SST);
+  STRUCT_MIRROR_ITEM_CTRL_ARRAY(SST__i0,,6);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(raw_event_SST),STRUCT_MIRROR_TEMPLATE_ARG(raw_event_SST),1024> STRUCT_MIRROR_NAME(SST[6]);
+  STRUCT_MIRROR_ITEM_CTRL(MASTER);
+  STRUCT_MIRROR_TYPE(raw_event_MASTER) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(MASTER);
+  STRUCT_MIRROR_ITEM_CTRL(PILEUP);
+  STRUCT_MIRROR_TYPE(raw_list_ii_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(raw_event_PILEUP),STRUCT_MIRROR_TEMPLATE_ARG(raw_event_PILEUP),16> STRUCT_MIRROR_NAME(PILEUP);
+  STRUCT_MIRROR_ITEM_CTRL(IPED);
+  STRUCT_MIRROR_TYPE(uint16) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(IPED);
+  STRUCT_MIRROR_ITEM_CTRL(TCALT);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(TCALT);
+  STRUCT_MIRROR_ITEM_CTRL(TCALE);
+  STRUCT_MIRROR_TYPE(float) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(TCALE);
+  STRUCT_MIRROR_FCNS_DECL(raw_event);
+};
+#endif//USER_DEF_raw_event
+
+#ifndef USER_DEF_raw_sticky
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(raw_sticky) : public STRUCT_MIRROR_BASE(raw_sticky_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(raw_sticky_base);
+  STRUCT_MIRROR_FCNS_DECL(raw_sticky);
+};
+#endif//USER_DEF_raw_sticky
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_STRUCT *************************************************/
+
+
+/** BEGIN_MIRROR_DECL_STRUCT *******************************************
+ *
+ * Mirror structure names.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_GFI);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_N);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_NTF);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_POS);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_PSP);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_ROL);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_SCI);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_STR);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_TFW);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_V);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_XB);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_XBSUM);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_SST);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_MASTER);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event_PILEUP);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_event);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(raw_sticky);
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_DECL_STRUCT ********************************************/
+
+
+/** BEGIN_FUNCTION_CALL_PER_MEMBER *************************************
+ *
+ * Recursive function calls per member.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_fcncall_define.hh"
+
+#ifndef USER_DEF_raw_event_GFI
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_GFI)::FCNCALL_NAME(raw_event_GFI)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_GFI
+
+#ifndef USER_DEF_raw_event_N
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_N)::FCNCALL_NAME(raw_event_N)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_N
+
+#ifndef USER_DEF_raw_event_NTF
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_NTF)::FCNCALL_NAME(raw_event_NTF)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_NTF
+
+#ifndef USER_DEF_raw_event_POS
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_POS)::FCNCALL_NAME(raw_event_POS)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_POS
+
+#ifndef USER_DEF_raw_event_PSP
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_PSP)::FCNCALL_NAME(raw_event_PSP)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_PSP
+
+#ifndef USER_DEF_raw_event_ROL
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_ROL)::FCNCALL_NAME(raw_event_ROL)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_ROL
+
+#ifndef USER_DEF_raw_event_SCI
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_SCI)::FCNCALL_NAME(raw_event_SCI)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_SCI
+
+#ifndef USER_DEF_raw_event_STR
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_STR)::FCNCALL_NAME(raw_event_STR)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_STR
+
+#ifndef USER_DEF_raw_event_TFW
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_TFW)::FCNCALL_NAME(raw_event_TFW)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_TFW
+
+#ifndef USER_DEF_raw_event_V
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_V)::FCNCALL_NAME(raw_event_V)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_V
+
+#ifndef USER_DEF_raw_event_XB
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_XB)::FCNCALL_NAME(raw_event_XB)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA12 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_XB
+
+#ifndef USER_DEF_raw_event_XBSUM
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_XBSUM)::FCNCALL_NAME(raw_event_XBSUM)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_XBSUM
+
+#ifndef USER_DEF_raw_event_SST
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_SST)::FCNCALL_NAME(raw_event_SST)
+{
+  FCNCALL_INIT;
+  // DATA12 E;
+  {
+  FCNCALL_SUBNAME("E");
+  { FCNCALL_CALL_CTRL_WRAP(E,E.FCNCALL_CALL(E)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_SST
+
+#ifndef USER_DEF_raw_event_MASTER
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_MASTER)::FCNCALL_NAME(raw_event_MASTER)
+{
+  FCNCALL_INIT;
+  // DATA32 ACCEPT;
+  {
+  FCNCALL_SUBNAME("ACCEPT");
+  { FCNCALL_CALL_CTRL_WRAP(ACCEPT,ACCEPT.FCNCALL_CALL(ACCEPT)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // DATA32 WANTED;
+  {
+  FCNCALL_SUBNAME("WANTED");
+  { FCNCALL_CALL_CTRL_WRAP(WANTED,WANTED.FCNCALL_CALL(WANTED)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_MASTER
+
+#ifndef USER_DEF_raw_event_PILEUP
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event_PILEUP)::FCNCALL_NAME(raw_event_PILEUP)
+{
+  FCNCALL_INIT;
+  // DATA16 T;
+  {
+  FCNCALL_SUBNAME("T");
+  { FCNCALL_CALL_CTRL_WRAP(T,T.FCNCALL_CALL(T)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event_PILEUP
+
+#ifndef USER_DEF_raw_event
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_event)::FCNCALL_NAME(raw_event)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(raw_event_base,FCNCALL_CLASS_NAME(raw_event_base)::FCNCALL_CALL_BASE());
+  // raw_array_zero_suppress<raw_event_GFI,raw_event_GFI,35> GFI[3];
+  {
+  FCNCALL_SUBNAME("GFI");
+  FCNCALL_FOR(__i0,3)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(GFI__i0,,__i0,GFI[__i0].FCNCALL_CALL(GFI[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress_1<raw_event_N,raw_event_N[2],20,2> N[10];
+  {
+  FCNCALL_SUBNAME("N");
+  FCNCALL_FOR(__i0,10)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(N__i0,,__i0,N[__i0].FCNCALL_CALL(N[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress_1<raw_event_NTF,raw_event_NTF[2],16,2> NTF;
+  {
+  FCNCALL_SUBNAME("NTF");
+  { FCNCALL_CALL_CTRL_WRAP(NTF,NTF.FCNCALL_CALL(NTF)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_POS POS[1][4];
+  {
+  FCNCALL_SUBNAME("POS");
+  FCNCALL_FOR(__i0,1)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,4)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(POS__i0__i1,[__i0],__i1,POS[__i0][__i1].FCNCALL_CALL(POS[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_PSP PSP[2][5];
+  {
+  FCNCALL_SUBNAME("PSP");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,5)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(PSP__i0__i1,[__i0],__i1,PSP[__i0][__i1].FCNCALL_CALL(PSP[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_ROL ROL[1][4];
+  {
+  FCNCALL_SUBNAME("ROL");
+  FCNCALL_FOR(__i0,1)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,4)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(ROL__i0__i1,[__i0],__i1,ROL[__i0][__i1].FCNCALL_CALL(ROL[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_SCI SCI[2][2];
+  {
+  FCNCALL_SUBNAME("SCI");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,2)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(SCI__i0__i1,[__i0],__i1,SCI[__i0][__i1].FCNCALL_CALL(SCI[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_STR STR[2][1];
+  {
+  FCNCALL_SUBNAME("STR");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    FCNCALL_FOR(__i1,1)
+    {
+      FCNCALL_SUBINDEX(__i1);
+      { FCNCALL_CALL_CTRL_WRAP_ARRAY(STR__i0__i1,[__i0],__i1,STR[__i0][__i1].FCNCALL_CALL(STR[__i0][__i1])); }
+      FCNCALL_SUBINDEX_END(__i1);
+    }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress_1<raw_event_TFW,raw_event_TFW[2],32,2> TFW;
+  {
+  FCNCALL_SUBNAME("TFW");
+  { FCNCALL_CALL_CTRL_WRAP(TFW,TFW.FCNCALL_CALL(TFW)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress_1<raw_event_V,raw_event_V[2],20,2> V[1];
+  {
+  FCNCALL_SUBNAME("V");
+  FCNCALL_FOR(__i0,1)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(V__i0,,__i0,V[__i0].FCNCALL_CALL(V[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress_1<raw_event_XB,raw_event_XB[2],162,2> XB;
+  {
+  FCNCALL_SUBNAME("XB");
+  { FCNCALL_CALL_CTRL_WRAP(XB,XB.FCNCALL_CALL(XB)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_XBSUM XBSUM[1];
+  {
+  FCNCALL_SUBNAME("XBSUM");
+  FCNCALL_FOR(__i0,1)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(XBSUM__i0,,__i0,XBSUM[__i0].FCNCALL_CALL(XBSUM[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_array_zero_suppress<raw_event_SST,raw_event_SST,1024> SST[6];
+  {
+  FCNCALL_SUBNAME("SST");
+  FCNCALL_FOR(__i0,6)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(SST__i0,,__i0,SST[__i0].FCNCALL_CALL(SST[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_event_MASTER MASTER;
+  {
+  FCNCALL_SUBNAME("MASTER");
+  { FCNCALL_CALL_CTRL_WRAP(MASTER,MASTER.FCNCALL_CALL(MASTER)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // raw_list_ii_zero_suppress<raw_event_PILEUP,raw_event_PILEUP,16> PILEUP;
+  {
+  FCNCALL_SUBNAME("PILEUP");
+  { FCNCALL_CALL_CTRL_WRAP(PILEUP,PILEUP.FCNCALL_CALL(PILEUP)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint16 IPED;
+  {
+  FCNCALL_SUBNAME("IPED");
+  { FCNCALL_CALL_CTRL_WRAP(IPED,FCNCALL_CALL_TYPE(uint16,IPED)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float TCALT;
+  {
+  FCNCALL_SUBNAME("TCALT");
+  { FCNCALL_CALL_CTRL_WRAP(TCALT,FCNCALL_CALL_TYPE(float,TCALT)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float TCALE;
+  {
+  FCNCALL_SUBNAME("TCALE");
+  { FCNCALL_CALL_CTRL_WRAP(TCALE,FCNCALL_CALL_TYPE(float,TCALE)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_event
+
+#ifndef USER_DEF_raw_sticky
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(raw_sticky)::FCNCALL_NAME(raw_sticky)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(raw_sticky_base,FCNCALL_CLASS_NAME(raw_sticky_base)::FCNCALL_CALL_BASE());
+  FCNCALL_RET;
+}
+#endif//USER_DEF_raw_sticky
+
+#include "gen/default_fcncall_undef.hh"
+
+
+/** END_FUNCTION_CALL_PER_MEMBER **************************************/
+
+
+/** BEGIN_CORR_STRUCT **************************************************
+ *
+ * Correlation structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// Corr struct for: raw_event_GFI
+// DATA12  .E
+// DATA12  .T
+// DATA12 .E
+// DATA12 .T
+// 
+// size= 1  chunks=  2  mem=   2  line=4  total=8
+// size= 2  chunks=  1  mem=   2  line=3  total=6
+// 
+// corr structure: raw_event_GFI
+  // DATA12 .E
+  // DATA12 .T
+// .raw_event_GFI/2/.E
+                 // .T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_GFI
+  // DATA12 .T
+// .raw_event_GFI/1/.T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_GFI
+  // DATA12 .E
+// .raw_event_GFI/1/.E
+// Corr struct for: raw_event_N
+// DATA12  .E
+// DATA12  .T
+// DATA12 .E
+// DATA12 .T
+// 
+// size= 1  chunks=  2  mem=   2  line=4  total=8
+// size= 2  chunks=  1  mem=   2  line=3  total=6
+// 
+// corr structure: raw_event_N
+  // DATA12 .E
+  // DATA12 .T
+// .raw_event_N/2/.E
+               // .T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_N
+  // DATA12 .T
+// .raw_event_N/1/.T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_N
+  // DATA12 .E
+// .raw_event_N/1/.E
+// Corr struct for: raw_event_NTF
+// DATA12  .E
+// DATA12  .T
+// DATA12 .E
+// DATA12 .T
+// 
+// size= 1  chunks=  2  mem=   2  line=4  total=8
+// size= 2  chunks=  1  mem=   2  line=3  total=6
+// 
+// corr structure: raw_event_NTF
+  // DATA12 .E
+  // DATA12 .T
+// .raw_event_NTF/2/.E
+                 // .T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_NTF
+  // DATA12 .T
+// .raw_event_NTF/1/.T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_NTF
+  // DATA12 .E
+// .raw_event_NTF/1/.E
+// Corr struct for: raw_event_POS
+// DATA12  .E
+// DATA12  .T
+// DATA12 .E
+// DATA12 .T
+// 
+// size= 1  chunks=  2  mem=   2  line=4  total=8
+// size= 2  chunks=  1  mem=   2  line=3  total=6
+// 
+// corr structure: raw_event_POS
+  // DATA12 .E
+  // DATA12 .T
+// .raw_event_POS/2/.E
+                 // .T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_POS
+  // DATA12 .T
+// .raw_event_POS/1/.T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_POS
+  // DATA12 .E
+// .raw_event_POS/1/.E
+// Corr struct for: raw_event_PSP
+// DATA12  .E
+// DATA12 .E
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_PSP
+  // DATA12 .E
+// .raw_event_PSP/1/.E// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_PSP
+// .raw_event_PSP// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_PSP
+  // DATA12 .E
+// .raw_event_PSP/1/.E
+// Corr struct for: raw_event_ROL
+// DATA12  .E
+// DATA12 .E
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_ROL
+  // DATA12 .E
+// .raw_event_ROL/1/.E// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_ROL
+// .raw_event_ROL// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_ROL
+  // DATA12 .E
+// .raw_event_ROL/1/.E
+// Corr struct for: raw_event_SCI
+// DATA12  .E
+// DATA12  .T
+// DATA12 .E
+// DATA12 .T
+// 
+// size= 1  chunks=  2  mem=   2  line=4  total=8
+// size= 2  chunks=  1  mem=   2  line=3  total=6
+// 
+// corr structure: raw_event_SCI
+  // DATA12 .E
+  // DATA12 .T
+// .raw_event_SCI/2/.E
+                 // .T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_SCI
+  // DATA12 .T
+// .raw_event_SCI/1/.T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_SCI
+  // DATA12 .E
+// .raw_event_SCI/1/.E
+// Corr struct for: raw_event_STR
+// DATA12  .E
+// DATA12  .T
+// DATA12 .E
+// DATA12 .T
+// 
+// size= 1  chunks=  2  mem=   2  line=4  total=8
+// size= 2  chunks=  1  mem=   2  line=3  total=6
+// 
+// corr structure: raw_event_STR
+  // DATA12 .E
+  // DATA12 .T
+// .raw_event_STR/2/.E
+                 // .T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_STR
+  // DATA12 .T
+// .raw_event_STR/1/.T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_STR
+  // DATA12 .E
+// .raw_event_STR/1/.E
+// Corr struct for: raw_event_TFW
+// DATA12  .E
+// DATA12  .T
+// DATA12 .E
+// DATA12 .T
+// 
+// size= 1  chunks=  2  mem=   2  line=4  total=8
+// size= 2  chunks=  1  mem=   2  line=3  total=6
+// 
+// corr structure: raw_event_TFW
+  // DATA12 .E
+  // DATA12 .T
+// .raw_event_TFW/2/.E
+                 // .T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_TFW
+  // DATA12 .T
+// .raw_event_TFW/1/.T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_TFW
+  // DATA12 .E
+// .raw_event_TFW/1/.E
+// Corr struct for: raw_event_V
+// DATA12  .E
+// DATA12  .T
+// DATA12 .E
+// DATA12 .T
+// 
+// size= 1  chunks=  2  mem=   2  line=4  total=8
+// size= 2  chunks=  1  mem=   2  line=3  total=6
+// 
+// corr structure: raw_event_V
+  // DATA12 .E
+  // DATA12 .T
+// .raw_event_V/2/.E
+               // .T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_V
+  // DATA12 .T
+// .raw_event_V/1/.T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_V
+  // DATA12 .E
+// .raw_event_V/1/.E
+// Corr struct for: raw_event_XB
+// DATA12  .E
+// DATA12  .T
+// DATA12 .E
+// DATA12 .T
+// 
+// size= 1  chunks=  2  mem=   2  line=4  total=8
+// size= 2  chunks=  1  mem=   2  line=3  total=6
+// 
+// corr structure: raw_event_XB
+  // DATA12 .E
+  // DATA12 .T
+// .raw_event_XB/2/.E
+                // .T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_XB
+  // DATA12 .T
+// .raw_event_XB/1/.T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_XB
+  // DATA12 .E
+// .raw_event_XB/1/.E
+// Corr struct for: raw_event_XBSUM
+// DATA12  .E
+// DATA12 .E
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_XBSUM
+  // DATA12 .E
+// .raw_event_XBSUM/1/.E// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_XBSUM
+// .raw_event_XBSUM// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_XBSUM
+  // DATA12 .E
+// .raw_event_XBSUM/1/.E
+// Corr struct for: raw_event_SST
+// DATA12  .E
+// DATA12 .E
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_SST
+  // DATA12 .E
+// .raw_event_SST/1/.E// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_SST
+// .raw_event_SST// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_SST
+  // DATA12 .E
+// .raw_event_SST/1/.E
+// Corr struct for: raw_event_MASTER
+// DATA32  .ACCEPT
+  // ---
+// DATA32  .WANTED
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_MASTER
+// .raw_event_MASTER// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_MASTER
+// .raw_event_MASTER// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_MASTER
+// .raw_event_MASTER
+// Corr struct for: raw_event_PILEUP
+// DATA16  .T
+// DATA16 .T
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_PILEUP
+  // DATA16 .T
+// .raw_event_PILEUP/1/.T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_PILEUP
+  // DATA16 .T
+// .raw_event_PILEUP/1/.T// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_event_PILEUP
+// .raw_event_PILEUP
+// Corr struct for: raw_event
+//  : public raw_event_base
+// ---
+// raw_array_zero_suppress  .GFI[3](raw_event_GFI)[35]
+  // DATA12  .E
+  // DATA12  .T
+// raw_array_zero_suppress_1  .N[10](raw_event_N)[20][2]
+  // DATA12  .E
+  // DATA12  .T
+// raw_array_zero_suppress_1  .NTF(raw_event_NTF)[16][2]
+  // DATA12  .E
+  // DATA12  .T
+// raw_event_POS  .POS[1][4]
+  // DATA12  .E
+  // DATA12  .T
+// raw_event_PSP  .PSP[2][5]
+  // DATA12  .E
+// raw_event_ROL  .ROL[1][4]
+  // DATA12  .E
+// raw_event_SCI  .SCI[2][2]
+  // DATA12  .E
+  // DATA12  .T
+// raw_event_STR  .STR[2][1]
+  // DATA12  .E
+  // DATA12  .T
+// raw_array_zero_suppress_1  .TFW(raw_event_TFW)[32][2]
+  // DATA12  .E
+  // DATA12  .T
+// raw_array_zero_suppress_1  .V[1](raw_event_V)[20][2]
+  // DATA12  .E
+  // DATA12  .T
+// raw_array_zero_suppress_1  .XB(raw_event_XB)[162][2]
+  // DATA12  .E
+  // DATA12  .T
+// raw_event_XBSUM  .XBSUM[1]
+  // DATA12  .E
+// raw_array_zero_suppress  .SST[6](raw_event_SST)[1024]
+  // DATA12  .E
+// raw_event_MASTER  .MASTER
+  // DATA32  .ACCEPT
+    // ---
+  // DATA32  .WANTED
+    // ---
+// raw_list_ii_zero_suppress  .PILEUP(raw_event_PILEUP)[16]
+  // DATA16  .T
+// uint16  .IPED
+  // ---
+// float  .TCALT
+  // ---
+// float  .TCALE
+  // ---
+// DATA12 .GFI[3][35].E
+// DATA12 .GFI[3][35].T
+// DATA12 .N[10][20][2].E
+// DATA12 .N[10][20][2].T
+// DATA12 .NTF[16][2].E
+// DATA12 .NTF[16][2].T
+// DATA12 .POS[1][4].E
+// DATA12 .POS[1][4].T
+// DATA12 .PSP[2][5].E
+// DATA12 .ROL[1][4].E
+// DATA12 .SCI[2][2].E
+// DATA12 .SCI[2][2].T
+// DATA12 .STR[2][1].E
+// DATA12 .STR[2][1].T
+// DATA12 .TFW[32][2].E
+// DATA12 .TFW[32][2].T
+// DATA12 .V[1][20][2].E
+// DATA12 .V[1][20][2].T
+// DATA12 .XB[162][2].E
+// DATA12 .XB[162][2].T
+// DATA12 .XBSUM[1].E
+// DATA12 .SST[6][1024].E
+// DATA16 .PILEUP[16].T
+// 
+// size= 1  chunks=8125  mem=8125  line=16250  total=132031250
+// size= 2  chunks=7150  mem=14300  line=21450  total=174281250
+// size= 4  chunks=6714  mem=26856  line=33570  total=272756250
+// size= 5  chunks=6706  mem=33530  line=40236  total=326917500
+// size= 8  chunks=6702  mem=53616  line=60318  total=490083750
+// size=10  chunks=6701  mem=67010  line=73711  total=598901875
+// size=16  chunks=6686  mem=106976  line=113662  total=923503750
+// size=64  chunks=6671  mem=426944  line=433615  total=-771845421
+// size=70  chunks=6569  mem=459830  line=466399  total=-505475421
+// size=80  chunks=6360  mem=508800  line=515160  total=-109292296
+// size=128  chunks=6329  mem=810112  line=816441  total=-1956351467
+// size=210  chunks=6327  mem=1328670  line=1334997  total=-2038051263
+// size=648  chunks=6166  mem=3995568  line=4001734  total=-1845649618
+// size=800  chunks=6157  mem=4925600  line=4931757  total=1415819961
+// size=1024  chunks= 19  mem=19456  line=19475  total=158234375
+// size=6144  chunks= 14  mem=86016  line=86030  total=698993750
+// size=8125  chunks=  1  mem=8125  line=8126  total=66023750
+// 
+// corr structure: raw_event
+  // DATA12 .GFI[3][35].E
+  // DATA12 .GFI[3][35].T
+  // DATA12 .N[10][20][2].E
+  // DATA12 .N[10][20][2].T
+  // DATA12 .NTF[16][2].E
+  // DATA12 .NTF[16][2].T
+  // DATA12 .POS[1][4].E
+  // DATA12 .POS[1][4].T
+  // DATA12 .PSP[2][5].E
+  // DATA12 .ROL[1][4].E
+  // DATA12 .SCI[2][2].E
+  // DATA12 .SCI[2][2].T
+  // DATA12 .STR[2][1].E
+  // DATA12 .STR[2][1].T
+  // DATA12 .TFW[32][2].E
+  // DATA12 .TFW[32][2].T
+  // DATA12 .V[1][20][2].E
+  // DATA12 .V[1][20][2].T
+  // DATA12 .XB[162][2].E
+  // DATA12 .XB[162][2].T
+  // DATA12 .XBSUM[1].E
+  // DATA12 .SST[6][1024].E
+  // DATA16 .PILEUP[16].T
+// .raw_event/8125/.GFI/210/[3]/70/[35]/2/.E
+                                       // .T
+                // .N/800/[10]/80/[20]/4/[2]/2/.E
+                                            // .T
+                // .NTF/64/[16]/4/[2]/2/.E
+                                     // .T
+                // .POS/8/[1]/8/[4]/2/.E
+                                   // .T
+                // .PSP/10/[2]/5/[5]/1/.E
+                // .ROL/4/[1]/4/[4]/1/.E
+                // .SCI/8/[2]/4/[2]/2/.E
+                                   // .T
+                // .STR/4/[2]/2/[1]/2/.E
+                                   // .T
+                // .TFW/128/[32]/4/[2]/2/.E
+                                      // .T
+                // .V/80/[1]/80/[20]/4/[2]/2/.E
+                                          // .T
+                // .XB/648/[162]/4/[2]/2/.E
+                                      // .T
+                // .XBSUM/1/[1]/1/.E
+                // .SST/6144/[6]/1024/[1024]/1/.E
+                // .PILEUP/16/[16]/1/.T// 
+// size= 1  chunks=991  mem= 991  line=1982  total=1964162
+// size= 2  chunks=558  mem=1116  line=1674  total=1658934
+// size= 4  chunks=554  mem=2216  line=2770  total=2745070
+// size=16  chunks=539  mem=8624  line=9163  total=9080533
+// size=32  chunks=524  mem=16768  line=17292  total=17136372
+// size=35  chunks=422  mem=14770  line=15192  total=15055272
+// size=40  chunks=213  mem=8520  line=8733  total=8654403
+// size=64  chunks=182  mem=11648  line=11830  total=11723530
+// size=105  chunks=180  mem=18900  line=19080  total=18908280
+// size=324  chunks= 19  mem=6156  line=6175  total=6119425
+// size=400  chunks= 10  mem=4000  line=4010  total=3973910
+// size=991  chunks=  1  mem= 991  line=992  total=983072
+// 
+// corr structure: raw_event
+  // DATA12 .GFI[3][35].T
+  // DATA12 .N[10][20][2].T
+  // DATA12 .NTF[16][2].T
+  // DATA12 .POS[1][4].T
+  // DATA12 .SCI[2][2].T
+  // DATA12 .STR[2][1].T
+  // DATA12 .TFW[32][2].T
+  // DATA12 .V[1][20][2].T
+  // DATA12 .XB[162][2].T
+  // DATA16 .PILEUP[16].T
+// .raw_event/991/.GFI/105/[3]/35/[35]/1/.T
+               // .N/400/[10]/40/[20]/2/[2]/1/.T
+               // .NTF/32/[16]/2/[2]/1/.T
+               // .POS/4/[1]/4/[4]/1/.T
+               // .SCI/4/[2]/2/[2]/1/.T
+               // .STR/2/[2]/1/[1]/1/.T
+               // .TFW/64/[32]/2/[2]/1/.T
+               // .V/40/[1]/40/[20]/2/[2]/1/.T
+               // .XB/324/[162]/2/[2]/1/.T
+               // .PILEUP/16/[16]/1/.T// 
+// size= 1  chunks=7134  mem=7134  line=14268  total=101787912
+// size= 2  chunks=6701  mem=13402  line=20103  total=143414802
+// size= 4  chunks=6694  mem=26776  line=33470  total=238774980
+// size= 5  chunks=6686  mem=33430  line=40116  total=286187544
+// size=10  chunks=6685  mem=66850  line=73535  total=524598690
+// size=32  chunks=6670  mem=213440  line=220110  total=1570264740
+// size=35  chunks=6568  mem=229880  line=236448  total=1686820032
+// size=40  chunks=6359  mem=254360  line=260719  total=1859969346
+// size=64  chunks=6328  mem=404992  line=411320  total=-1360610416
+// size=105  chunks=6326  mem=664230  line=670556  total=488779208
+// size=324  chunks=6165  mem=1997460  line=2003625  total=1408958862
+// size=400  chunks=6156  mem=2462400  line=2468556  total=430809320
+// size=1024  chunks= 18  mem=18432  line=18450  total=131622300
+// size=6144  chunks= 13  mem=79872  line=79885  total=569899590
+// size=7134  chunks=  1  mem=7134  line=7135  total=50901090
+// 
+// corr structure: raw_event
+  // DATA12 .GFI[3][35].E
+  // DATA12 .N[10][20][2].E
+  // DATA12 .NTF[16][2].E
+  // DATA12 .POS[1][4].E
+  // DATA12 .PSP[2][5].E
+  // DATA12 .ROL[1][4].E
+  // DATA12 .SCI[2][2].E
+  // DATA12 .STR[2][1].E
+  // DATA12 .TFW[32][2].E
+  // DATA12 .V[1][20][2].E
+  // DATA12 .XB[162][2].E
+  // DATA12 .XBSUM[1].E
+  // DATA12 .SST[6][1024].E
+// .raw_event/7134/.GFI/105/[3]/35/[35]/1/.E
+                // .N/400/[10]/40/[20]/2/[2]/1/.E
+                // .NTF/32/[16]/2/[2]/1/.E
+                // .POS/4/[1]/4/[4]/1/.E
+                // .PSP/10/[2]/5/[5]/1/.E
+                // .ROL/4/[1]/4/[4]/1/.E
+                // .SCI/4/[2]/2/[2]/1/.E
+                // .STR/2/[2]/1/[1]/1/.E
+                // .TFW/64/[32]/2/[2]/1/.E
+                // .V/40/[1]/40/[20]/2/[2]/1/.E
+                // .XB/324/[162]/2/[2]/1/.E
+                // .XBSUM/1/[1]/1/.E
+                // .SST/6144/[6]/1024/[1024]/1/.E
+// Corr struct for: raw_sticky
+//  : public raw_sticky_base
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_sticky
+// .raw_sticky// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_sticky
+// .raw_sticky// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: raw_sticky
+// .raw_sticky
+
+/** END_CORR_STRUCT ***************************************************/
+

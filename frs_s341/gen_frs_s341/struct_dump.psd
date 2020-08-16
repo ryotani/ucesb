@@ -1,0 +1,1278 @@
+
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+class EMPTY_32BIT_WORD_V775_FRS
+{
+  raw_array<DATA32,DATA32,32> data;
+} ;
+class EMPTY_32BIT_WORD_V830_FRS
+{
+  raw_array<DATA32,DATA32,32> data;
+} ;
+class VME_CAEN_V259_FRS
+{
+  raw_array_zero_suppress<DATA32,DATA32,32> data;
+  union 
+  {
+    struct 
+    {
+      uint32 dummy_0_23 : 24;
+      uint32 unnamed_24_26 : 3;
+      uint32 geom : 5;
+    } ;
+    uint32 u32;
+  } eob;
+} ;
+class VME_CAEN_V775_FRS
+{
+  raw_array_zero_suppress<DATA12_OVERFLOW,DATA12_OVERFLOW,32> data;
+  union 
+  {
+    struct 
+    {
+      uint32 event_number : 24;
+      uint32 unnamed_24_26 : 3;
+      uint32 geom : 5;
+    } ;
+    uint32 u32;
+  } eob;
+} ;
+class VME_CAEN_V830_FRS
+{
+  raw_array<DATA32,DATA32,32> data;
+  union 
+  {
+    struct 
+    {
+      uint32 unnamed_0_26 : 27;
+      uint32 geom : 5;
+    } ;
+    uint32 u32;
+  } eob;
+} ;
+class FRS_CRATE : public unpack_subevent_base
+{
+  VME_CAEN_V830_FRS scaler0;
+  VME_CAEN_V775_FRS tdc0;
+  VME_CAEN_V259_FRS pattern;
+  VME_CAEN_V775_FRS tdc1;
+  VME_CAEN_V775_FRS qdc0;
+  VME_CAEN_V775_FRS adc0;
+  EMPTY_32BIT_WORD_V830_FRS dummy0;
+  EMPTY_32BIT_WORD_V775_FRS dummy1;
+  EMPTY_32BIT_WORD_V775_FRS dummy2;
+  EMPTY_32BIT_WORD_V775_FRS dummy3;
+  EMPTY_32BIT_WORD_V775_FRS dummy4;
+} ;
+class TPC_CRATE : public unpack_subevent_base
+{
+  VME_CAEN_V830_FRS scaler0;
+  VME_CAEN_V775_FRS tdc0;
+  VME_CAEN_V775_FRS tdc1;
+  VME_CAEN_V775_FRS adc0;
+  EMPTY_32BIT_WORD_V830_FRS dummy0;
+  EMPTY_32BIT_WORD_V775_FRS dummy1;
+  EMPTY_32BIT_WORD_V775_FRS dummy2;
+  EMPTY_32BIT_WORD_V775_FRS dummy3;
+  EMPTY_32BIT_WORD_V775_FRS dummy4;
+  VME_CAEN_V775_FRS adc1;
+} ;
+class unpack_event : public unpack_event_base
+{
+  FRS_CRATE vme0;
+  TPC_CRATE vme1;
+} ;
+class unpack_sticky_event : public unpack_sticky_event_base
+{
+  ;
+} ;
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/
+
+
+/** BEGIN_MIRROR_STRUCT ************************************************
+ *
+ * Mirror (1 to 1) structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+#ifndef USER_DEF_EMPTY_32BIT_WORD_V775_FRS
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(EMPTY_32BIT_WORD_V775_FRS)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA32),STRUCT_MIRROR_TEMPLATE_ARG(DATA32),32> STRUCT_MIRROR_NAME(data);
+  STRUCT_MIRROR_FCNS_DECL(EMPTY_32BIT_WORD_V775_FRS);
+};
+#endif//USER_DEF_EMPTY_32BIT_WORD_V775_FRS
+
+#ifndef USER_DEF_EMPTY_32BIT_WORD_V830_FRS
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(EMPTY_32BIT_WORD_V830_FRS)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA32),STRUCT_MIRROR_TEMPLATE_ARG(DATA32),32> STRUCT_MIRROR_NAME(data);
+  STRUCT_MIRROR_FCNS_DECL(EMPTY_32BIT_WORD_V830_FRS);
+};
+#endif//USER_DEF_EMPTY_32BIT_WORD_V830_FRS
+
+#ifndef USER_DEF_VME_CAEN_V259_FRS
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V259_FRS)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA32),STRUCT_MIRROR_TEMPLATE_ARG(DATA32),32> STRUCT_MIRROR_NAME(data);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(dummy_0_23);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy_0_23);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_24_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_24_26);
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(eob);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V259_FRS);
+};
+#endif//USER_DEF_VME_CAEN_V259_FRS
+
+#ifndef USER_DEF_VME_CAEN_V775_FRS
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V775_FRS)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array_zero_suppress) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA12_OVERFLOW),STRUCT_MIRROR_TEMPLATE_ARG(DATA12_OVERFLOW),32> STRUCT_MIRROR_NAME(data);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(event_number);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(event_number);
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_24_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_24_26);
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(eob);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V775_FRS);
+};
+#endif//USER_DEF_VME_CAEN_V775_FRS
+
+#ifndef USER_DEF_VME_CAEN_V830_FRS
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(VME_CAEN_V830_FRS)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL(data);
+  STRUCT_MIRROR_TYPE(raw_array) < STRUCT_MIRROR_TYPE_TEMPLATE STRUCT_MIRROR_TEMPLATE_ARG(DATA32),STRUCT_MIRROR_TEMPLATE_ARG(DATA32),32> STRUCT_MIRROR_NAME(data);
+#if STRUCT_ONLY_LAST_UNION_MEMBER
+  struct 
+#else
+  union 
+#endif
+
+  {
+  public:
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+    struct 
+    {
+    public:
+      STRUCT_MIRROR_ITEM_CTRL(unnamed_0_26);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(unnamed_0_26);
+      STRUCT_MIRROR_ITEM_CTRL(geom);
+      STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(geom);
+    };
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+    STRUCT_MIRROR_ITEM_CTRL(u32);
+    STRUCT_MIRROR_TYPE(uint32) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(u32);
+  } STRUCT_MIRROR_NAME(eob);
+  STRUCT_MIRROR_FCNS_DECL(VME_CAEN_V830_FRS);
+};
+#endif//USER_DEF_VME_CAEN_V830_FRS
+
+#ifndef USER_DEF_FRS_CRATE
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(FRS_CRATE) : public STRUCT_MIRROR_BASE(unpack_subevent_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_subevent_base);
+  STRUCT_MIRROR_ITEM_CTRL(scaler0);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V830_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(scaler0);
+  STRUCT_MIRROR_ITEM_CTRL(tdc0);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc0);
+  STRUCT_MIRROR_ITEM_CTRL(pattern);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V259_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(pattern);
+  STRUCT_MIRROR_ITEM_CTRL(tdc1);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc1);
+  STRUCT_MIRROR_ITEM_CTRL(qdc0);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(qdc0);
+  STRUCT_MIRROR_ITEM_CTRL(adc0);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(adc0);
+  STRUCT_MIRROR_ITEM_CTRL(dummy0);
+  STRUCT_MIRROR_TYPE(EMPTY_32BIT_WORD_V830_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy0);
+  STRUCT_MIRROR_ITEM_CTRL(dummy1);
+  STRUCT_MIRROR_TYPE(EMPTY_32BIT_WORD_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy1);
+  STRUCT_MIRROR_ITEM_CTRL(dummy2);
+  STRUCT_MIRROR_TYPE(EMPTY_32BIT_WORD_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy2);
+  STRUCT_MIRROR_ITEM_CTRL(dummy3);
+  STRUCT_MIRROR_TYPE(EMPTY_32BIT_WORD_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy3);
+  STRUCT_MIRROR_ITEM_CTRL(dummy4);
+  STRUCT_MIRROR_TYPE(EMPTY_32BIT_WORD_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy4);
+  STRUCT_MIRROR_FCNS_DECL(FRS_CRATE);
+};
+#endif//USER_DEF_FRS_CRATE
+
+#ifndef USER_DEF_TPC_CRATE
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(TPC_CRATE) : public STRUCT_MIRROR_BASE(unpack_subevent_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_subevent_base);
+  STRUCT_MIRROR_ITEM_CTRL(scaler0);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V830_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(scaler0);
+  STRUCT_MIRROR_ITEM_CTRL(tdc0);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc0);
+  STRUCT_MIRROR_ITEM_CTRL(tdc1);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(tdc1);
+  STRUCT_MIRROR_ITEM_CTRL(adc0);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(adc0);
+  STRUCT_MIRROR_ITEM_CTRL(dummy0);
+  STRUCT_MIRROR_TYPE(EMPTY_32BIT_WORD_V830_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy0);
+  STRUCT_MIRROR_ITEM_CTRL(dummy1);
+  STRUCT_MIRROR_TYPE(EMPTY_32BIT_WORD_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy1);
+  STRUCT_MIRROR_ITEM_CTRL(dummy2);
+  STRUCT_MIRROR_TYPE(EMPTY_32BIT_WORD_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy2);
+  STRUCT_MIRROR_ITEM_CTRL(dummy3);
+  STRUCT_MIRROR_TYPE(EMPTY_32BIT_WORD_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy3);
+  STRUCT_MIRROR_ITEM_CTRL(dummy4);
+  STRUCT_MIRROR_TYPE(EMPTY_32BIT_WORD_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(dummy4);
+  STRUCT_MIRROR_ITEM_CTRL(adc1);
+  STRUCT_MIRROR_TYPE(VME_CAEN_V775_FRS) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(adc1);
+  STRUCT_MIRROR_FCNS_DECL(TPC_CRATE);
+};
+#endif//USER_DEF_TPC_CRATE
+
+#ifndef USER_DEF_unpack_event
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(unpack_event) : public STRUCT_MIRROR_BASE(unpack_event_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_event_base);
+  STRUCT_MIRROR_ITEM_CTRL(vme0);
+  STRUCT_MIRROR_TYPE(FRS_CRATE) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(vme0);
+  STRUCT_MIRROR_ITEM_CTRL(vme1);
+  STRUCT_MIRROR_TYPE(TPC_CRATE) STRUCT_MIRROR_TYPE_TEMPLATE_FULL STRUCT_MIRROR_NAME(vme1);
+  STRUCT_MIRROR_FCNS_DECL(unpack_event);
+};
+#endif//USER_DEF_unpack_event
+
+#ifndef USER_DEF_unpack_sticky_event
+STRUCT_MIRROR_TEMPLATE
+class STRUCT_MIRROR_STRUCT(unpack_sticky_event) : public STRUCT_MIRROR_BASE(unpack_sticky_event_base)
+{
+public:
+  STRUCT_MIRROR_ITEM_CTRL_BASE(unpack_sticky_event_base);
+  STRUCT_MIRROR_FCNS_DECL(unpack_sticky_event);
+};
+#endif//USER_DEF_unpack_sticky_event
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_STRUCT *************************************************/
+
+
+/** BEGIN_MIRROR_DECL_STRUCT *******************************************
+ *
+ * Mirror structure names.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_mirror_define.hh"
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(EMPTY_32BIT_WORD_V775_FRS);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(EMPTY_32BIT_WORD_V830_FRS);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V259_FRS);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V775_FRS);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(VME_CAEN_V830_FRS);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(FRS_CRATE);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(TPC_CRATE);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(unpack_event);
+
+STRUCT_MIRROR_TEMPLATE
+struct STRUCT_MIRROR_STRUCT(unpack_sticky_event);
+
+#include "gen/default_mirror_undef.hh"
+
+
+/** END_MIRROR_DECL_STRUCT ********************************************/
+
+
+/** BEGIN_FUNCTION_CALL_PER_MEMBER *************************************
+ *
+ * Recursive function calls per member.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_fcncall_define.hh"
+
+#ifndef USER_DEF_EMPTY_32BIT_WORD_V775_FRS
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(EMPTY_32BIT_WORD_V775_FRS)::FCNCALL_NAME(EMPTY_32BIT_WORD_V775_FRS)
+{
+  FCNCALL_INIT;
+  // raw_array<DATA32,DATA32,32> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_EMPTY_32BIT_WORD_V775_FRS
+
+#ifndef USER_DEF_EMPTY_32BIT_WORD_V830_FRS
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(EMPTY_32BIT_WORD_V830_FRS)::FCNCALL_NAME(EMPTY_32BIT_WORD_V830_FRS)
+{
+  FCNCALL_INIT;
+  // raw_array<DATA32,DATA32,32> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_EMPTY_32BIT_WORD_V830_FRS
+
+#ifndef USER_DEF_VME_CAEN_V259_FRS
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V259_FRS)::FCNCALL_NAME(VME_CAEN_V259_FRS)
+{
+  FCNCALL_INIT;
+  // raw_array_zero_suppress<DATA32,DATA32,32> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 dummy_0_23 : 24;
+      // uint32 unnamed_24_26 : 3;
+      // uint32 geom : 5;
+    // } ;
+    // uint32 u32;
+  // } eob;
+  {
+  FCNCALL_SUBNAME("eob");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 dummy_0_23 : 24;
+    // uint32 unnamed_24_26 : 3;
+    // uint32 geom : 5;
+  // } ;
+  // uint32 dummy_0_23 : 24;
+  {
+  FCNCALL_SUBNAME("dummy_0_23");
+  { FCNCALL_CALL_CTRL_WRAP(eob.dummy_0_23,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,eob.dummy_0_23)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_24_26 : 3;
+  {
+  FCNCALL_SUBNAME("unnamed_24_26");
+  { FCNCALL_CALL_CTRL_WRAP(eob.unnamed_24_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,eob.unnamed_24_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(eob.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,eob.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(eob.u32,FCNCALL_CALL_TYPE(uint32,eob.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V259_FRS
+
+#ifndef USER_DEF_VME_CAEN_V775_FRS
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V775_FRS)::FCNCALL_NAME(VME_CAEN_V775_FRS)
+{
+  FCNCALL_INIT;
+  // raw_array_zero_suppress<DATA12_OVERFLOW,DATA12_OVERFLOW,32> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 event_number : 24;
+      // uint32 unnamed_24_26 : 3;
+      // uint32 geom : 5;
+    // } ;
+    // uint32 u32;
+  // } eob;
+  {
+  FCNCALL_SUBNAME("eob");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 event_number : 24;
+    // uint32 unnamed_24_26 : 3;
+    // uint32 geom : 5;
+  // } ;
+  // uint32 event_number : 24;
+  {
+  FCNCALL_SUBNAME("event_number");
+  { FCNCALL_CALL_CTRL_WRAP(eob.event_number,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,eob.event_number)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 unnamed_24_26 : 3;
+  {
+  FCNCALL_SUBNAME("unnamed_24_26");
+  { FCNCALL_CALL_CTRL_WRAP(eob.unnamed_24_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,eob.unnamed_24_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(eob.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,eob.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(eob.u32,FCNCALL_CALL_TYPE(uint32,eob.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V775_FRS
+
+#ifndef USER_DEF_VME_CAEN_V830_FRS
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(VME_CAEN_V830_FRS)::FCNCALL_NAME(VME_CAEN_V830_FRS)
+{
+  FCNCALL_INIT;
+  // raw_array<DATA32,DATA32,32> data;
+  {
+  FCNCALL_SUBNAME("data");
+  { FCNCALL_CALL_CTRL_WRAP(data,data.FCNCALL_CALL(data)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // union 
+  // {
+    // struct 
+    // {
+      // uint32 unnamed_0_26 : 27;
+      // uint32 geom : 5;
+    // } ;
+    // uint32 u32;
+  // } eob;
+  {
+  FCNCALL_SUBNAME("eob");
+#if !STRUCT_ONLY_LAST_UNION_MEMBER
+  // struct 
+  // {
+    // uint32 unnamed_0_26 : 27;
+    // uint32 geom : 5;
+  // } ;
+  // uint32 unnamed_0_26 : 27;
+  {
+  FCNCALL_SUBNAME("unnamed_0_26");
+  { FCNCALL_CALL_CTRL_WRAP(eob.unnamed_0_26,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,eob.unnamed_0_26)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // uint32 geom : 5;
+  {
+  FCNCALL_SUBNAME("geom");
+  { FCNCALL_CALL_CTRL_WRAP(eob.geom,FCNCALL_CALL_TYPE/*_BITFIELD*/(uint32,eob.geom)); }
+  FCNCALL_SUBNAME_END;
+  }
+#endif// !STRUCT_ONLY_LAST_UNION_MEMBER
+  // uint32 u32;
+  {
+  FCNCALL_SUBNAME("u32");
+  { FCNCALL_CALL_CTRL_WRAP(eob.u32,FCNCALL_CALL_TYPE(uint32,eob.u32)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_VME_CAEN_V830_FRS
+
+#ifndef USER_DEF_FRS_CRATE
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(FRS_CRATE)::FCNCALL_NAME(FRS_CRATE)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // VME_CAEN_V830_FRS scaler0;
+  {
+  FCNCALL_SUBNAME("scaler0");
+  { FCNCALL_CALL_CTRL_WRAP(scaler0,scaler0.FCNCALL_CALL(scaler0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V775_FRS tdc0;
+  {
+  FCNCALL_SUBNAME("tdc0");
+  { FCNCALL_CALL_CTRL_WRAP(tdc0,tdc0.FCNCALL_CALL(tdc0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V259_FRS pattern;
+  {
+  FCNCALL_SUBNAME("pattern");
+  { FCNCALL_CALL_CTRL_WRAP(pattern,pattern.FCNCALL_CALL(pattern)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V775_FRS tdc1;
+  {
+  FCNCALL_SUBNAME("tdc1");
+  { FCNCALL_CALL_CTRL_WRAP(tdc1,tdc1.FCNCALL_CALL(tdc1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V775_FRS qdc0;
+  {
+  FCNCALL_SUBNAME("qdc0");
+  { FCNCALL_CALL_CTRL_WRAP(qdc0,qdc0.FCNCALL_CALL(qdc0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V775_FRS adc0;
+  {
+  FCNCALL_SUBNAME("adc0");
+  { FCNCALL_CALL_CTRL_WRAP(adc0,adc0.FCNCALL_CALL(adc0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EMPTY_32BIT_WORD_V830_FRS dummy0;
+  {
+  FCNCALL_SUBNAME("dummy0");
+  { FCNCALL_CALL_CTRL_WRAP(dummy0,dummy0.FCNCALL_CALL(dummy0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EMPTY_32BIT_WORD_V775_FRS dummy1;
+  {
+  FCNCALL_SUBNAME("dummy1");
+  { FCNCALL_CALL_CTRL_WRAP(dummy1,dummy1.FCNCALL_CALL(dummy1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EMPTY_32BIT_WORD_V775_FRS dummy2;
+  {
+  FCNCALL_SUBNAME("dummy2");
+  { FCNCALL_CALL_CTRL_WRAP(dummy2,dummy2.FCNCALL_CALL(dummy2)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EMPTY_32BIT_WORD_V775_FRS dummy3;
+  {
+  FCNCALL_SUBNAME("dummy3");
+  { FCNCALL_CALL_CTRL_WRAP(dummy3,dummy3.FCNCALL_CALL(dummy3)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EMPTY_32BIT_WORD_V775_FRS dummy4;
+  {
+  FCNCALL_SUBNAME("dummy4");
+  { FCNCALL_CALL_CTRL_WRAP(dummy4,dummy4.FCNCALL_CALL(dummy4)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_FRS_CRATE
+
+#ifndef USER_DEF_TPC_CRATE
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(TPC_CRATE)::FCNCALL_NAME(TPC_CRATE)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_subevent_base,FCNCALL_CLASS_NAME(unpack_subevent_base)::FCNCALL_CALL_BASE());
+  // VME_CAEN_V830_FRS scaler0;
+  {
+  FCNCALL_SUBNAME("scaler0");
+  { FCNCALL_CALL_CTRL_WRAP(scaler0,scaler0.FCNCALL_CALL(scaler0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V775_FRS tdc0;
+  {
+  FCNCALL_SUBNAME("tdc0");
+  { FCNCALL_CALL_CTRL_WRAP(tdc0,tdc0.FCNCALL_CALL(tdc0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V775_FRS tdc1;
+  {
+  FCNCALL_SUBNAME("tdc1");
+  { FCNCALL_CALL_CTRL_WRAP(tdc1,tdc1.FCNCALL_CALL(tdc1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V775_FRS adc0;
+  {
+  FCNCALL_SUBNAME("adc0");
+  { FCNCALL_CALL_CTRL_WRAP(adc0,adc0.FCNCALL_CALL(adc0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EMPTY_32BIT_WORD_V830_FRS dummy0;
+  {
+  FCNCALL_SUBNAME("dummy0");
+  { FCNCALL_CALL_CTRL_WRAP(dummy0,dummy0.FCNCALL_CALL(dummy0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EMPTY_32BIT_WORD_V775_FRS dummy1;
+  {
+  FCNCALL_SUBNAME("dummy1");
+  { FCNCALL_CALL_CTRL_WRAP(dummy1,dummy1.FCNCALL_CALL(dummy1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EMPTY_32BIT_WORD_V775_FRS dummy2;
+  {
+  FCNCALL_SUBNAME("dummy2");
+  { FCNCALL_CALL_CTRL_WRAP(dummy2,dummy2.FCNCALL_CALL(dummy2)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EMPTY_32BIT_WORD_V775_FRS dummy3;
+  {
+  FCNCALL_SUBNAME("dummy3");
+  { FCNCALL_CALL_CTRL_WRAP(dummy3,dummy3.FCNCALL_CALL(dummy3)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // EMPTY_32BIT_WORD_V775_FRS dummy4;
+  {
+  FCNCALL_SUBNAME("dummy4");
+  { FCNCALL_CALL_CTRL_WRAP(dummy4,dummy4.FCNCALL_CALL(dummy4)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // VME_CAEN_V775_FRS adc1;
+  {
+  FCNCALL_SUBNAME("adc1");
+  { FCNCALL_CALL_CTRL_WRAP(adc1,adc1.FCNCALL_CALL(adc1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_TPC_CRATE
+
+#ifndef USER_DEF_unpack_event
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(unpack_event)::FCNCALL_NAME(unpack_event)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_event_base,FCNCALL_CLASS_NAME(unpack_event_base)::FCNCALL_CALL_BASE());
+  // FRS_CRATE vme0;
+  {
+  FCNCALL_SUBNAME("vme0");
+  { FCNCALL_CALL_CTRL_WRAP(vme0,vme0.FCNCALL_CALL(vme0)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // TPC_CRATE vme1;
+  {
+  FCNCALL_SUBNAME("vme1");
+  { FCNCALL_CALL_CTRL_WRAP(vme1,vme1.FCNCALL_CALL(vme1)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_unpack_event
+
+#ifndef USER_DEF_unpack_sticky_event
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(unpack_sticky_event)::FCNCALL_NAME(unpack_sticky_event)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(unpack_sticky_event_base,FCNCALL_CLASS_NAME(unpack_sticky_event_base)::FCNCALL_CALL_BASE());
+  FCNCALL_RET;
+}
+#endif//USER_DEF_unpack_sticky_event
+
+#include "gen/default_fcncall_undef.hh"
+
+
+/** END_FUNCTION_CALL_PER_MEMBER **************************************/
+
+
+/** BEGIN_CORR_STRUCT **************************************************
+ *
+ * Correlation structure.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// Corr struct for: EMPTY_32BIT_WORD_V775_FRS
+// raw_array  .data(DATA32)[32]
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: EMPTY_32BIT_WORD_V775_FRS
+// .EMPTY_32BIT_WORD_V775_FRS// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: EMPTY_32BIT_WORD_V775_FRS
+// .EMPTY_32BIT_WORD_V775_FRS// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: EMPTY_32BIT_WORD_V775_FRS
+// .EMPTY_32BIT_WORD_V775_FRS
+// Corr struct for: EMPTY_32BIT_WORD_V830_FRS
+// raw_array  .data(DATA32)[32]
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: EMPTY_32BIT_WORD_V830_FRS
+// .EMPTY_32BIT_WORD_V830_FRS// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: EMPTY_32BIT_WORD_V830_FRS
+// .EMPTY_32BIT_WORD_V830_FRS// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: EMPTY_32BIT_WORD_V830_FRS
+// .EMPTY_32BIT_WORD_V830_FRS
+// Corr struct for: VME_CAEN_V259_FRS
+// raw_array_zero_suppress  .data(DATA32)[32]
+  // ---
+// uint32  .dummy_0_23
+  // ---
+// uint32  .unnamed_24_26
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V259_FRS
+// .VME_CAEN_V259_FRS// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V259_FRS
+// .VME_CAEN_V259_FRS// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V259_FRS
+// .VME_CAEN_V259_FRS
+// Corr struct for: VME_CAEN_V775_FRS
+// raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+// uint32  .event_number
+  // ---
+// uint32  .unnamed_24_26
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .u32
+  // ---
+// DATA12_OVERFLOW .data[32]
+// 
+// size= 1  chunks= 32  mem=  32  line=64  total=2048
+// size=32  chunks=  1  mem=  32  line=33  total=1056
+// 
+// corr structure: VME_CAEN_V775_FRS
+  // DATA12_OVERFLOW .data[32]
+// .VME_CAEN_V775_FRS/32/.data/32/[32]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V775_FRS
+// .VME_CAEN_V775_FRS// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V775_FRS
+// .VME_CAEN_V775_FRS
+// Corr struct for: VME_CAEN_V830_FRS
+// raw_array  .data(DATA32)[32]
+  // ---
+// uint32  .unnamed_0_26
+  // ---
+// uint32  .geom
+  // ---
+// uint32  .u32
+  // ---
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V830_FRS
+// .VME_CAEN_V830_FRS// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V830_FRS
+// .VME_CAEN_V830_FRS// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: VME_CAEN_V830_FRS
+// .VME_CAEN_V830_FRS
+// Corr struct for: FRS_CRATE
+//  : public unpack_subevent_base
+// ---
+// VME_CAEN_V830_FRS  .scaler0
+  // raw_array  .data(DATA32)[32]
+    // ---
+  // uint32  .unnamed_0_26
+    // ---
+  // uint32  .geom
+    // ---
+  // uint32  .u32
+    // ---
+// VME_CAEN_V775_FRS  .tdc0
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+  // uint32  .event_number
+    // ---
+  // uint32  .unnamed_24_26
+    // ---
+  // uint32  .geom
+    // ---
+  // uint32  .u32
+    // ---
+// VME_CAEN_V259_FRS  .pattern
+  // raw_array_zero_suppress  .data(DATA32)[32]
+    // ---
+  // uint32  .dummy_0_23
+    // ---
+  // uint32  .unnamed_24_26
+    // ---
+  // uint32  .geom
+    // ---
+  // uint32  .u32
+    // ---
+// VME_CAEN_V775_FRS  .tdc1
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+  // uint32  .event_number
+    // ---
+  // uint32  .unnamed_24_26
+    // ---
+  // uint32  .geom
+    // ---
+  // uint32  .u32
+    // ---
+// VME_CAEN_V775_FRS  .qdc0
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+  // uint32  .event_number
+    // ---
+  // uint32  .unnamed_24_26
+    // ---
+  // uint32  .geom
+    // ---
+  // uint32  .u32
+    // ---
+// VME_CAEN_V775_FRS  .adc0
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+  // uint32  .event_number
+    // ---
+  // uint32  .unnamed_24_26
+    // ---
+  // uint32  .geom
+    // ---
+  // uint32  .u32
+    // ---
+// EMPTY_32BIT_WORD_V830_FRS  .dummy0
+  // raw_array  .data(DATA32)[32]
+    // ---
+// EMPTY_32BIT_WORD_V775_FRS  .dummy1
+  // raw_array  .data(DATA32)[32]
+    // ---
+// EMPTY_32BIT_WORD_V775_FRS  .dummy2
+  // raw_array  .data(DATA32)[32]
+    // ---
+// EMPTY_32BIT_WORD_V775_FRS  .dummy3
+  // raw_array  .data(DATA32)[32]
+    // ---
+// EMPTY_32BIT_WORD_V775_FRS  .dummy4
+  // raw_array  .data(DATA32)[32]
+    // ---
+// DATA12_OVERFLOW .tdc0.data[32]
+// DATA12_OVERFLOW .tdc1.data[32]
+// DATA12_OVERFLOW .qdc0.data[32]
+// DATA12_OVERFLOW .adc0.data[32]
+// 
+// size= 1  chunks=128  mem= 128  line=256  total=32768
+// size=32  chunks=  4  mem= 128  line=132  total=16896
+// size=128  chunks=  1  mem= 128  line=129  total=16512
+// 
+// corr structure: FRS_CRATE
+  // DATA12_OVERFLOW .tdc0.data[32]
+  // DATA12_OVERFLOW .tdc1.data[32]
+  // DATA12_OVERFLOW .qdc0.data[32]
+  // DATA12_OVERFLOW .adc0.data[32]
+// .FRS_CRATE/128/.tdc0/32/.data/32/[32]
+               // .tdc1/32/.data/32/[32]
+               // .qdc0/32/.data/32/[32]
+               // .adc0/32/.data/32/[32]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: FRS_CRATE
+// .FRS_CRATE// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: FRS_CRATE
+// .FRS_CRATE
+// Corr struct for: TPC_CRATE
+//  : public unpack_subevent_base
+// ---
+// VME_CAEN_V830_FRS  .scaler0
+  // raw_array  .data(DATA32)[32]
+    // ---
+  // uint32  .unnamed_0_26
+    // ---
+  // uint32  .geom
+    // ---
+  // uint32  .u32
+    // ---
+// VME_CAEN_V775_FRS  .tdc0
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+  // uint32  .event_number
+    // ---
+  // uint32  .unnamed_24_26
+    // ---
+  // uint32  .geom
+    // ---
+  // uint32  .u32
+    // ---
+// VME_CAEN_V775_FRS  .tdc1
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+  // uint32  .event_number
+    // ---
+  // uint32  .unnamed_24_26
+    // ---
+  // uint32  .geom
+    // ---
+  // uint32  .u32
+    // ---
+// VME_CAEN_V775_FRS  .adc0
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+  // uint32  .event_number
+    // ---
+  // uint32  .unnamed_24_26
+    // ---
+  // uint32  .geom
+    // ---
+  // uint32  .u32
+    // ---
+// EMPTY_32BIT_WORD_V830_FRS  .dummy0
+  // raw_array  .data(DATA32)[32]
+    // ---
+// EMPTY_32BIT_WORD_V775_FRS  .dummy1
+  // raw_array  .data(DATA32)[32]
+    // ---
+// EMPTY_32BIT_WORD_V775_FRS  .dummy2
+  // raw_array  .data(DATA32)[32]
+    // ---
+// EMPTY_32BIT_WORD_V775_FRS  .dummy3
+  // raw_array  .data(DATA32)[32]
+    // ---
+// EMPTY_32BIT_WORD_V775_FRS  .dummy4
+  // raw_array  .data(DATA32)[32]
+    // ---
+// VME_CAEN_V775_FRS  .adc1
+  // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+  // uint32  .event_number
+    // ---
+  // uint32  .unnamed_24_26
+    // ---
+  // uint32  .geom
+    // ---
+  // uint32  .u32
+    // ---
+// DATA12_OVERFLOW .tdc0.data[32]
+// DATA12_OVERFLOW .tdc1.data[32]
+// DATA12_OVERFLOW .adc0.data[32]
+// DATA12_OVERFLOW .adc1.data[32]
+// 
+// size= 1  chunks=128  mem= 128  line=256  total=32768
+// size=32  chunks=  4  mem= 128  line=132  total=16896
+// size=128  chunks=  1  mem= 128  line=129  total=16512
+// 
+// corr structure: TPC_CRATE
+  // DATA12_OVERFLOW .tdc0.data[32]
+  // DATA12_OVERFLOW .tdc1.data[32]
+  // DATA12_OVERFLOW .adc0.data[32]
+  // DATA12_OVERFLOW .adc1.data[32]
+// .TPC_CRATE/128/.tdc0/32/.data/32/[32]
+               // .tdc1/32/.data/32/[32]
+               // .adc0/32/.data/32/[32]
+               // .adc1/32/.data/32/[32]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: TPC_CRATE
+// .TPC_CRATE// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: TPC_CRATE
+// .TPC_CRATE
+// Corr struct for: unpack_event
+//  : public unpack_event_base
+// ---
+// FRS_CRATE  .vme0
+  //  : public unpack_subevent_base
+  // ---
+  // VME_CAEN_V830_FRS  .scaler0
+    // raw_array  .data(DATA32)[32]
+      // ---
+    // uint32  .unnamed_0_26
+      // ---
+    // uint32  .geom
+      // ---
+    // uint32  .u32
+      // ---
+  // VME_CAEN_V775_FRS  .tdc0
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+    // uint32  .event_number
+      // ---
+    // uint32  .unnamed_24_26
+      // ---
+    // uint32  .geom
+      // ---
+    // uint32  .u32
+      // ---
+  // VME_CAEN_V259_FRS  .pattern
+    // raw_array_zero_suppress  .data(DATA32)[32]
+      // ---
+    // uint32  .dummy_0_23
+      // ---
+    // uint32  .unnamed_24_26
+      // ---
+    // uint32  .geom
+      // ---
+    // uint32  .u32
+      // ---
+  // VME_CAEN_V775_FRS  .tdc1
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+    // uint32  .event_number
+      // ---
+    // uint32  .unnamed_24_26
+      // ---
+    // uint32  .geom
+      // ---
+    // uint32  .u32
+      // ---
+  // VME_CAEN_V775_FRS  .qdc0
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+    // uint32  .event_number
+      // ---
+    // uint32  .unnamed_24_26
+      // ---
+    // uint32  .geom
+      // ---
+    // uint32  .u32
+      // ---
+  // VME_CAEN_V775_FRS  .adc0
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+    // uint32  .event_number
+      // ---
+    // uint32  .unnamed_24_26
+      // ---
+    // uint32  .geom
+      // ---
+    // uint32  .u32
+      // ---
+  // EMPTY_32BIT_WORD_V830_FRS  .dummy0
+    // raw_array  .data(DATA32)[32]
+      // ---
+  // EMPTY_32BIT_WORD_V775_FRS  .dummy1
+    // raw_array  .data(DATA32)[32]
+      // ---
+  // EMPTY_32BIT_WORD_V775_FRS  .dummy2
+    // raw_array  .data(DATA32)[32]
+      // ---
+  // EMPTY_32BIT_WORD_V775_FRS  .dummy3
+    // raw_array  .data(DATA32)[32]
+      // ---
+  // EMPTY_32BIT_WORD_V775_FRS  .dummy4
+    // raw_array  .data(DATA32)[32]
+      // ---
+// TPC_CRATE  .vme1
+  //  : public unpack_subevent_base
+  // ---
+  // VME_CAEN_V830_FRS  .scaler0
+    // raw_array  .data(DATA32)[32]
+      // ---
+    // uint32  .unnamed_0_26
+      // ---
+    // uint32  .geom
+      // ---
+    // uint32  .u32
+      // ---
+  // VME_CAEN_V775_FRS  .tdc0
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+    // uint32  .event_number
+      // ---
+    // uint32  .unnamed_24_26
+      // ---
+    // uint32  .geom
+      // ---
+    // uint32  .u32
+      // ---
+  // VME_CAEN_V775_FRS  .tdc1
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+    // uint32  .event_number
+      // ---
+    // uint32  .unnamed_24_26
+      // ---
+    // uint32  .geom
+      // ---
+    // uint32  .u32
+      // ---
+  // VME_CAEN_V775_FRS  .adc0
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+    // uint32  .event_number
+      // ---
+    // uint32  .unnamed_24_26
+      // ---
+    // uint32  .geom
+      // ---
+    // uint32  .u32
+      // ---
+  // EMPTY_32BIT_WORD_V830_FRS  .dummy0
+    // raw_array  .data(DATA32)[32]
+      // ---
+  // EMPTY_32BIT_WORD_V775_FRS  .dummy1
+    // raw_array  .data(DATA32)[32]
+      // ---
+  // EMPTY_32BIT_WORD_V775_FRS  .dummy2
+    // raw_array  .data(DATA32)[32]
+      // ---
+  // EMPTY_32BIT_WORD_V775_FRS  .dummy3
+    // raw_array  .data(DATA32)[32]
+      // ---
+  // EMPTY_32BIT_WORD_V775_FRS  .dummy4
+    // raw_array  .data(DATA32)[32]
+      // ---
+  // VME_CAEN_V775_FRS  .adc1
+    // raw_array_zero_suppress  .data(DATA12_OVERFLOW)[32]
+    // uint32  .event_number
+      // ---
+    // uint32  .unnamed_24_26
+      // ---
+    // uint32  .geom
+      // ---
+    // uint32  .u32
+      // ---
+// DATA12_OVERFLOW .vme0.tdc0.data[32]
+// DATA12_OVERFLOW .vme0.tdc1.data[32]
+// DATA12_OVERFLOW .vme0.qdc0.data[32]
+// DATA12_OVERFLOW .vme0.adc0.data[32]
+// DATA12_OVERFLOW .vme1.tdc0.data[32]
+// DATA12_OVERFLOW .vme1.tdc1.data[32]
+// DATA12_OVERFLOW .vme1.adc0.data[32]
+// DATA12_OVERFLOW .vme1.adc1.data[32]
+// 
+// size= 1  chunks=256  mem= 256  line=512  total=131072
+// size=32  chunks=  8  mem= 256  line=264  total=67584
+// size=128  chunks=  2  mem= 256  line=258  total=66048
+// size=256  chunks=  1  mem= 256  line=257  total=65792
+// 
+// corr structure: unpack_event
+  // DATA12_OVERFLOW .vme0.tdc0.data[32]
+  // DATA12_OVERFLOW .vme0.tdc1.data[32]
+  // DATA12_OVERFLOW .vme0.qdc0.data[32]
+  // DATA12_OVERFLOW .vme0.adc0.data[32]
+  // DATA12_OVERFLOW .vme1.tdc0.data[32]
+  // DATA12_OVERFLOW .vme1.tdc1.data[32]
+  // DATA12_OVERFLOW .vme1.adc0.data[32]
+  // DATA12_OVERFLOW .vme1.adc1.data[32]
+// .unpack_event/256/.vme0/128/.tdc0/32/.data/32/[32]
+                            // .tdc1/32/.data/32/[32]
+                            // .qdc0/32/.data/32/[32]
+                            // .adc0/32/.data/32/[32]
+                  // .vme1/128/.tdc0/32/.data/32/[32]
+                            // .tdc1/32/.data/32/[32]
+                            // .adc0/32/.data/32/[32]
+                            // .adc1/32/.data/32/[32]// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: unpack_event
+// .unpack_event// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: unpack_event
+// .unpack_event
+// Corr struct for: unpack_sticky_event
+//  : public unpack_sticky_event_base
+// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: unpack_sticky_event
+// .unpack_sticky_event// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: unpack_sticky_event
+// .unpack_sticky_event// 
+// size= 1  chunks=  1  mem=   1  line=2  total=2
+// 
+// corr structure: unpack_sticky_event
+// .unpack_sticky_event
+
+/** END_CORR_STRUCT ***************************************************/
+

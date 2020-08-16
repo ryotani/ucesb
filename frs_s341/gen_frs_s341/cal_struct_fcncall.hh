@@ -1,0 +1,224 @@
+/** BEGIN_FUNCTION_CALL_PER_MEMBER *************************************
+ *
+ * Recursive function calls per member.
+ *
+ * Do not edit - automatically generated.
+ */
+
+#include "gen/default_fcncall_define.hh"
+
+#ifndef USER_DEF_cal_event_MW
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(cal_event_MW)::FCNCALL_NAME(cal_event_MW)
+{
+  FCNCALL_INIT;
+  // float AN;
+  {
+  FCNCALL_SUBNAME("AN");
+  { FCNCALL_CALL_CTRL_WRAP(AN,FCNCALL_CALL_TYPE(float,AN)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float XR;
+  {
+  FCNCALL_SUBNAME("XR");
+  { FCNCALL_CALL_CTRL_WRAP(XR,FCNCALL_CALL_TYPE(float,XR)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float XL;
+  {
+  FCNCALL_SUBNAME("XL");
+  { FCNCALL_CALL_CTRL_WRAP(XL,FCNCALL_CALL_TYPE(float,XL)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float YU;
+  {
+  FCNCALL_SUBNAME("YU");
+  { FCNCALL_CALL_CTRL_WRAP(YU,FCNCALL_CALL_TYPE(float,YU)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float YD;
+  {
+  FCNCALL_SUBNAME("YD");
+  { FCNCALL_CALL_CTRL_WRAP(YD,FCNCALL_CALL_TYPE(float,YD)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_cal_event_MW
+
+#ifndef USER_DEF_cal_event_TOF
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(cal_event_TOF)::FCNCALL_NAME(cal_event_TOF)
+{
+  FCNCALL_INIT;
+  // float L;
+  {
+  FCNCALL_SUBNAME("L");
+  { FCNCALL_CALL_CTRL_WRAP(L,FCNCALL_CALL_TYPE(float,L)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float R;
+  {
+  FCNCALL_SUBNAME("R");
+  { FCNCALL_CALL_CTRL_WRAP(R,FCNCALL_CALL_TYPE(float,R)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_cal_event_TOF
+
+#ifndef USER_DEF_cal_event_TPC
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(cal_event_TPC)::FCNCALL_NAME(cal_event_TPC)
+{
+  FCNCALL_INIT;
+  // float A[4];
+  {
+  FCNCALL_SUBNAME("A");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(A__i0,,__i0,FCNCALL_CALL_TYPE(float,A[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // float AR[2];
+  {
+  FCNCALL_SUBNAME("AR");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(AR__i0,,__i0,FCNCALL_CALL_TYPE(float,AR[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // float AL[2];
+  {
+  FCNCALL_SUBNAME("AL");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(AL__i0,,__i0,FCNCALL_CALL_TYPE(float,AL[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // float DT[4];
+  {
+  FCNCALL_SUBNAME("DT");
+  FCNCALL_FOR(__i0,4)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(DT__i0,,__i0,FCNCALL_CALL_TYPE(float,DT[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // float LT[2];
+  {
+  FCNCALL_SUBNAME("LT");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(LT__i0,,__i0,FCNCALL_CALL_TYPE(float,LT[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // float RT[2];
+  {
+  FCNCALL_SUBNAME("RT");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(RT__i0,,__i0,FCNCALL_CALL_TYPE(float,RT[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_cal_event_TPC
+
+#ifndef USER_DEF_cal_event_SC
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(cal_event_SC)::FCNCALL_NAME(cal_event_SC)
+{
+  FCNCALL_INIT;
+  // float DT;
+  {
+  FCNCALL_SUBNAME("DT");
+  { FCNCALL_CALL_CTRL_WRAP(DT,FCNCALL_CALL_TYPE(float,DT)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float DEL;
+  {
+  FCNCALL_SUBNAME("DEL");
+  { FCNCALL_CALL_CTRL_WRAP(DEL,FCNCALL_CALL_TYPE(float,DEL)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // float DER;
+  {
+  FCNCALL_SUBNAME("DER");
+  { FCNCALL_CALL_CTRL_WRAP(DER,FCNCALL_CALL_TYPE(float,DER)); }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_cal_event_SC
+
+#ifndef USER_DEF_cal_event
+FCNCALL_TEMPLATE
+FCNCALL_RET_TYPE FCNCALL_CLASS_NAME(cal_event)::FCNCALL_NAME(cal_event)
+{
+  FCNCALL_INIT;
+  FCNCALL_CALL_CTRL_WRAP(cal_event_base,FCNCALL_CLASS_NAME(cal_event_base)::FCNCALL_CALL_BASE());
+  // cal_event_MW MW[2];
+  {
+  FCNCALL_SUBNAME("MW");
+  FCNCALL_FOR(__i0,2)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(MW__i0,,__i0,MW[__i0].FCNCALL_CALL(MW[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // cal_event_TOF TOF;
+  {
+  FCNCALL_SUBNAME("TOF");
+  { FCNCALL_CALL_CTRL_WRAP(TOF,TOF.FCNCALL_CALL(TOF)); }
+  FCNCALL_SUBNAME_END;
+  }
+  // cal_event_TPC TPC[3];
+  {
+  FCNCALL_SUBNAME("TPC");
+  FCNCALL_FOR(__i0,3)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(TPC__i0,,__i0,TPC[__i0].FCNCALL_CALL(TPC[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  // cal_event_SC SC[3];
+  {
+  FCNCALL_SUBNAME("SC");
+  FCNCALL_FOR(__i0,3)
+  {
+    FCNCALL_SUBINDEX(__i0);
+    { FCNCALL_CALL_CTRL_WRAP_ARRAY(SC__i0,,__i0,SC[__i0].FCNCALL_CALL(SC[__i0])); }
+    FCNCALL_SUBINDEX_END(__i0);
+  }
+  FCNCALL_SUBNAME_END;
+  }
+  FCNCALL_RET;
+}
+#endif//USER_DEF_cal_event
+
+#include "gen/default_fcncall_undef.hh"
+
+
+/** END_FUNCTION_CALL_PER_MEMBER **************************************/

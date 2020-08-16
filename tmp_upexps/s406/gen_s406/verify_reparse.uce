@@ -1,0 +1,1814 @@
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+CAMAC_LECROY_2277_1CH_HACK(channel,edge,high_byte)
+{
+  MEMBER(DATA16 data[16] NO_INDEX_LIST);
+  UINT32 ch_data NOENCODE
+  {
+     0_15: value;
+       16: edge = CHECK(edge);
+    17_21: channel = CHECK(channel);
+    24_31: high = CHECK(high_byte);
+    ENCODE(data APPEND_LIST,(value=value));
+  }
+}
+
+CAMAC_LECROY_4434(channels)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS);
+  list(0<=index<channels)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_23: value;
+      24_31: 0;
+      ENCODE(data[index],(value=value));
+    }
+  }
+}
+
+CAMAC_PHILLIPS_7164(channels,mark_channel_no)
+{
+  MEMBER(DATA12 data[16] ZERO_SUPPRESS);
+  list(0<=index<channels)
+  {
+    if(mark_channel_no)
+    {
+      UINT16 ch_data NOENCODE
+      {
+         0_11: value;
+        12_15: channel = CHECK(index);
+        ENCODE(data[index],(value=value));
+      }
+    }
+    else
+    {
+      UINT16 ch_data NOENCODE
+      {
+         0_11: value;
+        ENCODE(data[index],(value=value));
+      }
+    }
+  }
+}
+
+CAMAC_SILENA_4418(channels,mark_channel_no)
+{
+  MEMBER(DATA12_OVERFLOW data[8] ZERO_SUPPRESS);
+  list(0<=index<channels)
+  {
+    if(mark_channel_no)
+    {
+      UINT16 ch_data NOENCODE
+      {
+         0_11: value;
+        12_14: channel = CHECK(index);
+           15: overflow;
+        ENCODE(data[index],(value=value,overflow=overflow));
+      }
+    }
+    else
+    {
+      UINT16 ch_data NOENCODE
+      {
+         0_11: value;
+           15: overflow;
+        ENCODE(data[index],(value=value,overflow=overflow));
+      }
+    }
+  }
+}
+
+CROS3_REWRITE(ccb_id)
+{
+  MEMBER(WIRE_START_END data[32768] ZERO_SUPPRESS);
+  UINT32 h1
+  {
+     0_15: data_size;
+       16: threshold_curve;
+       17: leading_edge;
+       18: data;
+    20_23: trigger_time;
+    24_27: ccb_id = MATCH(ccb_id);
+    28_31: event_counter;
+  }
+  if(h1.data)
+  {
+    UINT32 h2
+    {
+       0_01: read_out_mode;
+          4: pulser_enabled;
+       8_10: statistics;
+         11: both_edges;
+      12_19: slices;
+      20_21: scale;
+         31: odd_length16;
+    }
+    if(h1.leading_edge)
+    {
+      list(0<=index<static_cast<uint32>((h1.data_size - h2.odd_length16)))
+      {
+        UINT32 ch_data NOENCODE
+        {
+           0_07: start_slice1;
+           8_15: wire1;
+          16_23: start_slice2;
+          24_31: wire2;
+          ENCODE(data[(index * 2)],(wire=wire1,start=start_slice1,stop=0));
+          ENCODE(data[((index * 2) + 1)],(wire=wire2,start=start_slice2,
+                                          stop=0));
+        }
+      }
+      if(h2.odd_length16)
+      {
+        UINT32 ch_data_odd NOENCODE
+        {
+           0_07: start_slice1;
+           8_15: wire1;
+          16_23: start_slice2 = CHECK(255);
+          24_31: wire2 = CHECK(0);
+          ENCODE(data[((h1.data_size - 1) * 2)],(wire=wire1,start=start_slice1,
+                                                 stop=0));
+        }
+      }
+    }
+    else
+    {
+      list(0<=index<h1.data_size)
+      {
+        UINT32 ch_data NOENCODE
+        {
+           0_07: start_slice;
+           8_15: wire;
+          16_23: end_slice;
+          ENCODE(data[index],(wire=wire,start=start_slice,stop=end_slice));
+        }
+      }
+    }
+  }
+  else
+  {
+    if(h1.threshold_curve)
+    {
+      UINT32 trc_h2
+      {
+         0_01: read_out_mode;
+            4: pulser_enabled;
+         8_10: statistics;
+           11: both_edges;
+        12_19: threshold_start;
+        20_23: threshold_step;
+        24_28: boards;
+      }
+      list(0<=board<trc_h2.boards)
+      {
+        UINT32 trc_h3 NOENCODE
+        {
+           0_07: test_pulser_even;
+           8_15: test_pulser_odd;
+          16_23: threshold_steps;
+          28_31: ad_id;
+        }
+        list(0<=index_thr<trc_h3.threshold_steps)
+        {
+          list(0<=index_wire2<8)
+          {
+            UINT32 ch_counts NOENCODE
+            {
+               0_11: counts1;
+              12_15: wire1;
+              16_27: counts2;
+              28_31: wire2;
+            }
+          }
+        }
+      }
+    }
+    else
+    {
+      UINT32 dummy_h2 NOENCODE
+      {
+         0_31: 0;
+      }
+    }
+  }
+}
+
+DUMMY_WORD()
+{
+  UINT32 dummy_word;
+}
+
+external EXT_CROS3(ccb_id)
+;
+
+external EXT_SST(sam,gtb,siderem,branch)
+;
+
+FASTBUS_LECROY_1875(geom,channels)
+{
+  MEMBER(DATA12_RANGE data[64] ZERO_SUPPRESS);
+  UINT32 ch_data NOENCODE
+  {
+     0_11: value;
+    16_21: channel = RANGE(0,(channels - 1));
+       23: range;
+    24_26: n = CHECK(0);
+    27_31: geom = MATCH(geom);
+    ENCODE(data[channel],(value=value,range=range));
+  }
+}
+
+FASTBUS_LECROY_1885(geom,channels)
+{
+  MEMBER(DATA12_RANGE data[96] ZERO_SUPPRESS);
+  UINT32 ch_data NOENCODE
+  {
+     0_11: value;
+    16_22: channel = RANGE(0,(channels - 1));
+       23: range;
+    24_26: n = CHECK(0);
+    27_31: geom = MATCH(geom);
+    ENCODE(data[channel],(value=value,range=range));
+  }
+}
+
+LAND_STD_VME()
+{
+  UINT32 failure
+  {
+        0: fail_general;
+        1: fail_data_corrupt;
+        2: fail_data_missing;
+        3: fail_data_too_much;
+        4: fail_event_counter_mismatch;
+        5: fail_readout_error_driver;
+        6: fail_unexpected_trigger;
+        7: fail_firmware_mismatch;
+       22: has_multi_trlo_ii_counter0;
+       23: has_clock_counter_stamp;
+       24: has_continous_event_counter;
+       25: has_update_qdc_iped_value;
+       26: spurious_start_before_tcal;
+       27: has_no_zero_suppression;
+       28: has_multi_adctdc_counter0;
+       29: has_multi_scaler_counter0;
+       30: has_multi_event;
+       31: has_time_stamp;
+  }
+  if(failure.has_continous_event_counter)
+  {
+    UINT32 continous_event_counter;
+  }
+  if(failure.has_time_stamp)
+  {
+    UINT32 time_stamp;
+  }
+  if(failure.has_clock_counter_stamp)
+  {
+    UINT32 clock_counter_stamp;
+  }
+  if(failure.has_update_qdc_iped_value)
+  {
+    UINT32 iped;
+  }
+  if(failure.has_multi_event)
+  {
+    UINT32 multi_events;
+  }
+  if(failure.has_multi_trlo_ii_counter0)
+  {
+    UINT32 multi_trlo_ii_counter0;
+  }
+  if(failure.has_multi_scaler_counter0)
+  {
+    UINT32 multi_scaler_counter0;
+  }
+  if(failure.has_multi_adctdc_counter0)
+  {
+    UINT32 multi_adctdc_counter0;
+  }
+}
+
+NTP64_TIME()
+{
+  UINT32 sec;
+  UINT32 frac;
+}
+
+NTP_MESSAGE(id)
+{
+  UINT32 header
+  {
+     0_15: word_count;
+       16: quick_burst;
+    24_31: id = MATCH(id);
+  }
+  MARK_COUNT(start);
+  UINT32 server_id;
+  UINT32 sspp
+  {
+     0_07: precision;
+     8_15: poll;
+    16_19: stratum;
+    24_26: mode;
+    27_29: version = CHECK(3);
+    30_31: leap;
+  }
+  UINT32 root_dly
+  {
+     0_15: frac;
+    16_31: sec;
+  }
+  UINT32 root_disp
+  {
+     0_15: frac;
+    16_31: sec;
+  }
+  UINT32 refid;
+  reftime = NTP64_TIME();
+  origtime = NTP64_TIME();
+  rectime = NTP64_TIME();
+  tmittime = NTP64_TIME();
+  rxtime = NTP64_TIME();
+  if(header.quick_burst)
+  {
+    orig2time = NTP64_TIME();
+    rec2time = NTP64_TIME();
+    tmit2time = NTP64_TIME();
+    rx2time = NTP64_TIME();
+  }
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_count,start,end,0,4)
+}
+
+RANDOM_TCAL(id)
+{
+  UINT32 header
+  {
+     0_07: word_count;
+     8_11: pulses;
+    12_17: clock_bits;
+       18: has_tstamp1;
+       19: has_tstamp2;
+    24_31: id = MATCH(id);
+  }
+  MARK_COUNT(start);
+  if(header.has_tstamp1)
+  {
+    tstamp1 = RANDOM_TCAL_TSTAMP_CLOCK();
+  }
+  if(header.has_tstamp2)
+  {
+    tstamp2 = RANDOM_TCAL_TSTAMP_CLOCK();
+  }
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_count,start,end,0,4)
+}
+
+RANDOM_TCAL_TSTAMP_CLOCK()
+{
+  UINT32 soft_latches;
+  UINT32 hard_latches;
+  UINT32 clock_ticks;
+  before = NTP64_TIME();
+  after = NTP64_TIME();
+}
+
+SIDEREM_BLOCK(sam,gtb,siderem)
+{
+  MEMBER(DATA12 data[4][512] ZERO_SUPPRESS);
+  UINT32 header
+  {
+     0_11: count;
+    12_15: local_event_counter;
+    16_19: local_trigger;
+    20_23: siderem = MATCH(siderem);
+    24_27: gtb = MATCH(gtb);
+    28_31: sam = MATCH(sam);
+  }
+  list(0<=index<header.count)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_11: value;
+      12_13: adc_no;
+      16_24: channel;
+      28_31: 15;
+      ENCODE(data[adc_no][channel],(value=value));
+    }
+  }
+}
+
+SOFT_SCALER32(channels)
+{
+  MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  list(0<=index<channels)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_31: value;
+      ENCODE(data[index],(value=value));
+    }
+  }
+}
+
+TACQUILA_DATA(sam,gtb)
+{
+  MEMBER(DATA12 tac[30][17] ZERO_SUPPRESS);
+  MEMBER(DATA12 adc[30][17] ZERO_SUPPRESS);
+  MEMBER(DATA12 clk[30][17] ZERO_SUPPRESS);
+  UINT32 header
+  {
+     0_08: count;
+     9_11: dummy1;
+    12_15: trigger_tac = RANGE(0,1);
+    16_19: trigger_sam = RANGE(1,2);
+    20_23: lec;
+    24_27: gtb = MATCH(gtb);
+    28_31: sam = MATCH(sam);
+  }
+  list(0<=index<header.count)
+  {
+    if(( ! (index & 1)))
+    {
+      UINT32 ch_data NOENCODE
+      {
+         0_11: tac_value;
+        12_17: clock_cycle;
+        18_19: dummy2;
+           20: trigger;
+           21: 0;
+        22_26: channel = RANGE(0,16);
+        27_31: module = RANGE(1,30);
+        ENCODE(tac[(module - 1)][channel],(value=tac_value));
+        ENCODE(clk[(module - 1)][channel],(value=clock_cycle));
+      }
+      UINT32 ch_data2 NOENCODE
+      {
+         0_11: adc_value;
+        12_19: dummy3;
+           20: trigger;
+           21: 1;
+        22_26: channel = RANGE(0,16);
+        27_31: module = RANGE(1,30);
+        ENCODE(adc[(module - 1)][channel],(value=adc_value));
+      }
+    }
+  }
+}
+
+TRLO_SAMPLER(id)
+{
+  MEMBER(DATA32 stamps[512] NO_INDEX_LIST);
+  UINT32 header
+  {
+     0_09: count;
+    24_31: id = MATCH(id);
+  }
+  list(0<=index<header.count)
+  {
+    UINT32 data NOENCODE
+    {
+       0_31: stamp;
+      ENCODE(stamps APPEND_LIST,(value=stamp));
+    }
+  }
+}
+
+VME_CAEN_V1190(geom)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(v1190_start);
+  UINT32 header
+  {
+     0_04: geom = MATCH(geom);
+     5_26: event_number;
+    27_31: 8;
+  }
+  select several
+  {
+    tdc[0] = VME_CAEN_V1190_SUBTDC(tdc=0,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[1] = VME_CAEN_V1190_SUBTDC(tdc=1,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[2] = VME_CAEN_V1190_SUBTDC(tdc=2,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[3] = VME_CAEN_V1190_SUBTDC(tdc=3,event_id=(header.event_number & 0xfff),
+                                   data=data);
+  }
+  UINT32 trigger
+  {
+     0_26: time_tag;
+    27_31: 17;
+  }
+  MARK_COUNT(v1190_end);
+  UINT32 trailer
+  {
+     0_04: geom = CHECK(geom);
+     5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+       24: tdc_error;
+       25: buffer_overflow;
+       26: trigger_lost;
+    27_31: 16;
+  }
+}
+
+VME_CAEN_V1190_SHORT(geom)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(v1190_start);
+  UINT32 header
+  {
+     0_04: geom = MATCH(geom);
+     5_26: event_number;
+    27_31: 8;
+  }
+  select several
+  {
+    tdc[0] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=0,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[1] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=1,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[2] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=2,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[3] = VME_CAEN_V1190_SHORT_SUBTDC(tdc=3,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    norevisit err[0] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=0);
+    norevisit err[1] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=1);
+    norevisit err[2] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=2);
+    norevisit err[3] = VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc=3);
+  }
+  UINT32 trigger
+  {
+     0_26: time_tag;
+    27_31: 17;
+  }
+  MARK_COUNT(v1190_end);
+  UINT32 trailer
+  {
+     0_04: geom = CHECK(geom);
+     5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+       24: tdc_error;
+       25: buffer_overflow;
+       26: trigger_lost;
+    27_31: 16;
+  }
+}
+
+VME_CAEN_V1190_SHORT_SUBTDC(tdc,event_id,data)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  UINT32 ch_data NOENCODE
+  {
+     0_18: value;
+    19_23: channel_low;
+    24_25: tdc = CHECK(tdc);
+       26: trailing;
+    27_31: 0;
+    ENCODE(data[((tdc << 5) | channel_low)],(value=value));
+  }
+}
+
+VME_CAEN_V1190_SHORT_SUBTDC_ERROR(tdc)
+{
+  UINT32 error_flags
+  {
+     0_14: flags;
+    24_25: tdc = CHECK(tdc);
+    27_31: 4;
+  }
+}
+
+VME_CAEN_V1190_SUBTDC(tdc,event_id,data)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(tdc_start);
+  UINT32 header
+  {
+     0_11: bunch_id;
+    12_23: event_id = CHECK(event_id);
+    24_25: tdc = MATCH(tdc);
+    27_31: 1;
+  }
+  several UINT32 ch_data NOENCODE
+  {
+     0_18: value;
+    19_23: channel_low;
+    24_25: tdc = CHECK(tdc);
+       26: trailing;
+    27_31: 0;
+    ENCODE(data[((tdc << 5) | channel_low)],(value=value));
+  }
+  optional UINT32 error_flags
+  {
+     0_14: flags;
+    24_25: tdc = CHECK(tdc);
+    27_31: 4;
+  }
+  MARK_COUNT(tdc_end);
+  UINT32 trailer
+  {
+     0_11: word_count = CHECK_COUNT(tdc_start,tdc_end,4,4);
+    12_23: event_id = CHECK(header.event_id);
+    24_25: tdc = CHECK(tdc);
+    27_31: 3;
+  }
+}
+
+VME_CAEN_V1290(geom)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(v1190_start);
+  UINT32 header
+  {
+     0_04: geom = MATCH(geom);
+     5_26: event_number;
+    27_31: 8;
+  }
+  select several
+  {
+    tdc[0] = VME_CAEN_V1290_SUBTDC(tdc=0,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[1] = VME_CAEN_V1290_SUBTDC(tdc=1,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[2] = VME_CAEN_V1290_SUBTDC(tdc=2,event_id=(header.event_number & 0xfff),
+                                   data=data);
+    tdc[3] = VME_CAEN_V1290_SUBTDC(tdc=3,event_id=(header.event_number & 0xfff),
+                                   data=data);
+  }
+  UINT32 trigger
+  {
+     0_26: time_tag;
+    27_31: 17;
+  }
+  MARK_COUNT(v1190_end);
+  UINT32 trailer
+  {
+     0_04: geom = CHECK(geom);
+     5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+       24: tdc_error;
+       25: buffer_overflow;
+       26: trigger_lost;
+    27_31: 16;
+  }
+}
+
+VME_CAEN_V1290_SHORT(geom)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(v1190_start);
+  UINT32 header
+  {
+     0_04: geom = MATCH(geom);
+     5_26: event_number;
+    27_31: 8;
+  }
+  select several
+  {
+    tdc[0] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=0,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[1] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=1,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[2] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=2,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    tdc[3] = VME_CAEN_V1290_SHORT_SUBTDC(tdc=3,event_id=(header.event_number & 0xfff),
+                                         data=data);
+    norevisit err[0] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=0);
+    norevisit err[1] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=1);
+    norevisit err[2] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=2);
+    norevisit err[3] = VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc=3);
+  }
+  UINT32 trigger
+  {
+     0_26: time_tag;
+    27_31: 17;
+  }
+  MARK_COUNT(v1190_end);
+  UINT32 trailer
+  {
+     0_04: geom = CHECK(geom);
+     5_19: word_count = CHECK_COUNT(v1190_start,v1190_end,4,4);
+       24: tdc_error;
+       25: buffer_overflow;
+       26: trigger_lost;
+    27_31: 16;
+  }
+}
+
+VME_CAEN_V1290_SHORT_SUBTDC(tdc,event_id,data)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  UINT32 ch_data NOENCODE
+  {
+     0_20: value;
+    21_23: channel_low;
+    24_25: tdc = CHECK(tdc);
+       26: trailing;
+    27_31: 0;
+    ENCODE(data[((tdc << 3) | channel_low)],(value=value));
+  }
+}
+
+VME_CAEN_V1290_SHORT_SUBTDC_ERROR(tdc)
+{
+  UINT32 error_flags
+  {
+     0_14: flags;
+    24_25: tdc = CHECK(tdc);
+    27_31: 4;
+  }
+}
+
+VME_CAEN_V1290_SUBTDC(tdc,event_id,data)
+{
+  MEMBER(DATA24 data[32] ZERO_SUPPRESS_MULTI(128));
+  MARK_COUNT(tdc_start);
+  UINT32 header
+  {
+     0_11: bunch_id;
+    12_23: event_id = CHECK(event_id);
+    24_25: tdc = MATCH(tdc);
+    27_31: 1;
+  }
+  several UINT32 ch_data NOENCODE
+  {
+     0_20: value;
+    21_23: channel_low;
+    24_25: tdc = CHECK(tdc);
+       26: trailing;
+    27_31: 0;
+    ENCODE(data[((tdc << 3) | channel_low)],(value=value));
+  }
+  optional UINT32 error_flags
+  {
+     0_14: flags;
+    24_25: tdc = CHECK(tdc);
+    27_31: 4;
+  }
+  MARK_COUNT(tdc_end);
+  UINT32 trailer
+  {
+     0_11: word_count = CHECK_COUNT(tdc_start,tdc_end,4,4);
+    12_23: event_id = CHECK(header.event_id);
+    24_25: tdc = CHECK(tdc);
+    27_31: 3;
+  }
+}
+
+VME_CAEN_V775(geom,crate)
+{
+  MEMBER(DATA12_OVERFLOW data[32] ZERO_SUPPRESS);
+  UINT32 header NOENCODE
+  {
+     8_13: count;
+    16_23: crate = MATCH(crate);
+    24_26: 2;
+    27_31: geom = MATCH(geom);
+  }
+  list(0<=index<header.count)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_11: value;
+         12: overflow;
+         13: underflow;
+         14: valid;
+      16_20: channel;
+      24_26: 0;
+      27_31: geom = CHECK(geom);
+      ENCODE(data[channel],(value=value,overflow=overflow));
+    }
+  }
+  UINT32 eob
+  {
+     0_23: event_number;
+    24_26: 4;
+    27_31: geom = CHECK(geom);
+  }
+}
+
+VME_CAEN_V830(geom)
+{
+  MEMBER(DATA32 data[32] ZERO_SUPPRESS);
+  UINT32 header
+  {
+     0_15: event_number;
+    16_17: ts;
+    18_23: count;
+       26: 1;
+    27_31: geom = MATCH(geom);
+  }
+  list(0<=index<header.count)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_25: value;
+         26: 0;
+      27_31: channel;
+      ENCODE(data[channel],(value=value));
+    }
+  }
+}
+
+VME_MESYTEC_MADC32(geom)
+{
+  MEMBER(DATA14_OVERFLOW data[32] ZERO_SUPPRESS);
+  MARK_COUNT(start);
+  UINT32 header NOENCODE
+  {
+     0_11: word_number;
+    12_14: adc_resol;
+       15: out_form;
+    16_23: geom = MATCH(geom);
+    24_29: 0;
+    30_31: 1;
+  }
+  several UINT32 ch_data NOENCODE
+  {
+     0_12: value;
+       14: outofrange;
+    16_20: channel;
+    21_29: 32;
+    30_31: 0;
+    ENCODE(data[channel],(value=value,overflow=outofrange));
+  }
+  optional UINT32 filler NOENCODE
+  {
+     0_31: 0;
+  }
+  UINT32 end_of_event
+  {
+     0_29: counter;
+    30_31: 3;
+  }
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_number,start,end,( - 4),4)
+}
+
+VME_MESYTEC_MDPP16(geom)
+{
+  MEMBER(DATA16_OVERFLOW data[34] ZERO_SUPPRESS_MULTI(100));
+  MARK_COUNT(start);
+  UINT32 header NOENCODE
+  {
+     0_09: word_number;
+    10_12: adc_res;
+    13_15: tdc_res;
+    16_23: geom = MATCH(geom);
+    24_29: 0;
+    30_31: 1;
+  }
+  several UINT32 ch_data NOENCODE
+  {
+     0_15: value;
+    16_21: channel;
+       22: overflow;
+       23: pileup;
+    24_27: 0;
+    28_31: 1;
+    ENCODE(data[channel],(value=value,overflow=overflow,pileup=pileup));
+  }
+  several UINT32 fill_word NOENCODE
+  {
+     0_31: 0;
+  }
+  UINT32 end_of_event
+  {
+     0_29: counter;
+    30_31: 3;
+  }
+  MARK_COUNT(end);
+  CHECK_COUNT(header.word_number,start,end,( - 4),4)
+}
+
+VME_VUPROM_V35()
+{
+  MEMBER(DATA12 data[192] ZERO_SUPPRESS);
+  UINT32 header NOENCODE
+  {
+     0_08: word_number;
+        9: raw_marker;
+    10_15: 0;
+    16_23: geom;
+    24_31: 254;
+  }
+  list(0<=index<header.word_number)
+  {
+    UINT32 ch_data NOENCODE
+    {
+       0_09: value;
+      10_15: 0;
+      16_23: channel;
+      24_31: geom;
+      ENCODE(data[channel],(value=value));
+    }
+  }
+}
+
+SUBEVENT(CB_VME_LEFT)
+{
+  vme = LAND_STD_VME();
+  select several
+  {
+    adc[0] = VME_MESYTEC_MADC32(geom=0);
+    adc[1] = VME_MESYTEC_MADC32(geom=1);
+    adc[2] = VME_MESYTEC_MADC32(geom=2);
+    adc[3] = VME_MESYTEC_MADC32(geom=3);
+    madc0_psp = VME_MESYTEC_MADC32(geom=4);
+    tdc = VME_VUPROM_V35();
+  }
+}
+
+SUBEVENT(CB_VME_RIGHT)
+{
+  vme = LAND_STD_VME();
+  select several
+  {
+    adc[0] = VME_MESYTEC_MADC32(geom=0);
+    adc[1] = VME_MESYTEC_MADC32(geom=1);
+    adc[2] = VME_MESYTEC_MADC32(geom=2);
+    adc[3] = VME_MESYTEC_MADC32(geom=3);
+    tdc = VME_VUPROM_V35();
+  }
+}
+
+SUBEVENT(CROS3_REWRITE_SUBEVENT)
+{
+  select several
+  {
+    norevisit ccb[0] = CROS3_REWRITE(ccb_id=1);
+    norevisit ccb[1] = CROS3_REWRITE(ccb_id=2);
+  }
+}
+
+SUBEVENT(CROS3_SUBEVENT)
+{
+  select several
+  {
+    external norevisit ccb[0] = EXT_CROS3(ccb_id=1);
+    external norevisit ccb[1] = EXT_CROS3(ccb_id=2);
+  }
+}
+
+SUBEVENT(DUMMY)
+{
+  select several
+  {
+    d = DUMMY_WORD();
+  }
+}
+
+SUBEVENT(LAND_CAMAC_CONVERTER)
+{
+  UINT16 tpat;
+  UINT16 tprev;
+  UINT16 tnext;
+  UINT16 tprev2;
+  if(EXTERNAL has_data)
+  {
+    ;
+  }
+}
+
+SUBEVENT(LAND_CAMAC_PILEUP)
+{
+  select several
+  {
+    tdc = CAMAC_LECROY_2277_1CH_HACK(channel=0,edge=1,high_byte=0);
+    tcal = CAMAC_LECROY_2277_1CH_HACK(channel=1,edge=1,high_byte=0);
+  }
+}
+
+SUBEVENT(LAND_CAMAC_SCALER)
+{
+  scaler0 = CAMAC_LECROY_4434(channels=32);
+  scaler1 = CAMAC_LECROY_4434(channels=32);
+  scaler2 = CAMAC_LECROY_4434(channels=32);
+  scaler3 = SOFT_SCALER32(channels=16);
+  if(EXTERNAL has_timestamp)
+  {
+    UINT32 timestamp;
+    UINT32 endianess
+    {
+       0_31: 0x87654321;
+    }
+  }
+}
+
+SUBEVENT(LAND_CAMAC_START_STOP_STAMP)
+{
+  UINT32 timestamp;
+  UINT32 endianess
+  {
+     0_31: 0x87654321;
+  }
+}
+
+SUBEVENT(LAND_CAMAC_TCAL_INFO)
+{
+  UINT32 info;
+  select several
+  {
+    rtcal = RANDOM_TCAL(id=231);
+    ntp = NTP_MESSAGE(id=239);
+  }
+}
+
+SUBEVENT(MASTER_VME)
+{
+  vme = LAND_STD_VME();
+  select several
+  {
+    sampler_pos = TRLO_SAMPLER(id=223);
+    sampler_cb_sum = TRLO_SAMPLER(id=215);
+  }
+}
+
+SUBEVENT(SIDEREM01_VME)
+{
+  select several
+  {
+    external sst[0] = EXT_SST(siderem=1,gtb=0,sam=5,branch=1);
+    external sst[1] = EXT_SST(siderem=2,gtb=0,sam=5,branch=1);
+    external sst[2] = EXT_SST(siderem=1,gtb=1,sam=5,branch=1);
+    external sst[3] = EXT_SST(siderem=2,gtb=1,sam=5,branch=1);
+    external sst[4] = EXT_SST(siderem=1,gtb=0,sam=6,branch=1);
+    external sst[5] = EXT_SST(siderem=2,gtb=0,sam=6,branch=1);
+    external sst[6] = EXT_SST(siderem=1,gtb=1,sam=6,branch=1);
+    external sst[7] = EXT_SST(siderem=2,gtb=1,sam=6,branch=1);
+  }
+  optional UINT32 error_marker
+  {
+     0_31: 0x89abdcef;
+  }
+  optional UINT32 error_marker2
+  {
+     0_31: 0x89abcdef;
+  }
+}
+
+SUBEVENT(TACQUILA_LAND_SUBEVENT)
+{
+  select several
+  {
+    data_sam5_gtb0 = TACQUILA_DATA(sam=5,gtb=0);
+    data_sam6_gtb0 = TACQUILA_DATA(sam=6,gtb=0);
+    data_sam6_gtb1 = TACQUILA_DATA(sam=6,gtb=1);
+  }
+}
+
+SUBEVENT(TACQUILA_NEULAND_SUBEVENT)
+{
+  select several
+  {
+    data_sam7_gtb0 = TACQUILA_DATA(sam=7,gtb=0);
+    data_sam7_gtb1 = TACQUILA_DATA(sam=7,gtb=1);
+  }
+}
+
+SUBEVENT(VME_CRATE1)
+{
+  vme = LAND_STD_VME();
+  select several
+  {
+    qdc792POS_ROLU = VME_CAEN_V775(geom=31,crate=1);
+    tdc775POS_ROLU = VME_CAEN_V775(geom=31,crate=130);
+    qdc792PIXEL = VME_CAEN_V775(geom=31,crate=3);
+    scaler = VME_CAEN_V830(geom=0);
+  }
+}
+
+SUBEVENT(VME_CRATE2)
+{
+  vme = LAND_STD_VME();
+  select several
+  {
+    qdc792TFW1 = VME_CAEN_V775(geom=31,crate=1);
+    qdc792TFW2 = VME_CAEN_V775(geom=31,crate=2);
+    tdc775TFW1 = VME_CAEN_V775(geom=31,crate=131);
+    tdc775TFW2 = VME_CAEN_V775(geom=31,crate=132);
+    tdc775NTF = VME_CAEN_V775(geom=31,crate=6);
+    qdc792NTF = VME_CAEN_V775(geom=31,crate=133);
+    qdc792GFI1 = VME_CAEN_V775(geom=31,crate=7);
+    qdc792GFI2 = VME_CAEN_V775(geom=31,crate=8);
+    qdc792GFI3 = VME_CAEN_V775(geom=31,crate=9);
+    qdc792MFITEST = VME_CAEN_V775(geom=31,crate=10);
+    scaler = VME_CAEN_V830(geom=0);
+  }
+}
+
+/**********************************************************
+ * The event definition:
+ */
+
+EVENT
+{
+  cros3 = CROS3_SUBEVENT(type=85,subtype=0x2134);
+  cros3_rewrite = CROS3_REWRITE_SUBEVENT(type=85,subtype=0x213e);
+  sst = SIDEREM01_VME(type=82,subtype=0x2008,control=3);
+  camac = LAND_CAMAC_CONVERTER(type=34,subtype=0xc80);
+  acq = DUMMY(type=35,subtype=0xc1c);
+  vme1 = VME_CRATE1(type=88,subtype=0x2260,control=5,subcrate=1);
+  vme2 = VME_CRATE2(type=88,subtype=0x2260,control=5,subcrate=2);
+  vme_cbr = CB_VME_RIGHT(type=88,subtype=0x2260,control=5,subcrate=3);
+  vme_cbl = CB_VME_LEFT(type=88,subtype=0x2260,control=5,subcrate=4);
+  vme_master = MASTER_VME(type=88,subtype=0x2260,subcrate=6);
+  camac_tcal_info = LAND_CAMAC_TCAL_INFO(type=0x26ce,subtype=0xc7f);
+  camac_scalers = LAND_CAMAC_SCALER(type=34,subtype=0xc1c);
+  pileup = LAND_CAMAC_PILEUP(type=34,subtype=0xdac,control=1);
+  tacquila = TACQUILA_LAND_SUBEVENT(type=94,subtype=0x24b8,subcrate=0);
+  neuland = TACQUILA_NEULAND_SUBEVENT(type=94,subtype=0x24b8,subcrate=1);
+  ignore_unknown_subevent;
+}
+
+/**********************************************************
+ * The sticky_event definition:
+ */
+
+/**********************************************************
+ * Signal name mappings:
+ */
+
+SIGNAL(CXB001_1_T,vme2.tdc775TFW1.data[9],DATA12);
+SIGNAL(CXB002_1_T,vme2.tdc775TFW1.data[10],DATA12);
+SIGNAL(CXB003_1_T,vme2.tdc775TFW1.data[11],DATA12);
+SIGNAL(CXB004_1_T,vme2.tdc775TFW1.data[12],DATA12);
+SIGNAL(CXB005_1_T,vme2.tdc775TFW1.data[13],DATA12);
+SIGNAL(CXB006_1_T,vme2.tdc775TFW1.data[14],DATA12);
+SIGNAL(CXB007_1_E,vme_cbr.adc[1].data[4],DATA14_OVERFLOW);
+SIGNAL(CXB007_1_T,vme_cbr.tdc.data[68],DATA12);
+SIGNAL(DTF01_1_E,vme2.qdc792TFW1.data[17],DATA12);
+SIGNAL(DTF01_1_T,vme2.tdc775TFW2.data[17],DATA12);
+SIGNAL(DTF01_2_E,vme2.qdc792TFW2.data[17],DATA12);
+SIGNAL(DTF01_2_T,vme2.tdc775TFW2.data[25],DATA12);
+SIGNAL(DTF02_1_E,vme2.qdc792TFW1.data[18],DATA12);
+SIGNAL(DTF02_1_T,vme2.tdc775TFW2.data[18],DATA12);
+SIGNAL(DTF02_2_E,vme2.qdc792TFW2.data[18],DATA12);
+SIGNAL(DTF02_2_T,vme2.tdc775TFW2.data[26],DATA12);
+SIGNAL(DTF03_1_E,vme2.qdc792TFW1.data[19],DATA12);
+SIGNAL(DTF03_1_T,vme2.tdc775TFW2.data[19],DATA12);
+SIGNAL(DTF03_2_E,vme2.qdc792TFW2.data[19],DATA12);
+SIGNAL(DTF03_2_T,vme2.tdc775TFW2.data[27],DATA12);
+SIGNAL(DTF04_1_E,vme2.qdc792TFW1.data[20],DATA12);
+SIGNAL(DTF04_1_T,vme2.tdc775TFW2.data[20],DATA12);
+SIGNAL(DTF04_2_E,vme2.qdc792TFW2.data[20],DATA12);
+SIGNAL(DTF04_2_T,vme2.tdc775TFW2.data[28],DATA12);
+SIGNAL(DTF05_1_E,vme2.qdc792TFW1.data[21],DATA12);
+SIGNAL(DTF05_1_T,vme2.tdc775TFW2.data[21],DATA12);
+SIGNAL(DTF05_2_E,vme2.qdc792TFW2.data[21],DATA12);
+SIGNAL(DTF05_2_T,vme2.tdc775TFW2.data[29],DATA12);
+SIGNAL(DTF06_1_E,vme2.qdc792TFW1.data[22],DATA12);
+SIGNAL(DTF06_1_T,vme2.tdc775TFW2.data[22],DATA12);
+SIGNAL(DTF06_2_E,vme2.qdc792TFW2.data[22],DATA12);
+SIGNAL(DTF06_2_T,vme2.tdc775TFW2.data[30],DATA12);
+SIGNAL(DTF07_1_E,vme2.qdc792TFW1.data[16],DATA12);
+SIGNAL(DTF07_1_T,vme2.tdc775TFW2.data[16],DATA12);
+SIGNAL(DTF07_2_E,vme2.qdc792TFW1.data[23],DATA12);
+SIGNAL(DTF07_2_T,vme2.tdc775TFW2.data[23],DATA12);
+SIGNAL(DTF08_1_E,vme2.qdc792TFW2.data[16],DATA12);
+SIGNAL(DTF08_1_T,vme2.tdc775TFW2.data[24],DATA12);
+SIGNAL(DTF08_2_E,vme2.qdc792TFW2.data[23],DATA12);
+SIGNAL(DTF08_2_T,vme2.tdc775TFW2.data[31],DATA12);
+SIGNAL(GFI01_01_E,vme2.qdc792GFI1.data[0],DATA12);
+SIGNAL(GFI01_02_E,vme2.qdc792GFI1.data[1],DATA12);
+SIGNAL(GFI01_03_E,vme2.qdc792GFI1.data[2],DATA12);
+SIGNAL(GFI01_04_E,vme2.qdc792GFI1.data[3],DATA12);
+SIGNAL(GFI01_05_E,vme2.qdc792GFI1.data[4],DATA12);
+SIGNAL(GFI01_06_E,vme2.qdc792GFI3.data[15],DATA12);
+SIGNAL(GFI01_07_E,vme2.qdc792GFI1.data[6],DATA12);
+SIGNAL(GFI01_08_E,vme2.qdc792GFI1.data[7],DATA12);
+SIGNAL(GFI01_09_E,vme2.qdc792GFI1.data[8],DATA12);
+SIGNAL(GFI01_10_E,vme2.qdc792GFI1.data[9],DATA12);
+SIGNAL(GFI01_11_E,vme2.qdc792GFI1.data[10],DATA12);
+SIGNAL(GFI01_12_E,vme2.qdc792GFI1.data[11],DATA12);
+SIGNAL(GFI01_13_E,vme2.qdc792GFI1.data[12],DATA12);
+SIGNAL(GFI01_14_E,vme2.qdc792GFI1.data[13],DATA12);
+SIGNAL(GFI01_15_E,vme2.qdc792GFI1.data[14],DATA12);
+SIGNAL(GFI01_16_E,vme2.qdc792GFI1.data[15],DATA12);
+SIGNAL(GFI01_17_E,vme2.qdc792GFI3.data[4],DATA12);
+SIGNAL(GFI01_18_E,vme2.qdc792GFI1.data[17],DATA12);
+SIGNAL(GFI01_19_E,vme2.qdc792GFI1.data[18],DATA12);
+SIGNAL(GFI01_20_E,vme2.qdc792GFI1.data[19],DATA12);
+SIGNAL(GFI01_21_E,vme2.qdc792GFI1.data[20],DATA12);
+SIGNAL(GFI01_22_E,vme2.qdc792GFI1.data[21],DATA12);
+SIGNAL(GFI01_23_E,vme2.qdc792GFI1.data[22],DATA12);
+SIGNAL(GFI01_24_E,vme2.qdc792GFI1.data[23],DATA12);
+SIGNAL(GFI01_25_E,vme2.qdc792GFI1.data[24],DATA12);
+SIGNAL(GFI01_26_E,vme2.qdc792GFI1.data[25],DATA12);
+SIGNAL(GFI01_27_E,vme2.qdc792GFI1.data[26],DATA12);
+SIGNAL(GFI01_28_E,vme2.qdc792GFI1.data[27],DATA12);
+SIGNAL(GFI01_29_E,vme2.qdc792GFI1.data[28],DATA12);
+SIGNAL(GFI01_30_E,vme2.qdc792GFI1.data[29],DATA12);
+SIGNAL(GFI01_31_E,vme2.qdc792GFI1.data[30],DATA12);
+SIGNAL(GFI01_32_E,vme2.qdc792GFI1.data[31],DATA12);
+SIGNAL(GFI01_33_E,vme2.qdc792GFI3.data[0],DATA12);
+SIGNAL(GFI01_34_E,vme2.qdc792GFI3.data[1],DATA12);
+SIGNAL(GFI02_01_E,vme2.qdc792GFI2.data[5],DATA12);
+SIGNAL(GFI02_02_E,vme2.qdc792GFI3.data[5],DATA12);
+SIGNAL(GFI02_03_E,vme2.qdc792GFI2.data[2],DATA12);
+SIGNAL(GFI02_04_E,vme2.qdc792GFI2.data[3],DATA12);
+SIGNAL(GFI02_05_E,vme2.qdc792GFI2.data[4],DATA12);
+SIGNAL(GFI02_06_E,vme2.qdc792GFI3.data[6],DATA12);
+SIGNAL(GFI02_07_E,vme2.qdc792GFI3.data[7],DATA12);
+SIGNAL(GFI02_08_E,vme2.qdc792GFI3.data[8],DATA12);
+SIGNAL(GFI02_09_E,vme2.qdc792GFI3.data[9],DATA12);
+SIGNAL(GFI02_10_E,vme2.qdc792GFI3.data[10],DATA12);
+SIGNAL(GFI02_11_E,vme2.qdc792GFI3.data[12],DATA12);
+SIGNAL(GFI02_12_E,vme2.qdc792GFI2.data[11],DATA12);
+SIGNAL(GFI02_13_E,vme2.qdc792GFI2.data[12],DATA12);
+SIGNAL(GFI02_14_E,vme2.qdc792GFI3.data[14],DATA12);
+SIGNAL(GFI02_15_E,vme2.qdc792GFI2.data[14],DATA12);
+SIGNAL(GFI02_16_E,vme2.qdc792GFI2.data[15],DATA12);
+SIGNAL(GFI02_17_E,vme2.qdc792GFI2.data[16],DATA12);
+SIGNAL(GFI02_18_E,vme2.qdc792GFI2.data[17],DATA12);
+SIGNAL(GFI02_19_E,vme2.qdc792GFI2.data[18],DATA12);
+SIGNAL(GFI02_20_E,vme2.qdc792GFI2.data[19],DATA12);
+SIGNAL(GFI02_21_E,vme2.qdc792GFI2.data[20],DATA12);
+SIGNAL(GFI02_22_E,vme2.qdc792GFI2.data[21],DATA12);
+SIGNAL(GFI02_23_E,vme2.qdc792GFI2.data[22],DATA12);
+SIGNAL(GFI02_24_E,vme2.qdc792GFI2.data[23],DATA12);
+SIGNAL(GFI02_25_E,vme2.qdc792GFI2.data[24],DATA12);
+SIGNAL(GFI02_26_E,vme2.qdc792GFI2.data[25],DATA12);
+SIGNAL(GFI02_27_E,vme2.qdc792GFI2.data[26],DATA12);
+SIGNAL(GFI02_28_E,vme2.qdc792GFI2.data[27],DATA12);
+SIGNAL(GFI02_29_E,vme2.qdc792GFI2.data[28],DATA12);
+SIGNAL(GFI02_30_E,vme2.qdc792GFI2.data[29],DATA12);
+SIGNAL(GFI02_31_E,vme2.qdc792GFI2.data[30],DATA12);
+SIGNAL(GFI02_32_E,vme2.qdc792GFI2.data[31],DATA12);
+SIGNAL(GFI02_33_E,vme2.qdc792GFI3.data[2],DATA12);
+SIGNAL(GFI02_34_E,vme2.qdc792GFI3.data[3],DATA12);
+SIGNAL(NTF01_1_E,vme2.qdc792NTF.data[0],DATA12);
+SIGNAL(NTF01_1_T,vme2.tdc775NTF.data[0],DATA12);
+SIGNAL(NTF01_2_E,vme2.qdc792NTF.data[1],DATA12);
+SIGNAL(NTF01_2_T,vme2.tdc775NTF.data[1],DATA12);
+SIGNAL(NTF02_1_E,vme2.qdc792NTF.data[2],DATA12);
+SIGNAL(NTF02_1_T,vme2.tdc775NTF.data[2],DATA12);
+SIGNAL(NTF02_2_E,vme2.qdc792NTF.data[3],DATA12);
+SIGNAL(NTF02_2_T,vme2.tdc775NTF.data[3],DATA12);
+SIGNAL(NTF03_1_E,vme2.qdc792NTF.data[4],DATA12);
+SIGNAL(NTF03_1_T,vme2.tdc775NTF.data[4],DATA12);
+SIGNAL(NTF03_2_E,vme2.qdc792NTF.data[5],DATA12);
+SIGNAL(NTF03_2_T,vme2.tdc775NTF.data[5],DATA12);
+SIGNAL(NTF04_1_E,vme2.qdc792NTF.data[6],DATA12);
+SIGNAL(NTF04_1_T,vme2.tdc775NTF.data[6],DATA12);
+SIGNAL(NTF04_2_E,vme2.qdc792NTF.data[7],DATA12);
+SIGNAL(NTF04_2_T,vme2.tdc775NTF.data[7],DATA12);
+SIGNAL(NTF05_1_E,vme2.qdc792NTF.data[8],DATA12);
+SIGNAL(NTF05_1_T,vme2.tdc775NTF.data[8],DATA12);
+SIGNAL(NTF05_2_E,vme2.qdc792NTF.data[9],DATA12);
+SIGNAL(NTF05_2_T,vme2.tdc775NTF.data[9],DATA12);
+SIGNAL(NTF06_1_E,vme2.qdc792NTF.data[10],DATA12);
+SIGNAL(NTF06_1_T,vme2.tdc775NTF.data[10],DATA12);
+SIGNAL(NTF06_2_E,vme2.qdc792NTF.data[11],DATA12);
+SIGNAL(NTF06_2_T,vme2.tdc775NTF.data[11],DATA12);
+SIGNAL(NTF07_1_E,vme2.qdc792NTF.data[12],DATA12);
+SIGNAL(NTF07_1_T,vme2.tdc775NTF.data[12],DATA12);
+SIGNAL(NTF07_2_E,vme2.qdc792NTF.data[13],DATA12);
+SIGNAL(NTF07_2_T,vme2.tdc775NTF.data[13],DATA12);
+SIGNAL(NTF08_1_E,vme2.qdc792NTF.data[14],DATA12);
+SIGNAL(NTF08_1_T,vme2.tdc775NTF.data[14],DATA12);
+SIGNAL(NTF08_2_E,vme2.qdc792NTF.data[15],DATA12);
+SIGNAL(NTF08_2_T,vme2.tdc775NTF.data[15],DATA12);
+SIGNAL(NTF09_1_E,vme2.qdc792NTF.data[16],DATA12);
+SIGNAL(NTF09_1_T,vme2.tdc775NTF.data[16],DATA12);
+SIGNAL(NTF09_2_E,vme2.qdc792NTF.data[17],DATA12);
+SIGNAL(NTF09_2_T,vme2.tdc775NTF.data[17],DATA12);
+SIGNAL(NTF10_1_E,vme2.qdc792NTF.data[18],DATA12);
+SIGNAL(NTF10_1_T,vme2.tdc775NTF.data[18],DATA12);
+SIGNAL(NTF10_2_E,vme2.qdc792NTF.data[19],DATA12);
+SIGNAL(NTF10_2_T,vme2.tdc775NTF.data[19],DATA12);
+SIGNAL(NTF11_1_E,vme2.qdc792NTF.data[20],DATA12);
+SIGNAL(NTF11_1_T,vme2.tdc775NTF.data[20],DATA12);
+SIGNAL(NTF11_2_E,vme2.qdc792NTF.data[21],DATA12);
+SIGNAL(NTF11_2_T,vme2.tdc775NTF.data[21],DATA12);
+SIGNAL(NTF12_1_E,vme2.qdc792NTF.data[22],DATA12);
+SIGNAL(NTF12_1_T,vme2.tdc775NTF.data[22],DATA12);
+SIGNAL(NTF12_2_E,vme2.qdc792NTF.data[23],DATA12);
+SIGNAL(NTF12_2_T,vme2.tdc775NTF.data[23],DATA12);
+SIGNAL(NTF13_1_E,vme2.qdc792NTF.data[24],DATA12);
+SIGNAL(NTF13_1_T,vme2.tdc775NTF.data[24],DATA12);
+SIGNAL(NTF13_2_E,vme2.qdc792NTF.data[25],DATA12);
+SIGNAL(NTF13_2_T,vme2.tdc775NTF.data[25],DATA12);
+SIGNAL(NTF14_1_E,vme2.qdc792NTF.data[26],DATA12);
+SIGNAL(NTF14_1_T,vme2.tdc775NTF.data[26],DATA12);
+SIGNAL(NTF14_2_E,vme2.qdc792NTF.data[27],DATA12);
+SIGNAL(NTF14_2_T,vme2.tdc775NTF.data[27],DATA12);
+SIGNAL(NTF15_1_E,vme2.qdc792NTF.data[28],DATA12);
+SIGNAL(NTF15_1_T,vme2.tdc775NTF.data[28],DATA12);
+SIGNAL(NTF15_2_E,vme2.qdc792NTF.data[29],DATA12);
+SIGNAL(NTF15_2_T,vme2.tdc775NTF.data[29],DATA12);
+SIGNAL(NTF16_1_E,vme2.qdc792NTF.data[30],DATA12);
+SIGNAL(NTF16_1_T,vme2.tdc775NTF.data[30],DATA12);
+SIGNAL(NTF16_2_E,vme2.qdc792NTF.data[31],DATA12);
+SIGNAL(NTF16_2_T,vme2.tdc775NTF.data[31],DATA12);
+SIGNAL(PILEUP_1_T,pileup.tdc.data,DATA16);
+SIGNAL(POS01_01_E,vme1.qdc792POS_ROLU.data[0],DATA12);
+SIGNAL(POS01_01_T,vme1.tdc775POS_ROLU.data[0],DATA12);
+SIGNAL(POS01_02_E,vme1.qdc792POS_ROLU.data[1],DATA12);
+SIGNAL(POS01_02_T,vme1.tdc775POS_ROLU.data[1],DATA12);
+SIGNAL(POS01_03_E,vme1.qdc792POS_ROLU.data[2],DATA12);
+SIGNAL(POS01_03_T,vme1.tdc775POS_ROLU.data[2],DATA12);
+SIGNAL(POS01_04_E,vme1.qdc792POS_ROLU.data[3],DATA12);
+SIGNAL(POS01_04_T,vme1.tdc775POS_ROLU.data[3],DATA12);
+SIGNAL(PSP01_01_E,vme_cbl.madc0_psp.data[0],DATA14_OVERFLOW);
+SIGNAL(PSP01_02_E,vme_cbl.madc0_psp.data[1],DATA14_OVERFLOW);
+SIGNAL(PSP01_03_E,vme_cbl.madc0_psp.data[2],DATA14_OVERFLOW);
+SIGNAL(PSP01_04_E,vme_cbl.madc0_psp.data[3],DATA14_OVERFLOW);
+SIGNAL(PSP01_05_E,vme_cbl.madc0_psp.data[12],DATA14_OVERFLOW);
+SIGNAL(ROL01_01_E,vme1.qdc792POS_ROLU.data[4],DATA12);
+SIGNAL(ROL01_02_E,vme1.qdc792POS_ROLU.data[5],DATA12);
+SIGNAL(ROL01_03_E,vme1.qdc792POS_ROLU.data[6],DATA12);
+SIGNAL(ROL01_04_E,vme1.qdc792POS_ROLU.data[7],DATA12);
+SIGNAL(SCI02_01_E,vme1.qdc792POS_ROLU.data[9],DATA12);
+SIGNAL(SCI02_01_T,vme1.tdc775POS_ROLU.data[14],DATA12);
+SIGNAL(SCI02_02_E,vme1.qdc792POS_ROLU.data[8],DATA12);
+SIGNAL(SCI02_02_T,vme1.tdc775POS_ROLU.data[12],DATA12);
+SIGNAL(TCALMT_1_T,pileup.tcal.data,DATA16);
+SIGNAL(XB001_1_E,vme_cbr.adc[2].data[18],DATA14_OVERFLOW);
+SIGNAL(XB001_1_T,vme_cbr.tdc.data[50],DATA12);
+SIGNAL(XB002_1_E,vme_cbr.adc[2].data[16],DATA14_OVERFLOW);
+SIGNAL(XB002_1_T,vme_cbr.tdc.data[48],DATA12);
+SIGNAL(XB003_1_E,vme_cbr.adc[2].data[4],DATA14_OVERFLOW);
+SIGNAL(XB003_1_T,vme_cbr.tdc.data[36],DATA12);
+SIGNAL(XB003_2_E,vme_cbr.adc[0].data[28],DATA14_OVERFLOW);
+SIGNAL(XB003_2_T,vme_cbr.tdc.data[124],DATA12);
+SIGNAL(XB004_1_E,vme_cbr.adc[2].data[5],DATA14_OVERFLOW);
+SIGNAL(XB004_1_T,vme_cbr.tdc.data[37],DATA12);
+SIGNAL(XB004_2_E,vme_cbr.adc[0].data[12],DATA14_OVERFLOW);
+SIGNAL(XB004_2_T,vme_cbr.tdc.data[108],DATA12);
+SIGNAL(XB005_1_E,vme_cbr.adc[2].data[17],DATA14_OVERFLOW);
+SIGNAL(XB005_1_T,vme_cbr.tdc.data[49],DATA12);
+SIGNAL(XB006_1_E,vme_cbr.adc[2].data[26],DATA14_OVERFLOW);
+SIGNAL(XB006_1_T,vme_cbr.tdc.data[58],DATA12);
+SIGNAL(XB007_1_E,vme_cbr.adc[2].data[27],DATA14_OVERFLOW);
+SIGNAL(XB007_1_T,vme_cbr.tdc.data[59],DATA12);
+SIGNAL(XB008_1_E,vme_cbr.adc[2].data[24],DATA14_OVERFLOW);
+SIGNAL(XB008_1_T,vme_cbr.tdc.data[56],DATA12);
+SIGNAL(XB009_1_E,vme_cbr.adc[2].data[14],DATA14_OVERFLOW);
+SIGNAL(XB009_1_T,vme_cbr.tdc.data[46],DATA12);
+SIGNAL(XB010_1_E,vme_cbr.adc[2].data[6],DATA14_OVERFLOW);
+SIGNAL(XB010_1_T,vme_cbr.tdc.data[38],DATA12);
+SIGNAL(XB010_2_E,vme_cbr.adc[0].data[20],DATA14_OVERFLOW);
+SIGNAL(XB010_2_T,vme_cbr.tdc.data[116],DATA12);
+SIGNAL(XB011_1_E,vme_cbr.adc[1].data[26],DATA14_OVERFLOW);
+SIGNAL(XB011_1_T,vme_cbr.tdc.data[90],DATA12);
+SIGNAL(XB011_2_E,vme_cbr.adc[0].data[31],DATA14_OVERFLOW);
+SIGNAL(XB011_2_T,vme_cbr.tdc.data[127],DATA12);
+SIGNAL(XB012_1_E,vme_cbr.adc[1].data[25],DATA14_OVERFLOW);
+SIGNAL(XB012_1_T,vme_cbr.tdc.data[89],DATA12);
+SIGNAL(XB012_2_E,vme_cbr.adc[0].data[8],DATA14_OVERFLOW);
+SIGNAL(XB012_2_T,vme_cbr.tdc.data[104],DATA12);
+SIGNAL(XB013_1_E,vme_cbr.adc[1].data[27],DATA14_OVERFLOW);
+SIGNAL(XB013_1_T,vme_cbr.tdc.data[91],DATA12);
+SIGNAL(XB013_2_E,vme_cbr.adc[0].data[15],DATA14_OVERFLOW);
+SIGNAL(XB013_2_T,vme_cbr.tdc.data[111],DATA12);
+SIGNAL(XB014_1_E,vme_cbr.adc[2].data[7],DATA14_OVERFLOW);
+SIGNAL(XB014_1_T,vme_cbr.tdc.data[39],DATA12);
+SIGNAL(XB014_2_E,vme_cbr.adc[0].data[9],DATA14_OVERFLOW);
+SIGNAL(XB014_2_T,vme_cbr.tdc.data[105],DATA12);
+SIGNAL(XB015_1_E,vme_cbr.adc[2].data[15],DATA14_OVERFLOW);
+SIGNAL(XB015_1_T,vme_cbr.tdc.data[47],DATA12);
+SIGNAL(XB016_1_E,vme_cbr.adc[2].data[25],DATA14_OVERFLOW);
+SIGNAL(XB016_1_T,vme_cbr.tdc.data[57],DATA12);
+SIGNAL(XB017_1_E,vme_cbr.adc[3].data[4],DATA14_OVERFLOW);
+SIGNAL(XB017_1_T,vme_cbr.tdc.data[4],DATA12);
+SIGNAL(XB018_1_E,vme_cbr.adc[3].data[6],DATA14_OVERFLOW);
+SIGNAL(XB018_1_T,vme_cbr.tdc.data[6],DATA12);
+SIGNAL(XB019_1_E,vme_cbr.adc[3].data[5],DATA14_OVERFLOW);
+SIGNAL(XB019_1_T,vme_cbr.tdc.data[5],DATA12);
+SIGNAL(XB020_1_E,vme_cbr.adc[3].data[2],DATA14_OVERFLOW);
+SIGNAL(XB020_1_T,vme_cbr.tdc.data[2],DATA12);
+SIGNAL(XB021_1_E,vme_cbr.adc[2].data[22],DATA14_OVERFLOW);
+SIGNAL(XB021_1_T,vme_cbr.tdc.data[54],DATA12);
+SIGNAL(XB022_1_E,vme_cbr.adc[2].data[8],DATA14_OVERFLOW);
+SIGNAL(XB022_1_T,vme_cbr.tdc.data[40],DATA12);
+SIGNAL(XB023_1_E,vme_cbr.adc[1].data[28],DATA14_OVERFLOW);
+SIGNAL(XB023_1_T,vme_cbr.tdc.data[92],DATA12);
+SIGNAL(XB023_2_E,vme_cbr.adc[0].data[29],DATA14_OVERFLOW);
+SIGNAL(XB023_2_T,vme_cbr.tdc.data[125],DATA12);
+SIGNAL(XB024_1_E,vme_cbr.adc[1].data[16],DATA14_OVERFLOW);
+SIGNAL(XB024_1_T,vme_cbr.tdc.data[80],DATA12);
+SIGNAL(XB024_2_E,vme_cbr.adc[0].data[16],DATA14_OVERFLOW);
+SIGNAL(XB024_2_T,vme_cbr.tdc.data[112],DATA12);
+SIGNAL(XB025_1_E,vme_cbr.adc[1].data[12],DATA14_OVERFLOW);
+SIGNAL(XB025_1_T,vme_cbr.tdc.data[76],DATA12);
+SIGNAL(XB025_2_E,vme_cbr.adc[0].data[26],DATA14_OVERFLOW);
+SIGNAL(XB025_2_T,vme_cbr.tdc.data[122],DATA12);
+SIGNAL(XB026_1_E,vme_cbr.adc[1].data[13],DATA14_OVERFLOW);
+SIGNAL(XB026_1_T,vme_cbr.tdc.data[77],DATA12);
+SIGNAL(XB026_2_E,vme_cbr.adc[0].data[5],DATA14_OVERFLOW);
+SIGNAL(XB026_2_T,vme_cbr.tdc.data[101],DATA12);
+SIGNAL(XB027_1_E,vme_cbr.adc[1].data[18],DATA14_OVERFLOW);
+SIGNAL(XB027_1_T,vme_cbr.tdc.data[82],DATA12);
+SIGNAL(XB027_2_E,vme_cbr.adc[0].data[0],DATA14_OVERFLOW);
+SIGNAL(XB027_2_T,vme_cbr.tdc.data[96],DATA12);
+SIGNAL(XB028_1_E,vme_cbr.adc[1].data[29],DATA14_OVERFLOW);
+SIGNAL(XB028_1_T,vme_cbr.tdc.data[93],DATA12);
+SIGNAL(XB028_2_E,vme_cbr.adc[0].data[3],DATA14_OVERFLOW);
+SIGNAL(XB028_2_T,vme_cbr.tdc.data[99],DATA12);
+SIGNAL(XB029_1_E,vme_cbr.adc[2].data[9],DATA14_OVERFLOW);
+SIGNAL(XB029_1_T,vme_cbr.tdc.data[41],DATA12);
+SIGNAL(XB030_1_E,vme_cbr.adc[2].data[23],DATA14_OVERFLOW);
+SIGNAL(XB030_1_T,vme_cbr.tdc.data[55],DATA12);
+SIGNAL(XB031_1_E,vme_cbr.adc[3].data[3],DATA14_OVERFLOW);
+SIGNAL(XB031_1_T,vme_cbr.tdc.data[3],DATA12);
+SIGNAL(XB032_1_E,vme_cbr.adc[3].data[12],DATA14_OVERFLOW);
+SIGNAL(XB032_1_T,vme_cbr.tdc.data[12],DATA12);
+SIGNAL(XB033_1_E,vme_cbr.adc[3].data[16],DATA14_OVERFLOW);
+SIGNAL(XB033_1_T,vme_cbr.tdc.data[16],DATA12);
+SIGNAL(XB034_1_E,vme_cbr.adc[3].data[17],DATA14_OVERFLOW);
+SIGNAL(XB034_1_T,vme_cbr.tdc.data[17],DATA12);
+SIGNAL(XB035_1_E,vme_cbr.adc[3].data[13],DATA14_OVERFLOW);
+SIGNAL(XB035_1_T,vme_cbr.tdc.data[13],DATA12);
+SIGNAL(XB036_1_E,vme_cbr.adc[3].data[8],DATA14_OVERFLOW);
+SIGNAL(XB036_1_T,vme_cbr.tdc.data[8],DATA12);
+SIGNAL(XB037_1_E,vme_cbr.adc[2].data[29],DATA14_OVERFLOW);
+SIGNAL(XB037_1_T,vme_cbr.tdc.data[61],DATA12);
+SIGNAL(XB038_1_E,vme_cbr.adc[2].data[12],DATA14_OVERFLOW);
+SIGNAL(XB038_1_T,vme_cbr.tdc.data[44],DATA12);
+SIGNAL(XB039_1_E,vme_cbr.adc[2].data[0],DATA14_OVERFLOW);
+SIGNAL(XB039_1_T,vme_cbr.tdc.data[32],DATA12);
+SIGNAL(XB039_2_E,vme_cbr.adc[0].data[27],DATA14_OVERFLOW);
+SIGNAL(XB039_2_T,vme_cbr.tdc.data[123],DATA12);
+SIGNAL(XB040_1_E,vme_cbr.adc[1].data[20],DATA14_OVERFLOW);
+SIGNAL(XB040_1_T,vme_cbr.tdc.data[84],DATA12);
+SIGNAL(XB040_2_E,vme_cbr.adc[0].data[23],DATA14_OVERFLOW);
+SIGNAL(XB040_2_T,vme_cbr.tdc.data[119],DATA12);
+SIGNAL(XB041_1_E,vme_cbr.adc[1].data[5],DATA14_OVERFLOW);
+SIGNAL(XB041_1_T,vme_cbr.tdc.data[69],DATA12);
+SIGNAL(XB041_2_E,vme_cbr.adc[0].data[22],DATA14_OVERFLOW);
+SIGNAL(XB041_2_T,vme_cbr.tdc.data[118],DATA12);
+SIGNAL(XB042_1_E,vme_cbr.adc[1].data[7],DATA14_OVERFLOW);
+SIGNAL(XB042_1_T,vme_cbr.tdc.data[71],DATA12);
+SIGNAL(XB042_2_E,vme_cbr.adc[0].data[11],DATA14_OVERFLOW);
+SIGNAL(XB042_2_T,vme_cbr.tdc.data[107],DATA12);
+SIGNAL(XB043_1_E,vme_cbr.adc[1].data[6],DATA14_OVERFLOW);
+SIGNAL(XB043_1_T,vme_cbr.tdc.data[70],DATA12);
+SIGNAL(XB043_2_E,vme_cbr.adc[0].data[7],DATA14_OVERFLOW);
+SIGNAL(XB043_2_T,vme_cbr.tdc.data[103],DATA12);
+SIGNAL(XB044_1_E,vme_cbr.adc[1].data[21],DATA14_OVERFLOW);
+SIGNAL(XB044_1_T,vme_cbr.tdc.data[85],DATA12);
+SIGNAL(XB044_2_E,vme_cbr.adc[0].data[6],DATA14_OVERFLOW);
+SIGNAL(XB044_2_T,vme_cbr.tdc.data[102],DATA12);
+SIGNAL(XB045_1_E,vme_cbr.adc[2].data[1],DATA14_OVERFLOW);
+SIGNAL(XB045_1_T,vme_cbr.tdc.data[33],DATA12);
+SIGNAL(XB045_2_E,vme_cbr.adc[0].data[10],DATA14_OVERFLOW);
+SIGNAL(XB045_2_T,vme_cbr.tdc.data[106],DATA12);
+SIGNAL(XB046_1_E,vme_cbr.adc[2].data[13],DATA14_OVERFLOW);
+SIGNAL(XB046_1_T,vme_cbr.tdc.data[45],DATA12);
+SIGNAL(XB047_1_E,vme_cbr.adc[2].data[30],DATA14_OVERFLOW);
+SIGNAL(XB047_1_T,vme_cbr.tdc.data[62],DATA12);
+SIGNAL(XB048_1_E,vme_cbr.adc[3].data[9],DATA14_OVERFLOW);
+SIGNAL(XB048_1_T,vme_cbr.tdc.data[9],DATA12);
+SIGNAL(XB049_1_E,vme_cbr.adc[3].data[25],DATA14_OVERFLOW);
+SIGNAL(XB049_1_T,vme_cbr.tdc.data[25],DATA12);
+SIGNAL(XB050_1_E,vme_cbr.adc[3].data[24],DATA14_OVERFLOW);
+SIGNAL(XB050_1_T,vme_cbr.tdc.data[24],DATA12);
+SIGNAL(XB051_1_E,vme_cbr.adc[3].data[26],DATA14_OVERFLOW);
+SIGNAL(XB051_1_T,vme_cbr.tdc.data[26],DATA12);
+SIGNAL(XB052_1_E,vme_cbr.adc[3].data[20],DATA14_OVERFLOW);
+SIGNAL(XB052_1_T,vme_cbr.tdc.data[20],DATA12);
+SIGNAL(XB053_1_E,vme_cbr.adc[3].data[14],DATA14_OVERFLOW);
+SIGNAL(XB053_1_T,vme_cbr.tdc.data[14],DATA12);
+SIGNAL(XB054_1_E,vme_cbr.adc[3].data[0],DATA14_OVERFLOW);
+SIGNAL(XB054_1_T,vme_cbr.tdc.data[0],DATA12);
+SIGNAL(XB055_1_E,vme_cbr.adc[2].data[20],DATA14_OVERFLOW);
+SIGNAL(XB055_1_T,vme_cbr.tdc.data[52],DATA12);
+SIGNAL(XB056_1_E,vme_cbr.adc[2].data[10],DATA14_OVERFLOW);
+SIGNAL(XB056_1_T,vme_cbr.tdc.data[42],DATA12);
+SIGNAL(XB057_1_E,vme_cbr.adc[1].data[30],DATA14_OVERFLOW);
+SIGNAL(XB057_1_T,vme_cbr.tdc.data[94],DATA12);
+SIGNAL(XB057_2_E,vme_cbr.adc[0].data[21],DATA14_OVERFLOW);
+SIGNAL(XB057_2_T,vme_cbr.tdc.data[117],DATA12);
+SIGNAL(XB058_1_E,vme_cbr.adc[1].data[14],DATA14_OVERFLOW);
+SIGNAL(XB058_1_T,vme_cbr.tdc.data[78],DATA12);
+SIGNAL(XB058_2_E,vme_cbr.adc[0].data[30],DATA14_OVERFLOW);
+SIGNAL(XB058_2_T,vme_cbr.tdc.data[126],DATA12);
+SIGNAL(XB059_1_E,vme_cbr.adc[1].data[8],DATA14_OVERFLOW);
+SIGNAL(XB059_1_T,vme_cbr.tdc.data[72],DATA12);
+SIGNAL(XB059_2_E,vme_cbr.adc[0].data[25],DATA14_OVERFLOW);
+SIGNAL(XB059_2_T,vme_cbr.tdc.data[121],DATA12);
+SIGNAL(XB060_1_E,vme_cbr.adc[1].data[1],DATA14_OVERFLOW);
+SIGNAL(XB060_1_T,vme_cbr.tdc.data[65],DATA12);
+SIGNAL(XB060_2_E,vme_cbr.adc[0].data[19],DATA14_OVERFLOW);
+SIGNAL(XB060_2_T,vme_cbr.tdc.data[115],DATA12);
+SIGNAL(XB061_1_E,vme_cbr.adc[1].data[0],DATA14_OVERFLOW);
+SIGNAL(XB061_1_T,vme_cbr.tdc.data[64],DATA12);
+SIGNAL(XB061_2_E,vme_cbr.adc[0].data[1],DATA14_OVERFLOW);
+SIGNAL(XB061_2_T,vme_cbr.tdc.data[97],DATA12);
+SIGNAL(XB062_1_E,vme_cbr.adc[1].data[2],DATA14_OVERFLOW);
+SIGNAL(XB062_1_T,vme_cbr.tdc.data[66],DATA12);
+SIGNAL(XB062_2_E,vme_cbr.adc[0].data[4],DATA14_OVERFLOW);
+SIGNAL(XB062_2_T,vme_cbr.tdc.data[100],DATA12);
+SIGNAL(XB063_1_E,vme_cbr.adc[1].data[9],DATA14_OVERFLOW);
+SIGNAL(XB063_1_T,vme_cbr.tdc.data[73],DATA12);
+SIGNAL(XB063_2_E,vme_cbr.adc[0].data[13],DATA14_OVERFLOW);
+SIGNAL(XB063_2_T,vme_cbr.tdc.data[109],DATA12);
+SIGNAL(XB064_1_E,vme_cbr.adc[1].data[15],DATA14_OVERFLOW);
+SIGNAL(XB064_1_T,vme_cbr.tdc.data[79],DATA12);
+SIGNAL(XB064_2_E,vme_cbr.adc[0].data[2],DATA14_OVERFLOW);
+SIGNAL(XB064_2_T,vme_cbr.tdc.data[98],DATA12);
+SIGNAL(XB065_1_E,vme_cbr.adc[1].data[31],DATA14_OVERFLOW);
+SIGNAL(XB065_1_T,vme_cbr.tdc.data[95],DATA12);
+SIGNAL(XB065_2_E,vme_cbr.adc[0].data[14],DATA14_OVERFLOW);
+SIGNAL(XB065_2_T,vme_cbr.tdc.data[110],DATA12);
+SIGNAL(XB066_1_E,vme_cbr.adc[2].data[11],DATA14_OVERFLOW);
+SIGNAL(XB066_1_T,vme_cbr.tdc.data[43],DATA12);
+SIGNAL(XB067_1_E,vme_cbr.adc[2].data[21],DATA14_OVERFLOW);
+SIGNAL(XB067_1_T,vme_cbr.tdc.data[53],DATA12);
+SIGNAL(XB068_1_E,vme_cbr.adc[3].data[1],DATA14_OVERFLOW);
+SIGNAL(XB068_1_T,vme_cbr.tdc.data[1],DATA12);
+SIGNAL(XB069_1_E,vme_cbr.adc[3].data[15],DATA14_OVERFLOW);
+SIGNAL(XB069_1_T,vme_cbr.tdc.data[15],DATA12);
+SIGNAL(XB070_1_E,vme_cbr.adc[3].data[21],DATA14_OVERFLOW);
+SIGNAL(XB070_1_T,vme_cbr.tdc.data[21],DATA12);
+SIGNAL(XB071_1_E,vme_cbr.adc[3].data[28],DATA14_OVERFLOW);
+SIGNAL(XB071_1_T,vme_cbr.tdc.data[28],DATA12);
+SIGNAL(XB072_1_E,vme_cbr.adc[3].data[30],DATA14_OVERFLOW);
+SIGNAL(XB072_1_T,vme_cbr.tdc.data[30],DATA12);
+SIGNAL(XB073_1_E,vme_cbr.adc[3].data[29],DATA14_OVERFLOW);
+SIGNAL(XB073_1_T,vme_cbr.tdc.data[29],DATA12);
+SIGNAL(XB074_1_E,vme_cbr.adc[3].data[27],DATA14_OVERFLOW);
+SIGNAL(XB074_1_T,vme_cbr.tdc.data[27],DATA12);
+SIGNAL(XB075_1_E,vme_cbr.adc[3].data[7],DATA14_OVERFLOW);
+SIGNAL(XB075_1_T,vme_cbr.tdc.data[7],DATA12);
+SIGNAL(XB076_1_E,vme_cbr.adc[2].data[28],DATA14_OVERFLOW);
+SIGNAL(XB076_1_T,vme_cbr.tdc.data[60],DATA12);
+SIGNAL(XB078_1_E,vme_cbr.adc[2].data[2],DATA14_OVERFLOW);
+SIGNAL(XB078_1_T,vme_cbr.tdc.data[34],DATA12);
+SIGNAL(XB078_2_E,vme_cbr.adc[0].data[18],DATA14_OVERFLOW);
+SIGNAL(XB078_2_T,vme_cbr.tdc.data[114],DATA12);
+SIGNAL(XB079_1_E,vme_cbr.adc[1].data[24],DATA14_OVERFLOW);
+SIGNAL(XB079_1_T,vme_cbr.tdc.data[88],DATA12);
+SIGNAL(XB079_2_E,vme_cbr.adc[0].data[24],DATA14_OVERFLOW);
+SIGNAL(XB079_2_T,vme_cbr.tdc.data[120],DATA12);
+SIGNAL(XB080_2_E,vme_cbr.adc[0].data[17],DATA14_OVERFLOW);
+SIGNAL(XB080_2_T,vme_cbr.tdc.data[113],DATA12);
+SIGNAL(XB083_1_E,vme_cbl.adc[0].data[26],DATA14_OVERFLOW);
+SIGNAL(XB083_1_T,vme_cbl.tdc.data[106],DATA12);
+SIGNAL(XB084_1_E,vme_cbl.adc[0].data[7],DATA14_OVERFLOW);
+SIGNAL(XB084_1_T,vme_cbl.tdc.data[119],DATA12);
+SIGNAL(XB085_1_E,vme_cbl.adc[1].data[28],DATA14_OVERFLOW);
+SIGNAL(XB085_1_T,vme_cbl.tdc.data[76],DATA12);
+SIGNAL(XB086_1_E,vme_cbl.adc[1].data[18],DATA14_OVERFLOW);
+SIGNAL(XB086_1_T,vme_cbl.tdc.data[66],DATA12);
+SIGNAL(XB087_1_E,vme_cbl.adc[1].data[2],DATA14_OVERFLOW);
+SIGNAL(XB087_1_T,vme_cbl.tdc.data[82],DATA12);
+SIGNAL(XB087_2_E,vme_cbl.adc[3].data[22],DATA14_OVERFLOW);
+SIGNAL(XB087_2_T,vme_cbl.tdc.data[6],DATA12);
+SIGNAL(XB088_1_E,vme_cbl.adc[2].data[24],DATA14_OVERFLOW);
+SIGNAL(XB088_1_T,vme_cbl.tdc.data[40],DATA12);
+SIGNAL(XB088_2_E,vme_cbl.adc[3].data[29],DATA14_OVERFLOW);
+SIGNAL(XB088_2_T,vme_cbl.tdc.data[13],DATA12);
+SIGNAL(XB089_1_E,vme_cbl.adc[2].data[4],DATA14_OVERFLOW);
+SIGNAL(XB089_1_T,vme_cbl.tdc.data[52],DATA12);
+SIGNAL(XB089_2_E,vme_cbl.adc[3].data[23],DATA14_OVERFLOW);
+SIGNAL(XB089_2_T,vme_cbl.tdc.data[7],DATA12);
+SIGNAL(XB090_1_E,vme_cbl.adc[2].data[1],DATA14_OVERFLOW);
+SIGNAL(XB090_1_T,vme_cbl.tdc.data[49],DATA12);
+SIGNAL(XB090_2_E,vme_cbl.adc[3].data[18],DATA14_OVERFLOW);
+SIGNAL(XB090_2_T,vme_cbl.tdc.data[2],DATA12);
+SIGNAL(XB091_1_E,vme_cbl.adc[2].data[0],DATA14_OVERFLOW);
+SIGNAL(XB091_1_T,vme_cbl.tdc.data[48],DATA12);
+SIGNAL(XB091_2_E,vme_cbl.adc[3].data[11],DATA14_OVERFLOW);
+SIGNAL(XB091_2_T,vme_cbl.tdc.data[27],DATA12);
+SIGNAL(XB092_1_E,vme_cbl.adc[2].data[2],DATA14_OVERFLOW);
+SIGNAL(XB092_1_T,vme_cbl.tdc.data[50],DATA12);
+SIGNAL(XB092_2_E,vme_cbl.adc[3].data[4],DATA14_OVERFLOW);
+SIGNAL(XB092_2_T,vme_cbl.tdc.data[20],DATA12);
+SIGNAL(XB093_1_E,vme_cbl.adc[2].data[8],DATA14_OVERFLOW);
+SIGNAL(XB093_1_T,vme_cbl.tdc.data[56],DATA12);
+SIGNAL(XB093_2_E,vme_cbl.adc[3].data[9],DATA14_OVERFLOW);
+SIGNAL(XB093_2_T,vme_cbl.tdc.data[25],DATA12);
+SIGNAL(XB094_1_E,vme_cbl.adc[2].data[14],DATA14_OVERFLOW);
+SIGNAL(XB094_1_T,vme_cbl.tdc.data[62],DATA12);
+SIGNAL(XB094_2_E,vme_cbl.adc[3].data[14],DATA14_OVERFLOW);
+SIGNAL(XB094_2_T,vme_cbl.tdc.data[30],DATA12);
+SIGNAL(XB095_1_E,vme_cbl.adc[2].data[30],DATA14_OVERFLOW);
+SIGNAL(XB095_1_T,vme_cbl.tdc.data[46],DATA12);
+SIGNAL(XB095_2_E,vme_cbl.adc[3].data[1],DATA14_OVERFLOW);
+SIGNAL(XB095_2_T,vme_cbl.tdc.data[17],DATA12);
+SIGNAL(XB096_1_E,vme_cbl.adc[1].data[10],DATA14_OVERFLOW);
+SIGNAL(XB096_1_T,vme_cbl.tdc.data[90],DATA12);
+SIGNAL(XB097_1_E,vme_cbl.adc[1].data[20],DATA14_OVERFLOW);
+SIGNAL(XB097_1_T,vme_cbl.tdc.data[68],DATA12);
+SIGNAL(XB098_1_E,vme_cbl.adc[0].data[0],DATA14_OVERFLOW);
+SIGNAL(XB098_1_T,vme_cbl.tdc.data[112],DATA12);
+SIGNAL(XB099_1_E,vme_cbl.adc[0].data[14],DATA14_OVERFLOW);
+SIGNAL(XB099_1_T,vme_cbl.tdc.data[126],DATA12);
+SIGNAL(XB100_1_E,vme_cbl.adc[0].data[20],DATA14_OVERFLOW);
+SIGNAL(XB100_1_T,vme_cbl.tdc.data[100],DATA12);
+SIGNAL(XB101_1_E,vme_cbl.adc[0].data[28],DATA14_OVERFLOW);
+SIGNAL(XB101_1_T,vme_cbl.tdc.data[108],DATA12);
+SIGNAL(XB102_1_E,vme_cbl.adc[0].data[30],DATA14_OVERFLOW);
+SIGNAL(XB102_1_T,vme_cbl.tdc.data[110],DATA12);
+SIGNAL(XB103_1_E,vme_cbl.adc[0].data[29],DATA14_OVERFLOW);
+SIGNAL(XB103_1_T,vme_cbl.tdc.data[109],DATA12);
+SIGNAL(XB104_1_E,vme_cbl.adc[0].data[21],DATA14_OVERFLOW);
+SIGNAL(XB104_1_T,vme_cbl.tdc.data[101],DATA12);
+SIGNAL(XB105_1_E,vme_cbl.adc[0].data[15],DATA14_OVERFLOW);
+SIGNAL(XB105_1_T,vme_cbl.tdc.data[127],DATA12);
+SIGNAL(XB106_1_E,vme_cbl.adc[0].data[1],DATA14_OVERFLOW);
+SIGNAL(XB106_1_T,vme_cbl.tdc.data[113],DATA12);
+SIGNAL(XB107_1_E,vme_cbl.adc[1].data[21],DATA14_OVERFLOW);
+SIGNAL(XB107_1_T,vme_cbl.tdc.data[69],DATA12);
+SIGNAL(XB108_1_E,vme_cbl.adc[1].data[11],DATA14_OVERFLOW);
+SIGNAL(XB108_1_T,vme_cbl.tdc.data[91],DATA12);
+SIGNAL(XB109_1_E,vme_cbl.adc[2].data[31],DATA14_OVERFLOW);
+SIGNAL(XB109_1_T,vme_cbl.tdc.data[47],DATA12);
+SIGNAL(XB109_2_E,vme_cbl.adc[3].data[25],DATA14_OVERFLOW);
+SIGNAL(XB109_2_T,vme_cbl.tdc.data[9],DATA12);
+SIGNAL(XB110_1_E,vme_cbl.adc[2].data[15],DATA14_OVERFLOW);
+SIGNAL(XB110_1_T,vme_cbl.tdc.data[63],DATA12);
+SIGNAL(XB110_2_E,vme_cbl.adc[3].data[19],DATA14_OVERFLOW);
+SIGNAL(XB110_2_T,vme_cbl.tdc.data[3],DATA12);
+SIGNAL(XB111_1_E,vme_cbl.adc[2].data[9],DATA14_OVERFLOW);
+SIGNAL(XB111_1_T,vme_cbl.tdc.data[57],DATA12);
+SIGNAL(XB111_2_E,vme_cbl.adc[3].data[28],DATA14_OVERFLOW);
+SIGNAL(XB111_2_T,vme_cbl.tdc.data[12],DATA12);
+SIGNAL(XB112_1_E,vme_cbl.adc[2].data[5],DATA14_OVERFLOW);
+SIGNAL(XB112_1_T,vme_cbl.tdc.data[53],DATA12);
+SIGNAL(XB112_2_E,vme_cbl.adc[3].data[20],DATA14_OVERFLOW);
+SIGNAL(XB112_2_T,vme_cbl.tdc.data[4],DATA12);
+SIGNAL(XB113_1_E,vme_cbl.adc[2].data[7],DATA14_OVERFLOW);
+SIGNAL(XB113_1_T,vme_cbl.tdc.data[55],DATA12);
+SIGNAL(XB113_2_E,vme_cbl.adc[3].data[3],DATA14_OVERFLOW);
+SIGNAL(XB113_2_T,vme_cbl.tdc.data[19],DATA12);
+SIGNAL(XB114_1_E,vme_cbl.adc[2].data[6],DATA14_OVERFLOW);
+SIGNAL(XB114_1_T,vme_cbl.tdc.data[54],DATA12);
+SIGNAL(XB114_2_E,vme_cbl.adc[3].data[13],DATA14_OVERFLOW);
+SIGNAL(XB114_2_T,vme_cbl.tdc.data[29],DATA12);
+SIGNAL(XB115_1_E,vme_cbl.adc[2].data[20],DATA14_OVERFLOW);
+SIGNAL(XB115_1_T,vme_cbl.tdc.data[36],DATA12);
+SIGNAL(XB115_2_E,vme_cbl.adc[3].data[12],DATA14_OVERFLOW);
+SIGNAL(XB115_2_T,vme_cbl.tdc.data[28],DATA12);
+SIGNAL(XB116_1_E,vme_cbl.adc[1].data[0],DATA14_OVERFLOW);
+SIGNAL(XB116_1_T,vme_cbl.tdc.data[80],DATA12);
+SIGNAL(XB116_2_E,vme_cbl.adc[3].data[7],DATA14_OVERFLOW);
+SIGNAL(XB116_2_T,vme_cbl.tdc.data[23],DATA12);
+SIGNAL(XB117_1_E,vme_cbl.adc[1].data[12],DATA14_OVERFLOW);
+SIGNAL(XB117_1_T,vme_cbl.tdc.data[92],DATA12);
+SIGNAL(XB118_1_E,vme_cbl.adc[1].data[29],DATA14_OVERFLOW);
+SIGNAL(XB118_1_T,vme_cbl.tdc.data[77],DATA12);
+SIGNAL(XB119_1_E,vme_cbl.adc[0].data[8],DATA14_OVERFLOW);
+SIGNAL(XB119_1_T,vme_cbl.tdc.data[120],DATA12);
+SIGNAL(XB120_1_E,vme_cbl.adc[0].data[25],DATA14_OVERFLOW);
+SIGNAL(XB120_1_T,vme_cbl.tdc.data[105],DATA12);
+SIGNAL(XB121_1_E,vme_cbl.adc[0].data[24],DATA14_OVERFLOW);
+SIGNAL(XB121_1_T,vme_cbl.tdc.data[104],DATA12);
+SIGNAL(XB122_1_E,vme_cbl.adc[0].data[27],DATA14_OVERFLOW);
+SIGNAL(XB122_1_T,vme_cbl.tdc.data[107],DATA12);
+SIGNAL(XB123_1_E,vme_cbl.adc[0].data[9],DATA14_OVERFLOW);
+SIGNAL(XB123_1_T,vme_cbl.tdc.data[121],DATA12);
+SIGNAL(XB124_1_E,vme_cbl.adc[1].data[30],DATA14_OVERFLOW);
+SIGNAL(XB124_1_T,vme_cbl.tdc.data[78],DATA12);
+SIGNAL(XB125_1_E,vme_cbl.adc[1].data[13],DATA14_OVERFLOW);
+SIGNAL(XB125_1_T,vme_cbl.tdc.data[93],DATA12);
+SIGNAL(XB126_1_E,vme_cbl.adc[1].data[1],DATA14_OVERFLOW);
+SIGNAL(XB126_1_T,vme_cbl.tdc.data[81],DATA12);
+SIGNAL(XB126_2_E,vme_cbl.adc[3].data[21],DATA14_OVERFLOW);
+SIGNAL(XB126_2_T,vme_cbl.tdc.data[5],DATA12);
+SIGNAL(XB127_1_E,vme_cbl.adc[2].data[21],DATA14_OVERFLOW);
+SIGNAL(XB127_1_T,vme_cbl.tdc.data[37],DATA12);
+SIGNAL(XB127_2_E,vme_cbl.adc[3].data[16],DATA14_OVERFLOW);
+SIGNAL(XB127_2_T,vme_cbl.tdc.data[0],DATA12);
+SIGNAL(XB128_1_E,vme_cbl.adc[2].data[16],DATA14_OVERFLOW);
+SIGNAL(XB128_1_T,vme_cbl.tdc.data[32],DATA12);
+SIGNAL(XB128_2_E,vme_cbl.adc[3].data[26],DATA14_OVERFLOW);
+SIGNAL(XB128_2_T,vme_cbl.tdc.data[10],DATA12);
+SIGNAL(XB129_1_E,vme_cbl.adc[2].data[12],DATA14_OVERFLOW);
+SIGNAL(XB129_1_T,vme_cbl.tdc.data[60],DATA12);
+SIGNAL(XB129_2_E,vme_cbl.adc[3].data[17],DATA14_OVERFLOW);
+SIGNAL(XB129_2_T,vme_cbl.tdc.data[1],DATA12);
+SIGNAL(XB130_1_E,vme_cbl.adc[2].data[13],DATA14_OVERFLOW);
+SIGNAL(XB130_1_T,vme_cbl.tdc.data[61],DATA12);
+SIGNAL(XB130_2_E,vme_cbl.adc[3].data[6],DATA14_OVERFLOW);
+SIGNAL(XB130_2_T,vme_cbl.tdc.data[22],DATA12);
+SIGNAL(XB131_1_E,vme_cbl.adc[2].data[17],DATA14_OVERFLOW);
+SIGNAL(XB131_1_T,vme_cbl.tdc.data[33],DATA12);
+SIGNAL(XB131_2_E,vme_cbl.adc[3].data[0],DATA14_OVERFLOW);
+SIGNAL(XB131_2_T,vme_cbl.tdc.data[16],DATA12);
+SIGNAL(XB132_1_E,vme_cbl.adc[2].data[28],DATA14_OVERFLOW);
+SIGNAL(XB132_1_T,vme_cbl.tdc.data[44],DATA12);
+SIGNAL(XB132_2_E,vme_cbl.adc[3].data[15],DATA14_OVERFLOW);
+SIGNAL(XB132_2_T,vme_cbl.tdc.data[31],DATA12);
+SIGNAL(XB133_1_E,vme_cbl.adc[1].data[8],DATA14_OVERFLOW);
+SIGNAL(XB133_1_T,vme_cbl.tdc.data[88],DATA12);
+SIGNAL(XB134_1_E,vme_cbl.adc[1].data[22],DATA14_OVERFLOW);
+SIGNAL(XB134_1_T,vme_cbl.tdc.data[70],DATA12);
+SIGNAL(XB135_1_E,vme_cbl.adc[0].data[2],DATA14_OVERFLOW);
+SIGNAL(XB135_1_T,vme_cbl.tdc.data[114],DATA12);
+SIGNAL(XB136_1_E,vme_cbl.adc[0].data[12],DATA14_OVERFLOW);
+SIGNAL(XB136_1_T,vme_cbl.tdc.data[124],DATA12);
+SIGNAL(XB137_1_E,vme_cbl.adc[0].data[16],DATA14_OVERFLOW);
+SIGNAL(XB137_1_T,vme_cbl.tdc.data[96],DATA12);
+SIGNAL(XB138_1_E,vme_cbl.adc[0].data[17],DATA14_OVERFLOW);
+SIGNAL(XB138_1_T,vme_cbl.tdc.data[97],DATA12);
+SIGNAL(XB139_1_E,vme_cbl.adc[0].data[13],DATA14_OVERFLOW);
+SIGNAL(XB139_1_T,vme_cbl.tdc.data[125],DATA12);
+SIGNAL(XB140_1_E,vme_cbl.adc[0].data[3],DATA14_OVERFLOW);
+SIGNAL(XB140_1_T,vme_cbl.tdc.data[115],DATA12);
+SIGNAL(XB141_1_E,vme_cbl.adc[1].data[23],DATA14_OVERFLOW);
+SIGNAL(XB141_1_T,vme_cbl.tdc.data[71],DATA12);
+SIGNAL(XB142_1_E,vme_cbl.adc[1].data[9],DATA14_OVERFLOW);
+SIGNAL(XB142_1_T,vme_cbl.tdc.data[89],DATA12);
+SIGNAL(XB143_1_E,vme_cbl.adc[2].data[29],DATA14_OVERFLOW);
+SIGNAL(XB143_1_T,vme_cbl.tdc.data[45],DATA12);
+SIGNAL(XB143_2_E,vme_cbl.adc[3].data[31],DATA14_OVERFLOW);
+SIGNAL(XB143_2_T,vme_cbl.tdc.data[15],DATA12);
+SIGNAL(XB144_1_E,vme_cbl.adc[2].data[26],DATA14_OVERFLOW);
+SIGNAL(XB144_1_T,vme_cbl.tdc.data[42],DATA12);
+SIGNAL(XB144_2_E,vme_cbl.adc[3].data[24],DATA14_OVERFLOW);
+SIGNAL(XB144_2_T,vme_cbl.tdc.data[8],DATA12);
+SIGNAL(XB145_1_E,vme_cbl.adc[2].data[25],DATA14_OVERFLOW);
+SIGNAL(XB145_1_T,vme_cbl.tdc.data[41],DATA12);
+SIGNAL(XB145_2_E,vme_cbl.adc[3].data[2],DATA14_OVERFLOW);
+SIGNAL(XB145_2_T,vme_cbl.tdc.data[18],DATA12);
+SIGNAL(XB146_1_E,vme_cbl.adc[2].data[27],DATA14_OVERFLOW);
+SIGNAL(XB146_1_T,vme_cbl.tdc.data[43],DATA12);
+SIGNAL(XB146_2_E,vme_cbl.adc[3].data[10],DATA14_OVERFLOW);
+SIGNAL(XB146_2_T,vme_cbl.tdc.data[26],DATA12);
+SIGNAL(XB147_1_E,vme_cbl.adc[1].data[6],DATA14_OVERFLOW);
+SIGNAL(XB147_1_T,vme_cbl.tdc.data[86],DATA12);
+SIGNAL(XB147_2_E,vme_cbl.adc[3].data[5],DATA14_OVERFLOW);
+SIGNAL(XB147_2_T,vme_cbl.tdc.data[21],DATA12);
+SIGNAL(XB148_1_E,vme_cbl.adc[1].data[14],DATA14_OVERFLOW);
+SIGNAL(XB148_1_T,vme_cbl.tdc.data[94],DATA12);
+SIGNAL(XB149_1_E,vme_cbl.adc[1].data[24],DATA14_OVERFLOW);
+SIGNAL(XB149_1_T,vme_cbl.tdc.data[72],DATA12);
+SIGNAL(XB150_1_E,vme_cbl.adc[0].data[4],DATA14_OVERFLOW);
+SIGNAL(XB150_1_T,vme_cbl.tdc.data[116],DATA12);
+SIGNAL(XB151_1_E,vme_cbl.adc[0].data[6],DATA14_OVERFLOW);
+SIGNAL(XB151_1_T,vme_cbl.tdc.data[118],DATA12);
+SIGNAL(XB152_1_E,vme_cbl.adc[0].data[5],DATA14_OVERFLOW);
+SIGNAL(XB152_1_T,vme_cbl.tdc.data[117],DATA12);
+SIGNAL(XB153_1_E,vme_cbl.adc[1].data[25],DATA14_OVERFLOW);
+SIGNAL(XB153_1_T,vme_cbl.tdc.data[73],DATA12);
+SIGNAL(XB154_1_E,vme_cbl.adc[1].data[15],DATA14_OVERFLOW);
+SIGNAL(XB154_1_T,vme_cbl.tdc.data[95],DATA12);
+SIGNAL(XB155_1_E,vme_cbl.adc[1].data[7],DATA14_OVERFLOW);
+SIGNAL(XB155_1_T,vme_cbl.tdc.data[87],DATA12);
+SIGNAL(XB155_2_E,vme_cbl.adc[3].data[27],DATA14_OVERFLOW);
+SIGNAL(XB155_2_T,vme_cbl.tdc.data[11],DATA12);
+SIGNAL(XB156_1_E,vme_cbl.adc[1].data[4],DATA14_OVERFLOW);
+SIGNAL(XB156_1_T,vme_cbl.tdc.data[84],DATA12);
+SIGNAL(XB156_2_E,vme_cbl.adc[3].data[30],DATA14_OVERFLOW);
+SIGNAL(XB156_2_T,vme_cbl.tdc.data[14],DATA12);
+SIGNAL(XB157_1_E,vme_cbl.adc[1].data[5],DATA14_OVERFLOW);
+SIGNAL(XB157_1_T,vme_cbl.tdc.data[85],DATA12);
+SIGNAL(XB157_2_E,vme_cbl.adc[3].data[8],DATA14_OVERFLOW);
+SIGNAL(XB157_2_T,vme_cbl.tdc.data[24],DATA12);
+SIGNAL(XB158_1_E,vme_cbl.adc[1].data[16],DATA14_OVERFLOW);
+SIGNAL(XB158_1_T,vme_cbl.tdc.data[64],DATA12);
+SIGNAL(XB159_1_E,vme_cbl.adc[1].data[26],DATA14_OVERFLOW);
+SIGNAL(XB159_1_T,vme_cbl.tdc.data[74],DATA12);
+SIGNAL(XB160_1_E,vme_cbl.adc[1].data[27],DATA14_OVERFLOW);
+SIGNAL(XB160_1_T,vme_cbl.tdc.data[75],DATA12);
+SIGNAL(XB161_1_E,vme_cbl.adc[1].data[17],DATA14_OVERFLOW);
+SIGNAL(XB161_1_T,vme_cbl.tdc.data[65],DATA12);
+SIGNAL(XB162_1_E,vme_cbl.adc[1].data[19],DATA14_OVERFLOW);
+SIGNAL(XB162_1_T,vme_cbl.tdc.data[67],DATA12);
+SIGNAL(XBTRIG01_1_T,vme1.tdc775POS_ROLU.data[16],DATA12);
+SIGNAL(XBTRIG02_1_T,vme1.tdc775POS_ROLU.data[17],DATA12);
+SIGNAL(XBTRIG03_1_T,vme1.tdc775POS_ROLU.data[18],DATA12);
+SIGNAL(XBTRIG04_1_T,vme1.tdc775POS_ROLU.data[19],DATA12);
+SIGNAL(XBTRIG05_1_T,vme1.tdc775POS_ROLU.data[20],DATA12);
+SIGNAL(XBTRIG06_1_T,vme1.tdc775POS_ROLU.data[21],DATA12);
+SIGNAL(XBTRIG07_1_T,vme1.tdc775POS_ROLU.data[22],DATA12);
+SIGNAL(XBTRIG08_1_T,vme1.tdc775POS_ROLU.data[23],DATA12);
+SIGNAL(XBTRIG09_1_T,vme1.tdc775POS_ROLU.data[24],DATA12);
+SIGNAL(XBTRIG10_1_T,vme1.tdc775POS_ROLU.data[25],DATA12);
+SIGNAL(XBTRIG11_1_T,vme1.tdc775POS_ROLU.data[26],DATA12);
+SIGNAL(XBTRIG12_1_T,vme1.tdc775POS_ROLU.data[27],DATA12);
+SIGNAL(XBTRIG13_1_T,vme1.tdc775POS_ROLU.data[28],DATA12);
+SIGNAL(XBTRIG14_1_T,vme1.tdc775POS_ROLU.data[29],DATA12);
+SIGNAL(XBTRIG15_1_T,vme1.tdc775POS_ROLU.data[30],DATA12);
+SIGNAL(XBTRIG16_1_T,vme1.tdc775POS_ROLU.data[31],DATA12);
+SIGNAL(SST8_1024_E,,DATA12);
+SIGNAL(TCALE,,float);
+SIGNAL(TCALT,,float);
+SIGNAL(TNEXT,,float);
+SIGNAL(TPREV,,float);
+SIGNAL( ZERO_SUPPRESS:DTF1);
+SIGNAL( ZERO_SUPPRESS:GFI1_1);
+SIGNAL( ZERO_SUPPRESS:N1_1);
+SIGNAL( ZERO_SUPPRESS:NTF1);
+SIGNAL( NO_INDEX_LIST(16):PILEUP);
+SIGNAL( ZERO_SUPPRESS:SST2_1024);
+SIGNAL( NO_INDEX_LIST(16):TCALMT);
+SIGNAL( ZERO_SUPPRESS:TFW1);
+SIGNAL( ZERO_SUPPRESS:V1_1);
+SIGNAL( ZERO_SUPPRESS:XB1);
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/

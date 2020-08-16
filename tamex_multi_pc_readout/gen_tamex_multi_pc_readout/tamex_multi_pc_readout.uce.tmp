@@ -1,0 +1,1480 @@
+
+/** BEGIN_INPUT_DEFINITION *********************************************
+ *
+ * All specifications as seen by the parser.
+ *
+ * Do not edit - automatically generated.
+ */
+
+/**********************************************************
+ * Dump of all structures:
+ */
+
+TAMEX3_PADDING()
+{
+  UINT32 padding NOENCODE
+  {
+     0_11: counter;
+    12_19: index;
+    20_31: 0xadd;
+  }
+}
+
+TAMEX3_SFP(sfp,card)
+{
+  MEMBER(DATA12 time_coarse[34] ZERO_SUPPRESS_MULTI(256));
+  MEMBER(DATA12 time_fine[34] ZERO_SUPPRESS_MULTI(256));
+  UINT32 indicator NOENCODE
+  {
+     0_07: 52;
+     8_11: trigger_type;
+    12_15: sfp = MATCH(sfp);
+    16_23: card = MATCH(card);
+    24_31: 0;
+  }
+  MATCH_END;
+  UINT32 data_size NOENCODE
+  {
+     0_31: bytes;
+  }
+  UINT32 tdc_header NOENCODE
+  {
+     0_15: lec;
+       16: buf_no;
+    17_19: reserved;
+    20_23: trigger_type;
+    24_31: 170;
+  }
+  list(0<=i<((data_size.bytes / 4) - 3))
+  {
+    UINT32 data NOENCODE
+    {
+       0_10: coarse;
+         11: is_leading;
+      12_21: fine;
+      22_28: channel_index;
+      29_31: type;
+      ENCODE(time_coarse[(((4 == type) * channel_index) + ((4 != type) * 33))],(value=coarse));
+      ENCODE(time_fine[(((4 == type) * channel_index) + ((4 != type) * 33))],(value=fine));
+    }
+  }
+  UINT32 error_bits NOENCODE
+  {
+     0_23: bits;
+    24_31: 238;
+  }
+  UINT32 trailer NOENCODE
+  {
+     0_23: unused;
+    24_31: 187;
+  }
+}
+
+TAMEX3_WINDOW()
+{
+  UINT32 trigger_window
+  {
+     0_15: post_trig_ns;
+    16_31: pre_trig_ns;
+  }
+}
+
+TAMEX_SFP(sfp)
+{
+  select several
+  {
+    evhead[1] = TAMEX3_SFP(sfp=sfp,card=0);
+    evhead[2] = TAMEX3_SFP(sfp=sfp,card=1);
+    evhead[3] = TAMEX3_SFP(sfp=sfp,card=2);
+    evhead[4] = TAMEX3_SFP(sfp=sfp,card=3);
+    evhead[5] = TAMEX3_SFP(sfp=sfp,card=4);
+    evhead[6] = TAMEX3_SFP(sfp=sfp,card=5);
+    evhead[7] = TAMEX3_SFP(sfp=sfp,card=6);
+    evhead[8] = TAMEX3_SFP(sfp=sfp,card=7);
+  }
+}
+
+SUBEVENT(tamex_pcie)
+{
+  header = TAMEX3_HEADER();
+  list(0<=sfp<4)
+  {
+    select several
+    {
+      padding = TAMEX3_PADDING();
+    }
+    select several
+    {
+      s[1] = TAMEX_SFP(sfp=0);
+      s[2] = TAMEX_SFP(sfp=1);
+      s[3] = TAMEX_SFP(sfp=2);
+      s[4] = TAMEX_SFP(sfp=3);
+    }
+  }
+}
+
+/**********************************************************
+ * The event definition:
+ */
+
+EVENT
+{
+  pc[1] = tamex_pcie(type=10,subtype=1,procid=100);
+  pc[2] = tamex_pcie(type=10,subtype=1,procid=200);
+}
+
+/**********************************************************
+ * The sticky_event definition:
+ */
+
+/**********************************************************
+ * Signal name mappings:
+ */
+
+SIGNAL(NN_P1_tc_T1_B1,pc[2].s[1].evhead[2].time_coarse[11],DATA12);
+SIGNAL(NN_P1_tc_T1_B10,pc[2].s[1].evhead[3].time_coarse[2],DATA12);
+SIGNAL(NN_P1_tc_T1_B11,pc[2].s[1].evhead[3].time_coarse[1],DATA12);
+SIGNAL(NN_P1_tc_T1_B12,pc[2].s[1].evhead[3].time_coarse[0],DATA12);
+SIGNAL(NN_P1_tc_T1_B13,pc[2].s[1].evhead[3].time_coarse[15],DATA12);
+SIGNAL(NN_P1_tc_T1_B14,pc[2].s[1].evhead[3].time_coarse[14],DATA12);
+SIGNAL(NN_P1_tc_T1_B15,pc[2].s[1].evhead[3].time_coarse[13],DATA12);
+SIGNAL(NN_P1_tc_T1_B16,pc[2].s[1].evhead[3].time_coarse[12],DATA12);
+SIGNAL(NN_P1_tc_T1_B17,pc[2].s[1].evhead[3].time_coarse[11],DATA12);
+SIGNAL(NN_P1_tc_T1_B18,pc[2].s[1].evhead[3].time_coarse[10],DATA12);
+SIGNAL(NN_P1_tc_T1_B19,pc[2].s[1].evhead[3].time_coarse[9],DATA12);
+SIGNAL(NN_P1_tc_T1_B2,pc[2].s[1].evhead[2].time_coarse[10],DATA12);
+SIGNAL(NN_P1_tc_T1_B20,pc[2].s[1].evhead[3].time_coarse[8],DATA12);
+SIGNAL(NN_P1_tc_T1_B21,pc[2].s[1].evhead[4].time_coarse[7],DATA12);
+SIGNAL(NN_P1_tc_T1_B22,pc[2].s[1].evhead[4].time_coarse[6],DATA12);
+SIGNAL(NN_P1_tc_T1_B23,pc[2].s[1].evhead[4].time_coarse[5],DATA12);
+SIGNAL(NN_P1_tc_T1_B24,pc[2].s[1].evhead[4].time_coarse[4],DATA12);
+SIGNAL(NN_P1_tc_T1_B25,pc[2].s[1].evhead[4].time_coarse[3],DATA12);
+SIGNAL(NN_P1_tc_T1_B26,pc[2].s[1].evhead[4].time_coarse[2],DATA12);
+SIGNAL(NN_P1_tc_T1_B27,pc[2].s[1].evhead[4].time_coarse[1],DATA12);
+SIGNAL(NN_P1_tc_T1_B28,pc[2].s[1].evhead[4].time_coarse[0],DATA12);
+SIGNAL(NN_P1_tc_T1_B29,pc[2].s[1].evhead[4].time_coarse[15],DATA12);
+SIGNAL(NN_P1_tc_T1_B3,pc[2].s[1].evhead[2].time_coarse[9],DATA12);
+SIGNAL(NN_P1_tc_T1_B30,pc[2].s[1].evhead[4].time_coarse[14],DATA12);
+SIGNAL(NN_P1_tc_T1_B31,pc[2].s[1].evhead[4].time_coarse[13],DATA12);
+SIGNAL(NN_P1_tc_T1_B32,pc[2].s[1].evhead[4].time_coarse[12],DATA12);
+SIGNAL(NN_P1_tc_T1_B33,pc[2].s[1].evhead[4].time_coarse[11],DATA12);
+SIGNAL(NN_P1_tc_T1_B34,pc[2].s[1].evhead[4].time_coarse[10],DATA12);
+SIGNAL(NN_P1_tc_T1_B35,pc[2].s[1].evhead[4].time_coarse[9],DATA12);
+SIGNAL(NN_P1_tc_T1_B36,pc[2].s[1].evhead[4].time_coarse[8],DATA12);
+SIGNAL(NN_P1_tc_T1_B37,pc[2].s[1].evhead[5].time_coarse[7],DATA12);
+SIGNAL(NN_P1_tc_T1_B38,pc[2].s[1].evhead[5].time_coarse[6],DATA12);
+SIGNAL(NN_P1_tc_T1_B39,pc[2].s[1].evhead[5].time_coarse[5],DATA12);
+SIGNAL(NN_P1_tc_T1_B4,pc[2].s[1].evhead[2].time_coarse[8],DATA12);
+SIGNAL(NN_P1_tc_T1_B40,pc[2].s[1].evhead[5].time_coarse[4],DATA12);
+SIGNAL(NN_P1_tc_T1_B41,pc[2].s[1].evhead[5].time_coarse[3],DATA12);
+SIGNAL(NN_P1_tc_T1_B42,pc[2].s[1].evhead[5].time_coarse[2],DATA12);
+SIGNAL(NN_P1_tc_T1_B43,pc[2].s[1].evhead[5].time_coarse[1],DATA12);
+SIGNAL(NN_P1_tc_T1_B44,pc[2].s[1].evhead[5].time_coarse[0],DATA12);
+SIGNAL(NN_P1_tc_T1_B45,pc[2].s[1].evhead[5].time_coarse[15],DATA12);
+SIGNAL(NN_P1_tc_T1_B46,pc[2].s[1].evhead[5].time_coarse[14],DATA12);
+SIGNAL(NN_P1_tc_T1_B47,pc[2].s[1].evhead[5].time_coarse[13],DATA12);
+SIGNAL(NN_P1_tc_T1_B48,pc[2].s[1].evhead[5].time_coarse[12],DATA12);
+SIGNAL(NN_P1_tc_T1_B49,pc[2].s[1].evhead[5].time_coarse[11],DATA12);
+SIGNAL(NN_P1_tc_T1_B5,pc[2].s[1].evhead[3].time_coarse[7],DATA12);
+SIGNAL(NN_P1_tc_T1_B50,pc[2].s[1].evhead[5].time_coarse[10],DATA12);
+SIGNAL(NN_P1_tc_T1_B6,pc[2].s[1].evhead[3].time_coarse[6],DATA12);
+SIGNAL(NN_P1_tc_T1_B7,pc[2].s[1].evhead[3].time_coarse[5],DATA12);
+SIGNAL(NN_P1_tc_T1_B8,pc[2].s[1].evhead[3].time_coarse[4],DATA12);
+SIGNAL(NN_P1_tc_T1_B9,pc[2].s[1].evhead[3].time_coarse[3],DATA12);
+SIGNAL(NN_P1_tc_T2_B1,pc[1].s[1].evhead[2].time_coarse[1],DATA12);
+SIGNAL(NN_P1_tc_T2_B10,pc[1].s[1].evhead[2].time_coarse[8],DATA12);
+SIGNAL(NN_P1_tc_T2_B11,pc[1].s[1].evhead[3].time_coarse[7],DATA12);
+SIGNAL(NN_P1_tc_T2_B12,pc[1].s[1].evhead[3].time_coarse[6],DATA12);
+SIGNAL(NN_P1_tc_T2_B13,pc[1].s[1].evhead[3].time_coarse[5],DATA12);
+SIGNAL(NN_P1_tc_T2_B14,pc[1].s[1].evhead[3].time_coarse[4],DATA12);
+SIGNAL(NN_P1_tc_T2_B15,pc[1].s[1].evhead[3].time_coarse[3],DATA12);
+SIGNAL(NN_P1_tc_T2_B16,pc[1].s[1].evhead[3].time_coarse[2],DATA12);
+SIGNAL(NN_P1_tc_T2_B17,pc[1].s[1].evhead[3].time_coarse[1],DATA12);
+SIGNAL(NN_P1_tc_T2_B18,pc[1].s[1].evhead[3].time_coarse[0],DATA12);
+SIGNAL(NN_P1_tc_T2_B19,pc[1].s[1].evhead[3].time_coarse[15],DATA12);
+SIGNAL(NN_P1_tc_T2_B2,pc[1].s[1].evhead[2].time_coarse[0],DATA12);
+SIGNAL(NN_P1_tc_T2_B20,pc[1].s[1].evhead[3].time_coarse[14],DATA12);
+SIGNAL(NN_P1_tc_T2_B21,pc[1].s[1].evhead[3].time_coarse[13],DATA12);
+SIGNAL(NN_P1_tc_T2_B22,pc[1].s[1].evhead[3].time_coarse[12],DATA12);
+SIGNAL(NN_P1_tc_T2_B23,pc[1].s[1].evhead[3].time_coarse[11],DATA12);
+SIGNAL(NN_P1_tc_T2_B24,pc[1].s[1].evhead[3].time_coarse[10],DATA12);
+SIGNAL(NN_P1_tc_T2_B25,pc[1].s[1].evhead[3].time_coarse[9],DATA12);
+SIGNAL(NN_P1_tc_T2_B26,pc[1].s[1].evhead[3].time_coarse[8],DATA12);
+SIGNAL(NN_P1_tc_T2_B27,pc[1].s[1].evhead[4].time_coarse[7],DATA12);
+SIGNAL(NN_P1_tc_T2_B28,pc[1].s[1].evhead[4].time_coarse[6],DATA12);
+SIGNAL(NN_P1_tc_T2_B29,pc[1].s[1].evhead[4].time_coarse[5],DATA12);
+SIGNAL(NN_P1_tc_T2_B3,pc[1].s[1].evhead[2].time_coarse[15],DATA12);
+SIGNAL(NN_P1_tc_T2_B30,pc[1].s[1].evhead[4].time_coarse[4],DATA12);
+SIGNAL(NN_P1_tc_T2_B31,pc[1].s[1].evhead[4].time_coarse[3],DATA12);
+SIGNAL(NN_P1_tc_T2_B32,pc[1].s[1].evhead[4].time_coarse[2],DATA12);
+SIGNAL(NN_P1_tc_T2_B33,pc[1].s[1].evhead[4].time_coarse[1],DATA12);
+SIGNAL(NN_P1_tc_T2_B34,pc[1].s[1].evhead[4].time_coarse[0],DATA12);
+SIGNAL(NN_P1_tc_T2_B35,pc[1].s[1].evhead[4].time_coarse[15],DATA12);
+SIGNAL(NN_P1_tc_T2_B36,pc[1].s[1].evhead[4].time_coarse[14],DATA12);
+SIGNAL(NN_P1_tc_T2_B37,pc[1].s[1].evhead[4].time_coarse[13],DATA12);
+SIGNAL(NN_P1_tc_T2_B38,pc[1].s[1].evhead[4].time_coarse[12],DATA12);
+SIGNAL(NN_P1_tc_T2_B39,pc[1].s[1].evhead[4].time_coarse[11],DATA12);
+SIGNAL(NN_P1_tc_T2_B4,pc[1].s[1].evhead[2].time_coarse[14],DATA12);
+SIGNAL(NN_P1_tc_T2_B40,pc[1].s[1].evhead[4].time_coarse[10],DATA12);
+SIGNAL(NN_P1_tc_T2_B41,pc[1].s[1].evhead[4].time_coarse[9],DATA12);
+SIGNAL(NN_P1_tc_T2_B42,pc[1].s[1].evhead[4].time_coarse[8],DATA12);
+SIGNAL(NN_P1_tc_T2_B43,pc[1].s[1].evhead[5].time_coarse[7],DATA12);
+SIGNAL(NN_P1_tc_T2_B44,pc[1].s[1].evhead[5].time_coarse[6],DATA12);
+SIGNAL(NN_P1_tc_T2_B45,pc[1].s[1].evhead[5].time_coarse[5],DATA12);
+SIGNAL(NN_P1_tc_T2_B46,pc[1].s[1].evhead[5].time_coarse[4],DATA12);
+SIGNAL(NN_P1_tc_T2_B47,pc[1].s[1].evhead[5].time_coarse[3],DATA12);
+SIGNAL(NN_P1_tc_T2_B48,pc[1].s[1].evhead[5].time_coarse[2],DATA12);
+SIGNAL(NN_P1_tc_T2_B49,pc[1].s[1].evhead[5].time_coarse[1],DATA12);
+SIGNAL(NN_P1_tc_T2_B5,pc[1].s[1].evhead[2].time_coarse[13],DATA12);
+SIGNAL(NN_P1_tc_T2_B50,pc[1].s[1].evhead[5].time_coarse[0],DATA12);
+SIGNAL(NN_P1_tc_T2_B6,pc[1].s[1].evhead[2].time_coarse[12],DATA12);
+SIGNAL(NN_P1_tc_T2_B7,pc[1].s[1].evhead[2].time_coarse[11],DATA12);
+SIGNAL(NN_P1_tc_T2_B8,pc[1].s[1].evhead[2].time_coarse[10],DATA12);
+SIGNAL(NN_P1_tc_T2_B9,pc[1].s[1].evhead[2].time_coarse[9],DATA12);
+SIGNAL(NN_P1_tf_T1_B1,pc[2].s[1].evhead[2].time_fine[11],DATA12);
+SIGNAL(NN_P1_tf_T1_B10,pc[2].s[1].evhead[3].time_fine[2],DATA12);
+SIGNAL(NN_P1_tf_T1_B11,pc[2].s[1].evhead[3].time_fine[1],DATA12);
+SIGNAL(NN_P1_tf_T1_B12,pc[2].s[1].evhead[3].time_fine[0],DATA12);
+SIGNAL(NN_P1_tf_T1_B13,pc[2].s[1].evhead[3].time_fine[15],DATA12);
+SIGNAL(NN_P1_tf_T1_B14,pc[2].s[1].evhead[3].time_fine[14],DATA12);
+SIGNAL(NN_P1_tf_T1_B15,pc[2].s[1].evhead[3].time_fine[13],DATA12);
+SIGNAL(NN_P1_tf_T1_B16,pc[2].s[1].evhead[3].time_fine[12],DATA12);
+SIGNAL(NN_P1_tf_T1_B17,pc[2].s[1].evhead[3].time_fine[11],DATA12);
+SIGNAL(NN_P1_tf_T1_B18,pc[2].s[1].evhead[3].time_fine[10],DATA12);
+SIGNAL(NN_P1_tf_T1_B19,pc[2].s[1].evhead[3].time_fine[9],DATA12);
+SIGNAL(NN_P1_tf_T1_B2,pc[2].s[1].evhead[2].time_fine[10],DATA12);
+SIGNAL(NN_P1_tf_T1_B20,pc[2].s[1].evhead[3].time_fine[8],DATA12);
+SIGNAL(NN_P1_tf_T1_B21,pc[2].s[1].evhead[4].time_fine[7],DATA12);
+SIGNAL(NN_P1_tf_T1_B22,pc[2].s[1].evhead[4].time_fine[6],DATA12);
+SIGNAL(NN_P1_tf_T1_B23,pc[2].s[1].evhead[4].time_fine[5],DATA12);
+SIGNAL(NN_P1_tf_T1_B24,pc[2].s[1].evhead[4].time_fine[4],DATA12);
+SIGNAL(NN_P1_tf_T1_B25,pc[2].s[1].evhead[4].time_fine[3],DATA12);
+SIGNAL(NN_P1_tf_T1_B26,pc[2].s[1].evhead[4].time_fine[2],DATA12);
+SIGNAL(NN_P1_tf_T1_B27,pc[2].s[1].evhead[4].time_fine[1],DATA12);
+SIGNAL(NN_P1_tf_T1_B28,pc[2].s[1].evhead[4].time_fine[0],DATA12);
+SIGNAL(NN_P1_tf_T1_B29,pc[2].s[1].evhead[4].time_fine[15],DATA12);
+SIGNAL(NN_P1_tf_T1_B3,pc[2].s[1].evhead[2].time_fine[9],DATA12);
+SIGNAL(NN_P1_tf_T1_B30,pc[2].s[1].evhead[4].time_fine[14],DATA12);
+SIGNAL(NN_P1_tf_T1_B31,pc[2].s[1].evhead[4].time_fine[13],DATA12);
+SIGNAL(NN_P1_tf_T1_B32,pc[2].s[1].evhead[4].time_fine[12],DATA12);
+SIGNAL(NN_P1_tf_T1_B33,pc[2].s[1].evhead[4].time_fine[11],DATA12);
+SIGNAL(NN_P1_tf_T1_B34,pc[2].s[1].evhead[4].time_fine[10],DATA12);
+SIGNAL(NN_P1_tf_T1_B35,pc[2].s[1].evhead[4].time_fine[9],DATA12);
+SIGNAL(NN_P1_tf_T1_B36,pc[2].s[1].evhead[4].time_fine[8],DATA12);
+SIGNAL(NN_P1_tf_T1_B37,pc[2].s[1].evhead[5].time_fine[7],DATA12);
+SIGNAL(NN_P1_tf_T1_B38,pc[2].s[1].evhead[5].time_fine[6],DATA12);
+SIGNAL(NN_P1_tf_T1_B39,pc[2].s[1].evhead[5].time_fine[5],DATA12);
+SIGNAL(NN_P1_tf_T1_B4,pc[2].s[1].evhead[2].time_fine[8],DATA12);
+SIGNAL(NN_P1_tf_T1_B40,pc[2].s[1].evhead[5].time_fine[4],DATA12);
+SIGNAL(NN_P1_tf_T1_B41,pc[2].s[1].evhead[5].time_fine[3],DATA12);
+SIGNAL(NN_P1_tf_T1_B42,pc[2].s[1].evhead[5].time_fine[2],DATA12);
+SIGNAL(NN_P1_tf_T1_B43,pc[2].s[1].evhead[5].time_fine[1],DATA12);
+SIGNAL(NN_P1_tf_T1_B44,pc[2].s[1].evhead[5].time_fine[0],DATA12);
+SIGNAL(NN_P1_tf_T1_B45,pc[2].s[1].evhead[5].time_fine[15],DATA12);
+SIGNAL(NN_P1_tf_T1_B46,pc[2].s[1].evhead[5].time_fine[14],DATA12);
+SIGNAL(NN_P1_tf_T1_B47,pc[2].s[1].evhead[5].time_fine[13],DATA12);
+SIGNAL(NN_P1_tf_T1_B48,pc[2].s[1].evhead[5].time_fine[12],DATA12);
+SIGNAL(NN_P1_tf_T1_B49,pc[2].s[1].evhead[5].time_fine[11],DATA12);
+SIGNAL(NN_P1_tf_T1_B5,pc[2].s[1].evhead[3].time_fine[7],DATA12);
+SIGNAL(NN_P1_tf_T1_B50,pc[2].s[1].evhead[5].time_fine[10],DATA12);
+SIGNAL(NN_P1_tf_T1_B6,pc[2].s[1].evhead[3].time_fine[6],DATA12);
+SIGNAL(NN_P1_tf_T1_B7,pc[2].s[1].evhead[3].time_fine[5],DATA12);
+SIGNAL(NN_P1_tf_T1_B8,pc[2].s[1].evhead[3].time_fine[4],DATA12);
+SIGNAL(NN_P1_tf_T1_B9,pc[2].s[1].evhead[3].time_fine[3],DATA12);
+SIGNAL(NN_P1_tf_T2_B1,pc[1].s[1].evhead[2].time_fine[1],DATA12);
+SIGNAL(NN_P1_tf_T2_B10,pc[1].s[1].evhead[2].time_fine[8],DATA12);
+SIGNAL(NN_P1_tf_T2_B11,pc[1].s[1].evhead[3].time_fine[7],DATA12);
+SIGNAL(NN_P1_tf_T2_B12,pc[1].s[1].evhead[3].time_fine[6],DATA12);
+SIGNAL(NN_P1_tf_T2_B13,pc[1].s[1].evhead[3].time_fine[5],DATA12);
+SIGNAL(NN_P1_tf_T2_B14,pc[1].s[1].evhead[3].time_fine[4],DATA12);
+SIGNAL(NN_P1_tf_T2_B15,pc[1].s[1].evhead[3].time_fine[3],DATA12);
+SIGNAL(NN_P1_tf_T2_B16,pc[1].s[1].evhead[3].time_fine[2],DATA12);
+SIGNAL(NN_P1_tf_T2_B17,pc[1].s[1].evhead[3].time_fine[1],DATA12);
+SIGNAL(NN_P1_tf_T2_B18,pc[1].s[1].evhead[3].time_fine[0],DATA12);
+SIGNAL(NN_P1_tf_T2_B19,pc[1].s[1].evhead[3].time_fine[15],DATA12);
+SIGNAL(NN_P1_tf_T2_B2,pc[1].s[1].evhead[2].time_fine[0],DATA12);
+SIGNAL(NN_P1_tf_T2_B20,pc[1].s[1].evhead[3].time_fine[14],DATA12);
+SIGNAL(NN_P1_tf_T2_B21,pc[1].s[1].evhead[3].time_fine[13],DATA12);
+SIGNAL(NN_P1_tf_T2_B22,pc[1].s[1].evhead[3].time_fine[12],DATA12);
+SIGNAL(NN_P1_tf_T2_B23,pc[1].s[1].evhead[3].time_fine[11],DATA12);
+SIGNAL(NN_P1_tf_T2_B24,pc[1].s[1].evhead[3].time_fine[10],DATA12);
+SIGNAL(NN_P1_tf_T2_B25,pc[1].s[1].evhead[3].time_fine[9],DATA12);
+SIGNAL(NN_P1_tf_T2_B26,pc[1].s[1].evhead[3].time_fine[8],DATA12);
+SIGNAL(NN_P1_tf_T2_B27,pc[1].s[1].evhead[4].time_fine[7],DATA12);
+SIGNAL(NN_P1_tf_T2_B28,pc[1].s[1].evhead[4].time_fine[6],DATA12);
+SIGNAL(NN_P1_tf_T2_B29,pc[1].s[1].evhead[4].time_fine[5],DATA12);
+SIGNAL(NN_P1_tf_T2_B3,pc[1].s[1].evhead[2].time_fine[15],DATA12);
+SIGNAL(NN_P1_tf_T2_B30,pc[1].s[1].evhead[4].time_fine[4],DATA12);
+SIGNAL(NN_P1_tf_T2_B31,pc[1].s[1].evhead[4].time_fine[3],DATA12);
+SIGNAL(NN_P1_tf_T2_B32,pc[1].s[1].evhead[4].time_fine[2],DATA12);
+SIGNAL(NN_P1_tf_T2_B33,pc[1].s[1].evhead[4].time_fine[1],DATA12);
+SIGNAL(NN_P1_tf_T2_B34,pc[1].s[1].evhead[4].time_fine[0],DATA12);
+SIGNAL(NN_P1_tf_T2_B35,pc[1].s[1].evhead[4].time_fine[15],DATA12);
+SIGNAL(NN_P1_tf_T2_B36,pc[1].s[1].evhead[4].time_fine[14],DATA12);
+SIGNAL(NN_P1_tf_T2_B37,pc[1].s[1].evhead[4].time_fine[13],DATA12);
+SIGNAL(NN_P1_tf_T2_B38,pc[1].s[1].evhead[4].time_fine[12],DATA12);
+SIGNAL(NN_P1_tf_T2_B39,pc[1].s[1].evhead[4].time_fine[11],DATA12);
+SIGNAL(NN_P1_tf_T2_B4,pc[1].s[1].evhead[2].time_fine[14],DATA12);
+SIGNAL(NN_P1_tf_T2_B40,pc[1].s[1].evhead[4].time_fine[10],DATA12);
+SIGNAL(NN_P1_tf_T2_B41,pc[1].s[1].evhead[4].time_fine[9],DATA12);
+SIGNAL(NN_P1_tf_T2_B42,pc[1].s[1].evhead[4].time_fine[8],DATA12);
+SIGNAL(NN_P1_tf_T2_B43,pc[1].s[1].evhead[5].time_fine[7],DATA12);
+SIGNAL(NN_P1_tf_T2_B44,pc[1].s[1].evhead[5].time_fine[6],DATA12);
+SIGNAL(NN_P1_tf_T2_B45,pc[1].s[1].evhead[5].time_fine[5],DATA12);
+SIGNAL(NN_P1_tf_T2_B46,pc[1].s[1].evhead[5].time_fine[4],DATA12);
+SIGNAL(NN_P1_tf_T2_B47,pc[1].s[1].evhead[5].time_fine[3],DATA12);
+SIGNAL(NN_P1_tf_T2_B48,pc[1].s[1].evhead[5].time_fine[2],DATA12);
+SIGNAL(NN_P1_tf_T2_B49,pc[1].s[1].evhead[5].time_fine[1],DATA12);
+SIGNAL(NN_P1_tf_T2_B5,pc[1].s[1].evhead[2].time_fine[13],DATA12);
+SIGNAL(NN_P1_tf_T2_B50,pc[1].s[1].evhead[5].time_fine[0],DATA12);
+SIGNAL(NN_P1_tf_T2_B6,pc[1].s[1].evhead[2].time_fine[12],DATA12);
+SIGNAL(NN_P1_tf_T2_B7,pc[1].s[1].evhead[2].time_fine[11],DATA12);
+SIGNAL(NN_P1_tf_T2_B8,pc[1].s[1].evhead[2].time_fine[10],DATA12);
+SIGNAL(NN_P1_tf_T2_B9,pc[1].s[1].evhead[2].time_fine[9],DATA12);
+SIGNAL(NN_P2_tc_T1_B1,pc[2].s[1].evhead[1].time_coarse[7],DATA12);
+SIGNAL(NN_P2_tc_T1_B10,pc[2].s[1].evhead[1].time_coarse[14],DATA12);
+SIGNAL(NN_P2_tc_T1_B11,pc[2].s[1].evhead[1].time_coarse[13],DATA12);
+SIGNAL(NN_P2_tc_T1_B12,pc[2].s[1].evhead[1].time_coarse[12],DATA12);
+SIGNAL(NN_P2_tc_T1_B13,pc[2].s[1].evhead[1].time_coarse[11],DATA12);
+SIGNAL(NN_P2_tc_T1_B14,pc[2].s[1].evhead[1].time_coarse[10],DATA12);
+SIGNAL(NN_P2_tc_T1_B15,pc[2].s[1].evhead[1].time_coarse[9],DATA12);
+SIGNAL(NN_P2_tc_T1_B16,pc[2].s[1].evhead[1].time_coarse[8],DATA12);
+SIGNAL(NN_P2_tc_T1_B17,pc[2].s[1].evhead[2].time_coarse[7],DATA12);
+SIGNAL(NN_P2_tc_T1_B18,pc[2].s[1].evhead[2].time_coarse[6],DATA12);
+SIGNAL(NN_P2_tc_T1_B19,pc[2].s[1].evhead[2].time_coarse[5],DATA12);
+SIGNAL(NN_P2_tc_T1_B2,pc[2].s[1].evhead[1].time_coarse[6],DATA12);
+SIGNAL(NN_P2_tc_T1_B20,pc[2].s[1].evhead[2].time_coarse[4],DATA12);
+SIGNAL(NN_P2_tc_T1_B21,pc[2].s[1].evhead[2].time_coarse[3],DATA12);
+SIGNAL(NN_P2_tc_T1_B22,pc[2].s[1].evhead[2].time_coarse[2],DATA12);
+SIGNAL(NN_P2_tc_T1_B23,pc[2].s[1].evhead[2].time_coarse[1],DATA12);
+SIGNAL(NN_P2_tc_T1_B24,pc[2].s[1].evhead[2].time_coarse[0],DATA12);
+SIGNAL(NN_P2_tc_T1_B25,pc[2].s[1].evhead[2].time_coarse[15],DATA12);
+SIGNAL(NN_P2_tc_T1_B26,pc[2].s[1].evhead[2].time_coarse[14],DATA12);
+SIGNAL(NN_P2_tc_T1_B27,pc[2].s[1].evhead[2].time_coarse[13],DATA12);
+SIGNAL(NN_P2_tc_T1_B28,pc[2].s[1].evhead[2].time_coarse[12],DATA12);
+SIGNAL(NN_P2_tc_T1_B29,pc[1].s[1].evhead[1].time_coarse[7],DATA12);
+SIGNAL(NN_P2_tc_T1_B3,pc[2].s[1].evhead[1].time_coarse[5],DATA12);
+SIGNAL(NN_P2_tc_T1_B30,pc[1].s[1].evhead[1].time_coarse[6],DATA12);
+SIGNAL(NN_P2_tc_T1_B31,pc[1].s[1].evhead[1].time_coarse[5],DATA12);
+SIGNAL(NN_P2_tc_T1_B32,pc[1].s[1].evhead[1].time_coarse[4],DATA12);
+SIGNAL(NN_P2_tc_T1_B33,pc[1].s[1].evhead[1].time_coarse[3],DATA12);
+SIGNAL(NN_P2_tc_T1_B34,pc[1].s[1].evhead[1].time_coarse[2],DATA12);
+SIGNAL(NN_P2_tc_T1_B35,pc[1].s[1].evhead[1].time_coarse[1],DATA12);
+SIGNAL(NN_P2_tc_T1_B36,pc[1].s[1].evhead[1].time_coarse[0],DATA12);
+SIGNAL(NN_P2_tc_T1_B37,pc[1].s[1].evhead[1].time_coarse[15],DATA12);
+SIGNAL(NN_P2_tc_T1_B38,pc[1].s[1].evhead[1].time_coarse[14],DATA12);
+SIGNAL(NN_P2_tc_T1_B39,pc[1].s[1].evhead[1].time_coarse[13],DATA12);
+SIGNAL(NN_P2_tc_T1_B4,pc[2].s[1].evhead[1].time_coarse[4],DATA12);
+SIGNAL(NN_P2_tc_T1_B40,pc[1].s[1].evhead[1].time_coarse[12],DATA12);
+SIGNAL(NN_P2_tc_T1_B41,pc[1].s[1].evhead[1].time_coarse[11],DATA12);
+SIGNAL(NN_P2_tc_T1_B42,pc[1].s[1].evhead[1].time_coarse[10],DATA12);
+SIGNAL(NN_P2_tc_T1_B43,pc[1].s[1].evhead[1].time_coarse[9],DATA12);
+SIGNAL(NN_P2_tc_T1_B44,pc[1].s[1].evhead[1].time_coarse[8],DATA12);
+SIGNAL(NN_P2_tc_T1_B45,pc[1].s[1].evhead[2].time_coarse[7],DATA12);
+SIGNAL(NN_P2_tc_T1_B46,pc[1].s[1].evhead[2].time_coarse[6],DATA12);
+SIGNAL(NN_P2_tc_T1_B47,pc[1].s[1].evhead[2].time_coarse[5],DATA12);
+SIGNAL(NN_P2_tc_T1_B48,pc[1].s[1].evhead[2].time_coarse[4],DATA12);
+SIGNAL(NN_P2_tc_T1_B49,pc[1].s[1].evhead[2].time_coarse[3],DATA12);
+SIGNAL(NN_P2_tc_T1_B5,pc[2].s[1].evhead[1].time_coarse[3],DATA12);
+SIGNAL(NN_P2_tc_T1_B50,pc[1].s[1].evhead[2].time_coarse[2],DATA12);
+SIGNAL(NN_P2_tc_T1_B6,pc[2].s[1].evhead[1].time_coarse[2],DATA12);
+SIGNAL(NN_P2_tc_T1_B7,pc[2].s[1].evhead[1].time_coarse[1],DATA12);
+SIGNAL(NN_P2_tc_T1_B8,pc[2].s[1].evhead[1].time_coarse[0],DATA12);
+SIGNAL(NN_P2_tc_T1_B9,pc[2].s[1].evhead[1].time_coarse[15],DATA12);
+SIGNAL(NN_P2_tc_T2_B1,pc[2].s[1].evhead[5].time_coarse[9],DATA12);
+SIGNAL(NN_P2_tc_T2_B10,pc[2].s[1].evhead[6].time_coarse[0],DATA12);
+SIGNAL(NN_P2_tc_T2_B11,pc[2].s[1].evhead[6].time_coarse[15],DATA12);
+SIGNAL(NN_P2_tc_T2_B12,pc[2].s[1].evhead[6].time_coarse[14],DATA12);
+SIGNAL(NN_P2_tc_T2_B13,pc[2].s[1].evhead[6].time_coarse[13],DATA12);
+SIGNAL(NN_P2_tc_T2_B14,pc[2].s[1].evhead[6].time_coarse[12],DATA12);
+SIGNAL(NN_P2_tc_T2_B15,pc[2].s[1].evhead[6].time_coarse[11],DATA12);
+SIGNAL(NN_P2_tc_T2_B16,pc[2].s[1].evhead[6].time_coarse[10],DATA12);
+SIGNAL(NN_P2_tc_T2_B17,pc[2].s[1].evhead[6].time_coarse[9],DATA12);
+SIGNAL(NN_P2_tc_T2_B18,pc[2].s[1].evhead[6].time_coarse[8],DATA12);
+SIGNAL(NN_P2_tc_T2_B19,pc[2].s[1].evhead[7].time_coarse[7],DATA12);
+SIGNAL(NN_P2_tc_T2_B2,pc[2].s[1].evhead[5].time_coarse[8],DATA12);
+SIGNAL(NN_P2_tc_T2_B20,pc[2].s[1].evhead[7].time_coarse[6],DATA12);
+SIGNAL(NN_P2_tc_T2_B21,pc[2].s[1].evhead[7].time_coarse[5],DATA12);
+SIGNAL(NN_P2_tc_T2_B22,pc[2].s[1].evhead[7].time_coarse[4],DATA12);
+SIGNAL(NN_P2_tc_T2_B23,pc[2].s[1].evhead[7].time_coarse[3],DATA12);
+SIGNAL(NN_P2_tc_T2_B24,pc[2].s[1].evhead[7].time_coarse[2],DATA12);
+SIGNAL(NN_P2_tc_T2_B25,pc[2].s[1].evhead[7].time_coarse[1],DATA12);
+SIGNAL(NN_P2_tc_T2_B26,pc[2].s[1].evhead[7].time_coarse[0],DATA12);
+SIGNAL(NN_P2_tc_T2_B27,pc[2].s[1].evhead[7].time_coarse[15],DATA12);
+SIGNAL(NN_P2_tc_T2_B28,pc[2].s[1].evhead[7].time_coarse[14],DATA12);
+SIGNAL(NN_P2_tc_T2_B29,pc[2].s[1].evhead[7].time_coarse[13],DATA12);
+SIGNAL(NN_P2_tc_T2_B3,pc[2].s[1].evhead[6].time_coarse[7],DATA12);
+SIGNAL(NN_P2_tc_T2_B30,pc[2].s[1].evhead[7].time_coarse[12],DATA12);
+SIGNAL(NN_P2_tc_T2_B31,pc[1].s[1].evhead[5].time_coarse[15],DATA12);
+SIGNAL(NN_P2_tc_T2_B32,pc[1].s[1].evhead[5].time_coarse[14],DATA12);
+SIGNAL(NN_P2_tc_T2_B33,pc[1].s[1].evhead[5].time_coarse[13],DATA12);
+SIGNAL(NN_P2_tc_T2_B34,pc[1].s[1].evhead[5].time_coarse[12],DATA12);
+SIGNAL(NN_P2_tc_T2_B35,pc[1].s[1].evhead[5].time_coarse[11],DATA12);
+SIGNAL(NN_P2_tc_T2_B36,pc[1].s[1].evhead[5].time_coarse[10],DATA12);
+SIGNAL(NN_P2_tc_T2_B37,pc[1].s[1].evhead[5].time_coarse[9],DATA12);
+SIGNAL(NN_P2_tc_T2_B38,pc[1].s[1].evhead[5].time_coarse[8],DATA12);
+SIGNAL(NN_P2_tc_T2_B39,pc[1].s[1].evhead[6].time_coarse[7],DATA12);
+SIGNAL(NN_P2_tc_T2_B4,pc[2].s[1].evhead[6].time_coarse[6],DATA12);
+SIGNAL(NN_P2_tc_T2_B40,pc[1].s[1].evhead[6].time_coarse[6],DATA12);
+SIGNAL(NN_P2_tc_T2_B41,pc[1].s[1].evhead[6].time_coarse[5],DATA12);
+SIGNAL(NN_P2_tc_T2_B42,pc[1].s[1].evhead[6].time_coarse[4],DATA12);
+SIGNAL(NN_P2_tc_T2_B43,pc[1].s[1].evhead[6].time_coarse[3],DATA12);
+SIGNAL(NN_P2_tc_T2_B44,pc[1].s[1].evhead[6].time_coarse[2],DATA12);
+SIGNAL(NN_P2_tc_T2_B45,pc[1].s[1].evhead[6].time_coarse[1],DATA12);
+SIGNAL(NN_P2_tc_T2_B46,pc[1].s[1].evhead[6].time_coarse[0],DATA12);
+SIGNAL(NN_P2_tc_T2_B47,pc[1].s[1].evhead[6].time_coarse[15],DATA12);
+SIGNAL(NN_P2_tc_T2_B48,pc[1].s[1].evhead[6].time_coarse[14],DATA12);
+SIGNAL(NN_P2_tc_T2_B49,pc[1].s[1].evhead[6].time_coarse[13],DATA12);
+SIGNAL(NN_P2_tc_T2_B5,pc[2].s[1].evhead[6].time_coarse[5],DATA12);
+SIGNAL(NN_P2_tc_T2_B50,pc[1].s[1].evhead[6].time_coarse[12],DATA12);
+SIGNAL(NN_P2_tc_T2_B6,pc[2].s[1].evhead[6].time_coarse[4],DATA12);
+SIGNAL(NN_P2_tc_T2_B7,pc[2].s[1].evhead[6].time_coarse[3],DATA12);
+SIGNAL(NN_P2_tc_T2_B8,pc[2].s[1].evhead[6].time_coarse[2],DATA12);
+SIGNAL(NN_P2_tc_T2_B9,pc[2].s[1].evhead[6].time_coarse[1],DATA12);
+SIGNAL(NN_P2_tf_T1_B1,pc[2].s[1].evhead[1].time_fine[7],DATA12);
+SIGNAL(NN_P2_tf_T1_B10,pc[2].s[1].evhead[1].time_fine[14],DATA12);
+SIGNAL(NN_P2_tf_T1_B11,pc[2].s[1].evhead[1].time_fine[13],DATA12);
+SIGNAL(NN_P2_tf_T1_B12,pc[2].s[1].evhead[1].time_fine[12],DATA12);
+SIGNAL(NN_P2_tf_T1_B13,pc[2].s[1].evhead[1].time_fine[11],DATA12);
+SIGNAL(NN_P2_tf_T1_B14,pc[2].s[1].evhead[1].time_fine[10],DATA12);
+SIGNAL(NN_P2_tf_T1_B15,pc[2].s[1].evhead[1].time_fine[9],DATA12);
+SIGNAL(NN_P2_tf_T1_B16,pc[2].s[1].evhead[1].time_fine[8],DATA12);
+SIGNAL(NN_P2_tf_T1_B17,pc[2].s[1].evhead[2].time_fine[7],DATA12);
+SIGNAL(NN_P2_tf_T1_B18,pc[2].s[1].evhead[2].time_fine[6],DATA12);
+SIGNAL(NN_P2_tf_T1_B19,pc[2].s[1].evhead[2].time_fine[5],DATA12);
+SIGNAL(NN_P2_tf_T1_B2,pc[2].s[1].evhead[1].time_fine[6],DATA12);
+SIGNAL(NN_P2_tf_T1_B20,pc[2].s[1].evhead[2].time_fine[4],DATA12);
+SIGNAL(NN_P2_tf_T1_B21,pc[2].s[1].evhead[2].time_fine[3],DATA12);
+SIGNAL(NN_P2_tf_T1_B22,pc[2].s[1].evhead[2].time_fine[2],DATA12);
+SIGNAL(NN_P2_tf_T1_B23,pc[2].s[1].evhead[2].time_fine[1],DATA12);
+SIGNAL(NN_P2_tf_T1_B24,pc[2].s[1].evhead[2].time_fine[0],DATA12);
+SIGNAL(NN_P2_tf_T1_B25,pc[2].s[1].evhead[2].time_fine[15],DATA12);
+SIGNAL(NN_P2_tf_T1_B26,pc[2].s[1].evhead[2].time_fine[14],DATA12);
+SIGNAL(NN_P2_tf_T1_B27,pc[2].s[1].evhead[2].time_fine[13],DATA12);
+SIGNAL(NN_P2_tf_T1_B28,pc[2].s[1].evhead[2].time_fine[12],DATA12);
+SIGNAL(NN_P2_tf_T1_B29,pc[1].s[1].evhead[1].time_fine[7],DATA12);
+SIGNAL(NN_P2_tf_T1_B3,pc[2].s[1].evhead[1].time_fine[5],DATA12);
+SIGNAL(NN_P2_tf_T1_B30,pc[1].s[1].evhead[1].time_fine[6],DATA12);
+SIGNAL(NN_P2_tf_T1_B31,pc[1].s[1].evhead[1].time_fine[5],DATA12);
+SIGNAL(NN_P2_tf_T1_B32,pc[1].s[1].evhead[1].time_fine[4],DATA12);
+SIGNAL(NN_P2_tf_T1_B33,pc[1].s[1].evhead[1].time_fine[3],DATA12);
+SIGNAL(NN_P2_tf_T1_B34,pc[1].s[1].evhead[1].time_fine[2],DATA12);
+SIGNAL(NN_P2_tf_T1_B35,pc[1].s[1].evhead[1].time_fine[1],DATA12);
+SIGNAL(NN_P2_tf_T1_B36,pc[1].s[1].evhead[1].time_fine[0],DATA12);
+SIGNAL(NN_P2_tf_T1_B37,pc[1].s[1].evhead[1].time_fine[15],DATA12);
+SIGNAL(NN_P2_tf_T1_B38,pc[1].s[1].evhead[1].time_fine[14],DATA12);
+SIGNAL(NN_P2_tf_T1_B39,pc[1].s[1].evhead[1].time_fine[13],DATA12);
+SIGNAL(NN_P2_tf_T1_B4,pc[2].s[1].evhead[1].time_fine[4],DATA12);
+SIGNAL(NN_P2_tf_T1_B40,pc[1].s[1].evhead[1].time_fine[12],DATA12);
+SIGNAL(NN_P2_tf_T1_B41,pc[1].s[1].evhead[1].time_fine[11],DATA12);
+SIGNAL(NN_P2_tf_T1_B42,pc[1].s[1].evhead[1].time_fine[10],DATA12);
+SIGNAL(NN_P2_tf_T1_B43,pc[1].s[1].evhead[1].time_fine[9],DATA12);
+SIGNAL(NN_P2_tf_T1_B44,pc[1].s[1].evhead[1].time_fine[8],DATA12);
+SIGNAL(NN_P2_tf_T1_B45,pc[1].s[1].evhead[2].time_fine[7],DATA12);
+SIGNAL(NN_P2_tf_T1_B46,pc[1].s[1].evhead[2].time_fine[6],DATA12);
+SIGNAL(NN_P2_tf_T1_B47,pc[1].s[1].evhead[2].time_fine[5],DATA12);
+SIGNAL(NN_P2_tf_T1_B48,pc[1].s[1].evhead[2].time_fine[4],DATA12);
+SIGNAL(NN_P2_tf_T1_B49,pc[1].s[1].evhead[2].time_fine[3],DATA12);
+SIGNAL(NN_P2_tf_T1_B5,pc[2].s[1].evhead[1].time_fine[3],DATA12);
+SIGNAL(NN_P2_tf_T1_B50,pc[1].s[1].evhead[2].time_fine[2],DATA12);
+SIGNAL(NN_P2_tf_T1_B6,pc[2].s[1].evhead[1].time_fine[2],DATA12);
+SIGNAL(NN_P2_tf_T1_B7,pc[2].s[1].evhead[1].time_fine[1],DATA12);
+SIGNAL(NN_P2_tf_T1_B8,pc[2].s[1].evhead[1].time_fine[0],DATA12);
+SIGNAL(NN_P2_tf_T1_B9,pc[2].s[1].evhead[1].time_fine[15],DATA12);
+SIGNAL(NN_P2_tf_T2_B1,pc[2].s[1].evhead[5].time_fine[9],DATA12);
+SIGNAL(NN_P2_tf_T2_B10,pc[2].s[1].evhead[6].time_fine[0],DATA12);
+SIGNAL(NN_P2_tf_T2_B11,pc[2].s[1].evhead[6].time_fine[15],DATA12);
+SIGNAL(NN_P2_tf_T2_B12,pc[2].s[1].evhead[6].time_fine[14],DATA12);
+SIGNAL(NN_P2_tf_T2_B13,pc[2].s[1].evhead[6].time_fine[13],DATA12);
+SIGNAL(NN_P2_tf_T2_B14,pc[2].s[1].evhead[6].time_fine[12],DATA12);
+SIGNAL(NN_P2_tf_T2_B15,pc[2].s[1].evhead[6].time_fine[11],DATA12);
+SIGNAL(NN_P2_tf_T2_B16,pc[2].s[1].evhead[6].time_fine[10],DATA12);
+SIGNAL(NN_P2_tf_T2_B17,pc[2].s[1].evhead[6].time_fine[9],DATA12);
+SIGNAL(NN_P2_tf_T2_B18,pc[2].s[1].evhead[6].time_fine[8],DATA12);
+SIGNAL(NN_P2_tf_T2_B19,pc[2].s[1].evhead[7].time_fine[7],DATA12);
+SIGNAL(NN_P2_tf_T2_B2,pc[2].s[1].evhead[5].time_fine[8],DATA12);
+SIGNAL(NN_P2_tf_T2_B20,pc[2].s[1].evhead[7].time_fine[6],DATA12);
+SIGNAL(NN_P2_tf_T2_B21,pc[2].s[1].evhead[7].time_fine[5],DATA12);
+SIGNAL(NN_P2_tf_T2_B22,pc[2].s[1].evhead[7].time_fine[4],DATA12);
+SIGNAL(NN_P2_tf_T2_B23,pc[2].s[1].evhead[7].time_fine[3],DATA12);
+SIGNAL(NN_P2_tf_T2_B24,pc[2].s[1].evhead[7].time_fine[2],DATA12);
+SIGNAL(NN_P2_tf_T2_B25,pc[2].s[1].evhead[7].time_fine[1],DATA12);
+SIGNAL(NN_P2_tf_T2_B26,pc[2].s[1].evhead[7].time_fine[0],DATA12);
+SIGNAL(NN_P2_tf_T2_B27,pc[2].s[1].evhead[7].time_fine[15],DATA12);
+SIGNAL(NN_P2_tf_T2_B28,pc[2].s[1].evhead[7].time_fine[14],DATA12);
+SIGNAL(NN_P2_tf_T2_B29,pc[2].s[1].evhead[7].time_fine[13],DATA12);
+SIGNAL(NN_P2_tf_T2_B3,pc[2].s[1].evhead[6].time_fine[7],DATA12);
+SIGNAL(NN_P2_tf_T2_B30,pc[2].s[1].evhead[7].time_fine[12],DATA12);
+SIGNAL(NN_P2_tf_T2_B31,pc[1].s[1].evhead[5].time_fine[15],DATA12);
+SIGNAL(NN_P2_tf_T2_B32,pc[1].s[1].evhead[5].time_fine[14],DATA12);
+SIGNAL(NN_P2_tf_T2_B33,pc[1].s[1].evhead[5].time_fine[13],DATA12);
+SIGNAL(NN_P2_tf_T2_B34,pc[1].s[1].evhead[5].time_fine[12],DATA12);
+SIGNAL(NN_P2_tf_T2_B35,pc[1].s[1].evhead[5].time_fine[11],DATA12);
+SIGNAL(NN_P2_tf_T2_B36,pc[1].s[1].evhead[5].time_fine[10],DATA12);
+SIGNAL(NN_P2_tf_T2_B37,pc[1].s[1].evhead[5].time_fine[9],DATA12);
+SIGNAL(NN_P2_tf_T2_B38,pc[1].s[1].evhead[5].time_fine[8],DATA12);
+SIGNAL(NN_P2_tf_T2_B39,pc[1].s[1].evhead[6].time_fine[7],DATA12);
+SIGNAL(NN_P2_tf_T2_B4,pc[2].s[1].evhead[6].time_fine[6],DATA12);
+SIGNAL(NN_P2_tf_T2_B40,pc[1].s[1].evhead[6].time_fine[6],DATA12);
+SIGNAL(NN_P2_tf_T2_B41,pc[1].s[1].evhead[6].time_fine[5],DATA12);
+SIGNAL(NN_P2_tf_T2_B42,pc[1].s[1].evhead[6].time_fine[4],DATA12);
+SIGNAL(NN_P2_tf_T2_B43,pc[1].s[1].evhead[6].time_fine[3],DATA12);
+SIGNAL(NN_P2_tf_T2_B44,pc[1].s[1].evhead[6].time_fine[2],DATA12);
+SIGNAL(NN_P2_tf_T2_B45,pc[1].s[1].evhead[6].time_fine[1],DATA12);
+SIGNAL(NN_P2_tf_T2_B46,pc[1].s[1].evhead[6].time_fine[0],DATA12);
+SIGNAL(NN_P2_tf_T2_B47,pc[1].s[1].evhead[6].time_fine[15],DATA12);
+SIGNAL(NN_P2_tf_T2_B48,pc[1].s[1].evhead[6].time_fine[14],DATA12);
+SIGNAL(NN_P2_tf_T2_B49,pc[1].s[1].evhead[6].time_fine[13],DATA12);
+SIGNAL(NN_P2_tf_T2_B5,pc[2].s[1].evhead[6].time_fine[5],DATA12);
+SIGNAL(NN_P2_tf_T2_B50,pc[1].s[1].evhead[6].time_fine[12],DATA12);
+SIGNAL(NN_P2_tf_T2_B6,pc[2].s[1].evhead[6].time_fine[4],DATA12);
+SIGNAL(NN_P2_tf_T2_B7,pc[2].s[1].evhead[6].time_fine[3],DATA12);
+SIGNAL(NN_P2_tf_T2_B8,pc[2].s[1].evhead[6].time_fine[2],DATA12);
+SIGNAL(NN_P2_tf_T2_B9,pc[2].s[1].evhead[6].time_fine[1],DATA12);
+SIGNAL( ZERO_SUPPRESS_MULTI(200):NN_P1_tc_T1_B1);
+SIGNAL( ZERO_SUPPRESS_MULTI(200):NN_P1_tc_T2_B1);
+SIGNAL( ZERO_SUPPRESS_MULTI(200):NN_P1_tf_T1_B1);
+SIGNAL( ZERO_SUPPRESS_MULTI(200):NN_P1_tf_T2_B1);
+SIGNAL( ZERO_SUPPRESS_MULTI(200):NN_P2_tc_T1_B1);
+SIGNAL( ZERO_SUPPRESS_MULTI(200):NN_P2_tc_T2_B1);
+SIGNAL( ZERO_SUPPRESS_MULTI(200):NN_P2_tf_T1_B1);
+SIGNAL( ZERO_SUPPRESS_MULTI(200):NN_P2_tf_T2_B1);
+/**********************************************************/
+
+/** END_INPUT_DEFINITION **********************************************/
+
+/**********************************************************
+ * Generating unpacking code...
+ */
+
+//
+// Generating code for: TAMEX3_PADDING
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for TAMEX3_PADDING.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_PADDING()
+#if !PACKER_CODE
+# define DECLARED_UNPACK_TAMEX3_PADDING
+class TAMEX3_PADDING
+#else//PACKER_CODE
+# define DECLARED_PACKER_TAMEX3_PADDING
+class PACKER_TAMEX3_PADDING
+#endif//PACKER_CODE
+
+{
+public:
+  // UINT32 padding NOENCODE
+  // {
+    //  0_11: counter;
+    // 12_19: index;
+    // 20_31: 0xadd;
+  // }
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(TAMEX3_PADDING);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for TAMEX3_PADDING.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_PADDING()
+template<typename __data_src_t>
+void TAMEX3_PADDING::__unpack(__data_src_t &__buffer)
+{
+  // UINT32 padding NOENCODE
+  // {
+    //  0_11: counter;
+    // 12_19: index;
+    // 20_31: 0xadd;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 counter : 12; // 0..11
+      uint32 index : 8; // 12..19
+      uint32 unnamed_20_31 : 12; // 20..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_20_31 : 12; // 20..31
+      uint32 index : 8; // 12..19
+      uint32 counter : 12; // 0..11
+#endif
+    };
+    uint32  u32;
+  } padding;
+  READ_FROM_BUFFER_FULL(23,uint32 ,padding,padding.u32);
+  CHECK_BITS_EQUAL(22,padding.unnamed_20_31,0xadd);
+}
+FORCE_IMPL_DATA_SRC_FCN(void,TAMEX3_PADDING::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for TAMEX3_PADDING.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_PADDING()
+template<typename __data_src_t>
+bool TAMEX3_PADDING::__match(__data_src_t &__buffer)
+{
+  // UINT32 padding NOENCODE
+  // {
+    //  0_11: counter;
+    // 12_19: index;
+    // 20_31: 0xadd;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 counter : 12; // 0..11
+      uint32 index : 8; // 12..19
+      uint32 unnamed_20_31 : 12; // 20..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_20_31 : 12; // 20..31
+      uint32 index : 8; // 12..19
+      uint32 counter : 12; // 0..11
+#endif
+    };
+    uint32  u32;
+  } padding;
+  READ_FROM_BUFFER_FULL(23,uint32 ,padding,padding.u32);
+  MATCH_BITS_EQUAL(22,padding.unnamed_20_31,0xadd);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN(bool,TAMEX3_PADDING::__match);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for TAMEX3_PADDING.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_PADDING()
+template<typename __data_dest_t>
+void PACKER_TAMEX3_PADDING::__packer(__data_dest_t &__buffer)
+{
+  // UINT32 padding NOENCODE
+  // {
+    //  0_11: counter;
+    // 12_19: index;
+    // 20_31: 0xadd;
+  // }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,TAMEX3_PADDING::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: TAMEX3_SFP
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for TAMEX3_SFP.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_SFP(sfp,card)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_TAMEX3_SFP
+class TAMEX3_SFP
+#else//PACKER_CODE
+# define DECLARED_PACKER_TAMEX3_SFP
+class PACKER_TAMEX3_SFP
+#endif//PACKER_CODE
+
+{
+public:
+  // MEMBER(DATA12 time_coarse[34] ZERO_SUPPRESS_MULTI(256));
+  raw_array_multi_zero_suppress<DATA12,DATA12,34,256> time_coarse;
+  // MEMBER(DATA12 time_fine[34] ZERO_SUPPRESS_MULTI(256));
+  raw_array_multi_zero_suppress<DATA12,DATA12,34,256> time_fine;
+  // UINT32 indicator NOENCODE
+  // {
+    //  0_07: 52;
+    //  8_11: trigger_type;
+    // 12_15: sfp = MATCH(sfp);
+    // 16_23: card = MATCH(card);
+    // 24_31: 0;
+  // }
+  // MATCH_END;
+  // UINT32 data_size NOENCODE
+  // {
+    //  0_31: bytes;
+  // }
+  // UINT32 tdc_header NOENCODE
+  // {
+    //  0_15: lec;
+    //    16: buf_no;
+    // 17_19: reserved;
+    // 20_23: trigger_type;
+    // 24_31: 170;
+  // }
+  // list(0<=i<((data_size.bytes / 4) - 3))
+
+    // UINT32 data NOENCODE
+    // {
+      //  0_10: coarse;
+      //    11: is_leading;
+      // 12_21: fine;
+      // 22_28: channel_index;
+      // 29_31: type;
+      // ENCODE(time_coarse[(((4 == type) * channel_index) + ((4 != type) * 33))],(value=coarse));
+      // ENCODE(time_fine[(((4 == type) * channel_index) + ((4 != type) * 33))],(value=fine));
+    // }
+  // UINT32 error_bits NOENCODE
+  // {
+    //  0_23: bits;
+    // 24_31: 238;
+  // }
+  // UINT32 trailer NOENCODE
+  // {
+    //  0_23: unused;
+    // 24_31: 187;
+  // }
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer,uint32 sfp,uint32 card);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer,uint32 sfp,uint32 card);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer,uint32 sfp,uint32 card);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(TAMEX3_SFP);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for TAMEX3_SFP.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_SFP(sfp,card)
+template<typename __data_src_t>
+void TAMEX3_SFP::__unpack(__data_src_t &__buffer,uint32 sfp,uint32 card)
+{
+  // MEMBER(DATA12 time_coarse[34] ZERO_SUPPRESS_MULTI(256));
+  // MEMBER(DATA12 time_fine[34] ZERO_SUPPRESS_MULTI(256));
+  // UINT32 indicator NOENCODE
+  // {
+    //  0_07: 52;
+    //  8_11: trigger_type;
+    // 12_15: sfp = MATCH(sfp);
+    // 16_23: card = MATCH(card);
+    // 24_31: 0;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 unnamed_0_7 : 8; // 0..7
+      uint32 trigger_type : 4; // 8..11
+      uint32 sfp : 4; // 12..15
+      uint32 card : 8; // 16..23
+      uint32 unnamed_24_31 : 8; // 24..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_24_31 : 8; // 24..31
+      uint32 card : 8; // 16..23
+      uint32 sfp : 4; // 12..15
+      uint32 trigger_type : 4; // 8..11
+      uint32 unnamed_0_7 : 8; // 0..7
+#endif
+    };
+    uint32  u32;
+  } indicator;
+  READ_FROM_BUFFER_FULL(38,uint32 ,indicator,indicator.u32);
+  CHECK_BITS_EQUAL(33,indicator.unnamed_0_7,52);
+  CHECK_BITS_EQUAL(35,indicator.sfp,sfp);
+  CHECK_BITS_EQUAL(36,indicator.card,card);
+  CHECK_BITS_EQUAL(37,indicator.unnamed_24_31,0);
+  // MATCH_END;
+  // UINT32 data_size NOENCODE
+  // {
+    //  0_31: bytes;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 bytes : 32; // 0..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 bytes : 32; // 0..31
+#endif
+    };
+    uint32  u32;
+  } data_size;
+  READ_FROM_BUFFER_FULL(45,uint32 ,data_size,data_size.u32);
+  // UINT32 tdc_header NOENCODE
+  // {
+    //  0_15: lec;
+    //    16: buf_no;
+    // 17_19: reserved;
+    // 20_23: trigger_type;
+    // 24_31: 170;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 lec : 16; // 0..15
+      uint32 buf_no : 1; // 16
+      uint32 reserved : 3; // 17..19
+      uint32 trigger_type : 4; // 20..23
+      uint32 unnamed_24_31 : 8; // 24..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_24_31 : 8; // 24..31
+      uint32 trigger_type : 4; // 20..23
+      uint32 reserved : 3; // 17..19
+      uint32 buf_no : 1; // 16
+      uint32 lec : 16; // 0..15
+#endif
+    };
+    uint32  u32;
+  } tdc_header;
+  READ_FROM_BUFFER_FULL(53,uint32 ,tdc_header,tdc_header.u32);
+  CHECK_BITS_EQUAL(52,tdc_header.unnamed_24_31,170);
+  // list(0<=i<((data_size.bytes / 4) - 3))
+
+  for (uint32 i = 0; i < (uint32) (((data_size.bytes / 4) - 3)); ++i)
+  {
+    // UINT32 data NOENCODE
+    // {
+      //  0_10: coarse;
+      //    11: is_leading;
+      // 12_21: fine;
+      // 22_28: channel_index;
+      // 29_31: type;
+      // ENCODE(time_coarse[(((4 == type) * channel_index) + ((4 != type) * 33))],(value=coarse));
+      // ENCODE(time_fine[(((4 == type) * channel_index) + ((4 != type) * 33))],(value=fine));
+    // }
+    union
+    {
+      struct
+      {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+        uint32 coarse : 11; // 0..10
+        uint32 is_leading : 1; // 11
+        uint32 fine : 10; // 12..21
+        uint32 channel_index : 7; // 22..28
+        uint32 type : 3; // 29..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+        uint32 type : 3; // 29..31
+        uint32 channel_index : 7; // 22..28
+        uint32 fine : 10; // 12..21
+        uint32 is_leading : 1; // 11
+        uint32 coarse : 11; // 0..10
+#endif
+      };
+      uint32  u32;
+    } data;
+    READ_FROM_BUFFER_FULL(72,uint32 ,data,data.u32);
+    {
+      typedef __typeof__(*(&(time_coarse))) __array_t;
+      typedef typename __array_t::item_t __item_t;
+      __item_t &__item = time_coarse.insert_index(67,(((4 == data.type) * data.channel_index) + ((4 != data.type) * 33)));
+      __item.value = data.coarse;
+    }
+    {
+      typedef __typeof__(*(&(time_fine))) __array_t;
+      typedef typename __array_t::item_t __item_t;
+      __item_t &__item = time_fine.insert_index(71,(((4 == data.type) * data.channel_index) + ((4 != data.type) * 33)));
+      __item.value = data.fine;
+    }
+  }
+  // UINT32 error_bits NOENCODE
+  // {
+    //  0_23: bits;
+    // 24_31: 238;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 bits : 24; // 0..23
+      uint32 unnamed_24_31 : 8; // 24..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_24_31 : 8; // 24..31
+      uint32 bits : 24; // 0..23
+#endif
+    };
+    uint32  u32;
+  } error_bits;
+  READ_FROM_BUFFER_FULL(78,uint32 ,error_bits,error_bits.u32);
+  CHECK_BITS_EQUAL(77,error_bits.unnamed_24_31,238);
+  // UINT32 trailer NOENCODE
+  // {
+    //  0_23: unused;
+    // 24_31: 187;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 unused : 24; // 0..23
+      uint32 unnamed_24_31 : 8; // 24..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_24_31 : 8; // 24..31
+      uint32 unused : 24; // 0..23
+#endif
+    };
+    uint32  u32;
+  } trailer;
+  READ_FROM_BUFFER_FULL(83,uint32 ,trailer,trailer.u32);
+  CHECK_BITS_EQUAL(82,trailer.unnamed_24_31,187);
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,TAMEX3_SFP::__unpack,uint32 sfp,uint32 card);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for TAMEX3_SFP.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_SFP(sfp,card)
+template<typename __data_src_t>
+bool TAMEX3_SFP::__match(__data_src_t &__buffer,uint32 sfp,uint32 card)
+{
+  // MEMBER(DATA12 time_coarse[34] ZERO_SUPPRESS_MULTI(256));
+  // MEMBER(DATA12 time_fine[34] ZERO_SUPPRESS_MULTI(256));
+  // UINT32 indicator NOENCODE
+  // {
+    //  0_07: 52;
+    //  8_11: trigger_type;
+    // 12_15: sfp = MATCH(sfp);
+    // 16_23: card = MATCH(card);
+    // 24_31: 0;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 unnamed_0_7 : 8; // 0..7
+      uint32 trigger_type : 4; // 8..11
+      uint32 sfp : 4; // 12..15
+      uint32 card : 8; // 16..23
+      uint32 unnamed_24_31 : 8; // 24..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 unnamed_24_31 : 8; // 24..31
+      uint32 card : 8; // 16..23
+      uint32 sfp : 4; // 12..15
+      uint32 trigger_type : 4; // 8..11
+      uint32 unnamed_0_7 : 8; // 0..7
+#endif
+    };
+    uint32  u32;
+  } indicator;
+  READ_FROM_BUFFER_FULL(38,uint32 ,indicator,indicator.u32);
+  MATCH_BITS_EQUAL(33,indicator.unnamed_0_7,52);
+  MATCH_BITS_EQUAL(35,indicator.sfp,sfp);
+  MATCH_BITS_EQUAL(36,indicator.card,card);
+  MATCH_BITS_EQUAL(37,indicator.unnamed_24_31,0);
+  // MATCH_END;
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(bool,TAMEX3_SFP::__match,uint32 sfp,uint32 card);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for TAMEX3_SFP.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_SFP(sfp,card)
+template<typename __data_dest_t>
+void PACKER_TAMEX3_SFP::__packer(__data_dest_t &__buffer,uint32 sfp,uint32 card)
+{
+  // MEMBER(DATA12 time_coarse[34] ZERO_SUPPRESS_MULTI(256));
+  // MEMBER(DATA12 time_fine[34] ZERO_SUPPRESS_MULTI(256));
+  // UINT32 indicator NOENCODE
+  // {
+    //  0_07: 52;
+    //  8_11: trigger_type;
+    // 12_15: sfp = MATCH(sfp);
+    // 16_23: card = MATCH(card);
+    // 24_31: 0;
+  // }
+  // MATCH_END;
+  // UINT32 data_size NOENCODE
+  // {
+    //  0_31: bytes;
+  // }
+  // UINT32 tdc_header NOENCODE
+  // {
+    //  0_15: lec;
+    //    16: buf_no;
+    // 17_19: reserved;
+    // 20_23: trigger_type;
+    // 24_31: 170;
+  // }
+  // list(0<=i<((data_size.bytes / 4) - 3))
+
+  {
+    // UINT32 data NOENCODE
+    // {
+      //  0_10: coarse;
+      //    11: is_leading;
+      // 12_21: fine;
+      // 22_28: channel_index;
+      // 29_31: type;
+      // ENCODE(time_coarse[(((4 == type) * channel_index) + ((4 != type) * 33))],(value=coarse));
+      // ENCODE(time_fine[(((4 == type) * channel_index) + ((4 != type) * 33))],(value=fine));
+    // }
+  }
+  // UINT32 error_bits NOENCODE
+  // {
+    //  0_23: bits;
+    // 24_31: 238;
+  // }
+  // UINT32 trailer NOENCODE
+  // {
+    //  0_23: unused;
+    // 24_31: 187;
+  // }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,TAMEX3_SFP::__packer,uint32 sfp,uint32 card);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: TAMEX3_WINDOW
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for TAMEX3_WINDOW.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_WINDOW()
+#if !PACKER_CODE
+# define DECLARED_UNPACK_TAMEX3_WINDOW
+class TAMEX3_WINDOW
+#else//PACKER_CODE
+# define DECLARED_PACKER_TAMEX3_WINDOW
+class PACKER_TAMEX3_WINDOW
+#endif//PACKER_CODE
+
+{
+public:
+  // UINT32 trigger_window
+  // {
+    //  0_15: post_trig_ns;
+    // 16_31: pre_trig_ns;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 post_trig_ns : 16; // 0..15
+      uint32 pre_trig_ns : 16; // 16..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 pre_trig_ns : 16; // 16..31
+      uint32 post_trig_ns : 16; // 0..15
+#endif
+    };
+    uint32  u32;
+  } trigger_window;
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(TAMEX3_WINDOW);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for TAMEX3_WINDOW.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_WINDOW()
+template<typename __data_src_t>
+void TAMEX3_WINDOW::__unpack(__data_src_t &__buffer)
+{
+  // UINT32 trigger_window
+  // {
+    //  0_15: post_trig_ns;
+    // 16_31: pre_trig_ns;
+  // }
+  READ_FROM_BUFFER_FULL(14,uint32 ,trigger_window,trigger_window.u32);
+}
+FORCE_IMPL_DATA_SRC_FCN(void,TAMEX3_WINDOW::__unpack);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for TAMEX3_WINDOW.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_WINDOW()
+template<typename __data_src_t>
+bool TAMEX3_WINDOW::__match(__data_src_t &__buffer)
+{
+  // UINT32 trigger_window
+  // {
+    //  0_15: post_trig_ns;
+    // 16_31: pre_trig_ns;
+  // }
+  union
+  {
+    struct
+    {
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+      uint32 post_trig_ns : 16; // 0..15
+      uint32 pre_trig_ns : 16; // 16..31
+#endif
+#if __BYTE_ORDER == __BIG_ENDIAN
+      uint32 pre_trig_ns : 16; // 16..31
+      uint32 post_trig_ns : 16; // 0..15
+#endif
+    };
+    uint32  u32;
+  } __trigger_window;
+  READ_FROM_BUFFER_FULL(14,uint32 ,trigger_window,__trigger_window.u32);
+  return true;
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN(bool,TAMEX3_WINDOW::__match);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for TAMEX3_WINDOW.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX3_WINDOW()
+template<typename __data_dest_t>
+void PACKER_TAMEX3_WINDOW::__packer(__data_dest_t &__buffer)
+{
+  // UINT32 trigger_window
+  // {
+    //  0_15: post_trig_ns;
+    // 16_31: pre_trig_ns;
+  // }
+}
+FORCE_IMPL_DATA_SRC_FCN(void,TAMEX3_WINDOW::__packer);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: TAMEX_SFP
+//
+
+/** BEGIN_STRUCTURES ***************************************************
+ *
+ * Event unpacker associated structures for TAMEX_SFP.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX_SFP(sfp)
+#if !PACKER_CODE
+# define DECLARED_UNPACK_TAMEX_SFP
+class TAMEX_SFP
+#else//PACKER_CODE
+# define DECLARED_PACKER_TAMEX_SFP
+class PACKER_TAMEX_SFP
+#endif//PACKER_CODE
+
+{
+public:
+  // select several
+
+    // evhead[1] = TAMEX3_SFP(sfp=sfp,card=0);
+    // evhead[2] = TAMEX3_SFP(sfp=sfp,card=1);
+    // evhead[3] = TAMEX3_SFP(sfp=sfp,card=2);
+    // evhead[4] = TAMEX3_SFP(sfp=sfp,card=3);
+    // evhead[5] = TAMEX3_SFP(sfp=sfp,card=4);
+    // evhead[6] = TAMEX3_SFP(sfp=sfp,card=5);
+    // evhead[7] = TAMEX3_SFP(sfp=sfp,card=6);
+    // evhead[8] = TAMEX3_SFP(sfp=sfp,card=7);
+  SINGLE(TAMEX3_SFP,evhead[9]);
+
+public:
+#ifndef __PSDC__
+# if !PACKER_CODE
+template<typename __data_src_t>
+  void __unpack(__data_src_t &__buffer,uint32 sfp);
+template<typename __data_src_t>
+  static bool __match(__data_src_t &__buffer,uint32 sfp);
+  // void __clean();
+# else//PACKER_CODE
+template<typename __data_dest_t>
+  void __packer(__data_dest_t &__buffer,uint32 sfp);
+# endif//PACKER_CODE
+
+  STRUCT_FCNS_DECL(TAMEX_SFP);
+#endif//!__PSDC__
+};
+
+/** END_STRUCTURES ****************************************************/
+
+
+/** BEGIN_UNPACKER *****************************************************
+ *
+ * Event unpacker for TAMEX_SFP.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX_SFP(sfp)
+template<typename __data_src_t>
+void TAMEX_SFP::__unpack(__data_src_t &__buffer,uint32 sfp)
+{
+  // select several
+
+    // evhead[1] = TAMEX3_SFP(sfp=sfp,card=0);
+    // evhead[2] = TAMEX3_SFP(sfp=sfp,card=1);
+    // evhead[3] = TAMEX3_SFP(sfp=sfp,card=2);
+    // evhead[4] = TAMEX3_SFP(sfp=sfp,card=3);
+    // evhead[5] = TAMEX3_SFP(sfp=sfp,card=4);
+    // evhead[6] = TAMEX3_SFP(sfp=sfp,card=5);
+    // evhead[7] = TAMEX3_SFP(sfp=sfp,card=6);
+    // evhead[8] = TAMEX3_SFP(sfp=sfp,card=7);
+  for ( ; ; )
+  {
+    if (__buffer.empty()) break;
+    int __match_no = 0;
+    // optimized match 1: TAMEX3_SFP evhead[1]: (s32) => (0xffff00ff,0x00000034)
+    // optimized match 2: TAMEX3_SFP evhead[2]: (s32) => (0xffff00ff,0x00010034)
+    // optimized match 3: TAMEX3_SFP evhead[3]: (s32) => (0xffff00ff,0x00020034)
+    // optimized match 4: TAMEX3_SFP evhead[4]: (s32) => (0xffff00ff,0x00030034)
+    // optimized match 5: TAMEX3_SFP evhead[5]: (s32) => (0xffff00ff,0x00040034)
+    // optimized match 6: TAMEX3_SFP evhead[6]: (s32) => (0xffff00ff,0x00050034)
+    // optimized match 7: TAMEX3_SFP evhead[7]: (s32) => (0xffff00ff,0x00060034)
+    // optimized match 8: TAMEX3_SFP evhead[8]: (s32) => (0xffff00ff,0x00070034)
+    {
+    uint32 __match_peek;
+    PEEK_FROM_BUFFER(99,uint32,__match_peek);
+    // differ = 00070000 : 16 17 18
+    uint32 __match_index = 0 | /* 16,18 */ ((__match_peek >> 16) & 0x00000007);
+    static const sint8 __match_index_array[8] = { 1, 2, 3, 4, 5, 6, 7, 8, };
+    __match_no = __match_index_array[__match_index];
+    // last_subevent_item = 0
+    }
+    if (!__match_no) break;
+    switch (__match_no)
+    {
+      case 1:
+        CHECK_SPURIOUS_MATCH_DECL(91,spurious_match_abort_loop_0,TAMEX3_SFP,/*sfp*/sfp,/*card*/0);
+        UNPACK_DECL(91,TAMEX3_SFP,evhead[1],/*sfp*/sfp,/*card*/0);
+        break;
+      case 2:
+        CHECK_SPURIOUS_MATCH_DECL(92,spurious_match_abort_loop_0,TAMEX3_SFP,/*sfp*/sfp,/*card*/1);
+        UNPACK_DECL(92,TAMEX3_SFP,evhead[2],/*sfp*/sfp,/*card*/1);
+        break;
+      case 3:
+        CHECK_SPURIOUS_MATCH_DECL(93,spurious_match_abort_loop_0,TAMEX3_SFP,/*sfp*/sfp,/*card*/2);
+        UNPACK_DECL(93,TAMEX3_SFP,evhead[3],/*sfp*/sfp,/*card*/2);
+        break;
+      case 4:
+        CHECK_SPURIOUS_MATCH_DECL(94,spurious_match_abort_loop_0,TAMEX3_SFP,/*sfp*/sfp,/*card*/3);
+        UNPACK_DECL(94,TAMEX3_SFP,evhead[4],/*sfp*/sfp,/*card*/3);
+        break;
+      case 5:
+        CHECK_SPURIOUS_MATCH_DECL(95,spurious_match_abort_loop_0,TAMEX3_SFP,/*sfp*/sfp,/*card*/4);
+        UNPACK_DECL(95,TAMEX3_SFP,evhead[5],/*sfp*/sfp,/*card*/4);
+        break;
+      case 6:
+        CHECK_SPURIOUS_MATCH_DECL(96,spurious_match_abort_loop_0,TAMEX3_SFP,/*sfp*/sfp,/*card*/5);
+        UNPACK_DECL(96,TAMEX3_SFP,evhead[6],/*sfp*/sfp,/*card*/5);
+        break;
+      case 7:
+        CHECK_SPURIOUS_MATCH_DECL(97,spurious_match_abort_loop_0,TAMEX3_SFP,/*sfp*/sfp,/*card*/6);
+        UNPACK_DECL(97,TAMEX3_SFP,evhead[7],/*sfp*/sfp,/*card*/6);
+        break;
+      case 8:
+        CHECK_SPURIOUS_MATCH_DECL(98,spurious_match_abort_loop_0,TAMEX3_SFP,/*sfp*/sfp,/*card*/7);
+        UNPACK_DECL(98,TAMEX3_SFP,evhead[8],/*sfp*/sfp,/*card*/7);
+        break;
+    }
+  }
+  spurious_match_abort_loop_0:;
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,TAMEX_SFP::__unpack,uint32 sfp);
+
+/** END_UNPACKER ******************************************************/
+
+
+/** BEGIN_MATCHER ******************************************************
+ *
+ * Event matcher for TAMEX_SFP.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX_SFP(sfp)
+template<typename __data_src_t>
+bool TAMEX_SFP::__match(__data_src_t &__buffer,uint32 sfp)
+{
+  // select several
+
+    // evhead[1] = TAMEX3_SFP(sfp=sfp,card=0);
+    // evhead[2] = TAMEX3_SFP(sfp=sfp,card=1);
+    // evhead[3] = TAMEX3_SFP(sfp=sfp,card=2);
+    // evhead[4] = TAMEX3_SFP(sfp=sfp,card=3);
+    // evhead[5] = TAMEX3_SFP(sfp=sfp,card=4);
+    // evhead[6] = TAMEX3_SFP(sfp=sfp,card=5);
+    // evhead[7] = TAMEX3_SFP(sfp=sfp,card=6);
+    // evhead[8] = TAMEX3_SFP(sfp=sfp,card=7);
+  for ( ; ; )
+  {
+    if (__buffer.empty()) break;
+    int __match_no = 0;
+    MATCH_DECL(91,__match_no,1,TAMEX3_SFP,evhead[1],/*sfp*/sfp,/*card*/0);
+    MATCH_DECL(92,__match_no,2,TAMEX3_SFP,evhead[2],/*sfp*/sfp,/*card*/1);
+    MATCH_DECL(93,__match_no,3,TAMEX3_SFP,evhead[3],/*sfp*/sfp,/*card*/2);
+    MATCH_DECL(94,__match_no,4,TAMEX3_SFP,evhead[4],/*sfp*/sfp,/*card*/3);
+    MATCH_DECL(95,__match_no,5,TAMEX3_SFP,evhead[5],/*sfp*/sfp,/*card*/4);
+    MATCH_DECL(96,__match_no,6,TAMEX3_SFP,evhead[6],/*sfp*/sfp,/*card*/5);
+    MATCH_DECL(97,__match_no,7,TAMEX3_SFP,evhead[7],/*sfp*/sfp,/*card*/6);
+    MATCH_DECL(98,__match_no,8,TAMEX3_SFP,evhead[8],/*sfp*/sfp,/*card*/7);
+    if (!__match_no) break;
+    return true;
+  }
+  return false;
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(bool,TAMEX_SFP::__match,uint32 sfp);
+
+/** END_MATCHER *******************************************************/
+
+
+/** BEGIN_PACKER *******************************************************
+ *
+ * Event packer for TAMEX_SFP.
+ *
+ * Do not edit - automatically generated.
+ */
+
+// TAMEX_SFP(sfp)
+template<typename __data_dest_t>
+void PACKER_TAMEX_SFP::__packer(__data_dest_t &__buffer,uint32 sfp)
+{
+  // select several
+
+    // evhead[1] = TAMEX3_SFP(sfp=sfp,card=0);
+    // evhead[2] = TAMEX3_SFP(sfp=sfp,card=1);
+    // evhead[3] = TAMEX3_SFP(sfp=sfp,card=2);
+    // evhead[4] = TAMEX3_SFP(sfp=sfp,card=3);
+    // evhead[5] = TAMEX3_SFP(sfp=sfp,card=4);
+    // evhead[6] = TAMEX3_SFP(sfp=sfp,card=5);
+    // evhead[7] = TAMEX3_SFP(sfp=sfp,card=6);
+    // evhead[8] = TAMEX3_SFP(sfp=sfp,card=7);
+  {
+    PACK_DECL(91,TAMEX3_SFP,evhead[1],/*sfp*/sfp,/*card*/0);
+    PACK_DECL(92,TAMEX3_SFP,evhead[2],/*sfp*/sfp,/*card*/1);
+    PACK_DECL(93,TAMEX3_SFP,evhead[3],/*sfp*/sfp,/*card*/2);
+    PACK_DECL(94,TAMEX3_SFP,evhead[4],/*sfp*/sfp,/*card*/3);
+    PACK_DECL(95,TAMEX3_SFP,evhead[5],/*sfp*/sfp,/*card*/4);
+    PACK_DECL(96,TAMEX3_SFP,evhead[6],/*sfp*/sfp,/*card*/5);
+    PACK_DECL(97,TAMEX3_SFP,evhead[7],/*sfp*/sfp,/*card*/6);
+    PACK_DECL(98,TAMEX3_SFP,evhead[8],/*sfp*/sfp,/*card*/7);
+  }
+}
+FORCE_IMPL_DATA_SRC_FCN_ARG(void,TAMEX_SFP::__packer,uint32 sfp);
+
+/** END_PACKER ********************************************************/
+
+//
+// Generating code for: tamex_pcie
+//
