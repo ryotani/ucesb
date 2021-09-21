@@ -1,8 +1,9 @@
 *.d
-1;95;0c*.o
+*.o
 */gen*/*
 */mc_*/*
 */obj*/*
 *lmd
 *root
 *tar.gz
+tmp/

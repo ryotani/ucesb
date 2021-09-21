@@ -66,7 +66,7 @@ int unpack_user_function(unpack_event *event)
   if (1 != event->trigger) {
     return 1;
   }
-
+  return 1;//temporal fix
 //bool had_hit = false;
 //  auto const &card_array = event->neuland_tamex_1.data.sfp[0].card;
 //  for (size_t card_i = 0; card_i < countof(card_array); ++card_i) {
