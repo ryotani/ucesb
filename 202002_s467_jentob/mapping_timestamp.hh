@@ -1,0 +1,14 @@
+// Ratatime Master WR ts.
+SIGNAL(TIMESTAMP_MASTER_ID, main_ts.ts.subsystem_id, DATA12);
+SIGNAL(TIMESTAMP_MASTER_WR_T1, main_ts.ts.t1, DATA16);
+SIGNAL(TIMESTAMP_MASTER_WR_T2, main_ts.ts.t2, DATA16);
+SIGNAL(TIMESTAMP_MASTER_WR_T3, main_ts.ts.t3, DATA16);
+SIGNAL(TIMESTAMP_MASTER_WR_T4, main_ts.ts.t4, DATA16);
+
+// Ratatime Sofia WR ts.
+SIGNAL(TIMESTAMP_SOFIA_ID, sofia_ts.ts.subsystem_id, DATA12);
+SIGNAL(TIMESTAMP_SOFIA_WR_T1, sofia_ts.ts.t1, DATA16);
+SIGNAL(TIMESTAMP_SOFIA_WR_T2, sofia_ts.ts.t2, DATA16);
+SIGNAL(TIMESTAMP_SOFIA_WR_T3, sofia_ts.ts.t3, DATA16);
+SIGNAL(TIMESTAMP_SOFIA_WR_T4, sofia_ts.ts.t4, DATA16);
+

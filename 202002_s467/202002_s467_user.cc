@@ -61,6 +61,38 @@ void raw_user_function(unpack_event *event, raw_event *raw_event)
 	}
 }
 
+int unpack_user_function(unpack_event *event)
+{
+  if (1 != event->trigger) {
+    return 1;
+  }
+
+//bool had_hit = false;
+//  auto const &card_array = event->neuland_tamex_1.data.sfp[0].card;
+//  for (size_t card_i = 0; card_i < countof(card_array); ++card_i) {
+//    auto const &tc = card_array[card_i].data.time_coarse;
+//    auto const &tf = card_array[card_i].data.time_fine;
+//    bitsone_iterator iter;
+//    ssize_t ch;
+//    while ((ch = tc._valid.next(iter)) >= 0) {
+//      if (0 != ch) {
+//        continue;
+//      }
+//
+//      auto fine = tf._items[ch][0].value;
+//      auto fine_i = (4 * (fine - 0)) / (500 - 0);
+//      if (fine_i < 0) fine_i = 0;
+//      printf(" %u:%u: %u:%u\n", (unsigned)card_i, (unsigned)ch,
+//          (unsigned)tc._items[ch][0].value, (unsigned)fine_i);
+//had_hit = true;
+//      break;
+//    }
+//  }
+//if (had_hit) puts("Done.");
+
+  return 0;
+}
+
 void init_user_function()
 {
 	if (g_web.yes) {

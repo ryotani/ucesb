@@ -351,6 +351,31 @@ SUBEVENT(s2_vme_subev)
 	}
 }
 
+scalers_subev_data()
+{
+	scalers = TRLOII_LMU_SCALERS(id=0xc7);
+	pulser = MEGA_PULSER();
+}
+
+SUBEVENT(s2_scalers_subev)
+{
+	select several {
+		data = scalers_subev_data();
+	}
+}
+SUBEVENT(s8_scalers_subev)
+{
+	select several {
+		data = scalers_subev_data();
+	}
+}
+SUBEVENT(main_scalers_subev)
+{
+	select several {
+		data = scalers_subev_data();
+	}
+}
+
 SUBEVENT(s8_wr)
 {
 	ts = TIMESTAMP_WHITERABBIT(id=0x800);
@@ -387,6 +412,7 @@ EVENT
 {
 	main_ts = main_wr(type=10, subtype=1, control=30);
 	main_tpat = main_tpat_subev(type = 36, subtype = 3600, control = 30);
+	main_scalers = main_scalers_subev(type = 37, subtype = 3700, control = 30);
 	sofia_sampler = sofia_sampler_subev(type = 39, subtype = 3900, control = 30);
 
 	neuland_ts = wr_neuland(type=10, subtype=1, control=21);
@@ -408,10 +434,12 @@ EVENT
 
 	s2_ts = wr_s2(type = 10, subtype = 1, control = 20, procid = 35);
 	s2_vme = s2_vme_subev(type = 12, subtype = 1, control = 20, procid = 35);
+	s2_scalers = s2_scalers_subev(type = 37, subtype = 3700, control = 20);
 
 	s8_ts = s8_wr(type = 10, subtype = 1, control = 80);
 	s8_tpat = s8_tpat_subev(type = 36, subtype = 3600, control = 80);
 	s8_vme = s8_vme_subev(type = 88, subtype = 8800, control = 80);
+	s8_scalers = s8_scalers_subev(type = 37, subtype = 3700, control = 80);
 
 	ignore_unknown_subevent;
 }

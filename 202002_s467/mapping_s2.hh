@@ -5,6 +5,17 @@ SIGNAL(TIMESTAMP_SCITWO_WR_T2, s2_ts.ts.t2, DATA16);
 SIGNAL(TIMESTAMP_SCITWO_WR_T3, s2_ts.ts.t3, DATA16);
 SIGNAL(TIMESTAMP_SCITWO_WR_T4, s2_ts.ts.t4, DATA16);
 
+/* Trigger logic scalers */
+SIGNAL(TRLORAW_SCITWO_1, s2_scalers.data.scalers.before_lmu[0],
+    TRLORAW_SCITWO_16, s2_scalers.data.scalers.before_lmu[15], DATA32);
+SIGNAL(TRLOBDT_SCITWO_1, s2_scalers.data.scalers.before_dt[0],
+    TRLOBDT_SCITWO_16, s2_scalers.data.scalers.before_dt[15], DATA32);
+SIGNAL(TRLOADT_SCITWO_1, s2_scalers.data.scalers.after_dt[0],
+    TRLOADT_SCITWO_16, s2_scalers.data.scalers.after_dt[15], DATA32);
+SIGNAL(TRLOARD_SCITWO_1, s2_scalers.data.scalers.after_reduction[0],
+    TRLOARD_SCITWO_16, s2_scalers.data.scalers.after_reduction[15], DATA32);
+
+
 // SCITWO VFTX2 fine (TDC) values.
 //SIGNAL(ZERO_SUPPRESS_MULTI(32): SCITWO_VTF1);
 //SIGNAL(SCITWO_VTF1, s2_vme.data.vftx21.time_fine[0], DATA12); // SC21L

@@ -5,6 +5,16 @@ SIGNAL(TIMESTAMP_SCIEIGHT_WR_T2, s8_ts.ts.t2, DATA16);
 SIGNAL(TIMESTAMP_SCIEIGHT_WR_T3, s8_ts.ts.t3, DATA16);
 SIGNAL(TIMESTAMP_SCIEIGHT_WR_T4, s8_ts.ts.t4, DATA16);
 
+/* Trigger logic scalers */
+SIGNAL(TRLORAW_SCIEIGHT_1, s8_scalers.data.scalers.before_lmu[0],
+    TRLORAW_SCIEIGHT_16, s8_scalers.data.scalers.before_lmu[15], DATA32);
+SIGNAL(TRLOBDT_SCIEIGHT_1, s8_scalers.data.scalers.before_dt[0],
+    TRLOBDT_SCIEIGHT_16, s8_scalers.data.scalers.before_dt[15], DATA32);
+SIGNAL(TRLOADT_SCIEIGHT_1, s8_scalers.data.scalers.after_dt[0],
+    TRLOADT_SCIEIGHT_16, s8_scalers.data.scalers.after_dt[15], DATA32);
+SIGNAL(TRLOARD_SCIEIGHT_1, s8_scalers.data.scalers.after_reduction[0],
+    TRLOARD_SCIEIGHT_16, s8_scalers.data.scalers.after_reduction[15], DATA32);
+
 // SCIEIGHT VFTX2 fine (TDC) values.
 //SIGNAL(ZERO_SUPPRESS_MULTI(32): SCIEIGHT_VTF1);
 //SIGNAL(SCIEIGHT_VTF1, s8_vme.data.vftx21.time_fine[0], DATA12);
